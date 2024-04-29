@@ -40,12 +40,5 @@ class UpstreamServer(BaseModule):
         BaseModule.__init__(self=self, m=module, r=result, s=session)
         self.upstream_server = {}
 
-    def check(self) -> None:
-        if self.p['state'] == 'present':
-            if is_unset(self.p['description']):
-                self.m.fail_json('You need to supply a description!')
-
-        self._base_check()
-
     def update(self) -> None:
         self.b.update(enable_switch=False)
