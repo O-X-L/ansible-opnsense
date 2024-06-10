@@ -2,7 +2,7 @@
 
 namespace: 'ansibleguy'
 name: 'opnsense'
-version: 1.2.8
+version: 1.2.9
 readme: 'README.md'
 authors:
   - 'AnsibleGuy <guy@ansibleguy.net>'

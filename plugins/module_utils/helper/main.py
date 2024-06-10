@@ -31,7 +31,7 @@ def ensure_list(data: (int, str, list, None)) -> list:
 
 
 def is_ip(host: str, ignore_empty: bool = False) -> bool:
-    if ignore_empty and host in ['', ' ']:
+    if ignore_empty and is_unset(host):
         return True
 
     try:
@@ -43,7 +43,7 @@ def is_ip(host: str, ignore_empty: bool = False) -> bool:
 
 
 def is_ip4(host: str, ignore_empty: bool = False) -> bool:
-    if ignore_empty and host in ['', ' ']:
+    if ignore_empty and is_unset(host):
         return True
 
     try:
@@ -55,7 +55,7 @@ def is_ip4(host: str, ignore_empty: bool = False) -> bool:
 
 
 def is_ip6(host: str, ignore_empty: bool = False) -> bool:
-    if ignore_empty and host in ['', ' ']:
+    if ignore_empty and is_unset(host):
         return True
 
     try:
@@ -177,7 +177,7 @@ def validate_port(module: AnsibleModule, port: (int, str), error_func: Callable 
     if error_func is None:
         error_func = module.fail_json
 
-    if port in ['any', '']:
+    if port == 'any' or is_unset(port):
         return True
 
     try:
@@ -268,14 +268,24 @@ def get_selected_list(data: dict, remove_empty: bool = False) -> list:
         # if function is re-applied
         return data
 
+    if isinstance(data, str):
+        if data.strip() == '':
+            return []
+
+        return data.split(',')
+
     selected = []
     if len(data) > 0:
-        for key, values in data.items():
-            if remove_empty and key in [None, '', ' ']:
-                continue
+        try:
+            for key, values in data.items():
+                if remove_empty and key in [None, '', ' ']:
+                    continue
 
-            if is_true(values['selected']):
-                selected.append(key)
+                if is_true(values['selected']):
+                    selected.append(key)
+
+        except AttributeError:
+            exit_bug(f"Got data entry that is not a dictionary => '{data}'")
 
     selected.sort()
     return selected
@@ -395,7 +405,6 @@ def simplify_translate(
 ) -> dict:
     # pylint: disable=R0912
     simple = {}
-    translate_fields = []
     if translate is None:
         translate = {}
 
@@ -411,54 +420,61 @@ def simplify_translate(
     if value_map is None:
         value_map = {}
 
-    # translate api-fields to ansible-fields
-    for k, v in translate.items():
-        translate_fields.append(v)
+    try:
+        # translate api-fields to ansible-fields
+        for k, v in translate.items():
+            if v in existing:
+                simple[k] = existing[v]
 
-        if v in existing:
-            simple[k] = existing[v]
+        translate_fields = translate.values()
+        for k in existing:
+            if k not in translate_fields and k not in ignore:
+                simple[k] = existing[k]
 
-    for k in existing:
-        if k not in translate_fields and k not in ignore:
-            simple[k] = existing[k]
+        # correct value types to match (for diff-checks)
+        for t, fields in typing.items():
+            for f in fields:
+                if t == 'bool':
+                    simple[f] = is_true(simple[f])
 
-    # correct value types to match (for diff-checks)
-    for t, fields in typing.items():
-        for f in fields:
-            if t == 'bool':
-                simple[f] = is_true(simple[f])
+                elif t == 'int':
+                    simple[f] = format_int(simple[f])
 
-            elif t == 'int':
-                simple[f] = format_int(simple[f])
+                elif t == 'list':
+                    simple[f] = get_selected_list(data=simple[f], remove_empty=True)
 
-            elif t == 'list':
-                simple[f] = get_selected_list(data=simple[f], remove_empty=True)
+                elif t == 'select':
+                    simple[f] = get_selected(simple[f])
 
-            elif t == 'select':
-                simple[f] = get_selected(simple[f])
+                elif t == 'select_opt_list':
+                    simple[f] = get_selected_opt_list(simple[f])
 
-            elif t == 'select_opt_list':
-                simple[f] = get_selected_opt_list(simple[f])
+                elif t == 'select_opt_list_idx':
+                    simple[f] = get_selected_opt_list_idx(simple[f])
 
-            elif t == 'select_opt_list_idx':
-                simple[f] = get_selected_opt_list_idx(simple[f])
+        for f, vmap in value_map.items():
+            try:
+                for pretty_value, opn_value in vmap.items():
+                    if simple[f] == opn_value:
+                        simple[f] = pretty_value
+                        break
 
-    for f, vmap in value_map.items():
-        try:
-            for pretty_value, opn_value in vmap.items():
-                if simple[f] == opn_value:
-                    simple[f] = pretty_value
-                    break
+            except KeyError:
+                pass
 
-        except KeyError:
-            pass
+        for k, v in simple.items():
+            if isinstance(v, str) and v.isnumeric():
+                simple[k] = int(simple[k])
 
-    for k, v in simple.items():
-        if isinstance(v, str) and v.isnumeric():
-            simple[k] = int(simple[k])
+            elif isinstance(v, bool) and k in bool_invert:
+                simple[k] = not simple[k]
 
-        elif isinstance(v, bool) and k in bool_invert:
-            simple[k] = not simple[k]
+    except KeyError as err:
+        exit_bug(
+            f"Failed to translate API entry to Ansible entry! Maybe the API changed lately? "
+            f"Failed field: {err} | "
+            f"API entry: '{existing}' '{simple}'"
+        )
 
     return simple
 

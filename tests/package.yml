@@ -66,14 +66,15 @@
         seconds: 5
       when: not ansible_check_mode
 
-    - name: Checking if installed
-      ansibleguy.opnsense.list:
-      register: opn12
-      failed_when: >
-        opn12.failed or
-        test_app1 not in opn12 | json_query('data[*].name') or
-        test_app2 not in opn12 | json_query('data[*].name')
-      when: not ansible_check_mode
+    # see issue #72
+    # - name: Checking if installed
+    #   ansibleguy.opnsense.list:
+    #   register: opn12
+    #   failed_when: >
+    #     opn12.failed or
+    #     test_app1 not in opn12 | json_query('data[*].name') or
+    #     test_app2 not in opn12 | json_query('data[*].name')
+    #   when: not ansible_check_mode
 
     - name: Locking
       ansibleguy.opnsense.package:

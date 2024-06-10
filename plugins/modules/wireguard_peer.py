@@ -30,7 +30,7 @@ def run_module():
     module_args = dict(
         name=dict(type='str', required=True),
         public_key=dict(type='str', required=False, alises=['pubkey', 'pub']),
-        psk=dict(type='str', required=False, default=''),
+        psk=dict(type='str', required=False),
         allowed_ips=dict(
             type='list', elements='str', required=False, default=[],
             aliases=[
@@ -38,12 +38,12 @@ def run_module():
                 'addresses', 'address', 'tunnel_address', 'allowed',
             ]
         ),
-        endpoint=dict(
-            type='str', required=False, default='',
-            aliases=['target', 'server_address', 'serveraddress', 'server']
+        server=dict(
+            type='str', required=False,
+            aliases=['target', 'server_address', 'serveraddress', 'endpoint']
         ),
-        port=dict(type='str', required=False, default=''),
-        keepalive=dict(type='str', required=False, default=''),
+        port=dict(type='int', required=False),
+        keepalive=dict(type='int', required=False),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,
         **OPN_MOD_ARGS,
