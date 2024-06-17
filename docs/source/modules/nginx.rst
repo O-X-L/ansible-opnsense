@@ -36,6 +36,17 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
+ansibleguy.opnsense.nginx_general
+=========================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "enabled","boolean","false","true","\-","Enable configured services."
+    "ban_ttl","integer","false","0","\-","Set autoblock lifetime in minutes. Set to 0 for infinite."
+
+
 ansibleguy.opnsense.nginx_upstream_server
 =========================================
 
@@ -43,18 +54,22 @@ ansibleguy.opnsense.nginx_upstream_server
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
     :widths: 15 10 10 10 10 45
 
-    "parameter name","parameter type","if is required","default value","aliases","description"
-    "placeholder","string","false","\-","\-","Some description"
+    "description","string","true","\-","name","\-"
+    "server","string","true","\-","\-","\-"
+    "port","integer","true","\-","\-","\-"
+    "priority","integer","true","\-","\-","\-"
+    "max_conns","integer","false","\-","\-","\-"
+    "max_fails","integer","false","\-","\-","\-"
+    "fail_timeout","integer","false","\-","\-","\-"
+    "no_use","string","false","\-","\-","Choice of empty, 'down' or 'backup'."
+    "state","string","false","present","\-","Choice of 'present' or 'absent'."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
-
 
 
 Usage
 *****
 
-Basic description of the module.
-
-Place for additional information the user should know of.
+Enabling the nginx configured services.
 
 Examples
 ********
@@ -75,27 +90,29 @@ ansibleguy.opnsense.nginx_upstream_server
           target: 'nginx_upstream_server'
 
       tasks:
-        # add optional parameters commented-out
-        # required ones normally
-        # add their default values to get a brief overview of how the module works
-        - name: Example
+        - name: Add an upstream server
           ansibleguy.opnsense.nginx_upstream_server:
-            description: 'test1'
-            command: 'system remote backup'
-            # state: 'absent'
-            # debug: false
+            description: 'upstream1'
+            server: '192.168.1.1'
+            port: 80
+            priority: 1
+            max_conns: 100
+            max_fails: 50
+            fail_timeout: 10
+            no_use: 'down'
+            # state: 'present'
+            # reload: true
 
-        - name: Adding something
+        - name: Changing the server
           ansibleguy.opnsense.nginx_upstream_server:
+            description: 'upstream1'
+            server: '192.168.1.100'
 
-        - name: Changing something
-          ansibleguy.opnsense.nginx_upstream_server:
-
-        - name: Listing jobs
+        - name: Listing upstream servers
           ansibleguy.opnsense.list:
           #  target: 'nginx_upstream_server'
-          register: existing_jobs
+          register: existing_servers
 
         - name: Printing
           ansible.builtin.debug:
-            var: existing_jobs.data
+            var: existing_servers.data
