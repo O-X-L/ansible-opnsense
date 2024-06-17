@@ -1,0 +1,50 @@
+---
+
+- name: Testing Nginx general settings
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'nginx_general'
+
+  tasks:
+    - name: Enabling - should work
+      ansibleguy.opnsense.nginx_general:
+        enabled: true
+      register: opn_enb1
+      failed_when: >
+        opn_enb1.failed
+
+    - name: Re-enable - should work and do nothing
+      ansibleguy.opnsense.nginx_general:
+        enabled: true
+      register: opn_enb2
+      failed_when: >
+        opn_enb2.failed or opn_enb2.changed
+
+    - name: Re-enable with new ban_ttl - should work and do something
+      ansibleguy.opnsense.nginx_general:
+        enabled: true
+        ban_ttl: 10
+      register: opn_enb3
+      failed_when: >
+        opn_enb2.failed or not opn_enb2.changed
+
+    - name: Disabling - should work and do something
+      ansibleguy.opnsense.nginx_general:
+        enabled: false
+      register: opn_dsb1
+      failed_when: >
+        opn_dsb1.failed or not opn_dsb1.changed
+
+    - name: Re-disable - should work and do nothing
+      ansibleguy.opnsense.nginx_general:
+        enabled: false
+      register: opn_dsb2
+      failed_when: >
+        opn_dsb2.failed or opn_dsb2.changed
