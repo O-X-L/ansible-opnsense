@@ -13,7 +13,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main im
 
 try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-        EN_ONLY_MOD_ARG, OPN_MOD_ARGS
+        EN_ONLY_MOD_ARG, OPN_MOD_ARGS, STATE_ONLY_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.nginx_general import General
 
 
@@ -28,6 +28,7 @@ def run_module():
     module_args = dict(
         ban_ttl=dict(type='int', required=False, default=0),
         **EN_ONLY_MOD_ARG,
+        **STATE_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,
     )
 
