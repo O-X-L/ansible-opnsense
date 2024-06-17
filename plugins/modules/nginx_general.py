@@ -10,10 +10,10 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
     module_dependency_error, MODULE_EXCEPTIONS
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import diff_remove_empty
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import EN_ONLY_MOD_ARG, OPN_MOD_ARGS
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+        EN_ONLY_MOD_ARG, OPN_MOD_ARGS
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.nginx_general import General
 
 

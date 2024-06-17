@@ -201,7 +201,8 @@ def validate_int_fields(
 
     for field, valid in field_minmax.items():
         try:
-            if ('min' in valid and int(data[field]) < valid['min']) or ('max' in valid and int(data[field]) > valid['max']):
+            if ('min' in valid and int(data[field]) < valid['min']) or \
+               ('max' in valid and int(data[field]) > valid['max']):
                 error_func(
                     f"Value of field '{field}' is not valid - "
                     f"Must be between {valid['min']} and {valid['max']}!"
