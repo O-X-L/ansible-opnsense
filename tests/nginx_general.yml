@@ -9,9 +9,6 @@
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
-      target: 'nginx_general'
-
   tasks:
     - name: Enabling - should work
       ansibleguy.opnsense.nginx_general:
