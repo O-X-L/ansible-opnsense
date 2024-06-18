@@ -86,7 +86,6 @@ action_groups:
     - ansibleguy.opnsense.webproxy_pac_rule
   nginx:
     - ansibleguy.opnsense.nginx_general
-    - ansibleguy.opnsense.nginx_service
     - ansibleguy.opnsense.nginx_upstream_server
   route:
     - ansibleguy.opnsense.route
