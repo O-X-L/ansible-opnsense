@@ -2,19 +2,21 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import GeneralModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import validate_int_fields
 
 
-class General(BaseModule):
+class General(GeneralModule):
     FIELD_ID = 'name'
     CMDS = {
         'set': 'set',
-        'get': 'get',
+        'search': 'get',
     }
-    API_KEY_PATH = 'general'
+    API_KEY_PATH = 'nginx.general'
+    API_KEY_PATH_REQ = API_KEY_PATH
     API_MOD = 'nginx'
     API_CONT = 'settings'
+    API_CONT_REL = 'service'
     FIELDS_CHANGE = [
         'enabled', 'ban_ttl',
     ]
@@ -28,7 +30,4 @@ class General(BaseModule):
     }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
-
-    def check(self):
-        validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
+        GeneralModule.__init__(self=self, m=module, r=result, s=session)
