@@ -17,6 +17,7 @@ class General(GeneralModule):
     API_MOD = 'nginx'
     API_CONT = 'settings'
     API_CONT_REL = 'service'
+    API_CMD_REL = 'reconfigure'
     FIELDS_CHANGE = [
         'enabled', 'ban_ttl',
     ]
