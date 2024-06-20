@@ -52,10 +52,8 @@ class DnsOverTls(BaseModule):
             )
 
         if is_unset(self.p['domain']):
-            if not is_unset(self.p['verify']):
-                self.b.find(match_fields=['target', 'verify'])
-            else:
-                self.b.find(match_fields=['target'])
+            self.b.find(match_fields=['target'])
+
         else:
             self.b.find(match_fields=['domain', 'target'])
 

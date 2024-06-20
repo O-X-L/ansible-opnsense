@@ -64,13 +64,14 @@
 
     - name: Cleanup Unbound DNS-over-TLS
       ansibleguy.opnsense.unbound_dot:
-        domain: "{{ item.d }}"
-        target: "{{ item.t }}"
+        target: "{{ item }}"
         state: 'absent'
         reload: false  # speed
       loop:
-        - {d: 'dot.opnsense.test.ansibleguy.net', t: '1.1.1.1'}
-        - {d: 'dot.opnsense.test.ansibleguy.net', t: '1.1.1.2'}
+        - '1.1.1.1'
+        - '1.1.1.2'
+        - '1.1.1.3'
+        - '1.1.1.4'
 
     - name: Cleanup Unbound DNS-Forwarding's
       ansibleguy.opnsense.unbound_forward:
