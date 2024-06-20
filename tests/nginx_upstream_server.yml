@@ -22,7 +22,7 @@
 
     - name: Removing - does not exist
       ansibleguy.opnsense.nginx_upstream_server:
-        description: 'ANSIBLE@TEST1'
+        name: 'ANSIBLE@TEST1'
         state: 'absent'
       register: opn_pre2
       failed_when: >
@@ -31,20 +31,20 @@
 
     - name: Adding 1 - failing because of missing server
       ansibleguy.opnsense.nginx_upstream_server:
-        description: 'ANSIBLE@TEST1'
+        name: 'ANSIBLE@TEST1'
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of missing port
       ansibleguy.opnsense.nginx_upstream_server:
-        description: 'ANSIBLE@TEST1'
+        name: 'ANSIBLE@TEST1'
         server: 192.168.1.1
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of missing priority
       ansibleguy.opnsense.nginx_upstream_server:
-        description: 'ANSIBLE@TEST1'
+        name: 'ANSIBLE@TEST1'
         server: 192.168.1.1
         port: 80
       register: opn_fail1
@@ -52,12 +52,25 @@
 
     - name: Adding 1 - should succeed
       ansibleguy.opnsense.nginx_upstream_server:
-        description: 'ANSIBLE@TEST1'
+        name: 'ANSIBLE@TEST1'
         server: 192.168.1.1
         port: 80
         priority: 1
 
+    - name: Adding 1 - should succeed and not change
+      ansibleguy.opnsense.nginx_upstream_server:
+        name: 'ANSIBLE@TEST1'
+        server: 192.168.1.1
+        port: 80
+        priority: 1
+      register: ng1
+      failed_when: >
+        ng1.failed or
+        ng1.changed
+      when: not ansible_check_mode
+
     - name: Remove 1 - should succeed
       ansibleguy.opnsense.nginx_upstream_server:
-        description: 'ANSIBLE@TEST1'
+        name: 'ANSIBLE@TEST1'
         state: 'absent'
+      when: not ansible_check_mode

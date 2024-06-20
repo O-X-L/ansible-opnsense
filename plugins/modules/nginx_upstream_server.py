@@ -27,9 +27,9 @@ except MODULE_EXCEPTIONS:
 def run_module():
     module_args = dict(
         description=dict(type='str', alias=['name'], required=True, aliases=['name']),
-        server=dict(type='str', required=True),
-        port=dict(type='int', required=True),
-        priority=dict(type='int', required=True),
+        server=dict(type='str', required=False),
+        port=dict(type='int', required=False),
+        priority=dict(type='int', required=False),
         max_conns=dict(type='int', required=False),
         max_fails=dict(type='int', required=False),
         fail_timeout=dict(type='int', required=False),

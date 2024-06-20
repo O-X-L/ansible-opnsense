@@ -92,7 +92,7 @@ ansibleguy.opnsense.nginx_upstream_server
       tasks:
         - name: Add an upstream server
           ansibleguy.opnsense.nginx_upstream_server:
-            description: 'upstream1'
+            name: 'upstream1'
             server: '192.168.1.1'
             port: 80
             priority: 1
@@ -105,7 +105,7 @@ ansibleguy.opnsense.nginx_upstream_server
 
         - name: Changing the server
           ansibleguy.opnsense.nginx_upstream_server:
-            description: 'upstream1'
+            name: 'upstream1'
             server: '192.168.1.100'
 
         - name: Listing upstream servers

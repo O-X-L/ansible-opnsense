@@ -619,3 +619,12 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_3_1'
+
+    - name: Cleanup Nginx General
+      ansibleguy.opnsense.nginx_general:
+        enabled: false
+
+    - name: Cleanup Nginx Upstream-Server
+      ansibleguy.opnsense.nginx_upstream_server:
+        name: 'ANSIBLE@TEST1'
+        state: 'absent'
