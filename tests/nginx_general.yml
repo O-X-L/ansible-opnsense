@@ -23,6 +23,7 @@
       register: opn_enb2
       failed_when: >
         opn_enb2.failed or opn_enb2.changed
+      when: not ansible_check_mode
 
     - name: Re-enable with new ban_ttl - should work and do something
       ansibleguy.opnsense.nginx_general:
@@ -30,7 +31,8 @@
         ban_ttl: 10
       register: opn_enb3
       failed_when: >
-        opn_enb2.failed or not opn_enb2.changed
+        opn_enb3.failed or not opn_enb3.changed
+      when: not ansible_check_mode
 
     - name: Disabling - should work and do something
       ansibleguy.opnsense.nginx_general:
@@ -38,6 +40,7 @@
       register: opn_dsb1
       failed_when: >
         opn_dsb1.failed or not opn_dsb1.changed
+      when: not ansible_check_mode
 
     - name: Re-disable - should work and do nothing
       ansibleguy.opnsense.nginx_general:
@@ -45,3 +48,4 @@
       register: opn_dsb2
       failed_when: >
         opn_dsb2.failed or opn_dsb2.changed
+      when: not ansible_check_mode

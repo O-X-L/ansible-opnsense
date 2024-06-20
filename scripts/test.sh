@@ -143,6 +143,7 @@ run_test 'openvpn_server' 1
 run_test 'openvpn_client_override' 0  # check mode => dependency on server-entry
 # run_test 'openvpn_client_template' 1
 # run_test 'openvpn_client_export' 1
+run_test 'nginx_general' 1
 run_test 'system' 1
 run_test 'package' 1
 
