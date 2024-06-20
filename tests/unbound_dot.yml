@@ -127,6 +127,40 @@
         opn3.data | length != 1
       when: not ansible_check_mode
 
+    - name: Adding 3 without domain
+      ansibleguy.opnsense.unbound_dot:
+        target: '1.1.1.3'
+        verify: 'dot.opnsense.test.ansibleguy.net'
+        reload: false  # speed
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        not opn6.changed
+
+    - name: Removing 3
+      ansibleguy.opnsense.unbound_dot:
+        target: '1.1.1.3'
+        verify: 'dot.opnsense.test.ansibleguy.net'
+        state: 'absent'
+        reload: false
+      when: not ansible_check_mode
+
+    - name: Adding 4 without domain or verify
+      ansibleguy.opnsense.unbound_dot:
+        target: '1.1.1.4'
+        reload: false  # speed
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+
+    - name: Removing 4
+      ansibleguy.opnsense.unbound_dot:
+        target: '1.1.1.4'
+        state: 'absent'
+        reload: false
+      when: not ansible_check_mode
+
     - name: Cleanup
       ansibleguy.opnsense.unbound_dot:
         domain: "{{ item.d }}"

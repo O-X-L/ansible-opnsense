@@ -39,7 +39,8 @@ class DnsOverTls(BaseModule):
         self.dot = {}
 
     def check(self) -> None:
-        validate_domain(module=self.m, domain=self.p['domain'])
+        if not is_unset(self.p['domain']):
+            validate_domain(module=self.m, domain=self.p['domain'])
         validate_port(module=self.m, port=self.p['port'])
 
         if not is_unset(self.p['verify']) and \
@@ -50,7 +51,13 @@ class DnsOverTls(BaseModule):
                 f"nor a valid hostname!"
             )
 
-        self.b.find(match_fields=['domain', 'target'])
+        if is_unset(self.p['domain']):
+            if not is_unset(self.p['verify']):
+                self.b.find(match_fields=['target', 'verify'])
+            else:
+                self.b.find(match_fields=['target'])
+        else:
+            self.b.find(match_fields=['domain', 'target'])
 
         if self.p['state'] == 'present':
             self.r['diff']['after'] = self.b.build_diff(data=self.p)
