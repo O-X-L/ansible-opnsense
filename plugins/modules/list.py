@@ -23,7 +23,7 @@ except MODULE_EXCEPTIONS:
 # EXAMPLES = 'https://opnsense.ansibleguy.net/en/latest/modules/list.html'
 
 TARGETS = [
-    'alias', 'rule', 'route', 'gateway', 'syslog', 'package', 'unbound_host', 'unbound_domain', 'frr_ospf_general',
+    'alias', 'rule', 'firewall_group', 'route', 'gateway', 'syslog', 'package', 'unbound_host', 'unbound_domain', 'frr_ospf_general',
     'frr_ospf3_general', 'unbound_forward', 'shaper_pipe', 'shaper_queue', 'shaper_rule', 'monit_service',
     'monit_test', 'monit_alert', 'wireguard_server', 'bind_domain', 'wireguard_peer', 'interface_vlan',
     'unbound_host_alias', 'interface_vxlan', 'frr_bfd_neighbor', 'frr_bgp_general', 'frr_bgp_neighbor',
@@ -73,6 +73,10 @@ def run_module():
         elif target == 'rule':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.rule import \
                 Rule as Target_Obj
+
+        elif target == 'firewall_group':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.firewall_group import \
+                Group as Target_Obj
 
         elif target == 'route':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.route import \
