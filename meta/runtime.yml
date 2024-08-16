@@ -11,6 +11,7 @@ action_groups:
     - ansibleguy.opnsense.rule
     - ansibleguy.opnsense.rule_multi
     - ansibleguy.opnsense.rule_purge
+    - ansibleguy.opnsense.rule_interface_group
   unbound:
     - ansibleguy.opnsense.unbound_general
     - ansibleguy.opnsense.unbound_acl
@@ -119,7 +120,6 @@ action_groups:
     - ansibleguy.opnsense.openvpn_client_template
     - ansibleguy.opnsense.openvpn_client_export
   all:
-    - ansibleguy.opnsense.firewall_group
     - metadata:
         extend_group:
           - ansibleguy.opnsense.alias
@@ -179,3 +179,5 @@ plugin_routing:
       redirect: ansibleguy.opnsense.gateway
     gw:
       redirect: ansibleguy.opnsense.gateway
+    rule_if_group:
+      redirect: ansibleguy.opnsense.rule_interface_group

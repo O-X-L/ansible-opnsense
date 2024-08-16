@@ -19,15 +19,17 @@ class Group(BaseModule):
     API_MOD = 'firewall'
     API_CONT = 'group'
     API_CMD_REL = 'reconfigure'
-    FIELDS_CHANGE = ['ifname', 'members', 'nogroup', 'sequence', 'descr']
+    FIELDS_CHANGE = ['name', 'members', 'gui_group', 'sequence', 'description']
     FIELDS_ALL = [FIELD_ID]
     FIELDS_ALL.extend(FIELDS_CHANGE)
+    FIELDS_BOOL_INVERT = ['gui_group']
     FIELDS_TRANSLATE = {
         'name': 'ifname',
         'description': 'descr',
+        'gui_group': 'nogroup'
     }
     FIELDS_TYPING = {
-        'bool': ['nogroup'],
+        'bool': ['gui_group'],
         'list': ['members'],
         'select': ['members'],
         'int': ['sequence'],
@@ -44,7 +46,7 @@ class Group(BaseModule):
     def check(self) -> None:
         if self.p['state'] == 'present':
             if is_unset(self.p['members']):
-                self.m.fail_json("You need to provide 'members' to create a group!")
+                self.m.fail_json("You need to provide a 'members' to create a rule interface group!")
 
             validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
 

@@ -4,7 +4,7 @@
 # Copyright: (C) 2024, AnsibleGuy <guy@ansibleguy.net>
 # GNU General Public License v3.0+ (see https://www.gnu.org/licenses/gpl-3.0.txt)
 
-# see: https://docs.opnsense.org/development/api/core/interfaces.html
+# see: https://docs.opnsense.org/development/api/core/firewall.html
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/en/latest/modules/interface.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/en/latest/modules/interface.html'
+# DOCUMENTATION = 'https://opnsense.ansibleguy.net/en/latest/modules/rule_interface_group.html'
+# EXAMPLES = 'https://opnsense.ansibleguy.net/en/latest/modules/rule_interface_group.html'
 
 
 def run_module():
@@ -35,11 +35,11 @@ def run_module():
         ),
         members=dict(
             type='list', elements='str', required=False,
-            description='Existing interface - you must provide the network '
+            description='Member interfaces - you must provide the network '
                         "port as shown in 'Interfaces - Assignments - Network port'"
         ),
         gui_group=dict(
-            type='bool', required=False, aliases=['gui'],
+            type='bool', required=False, aliases=['gui'], default=True,
             description='Grouping these members in the interfaces menu section'
         ),
         sequence=dict(
