@@ -1,9 +1,9 @@
-.. _modules_rule:
+.. _modules_rule_interface_group:
 
 .. include:: ../_include/head.rst
 
 ====
-Rule
+Rule Interface Group
 ====
 
 **STATE**: unstable
@@ -22,10 +22,10 @@ Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
     :widths: 15 10 10 10 10 45
 
-    "name","string","true","\-","ifname, device","Name of the interface group. Only texts containing letters, digits and underscores with a maximum length of 15 characters are allowed and the name may not end with a digit."
-    "members","list","false","\-","Member interfaces - you must provide the network port as shown in 'Interfaces - Assignments - Network port"
+    "name","string","true","\-","ifname","Name of the interface group. Only texts containing letters, digits and underscores with a maximum length of 15 characters are allowed and the name may not end with a digit."
+    "members","list","false","ints, interfaces","Member interfaces - you must provide the network port as shown in 'Interfaces - Assignments - Network port"
     "gui_group","boolean","false","true","\-","Grouping these members in the interfaces menu section"
-    "sequence","int","false","0","\-","Sequence used in sorting the groups"
+    "sequence","int","false","0","seq","Sequence used in sorting the groups"
     "description","string","false","\-","desc","Optional description"
 
 .. include:: ../_include/param_basic.rst
