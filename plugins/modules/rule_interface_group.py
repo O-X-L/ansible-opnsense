@@ -28,13 +28,13 @@ except MODULE_EXCEPTIONS:
 def run_module():
     module_args = dict(
         name=dict(
-            type='str', required=True, aliases=['ifname', 'device'],
+            type='str', required=True, aliases=['ifname'],
             description='Name of the interface group. Only texts containing letters, '
                         'digits and underscores with a maximum length of 15 characters '
                         'are allowed and the name may not end with a digit.',
         ),
         members=dict(
-            type='list', elements='str', required=False,
+            type='list', elements='str', required=False, aliases=['ints', 'interfaces'],
             description='Member interfaces - you must provide the network '
                         "port as shown in 'Interfaces - Assignments - Network port'"
         ),
@@ -43,7 +43,7 @@ def run_module():
             description='Grouping these members in the interfaces menu section'
         ),
         sequence=dict(
-            type='int', required=False, default=0,
+            type='int', required=False, default=0, aliases=['seq'],
             description='Priority sequence used in sorting the groups '
         ),
         description=dict(type='str', required=False, aliases=['desc']),
