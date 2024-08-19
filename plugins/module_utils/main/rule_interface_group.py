@@ -16,6 +16,7 @@ class Group(BaseModule):
         'search': 'get',
     }
     API_KEY_PATH = 'group.ifgroupentry'
+    API_KEY_PATH_REQ = 'group'
     API_MOD = 'firewall'
     API_CONT = 'group'
     API_CMD_REL = 'reconfigure'

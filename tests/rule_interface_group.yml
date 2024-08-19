@@ -18,7 +18,7 @@
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
-        opn_pre1.data | length != 0
+        opn_pre1.data | length != 2
 
     - name: Removing - does not exist
       ansibleguy.opnsense.rule_interface_group:
@@ -30,7 +30,7 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of invalid interface (server-side)
-      ansibleguy.opnsense.interface_vlan:
+      ansibleguy.opnsense.rule_interface_group:
         name: 'ANSIBLE_TEST'
         members:
           - 'lan'
@@ -39,13 +39,13 @@
       when: not ansible_check_mode
 
     - name: Adding 1 - failing because of missing members
-      ansibleguy.opnsense.interface_vlan:
+      ansibleguy.opnsense.rule_interface_group:
         name: 'ANSIBLE_TEST'
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.interface_vlan:
+      ansibleguy.opnsense.rule_interface_group:
         name: 'ANSIBLE_TEST'
         members: 
           - 'vtnet0'
@@ -55,7 +55,7 @@
         not opn1.changed
 
     - name: Adding 1 - nothing changed
-      ansibleguy.opnsense.interface_vlan:
+      ansibleguy.opnsense.rule_interface_group:
         name: 'ANSIBLE_TEST'
         members: 
           - 'vtnet0'
@@ -74,7 +74,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.interface_vlan:
+      ansibleguy.opnsense.rule_interface_group:
         name: 'ANSIBLE_TEST'
         state: 'absent'
       when: not ansible_check_mode

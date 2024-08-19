@@ -15,7 +15,7 @@ try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, STATE_ONLY_MOD_ARG, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.firewall_group import Group
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.rule_interface_group import Group
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
