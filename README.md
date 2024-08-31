@@ -64,13 +64,6 @@ The `ansibleguy.opnsense` modules always support the latest version of OPNSense.
 
 If an API changed, the current module-implementation might fail for firewalls running an older firmware.
 
-See also: [Firmware-Upgrade using ansibleguy.opnsense.system](https://opnsense.ansibleguy.net/en/latest/modules/system.html#examples)
-
-
-**WARNING**:
-
-> The next few OPNSense releases might contain [API changes](https://github.com/ansibleguy/collection_opnsense/issues/51) that might impact/break the functionality of some modules.
-
 ----
 
 
@@ -91,18 +84,18 @@ not implemented => development => [testing](https://github.com/ansibleguy/collec
 | **Alias**           | ansibleguy.opnsense.alias                                              | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/alias.html)                                                         | stable   | 
 | **Alias**           | ansibleguy.opnsense.alias_multi                                        | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/alias_multi.html)                                                   | stable   |
 | **Alias**           | ansibleguy.opnsense.alias_purge                                        | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/alias_multi.html#ansibleguy-opnsense-alias-purge)                   | unstable |
-| **Rules**           | ansibleguy.opnsense.rule                                               | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/rule.html)                                                          | unstable |
-| **Rules**           | ansibleguy.opnsense.rule_multi                                         | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/rule_multi.html)                                                    | unstable |
+| **Rules**           | ansibleguy.opnsense.rule                                               | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/rule.html)                                                          | stable   |
+| **Rules**           | ansibleguy.opnsense.rule_multi                                         | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/rule_multi.html)                                                    | stable   |
 | **Rules**           | ansibleguy.opnsense.rule_purge                                         | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/rule_multi.html#ansibleguy-opnsense-rule-purge)                     | unstable |
 | **Rule Groups**     | ansibleguy.opnsense.rule_interface_group                                                | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/rule_interface_group.html#ansibleguy-opnsense-rule-interface-group) | unstable |
-| **Savepoints**      | ansibleguy.opnsense.savepoint                                          | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/savepoint.html)                                                     | unstable |
+| **Savepoints**      | ansibleguy.opnsense.savepoint                                          | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/savepoint.html)                                                     | stable   |
 | **Packages**        | ansibleguy.opnsense.package                                            | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/package.html)                                                       | stable   |
 | **System**          | ansibleguy.opnsense.system                                             | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/system.html)                                                        | stable   |
 | **Cron-Jobs**       | ansibleguy.opnsense.cron                                               | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/cron.html)                                                          | stable   |
 | **Routes**          | ansibleguy.opnsense.route                                              | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/routing.html)                                                       | stable   |
 | **Gateways**        | ansibleguy.opnsense.gateway                                            | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/routing.html)                                                       | unstable |
 | **DNS**             | ansibleguy.opnsense.unbound_general                                    | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/unbound_general.html)                                               | stable   |
-| **DNS**             | ansibleguy.opnsense.unbound_acl                                        | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/unbound_acl.html)                                                   | unstable |
+| **DNS**             | ansibleguy.opnsense.unbound_acl                                        | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/unbound_acl.html)                                                   | stable   |
 | **DNS**             | ansibleguy.opnsense.unbound_forward                                    | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/unbound_forwarding.html)                                            | stable   |
 | **DNS**             | ansibleguy.opnsense.unbound_dot                                        | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/unbound_dot.html)                                                   | stable   |
 | **DNS**             | ansibleguy.opnsense.unbound_host                                       | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/unbound_host.html)                                                  | stable   |
@@ -116,7 +109,7 @@ not implemented => development => [testing](https://github.com/ansibleguy/collec
 | **IPSec**           | ansibleguy.opnsense.ipsec_child                                        | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/ipsec.html)                                                         | stable   |
 | **IPSec**           | ansibleguy.opnsense.ipsec_vti                                          | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/ipsec.html)                                                         | stable   |
 | **IPSec**           | ansibleguy.opnsense.ipsec_cert                                         | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/ipsec.html)                                                         | stable   |
-| **IPSec**           | ansibleguy.opnsense.ipsec_psk                                          | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/ipsec.html)                                                         | unstable |
+| **IPSec**           | ansibleguy.opnsense.ipsec_psk                                          | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/ipsec.html)                                                         | stable   |
 | **Traffic Shaper**  | ansibleguy.opnsense.shaper_pipe                                        | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/shaper.html)                                                        | stable   |
 | **Traffic Shaper**  | ansibleguy.opnsense.shaper_queue                                       | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/shaper.html)                                                        | stable   |
 | **Traffic Shaper**  | ansibleguy.opnsense.shaper_rule                                        | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/shaper.html)                                                        | stable   |
@@ -130,7 +123,7 @@ not implemented => development => [testing](https://github.com/ansibleguy/collec
 | **Interfaces**      | ansibleguy.opnsense.interface_vlan                                     | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/interface.html)                                                     | stable   |
 | **Interfaces**      | ansibleguy.opnsense.interface_vxlan                                    | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/interface.html)                                                     | stable   |
 | **Interfaces**      | ansibleguy.opnsense.interface_vip                                      | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/interface.html)                                                     | stable   |
-| **NAT**             | ansibleguy.opnsense.source_nat, ansibleguy.opnsense.snat               | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/source_nat.html)                                                    | unstable |
+| **NAT**             | ansibleguy.opnsense.source_nat, ansibleguy.opnsense.snat               | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/source_nat.html)                                                    | stable   |
 | **Dynamic Routing** | ansibleguy.opnsense.frr_diagnostic                                     | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/frr_diagnostic.html)                                                | stable   |
 | **Dynamic Routing** | ansibleguy.opnsense.frr_general                                        | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/frr_general.html)                                                   | stable   |
 | **Dynamic Routing** | ansibleguy.opnsense.frr_bfd_general                                    | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/frr_bfd.html#ansibleguy-opnsense-frr-bfd-general)                   | stable   |
@@ -173,11 +166,11 @@ not implemented => development => [testing](https://github.com/ansibleguy/collec
 | **IDS/IPS**         | ansibleguy.opnsense.ids_user_rule                                      | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/ids.html#id6)                                                       | stable   |
 | **IDS/IPS**         | ansibleguy.opnsense.ids_policy                                         | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/ids.html#id7)                                                       | stable   |
 | **IDS/IPS**         | ansibleguy.opnsense.ids_policy_rule                                    | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/ids.html#id8)                                                       | stable   |
-| **OpenVPN**         | ansibleguy.opnsense.openvpn_client                                     | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/openvpn.html)                                                       | unstable |
-| **OpenVPN**         | ansibleguy.opnsense.openvpn_server                                     | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/openvpn.html)                                                       | unstable |
-| **OpenVPN**         | ansibleguy.opnsense.openvpn_static_key                                 | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/openvpn.html)                                                       | unstable |
-| **OpenVPN**         | ansibleguy.opnsense.openvpn_status                                     | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/openvpn.html)                                                       | unstable |
-| **OpenVPN**         | ansibleguy.opnsense.openvpn_client_override                            | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/openvpn.html)                                                       | unstable |
+| **OpenVPN**         | ansibleguy.opnsense.openvpn_client                                     | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/openvpn.html)                                                       | stable   |
+| **OpenVPN**         | ansibleguy.opnsense.openvpn_server                                     | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/openvpn.html)                                                       | stable |
+| **OpenVPN**         | ansibleguy.opnsense.openvpn_static_key                                 | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/openvpn.html)                                                       | stable |
+| **OpenVPN**         | ansibleguy.opnsense.openvpn_status                                     | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/openvpn.html)                                                       | stable |
+| **OpenVPN**         | ansibleguy.opnsense.openvpn_client_override                            | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/openvpn.html)                                                       | stable |
 
 
 ### Roadmap

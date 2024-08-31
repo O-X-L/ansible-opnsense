@@ -6,7 +6,7 @@
 Rule - Mass Management
 ======================
 
-**STATE**: unstable
+**STATE**: stable
 
 **TESTS**: `rule_multi <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/rule_multi.yml>`_ |
 `rule_purge <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/rule_multi.yml>`_

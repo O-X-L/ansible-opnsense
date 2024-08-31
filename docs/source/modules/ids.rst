@@ -6,7 +6,7 @@
 Intrusion Prevention System
 ===========================
 
-**STATE**: unstable
+**STATE**: stable
 
 **TESTS**: `ansibleguy.opnsense.ids_general <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_general.yml>`_ |
 `ansibleguy.opnsense.ids_action <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_action.yml>`_ |
