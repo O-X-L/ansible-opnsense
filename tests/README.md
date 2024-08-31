@@ -49,6 +49,12 @@ The gateway tests will not work correctly if the LAN network mismatches.
 
 You can provide your GW IPs via env-vars: `TEST_FIREWALL_GW1` and `TEST_FIREWALL_GW2`
 
+### Rule interface groups
+
+The gateway tests will not work correctly if the LAN interface mismatches.
+
+You can provide your GW lan-if via env-vars: `TEST_FIREWALL_RULE_GRP_IF`
+
 ----
 
 ## Run

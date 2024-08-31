@@ -2,9 +2,9 @@
 
 .. include:: ../_include/head.rst
 
-====
+====================
 Rule Interface Group
-====
+====================
 
 **STATE**: unstable
 
@@ -59,6 +59,12 @@ Examples
           ansibleguy.opnsense.rule_interface_group:
             name: Internal
             members: ['vtnet0', 'vtnet1']
+
+        # note: you can also use the module alias-name
+        - name: Adding 2
+          ansibleguy.opnsense.rule_if_group:
+            name: DMZ
+            members: ['vtnet3', 'vtnet4']
 
         - name: Listing
           ansibleguy.opnsense.list:

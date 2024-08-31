@@ -639,3 +639,8 @@
       loop:
         - 'ANSIBLE_TEST_1'
         - 'ANSIBLE_TEST_2'
+
+    - name: Cleanup Interface groups
+      ansibleguy.opnsense.rule_interface_group:
+        name: 'ANSIBLE_TEST'
+        state: 'absent'
