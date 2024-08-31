@@ -14,6 +14,10 @@ Rule Interface Group
 
 **Service Docs**: `Interface Groups <https://docs.opnsense.org/manual/firewall_groups.html>`_
 
+Contribution
+************
+
+Thanks to `@jiuka <https://github.com/jiuka>`_ for developing this module!
 
 Definition
 **********
