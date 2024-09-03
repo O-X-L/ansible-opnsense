@@ -77,7 +77,7 @@ ansibleguy.opnsense.gateway
     "time_period","integer","false","60","\-","The time period over which results are averaged."
     "loss_interval","integer","false","4","\-","Time interval before packets are treated as lost."
     "data_length","integer","false","0","\-","Size of ICMP packets to send."
-    "match_fields","list of strings","false","['name', 'gateway', descriptiom]","\-","Fields that are used to match configured gateways with the running config - if any of those fields are changed, the module will think it's a new gateway"
+    "match_fields","list of strings","false","['name', 'gateway']","\-","Fields that are used to match configured gateways with the running config - if any of those fields are changed, the module will think it's a new gateway, possible options: ['name', 'gateway', 'description']"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 Usage
