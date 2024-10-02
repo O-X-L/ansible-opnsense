@@ -245,12 +245,29 @@
         updatefreq_days: 2
         content: 'https://www.spamhaus.org/drop/drop.txt'
 
+    - name: Adding urltable - nothing changed
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_URLTABLE1'
+        type: 'urltable'
+        updatefreq_days: 2
+        content: 'https://www.spamhaus.org/drop/drop.txt'
+      register: opn14
+      failed_when: >
+        opn14.failed or
+        opn14.changed
+      when: not ansible_check_mode
+
     - name: Updating urltable update-frequency
       ansibleguy.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URLTABLE1'
         type: 'urltable'
         updatefreq_days: 6.5
         content: 'https://www.spamhaus.org/drop/drop.txt'
+      register: opn15
+      failed_when: >
+        opn15.failed or
+        not opn15.changed
+      when: not ansible_check_mode
 
     - name: Adding multiple urltables
       ansibleguy.opnsense.alias:
@@ -294,6 +311,17 @@
       loop:
         - ['XXX']
 
+    # dynipv6host
+
+    - name: Adding dynipv6host
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_DYNIPV6HOST1'
+        type: 'dynipv6host'
+        content:
+          - '::1000'
+          - '::f00d'
+        interface: 'lan'
+
     # cleanup
 
     - name: Cleanup
@@ -322,6 +350,7 @@
         - 'ANSIBLE_TEST_1_2_GEOIP1'
         - 'ANSIBLE_TEST_1_2_GEOIP2'
         - 'ANSIBLE_TEST_1_2_GEOIP3'
+        - 'ANSIBLE_TEST_1_2_DYNIPV6HOST1'
 
 - name: Testing Alias - listing
   hosts: localhost

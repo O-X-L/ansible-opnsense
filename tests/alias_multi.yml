@@ -66,6 +66,7 @@
           ANSIBLE_TEST_2_8:
             type: 'urltable'
             content: ['https://www.spamhaus.org/drop/drop.txt', 'https://www.spamhaus.org/drop/edrop.txt']
+            updatefreq_days: 6.5
 
           # geoip
           ANSIBLE_TEST_2_9:
@@ -74,6 +75,14 @@
           ANSIBLE_TEST_2_10:
             type: 'geoip'
             content: ['AT', 'DE', 'CH']
+
+          # dynipv6host
+          ANSIBLE_TEST_2_11:
+            type: 'dynipv6host'
+            content:
+              - '::f00d'
+            interface: 'lan'
+
         reload: false  # geoip and urltable take LONG time
       register: opn2
       failed_when: >
@@ -97,9 +106,16 @@
           ANSIBLE_TEST_2_8:
             type: 'urltable'
             content: 'https://www.spamhaus.org/drop/dropv6.txt'
+            updatefreq_days: 2
           ANSIBLE_TEST_2_9:
             type: 'geoip'
             content: 'DE'
+          ANSIBLE_TEST_2_11:
+            type: 'dynipv6host'
+            content:
+              - '::1000'
+              - '::f00d'
+            interface: 'lan'
         reload: false  # geoip and urltable take LONG time
       register: opn3
       failed_when: >
@@ -123,11 +139,19 @@
             content: 'http://test.template.ansibleguy.net'
           ANSIBLE_TEST_2_8:
             type: 'urltable'
+            updatefreq_days: 2
             content: 'https://www.spamhaus.org/drop/dropv6.txt'
           ANSIBLE_TEST_2_9:
             type: 'geoip'
             content: 'DE'
+          ANSIBLE_TEST_2_11:
+            type: 'dynipv6host'
+            content:
+              - '::1000'
+              - '::f00d'
+            interface: 'lan'
         reload: false  # geoip and urltable take LONG time
+        debug: true
       register: opn6
       failed_when: >
         opn6.failed or
@@ -139,7 +163,7 @@
       register: opn4
       failed_when: >
         'data' not in opn4 or
-        opn4.data | length != 10
+        opn4.data | length != 11
       when: not ansible_check_mode
 
     - name: Removing
@@ -155,6 +179,7 @@
           ANSIBLE_TEST_2_8:
           ANSIBLE_TEST_2_9:
           ANSIBLE_TEST_2_10:
+          ANSIBLE_TEST_2_11:
         state: 'absent'
 
     - name: Checking cleanup
