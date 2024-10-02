@@ -19,7 +19,7 @@ ALIAS_MOD_ARG_ALIASES = {
     'description': ['desc'],
     'state': ['st'],
     'enabled': ['en'],
-    'interface': ['int']
+    'interface': ['int', 'if']
 }
 
 ALIAS_MOD_ARGS = dict(
