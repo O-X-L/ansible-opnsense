@@ -7,7 +7,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api impor
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import \
     validate_values, filter_builtin_alias
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    get_simple_existing, simplify_translate
+    get_simple_existing, simplify_translate, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -27,12 +27,13 @@ class Alias(BaseModule):
     FIELDS_CHANGE = ['content', 'description']
     FIELDS_ALL = ['name', 'type', 'enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
+    FIELDS_ALL.extend(['updatefreq_days', 'interface'])
     FIELDS_TRANSLATE = {
         'updatefreq_days': 'updatefreq',
     }
     FIELDS_TYPING = {
         'bool': ['enabled'],
-        'select': ['type'],
+        'select': ['type', 'interface'],
     }
     EXIST_ATTR = 'alias'
     JOIN_CHAR = '\n'
@@ -50,6 +51,16 @@ class Alias(BaseModule):
         self.p = self.m.params if cnf is None else cnf  # to allow override by alias_multi
 
     def check(self) -> None:
+        if self.p['type'] == 'urltable':
+            self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['updatefreq_days']
+            if not is_unset(self.p['updatefreq_days']):
+                self.p['updatefreq_days'] = float(self.p['updatefreq_days'])
+
+        if self.p['type'] == 'dynipv6host':
+            if is_unset(self.p['interface']):
+                self.m.fail_json('You need to provide an interface to create a dynipv6host alias!')
+            self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['interface']
+
         if len(self.p['name']) > self.MAX_ALIAS_LEN:
             self._error(
                 f"Alias name '{self.p['name']}' is invalid - "

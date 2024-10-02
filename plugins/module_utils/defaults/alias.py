@@ -9,6 +9,7 @@ ALIAS_DEFAULTS = {
     'content': [],
     'debug': False,
     'updatefreq_days': 7.0,
+    'interface': None
 }
 
 ALIAS_MOD_ARG_ALIASES = {
@@ -18,6 +19,7 @@ ALIAS_MOD_ARG_ALIASES = {
     'description': ['desc'],
     'state': ['st'],
     'enabled': ['en'],
+    'interface': ['int']
 }
 
 ALIAS_MOD_ARGS = dict(
@@ -38,6 +40,11 @@ ALIAS_MOD_ARGS = dict(
         type='float', default=ALIAS_DEFAULTS['updatefreq_days'], required=False,
         description="Update frequency used by type 'urltable' in days - "
                     "per example '0.5' for 12 hours"
+    ),
+    interface=dict(
+        type='str', default=ALIAS_DEFAULTS['interface'],
+        aliases=ALIAS_MOD_ARG_ALIASES['interface'], required=False,
+        description=' Select the interface for the V6 dynamic IP.',
     ),
     **STATE_MOD_ARG,
     **OPN_MOD_ARGS,
