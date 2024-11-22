@@ -89,7 +89,7 @@
       register: opn1
       failed_when: >
         'data' not in opn1 or
-        opn1.data | length != 3
+        opn1.data | length != 4
       when: not ansible_check_mode
 
     - name: Cleanup
@@ -105,4 +105,4 @@
       register: opn2
       failed_when: >
         'data' not in opn2 or
-        opn2.data | length != 1
+        opn2.data | length != 2

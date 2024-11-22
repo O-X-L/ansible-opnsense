@@ -51,6 +51,8 @@ The gateway tests will not work correctly if the LAN network mismatches.
 
 You can provide your GW IPs via env-vars: `TEST_FIREWALL_GW1` and `TEST_FIREWALL_GW2`
 
+The `route` module will expect the gateways `LAN_GW` and `TEST-GW` to exist.
+
 ### Rule interface groups
 
 The gateway tests will not work correctly if the LAN interface mismatches.
