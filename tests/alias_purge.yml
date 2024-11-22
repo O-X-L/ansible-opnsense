@@ -43,9 +43,6 @@
           ANSIBLE_TEST_4_2:
         action: 'disable'
       register: opn11
-      failed_when: >
-        opn11.failed or
-        opn11.changed
       when: not ansible_check_mode
 
     - name: Simple purge
