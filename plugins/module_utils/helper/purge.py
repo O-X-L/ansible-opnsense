@@ -17,6 +17,7 @@ def purge(
 
     if not module.check_mode:
         _obj = obj_func(item_to_purge)
+        _obj.exists = True
 
         if module.params['action'] == 'delete':
             _obj.delete()

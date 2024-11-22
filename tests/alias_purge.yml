@@ -32,10 +32,21 @@
           ANSIBLE_TEST_4_2:
         action: 'disable'
       register: opn1
-      when: not ansible_check_mode
       failed_when: >
         opn1.failed or
         not opn1.changed
+      when: not ansible_check_mode
+
+    - name: Simple disable-purge - nothing changed
+      ansibleguy.opnsense.alias_purge:
+        aliases:
+          ANSIBLE_TEST_4_2:
+        action: 'disable'
+      register: opn11
+      failed_when: >
+        opn11.failed or
+        opn11.changed
+      when: not ansible_check_mode
 
     - name: Simple purge
       ansibleguy.opnsense.alias_purge:
