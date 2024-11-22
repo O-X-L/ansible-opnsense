@@ -50,12 +50,13 @@ class Route(BaseModule):
         self._base_check()
 
     def _simplify_existing(self, route: dict) -> dict:
-        # makes processing easier
         simple = simplify_translate(
             existing=route,
             typing=self.FIELDS_TYPING,
             translate=self.FIELDS_TRANSLATE,
             bool_invert=self.FIELDS_BOOL_INVERT,
         )
-        simple['gateway'] = simple['gateway'].rsplit('-', 1)[0].strip()
+        if simple['gateway'].find(' - ') != -1:
+            simple['gateway'] = simple['gateway'].rsplit('-', 1)[0].strip()
+
         return simple
