@@ -18,7 +18,6 @@ action_groups:
     - ansibleguy.opnsense.unbound_forward
     - ansibleguy.opnsense.unbound_dot
     - ansibleguy.opnsense.unbound_host
-    - ansibleguy.opnsense.unbound_domain
     - ansibleguy.opnsense.unbound_host_alias
     - ansibleguy.opnsense.unbound_dnsbl
   ipsec:

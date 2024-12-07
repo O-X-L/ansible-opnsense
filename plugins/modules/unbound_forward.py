@@ -41,6 +41,12 @@ def run_module():
             description='DNS port of the target server'
         ),
         type=dict(type='str', required=False, choices=['forward'], default='forward'),
+        forward_tcp=dict(
+            type='bool', required=False, default=False, aliases=['forward_tcp_upstream', 'fwd_tcp'],
+            description='Upstream queries use TCP only for transport regardless of global flag tcp-upstream. '
+                        'Please note this setting applies to the domain, so when multiple forwarders are '
+                        'defined for the same domain, all are assumed to use tcp only.'
+        ),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,
         **OPN_MOD_ARGS,

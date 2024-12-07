@@ -25,6 +25,7 @@ Definition
     "domain","string","false","\-","dom, d","Domain of the host. All queries for this domain will be forwarded to the nameserver specified. Leave empty to catch all queries and forward them to the nameserver"
     "target","string","true","\-","server, srv, tgt","Server to forward the dns queries to"
     "port","string","false","53","p","DNS port of the target server"
+    "forward_tcp","boolean","false","false","forward_tcp_upstream, fwd_tcp","Upstream queries use TCP only for transport regardless of global flag tcp-upstream. Please note this setting applies to the domain, so when multiple forwarders are defined for the same domain, all are assumed to use tcp only."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 .. include:: ../_include/param_basic.rst

@@ -100,6 +100,18 @@
         not opn7.changed
       when: not ansible_check_mode
 
+    - name: Channging 2 - tcp-forward
+      ansibleguy.opnsense.unbound_forward:
+        domain: 'fwd.opnsense.test.ansibleguy.net'
+        target: '1.1.1.2'
+        forward_tcp: true
+        reload: false  # speed
+      register: opn12
+      failed_when: >
+        opn12.failed or
+        not opn12.changed
+      when: not ansible_check_mode
+
     - name: Removing 2
       ansibleguy.opnsense.unbound_forward:
         domain: 'fwd.opnsense.test.ansibleguy.net'

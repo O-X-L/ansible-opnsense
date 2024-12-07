@@ -22,14 +22,15 @@ class Forward(BaseModule):
     API_CONT = 'settings'
     API_CONT_REL = 'service'
     API_CMD_REL = 'reconfigure'
-    FIELDS_CHANGE = ['domain', 'target', 'port']
+    FIELDS_CHANGE = ['domain', 'target', 'port', 'forward_tcp']
     FIELDS_ALL = ['type', 'enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
     FIELDS_TRANSLATE = {
         'target': 'server',
+        'forward_tcp': 'forward_tcp_upstream',
     }
     FIELDS_TYPING = {
-        'bool': ['enabled'],
+        'bool': ['enabled', 'forward_tcp'],
         'int': ['port'],
     }
     EXIST_ATTR = 'fwd'

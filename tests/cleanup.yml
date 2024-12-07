@@ -111,19 +111,6 @@
 '
         - 'ANSIBLE_TEST_2_1'
 
-    - name: Cleanup Unbound DNS domain-overrides
-      ansibleguy.opnsense.unbound_domain:
-        description: "{{ item }}"
-        domain: 'dummy.local'
-        server: '192.168.0.1'
-        state: 'absent'
-        match_fields: ['description']
-        reload: false  # speed
-      loop:
-        - 'ANSIBLE_TEST_1_1'
-        - 'ANSIBLE_TEST_1_2'
-        - 'ANSIBLE_TEST_1_3'
-
     - name: Cleanup syslog
       ansibleguy.opnsense.syslog:
         description: "{{ item }}"

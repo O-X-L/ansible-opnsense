@@ -23,7 +23,7 @@ except MODULE_EXCEPTIONS:
 # EXAMPLES = 'https://opnsense.ansibleguy.net/en/latest/modules/list.html'
 
 TARGETS = [
-    'alias', 'rule', 'rule_interface_group', 'route', 'gateway', 'syslog', 'package', 'unbound_host', 'unbound_domain',
+    'alias', 'rule', 'rule_interface_group', 'route', 'gateway', 'syslog', 'package', 'unbound_host',
     'frr_ospf_general', 'frr_ospf3_general', 'unbound_forward', 'shaper_pipe', 'shaper_queue', 'shaper_rule',
     'monit_service', 'monit_test', 'monit_alert', 'wireguard_server', 'bind_domain', 'wireguard_peer', 'interface_vlan',
     'unbound_host_alias', 'interface_vxlan', 'frr_bfd_neighbor', 'frr_bgp_general', 'frr_bgp_neighbor',
@@ -106,10 +106,6 @@ def run_module():
         elif target == 'unbound_host_alias':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.unbound_host_alias \
                 import Alias as Target_Obj
-
-        elif target == 'unbound_domain':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.unbound_domain import  \
-                Domain as Target_Obj
 
         elif target == 'unbound_dot':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.unbound_dot \
