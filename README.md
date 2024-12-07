@@ -192,6 +192,7 @@ not implemented => development => [testing](https://github.com/ansibleguy/collec
 | **DHCP Relay**            | ansibleguy.opnsense.dhcrelay                                           | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/dhcrelay_relay.html)                                                | unstable |
 | **DHCP Relay**            | ansibleguy.opnsense.dhcrelay_destination                               | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/dhcrelay_destination.html)                                          | unstable |
 | **DHCP Reservation**      | ansibleguy.opnsense.dhcp_reservation                                   | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/dhcp.html)                                                          | unstable |
+| **DHCP Controlagent**     | ansibleguy.opnsense.dhcp_controlagent                                  | [Docs](https://opnsense.ansibleguy.net/en/latest/modules/dhcp.html)                                                          | unstable |
 
 
 ### Roadmap

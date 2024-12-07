@@ -4,18 +4,19 @@
 # Copyright: (C) 2024, AnsibleGuy <guy@ansibleguy.net>
 # GNU General Public License v3.0+ (see https://www.gnu.org/licenses/gpl-3.0.txt)
 
-# see: https://docs.opnsense.org/development/api/core/kea.html
+# see: https://docs.opnsense.org/development/api/plugins/wireguard.html
 
 from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
     module_dependency_error, MODULE_EXCEPTIONS
 
+
 try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-        OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dhcp_reservation_v4 import ReservationV4
+        OPN_MOD_ARGS, EN_ONLY_MOD_ARG, RELOAD_MOD_ARG
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dhcp_controlagent import ControlAgent
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
@@ -27,27 +28,17 @@ except MODULE_EXCEPTIONS:
 
 def run_module():
     module_args = dict(
-        ip=dict(
-            type='str', required=True, aliases=['ip_address'],
-            description='IP address to offer to the client',
+        http_port=dict(
+            type='int', required=False, default=8000,
+            description='Portnumber to use for the RESTful interface'
         ),
-        mac=dict(
-            type='str', required=False, aliases=['mac_address'],
-            description='MAC/Ether address of the client in question',
+        http_host=dict(
+            type='str', required=False, default='127.0.0.1', aliases=['host'],
+            description='Address on which the RESTful interface should be available'
         ),
-        subnet=dict(
-            type='str', required=False,
-            description='Subnet this reservation belongs to',
-        ),
-        hostname=dict(
-            type='str', required=False,
-            description='Offer a hostname to the client',
-        ),
-        description=dict(type='str', required=False, aliases=['desc']),
-        ipv=dict(type='int', required=False, default=4, choices=[4, 6], aliases=['ip_version']),
-        **RELOAD_MOD_ARG,
-        **STATE_MOD_ARG,
+        **EN_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,
+        **RELOAD_MOD_ARG,
     )
 
     result = dict(
@@ -63,10 +54,7 @@ def run_module():
         supports_check_mode=True,
     )
 
-    if module.params['ipv'] == 6:
-        module.fail_json('DHCPv6 is not yet supported!')
-
-    module_wrapper(ReservationV4(module=module, result=result))
+    module_wrapper(ControlAgent(module=module, result=result))
     module.exit_json(**result)
 
 

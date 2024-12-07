@@ -669,3 +669,9 @@
       loop:
         - '192.168.69.76'
         - '192.168.69.86'
+
+    - name: Cleanup DHCP-Controlagent
+      ansibleguy.opnsense.dhcp_controlagent:
+        enabled: false
+        http_host: '127.0.0.1'
+        http_port: 8000

@@ -8,7 +8,8 @@ DHCP
 
 **STATE**: unstable
 
-**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/dhcp_reservation.yml>`_
+**TESTS**: `Reservation <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/dhcp_reservation.yml>`_ |
+`ControlAgent <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/dhcp_controlagent.yml>`_
 
 **API Docs**: `Core - KEA <https://docs.opnsense.org/development/api/core/kea.html>`_
 
@@ -17,7 +18,7 @@ DHCP
 Contribution
 ************
 
-Thanks to `@KalleDK <https://github.com/KalleDK>`_ for helping with the Reservation module!
+Thanks to `@KalleDK <https://github.com/KalleDK>`_ for developing these module!
 
 ----
 
@@ -38,6 +39,18 @@ ansibleguy.opnsense.dhcp_reservation
     "subnet","string","false for state changes, else true","","\-","Subnet this reservation belongs to"
     "hostname","string","false","","\-","Offer a hostname to the client"
     "description","string","false","","\-","Optional description"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+ansibleguy.opnsense.dhcp_controlagent
+=====================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "enabled","boolean","false","true","\-","Enable or disable the control agent"
+    "http_host","string","false","127.0.0.1","","Address on which the RESTful interface should be available"
+    "http_port","int","false","8000","","MAC/Ether address of the client in question"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ----
@@ -91,3 +104,31 @@ ansibleguy.opnsense.dhcp_reservation
         - name: Show existing reservations
           ansible.builtin.debug:
             var: existing_entries.data
+
+----
+
+ansibleguy.opnsense.dhcp_controlagent
+=====================================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: no
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.dhcp_controlagent:
+            enabled: true
+            http_host: 127.0.0.1
+            http_port: 8000
+            # reload: true
+            # debug: false
+
+        - name: Stopping
+          ansibleguy.opnsense.dhcp_controlagent:
+            enabled: false
+            reload: true

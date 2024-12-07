@@ -127,6 +127,7 @@ action_groups:
     - ansibleguy.opnsense.dhcrelay_relay
   dhcp:
     - ansibleguy.opnsense.dhcp_reservation
+    - ansibleguy.opnsense.dhcp_controlagent
   all:
     - metadata:
         extend_group:

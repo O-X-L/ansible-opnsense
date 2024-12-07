@@ -364,7 +364,7 @@ class Base:
             'params': [getattr(self.i, self.i.EXIST_ATTR)[self.field_pk]],
         })
 
-    def _is_enabled(self, invert: bool) -> bool:
+    def is_enabled(self, invert: bool = False) -> bool:
         is_enabled = getattr(self.i, self.i.EXIST_ATTR)['enabled']
 
         if invert:
@@ -373,7 +373,7 @@ class Base:
         return is_enabled
 
     def enable(self, invert: bool = False) -> dict:
-        if self.i.exists and not self._is_enabled(invert=invert):
+        if self.i.exists and not self.is_enabled(invert=invert):
             self.i.r['changed'] = True
             if not invert:
                 self.i.r['diff']['before'] = {'enabled': False}
@@ -387,7 +387,7 @@ class Base:
                 return self._change_enabled_state()
 
     def disable(self, invert: bool = False) -> dict:
-        if self.i.exists and self._is_enabled(invert=invert):
+        if self.i.exists and self.is_enabled(invert=invert):
             self.i.r['changed'] = True
             if not invert:
                 self.i.r['diff']['before'] = {'enabled': True}

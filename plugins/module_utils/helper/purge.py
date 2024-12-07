@@ -11,18 +11,18 @@ def purge(
         result['diff']['before'][item_to_purge[diff_param]] = item_to_purge
         result['diff']['after'][item_to_purge[diff_param]] = None
 
-    else:
-        result['diff']['before'][item_to_purge[diff_param]] = {'enabled': True}
-        result['diff']['after'][item_to_purge[diff_param]] = {'enabled': False}
-
     if not module.check_mode:
         _obj = obj_func(item_to_purge)
+        _obj.exists = True
 
         if module.params['action'] == 'delete':
             _obj.delete()
 
         else:
-            _obj.b.disable()
+            if _obj.b.is_enabled():
+                result['diff']['before'][item_to_purge[diff_param]] = {'enabled': True}
+                result['diff']['after'][item_to_purge[diff_param]] = {'enabled': False}
+                _obj.b.disable()
 
 
 def check_purge_filter(module: AnsibleModule, item: dict) -> bool:
