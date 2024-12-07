@@ -404,8 +404,11 @@ def format_int(data: (int, str)) -> (int, str):
 def sort_param_lists(params: dict) -> None:
     for k in params:
         if isinstance(params[k], list):
-            params[k].sort()
+            try:
+                params[k].sort()
 
+            except TypeError:
+                pass
 
 # pylint: disable=R0914,R0915
 def simplify_translate(
