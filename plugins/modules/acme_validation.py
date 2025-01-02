@@ -57,11 +57,15 @@ def run_module():
         ),
         http_haproxy_inject=dict(
             type='bool', required=False, default=True,
-            description='Automatically inject config into the local HAProxy instance to let it serve acme challanges without service interruption. Of course, adding the configuration requires a short restart of the HAProxy service.',
+            description='Automatically inject config into the local HAProxy instance to let it serve acme challanges '
+                        'without service interruption. Of course, adding the configuration requires a short restart '
+                        'of the HAProxy service.',
         ),
         http_haproxy_frontends=dict(
             type='list', required=False, elements='str', default=[],
-            description='Choose the local HAProxy frontends. They will automatically be configured to redirect acme challenges to the internal acme client. The HAProxy service will automatically be restarted if a certificate was renewed. ',
+            description='Choose the local HAProxy frontends. They will automatically be configured to redirect acme '
+                        'challenges to the internal acme client. The HAProxy service will automatically be restarted '
+                        'if a certificate was renewed. ',
         ),
         tlsalpn_acme_autodiscovery=dict(
             type='bool', required=False, default=True,
@@ -77,11 +81,33 @@ def run_module():
         ),
         dns_service=dict(
             type='str', required=False, default='dns_freedns',
-            choices=['dns_1984hosting', 'dns_acmedns', 'dns_acmeproxy', 'dns_active24', 'dns_ad', 'dns_ali', 'dns_kas', 'dns_arvan', 'dns_artfiles', 'dns_aurora', 'dns_autodns', 'dns_aws', 'dns_azure', 'dns_bunny', 'dns_cloudns', 'dns_cf', 'dns_cx', 'dns_cn', 'dns_conoha', 'dns_constellix', 'dns_cpanel', 'dns_cyon', 'dns_ddnss', 'dns_desec', 'dns_dgon', 'dns_da', 'dns_dnsexit', 'dns_dnshome', 'dns_dnsimple', 'dns_dnsservices', 'dns_domeneshop', 'dns_me', 'dns_dp', 'dns_doapi', 'dns_do', 'dns_dreamhost', 'dns_duckdns', 'dns_dyn', 'dns_dynu', 'dns_dynv6', 'dns_easydns', 'dns_euserv', 'dns_exoscale', 'dns_fornex', 'dns_freedns', 'dns_gandi_livedns', 'dns_gd', 'dns_gcloud', 'dns_googledomains', 'dns_gdnsdk', 'dns_hetzner', 'dns_hexonet', 'dns_hostingde', 'dns_he', 'dns_infoblox', 'dns_infomaniak', 'dns_internetbs', 'dns_inwx', 'dns_ionos', 'dns_ipv64', 'dns_ispconfig', 'dns_jd', 'dns_joker', 'dns_kinghost', 'dns_knot', 'dns_leaseweb', 'dns_lexicon', 'dns_limacity', 'dns_linode', 'dns_linode_v4', 'dns_loopia', 'dns_lua', 'dns_miab', 'dns_mydnsjp', 'dns_mythic_beasts', 'dns_namecom', 'dns_namecheap', 'dns_namesilo', 'dns_nederhost', 'dns_netcup', 'dns_nic', 'dns_njalla', 'dns_nsone', 'dns_nsupdate', 'dns_online', 'dns_opnsense', 'dns_oci', 'dns_ovh', 'dns_pdns', 'dns_pleskxml', 'dns_pointhq', 'dns_porkbun', 'dns_rackspace', 'dns_rage4', 'dns_regru', 'dns_schlundtech', 'dns_selectel', 'dns_selfhost', 'dns_servercow', 'dns_simply', 'dns_transip', 'dns_udr', 'dns_unoeuro', 'dns_variomedia', 'dns_vscale', 'dns_vultr', 'dns_world4you', 'dns_yandex', 'dns_zilore', 'dns_zone', 'dns_zonomi'],
+            choices=[
+                'dns_1984hosting', 'dns_acmedns', 'dns_acmeproxy', 'dns_active24', 'dns_ad', 'dns_ali', 'dns_kas',
+                'dns_arvan', 'dns_artfiles', 'dns_aurora', 'dns_autodns', 'dns_aws', 'dns_azure', 'dns_bunny',
+                'dns_cloudns', 'dns_cf', 'dns_cx', 'dns_cn', 'dns_conoha', 'dns_constellix', 'dns_cpanel', 'dns_cyon',
+                'dns_ddnss', 'dns_desec', 'dns_dgon', 'dns_da', 'dns_dnsexit', 'dns_dnshome', 'dns_dnsimple',
+                'dns_dnsservices', 'dns_domeneshop', 'dns_me', 'dns_dp', 'dns_doapi', 'dns_do', 'dns_dreamhost',
+                'dns_duckdns', 'dns_dyn', 'dns_dynu', 'dns_dynv6', 'dns_easydns', 'dns_euserv', 'dns_exoscale',
+                'dns_fornex', 'dns_freedns', 'dns_gandi_livedns', 'dns_gd', 'dns_gcloud', 'dns_googledomains',
+                'dns_gdnsdk', 'dns_hetzner', 'dns_hexonet', 'dns_hostingde', 'dns_he', 'dns_infoblox',
+                'dns_infomaniak', 'dns_internetbs', 'dns_inwx', 'dns_ionos', 'dns_ipv64', 'dns_ispconfig', 'dns_jd',
+                'dns_joker', 'dns_kinghost', 'dns_knot', 'dns_leaseweb', 'dns_lexicon', 'dns_limacity', 'dns_linode',
+                'dns_linode_v4', 'dns_loopia', 'dns_lua', 'dns_miab', 'dns_mydnsjp', 'dns_mythic_beasts',
+                'dns_namecom', 'dns_namecheap', 'dns_namesilo', 'dns_nederhost', 'dns_netcup', 'dns_nic',
+                'dns_njalla', 'dns_nsone', 'dns_nsupdate', 'dns_online', 'dns_opnsense', 'dns_oci', 'dns_ovh',
+                'dns_pdns', 'dns_pleskxml', 'dns_pointhq', 'dns_porkbun', 'dns_rackspace', 'dns_rage4', 'dns_regru',
+                'dns_schlundtech', 'dns_selectel', 'dns_selfhost', 'dns_servercow', 'dns_simply', 'dns_transip',
+                'dns_udr', 'dns_unoeuro', 'dns_variomedia', 'dns_vscale', 'dns_vultr', 'dns_world4you', 'dns_yandex',
+                'dns_zilore', 'dns_zone', 'dns_zonomi'
+            ],
         ),
         dns_sleep=dict(
             type='int', required=False, default=0,
-            description='The time in seconds to wait for all the TXT records to take effect after adding them to the DNS API. Defaults to 0 seconds, which causes Acme Client to check public DNS services every 10 seconds for up to 20 minutes. If set to a non-zero value, a fixed DNS sleep time will be used and the local DNS servers will be queried instead. A DNS sleep time of 120 seconds or more is recommended for some DNS APIs.',
+            description='The time in seconds to wait for all the TXT records to take effect after adding them to the '
+                        'DNS API. Defaults to 0 seconds, which causes Acme Client to check public DNS services every '
+                        '10 seconds for up to 20 minutes. If set to a non-zero value, a fixed DNS sleep time will be '
+                        'used and the local DNS servers will be queried instead. A DNS sleep time of 120 seconds or '
+                        'more is recommended for some DNS APIs.',
         ),
         dns_active24_token=dict(type='str', required=False, no_log=True),
         dns_ad_key=dict(type='str', required=False, no_log=True),

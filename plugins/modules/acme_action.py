@@ -48,7 +48,8 @@ def run_module():
         ),
         sftp_host_key=dict(
             type='str', required=False,
-            description='SFTP server host key, formatted as in \'known_hosts\'. Leave blank to auto accept host key on first connect (not as secure as specifying it).'
+            description='SFTP server host key, formatted as in \'known_hosts\'. Leave blank to auto accept host key '
+                        'on first connect (not as secure as specifying it).'
         ),
         sftp_port=dict(
             type='int', required=False, defalt=22,
@@ -65,7 +66,8 @@ def run_module():
         ),
         sftp_remote_path=dict(
             type='str', required=False,
-            description='Path on the SFTP server to change to after login. The path can be absolute or relative to home and must exist. Leave blank to not change path after login.'
+            description='Path on the SFTP server to change to after login. The path can be absolute or relative to '
+                        'home and must exist. Leave blank to not change path after login.'
         ),
         sftp_chgrp=dict(
             type='str', required=False,
@@ -81,19 +83,26 @@ def run_module():
         ),
         sftp_filename_cert=dict(
             type='str', required=False,
-            description='Name template for the public certificate. Placeholders "{{name}}" and "%s" are replaced by the name of the certificate being uploaded. Leave blank to use default "{{name}}/cert.pem".'
+            description='Name template for the public certificate. Placeholders "{{name}}" and "%s" are replaced by '
+                        'the name of the certificate being uploaded. Leave blank to use default "{{name}}/cert.pem".'
         ),
         sftp_filename_key=dict(
             type='str', required=False,
-            description='Name template for the certificate\'s private key. Placeholders "{{name}}" and "%s" are replaced by the name of the certificate being uploaded. Leave blank to use default "{{name}}/key.pem".'
+            description='Name template for the certificate\'s private key. Placeholders "{{name}}" and "%s" are '
+                        'replaced by the name of the certificate being uploaded. Leave blank to use default '
+                        '"{{name}}/key.pem".'
         ),
         sftp_filename_ca=dict(
             type='str', required=False,
-            description='Name template for the public certificate chain file. Placeholders "{{name}}" and "%s" are replaced by the name of the certificate being uploaded. Leave blank to use default "{{name}}/ca.pem".'
+            description='Name template for the public certificate chain file. Placeholders "{{name}}" and "%s" are '
+                        'replaced by the name of the certificate being uploaded. Leave blank to use default '
+                        '"{{name}}/ca.pem".'
         ),
         sftp_filename_fullchain=dict(
             type='str', required=False,
-            description='Name template for the public certificate fullchain file (cert + ca). Placeholders "{{name}}" and "%s" are replaced by the name of the certificate being uploaded. Leave blank to use default "{{name}}/fullchain.pem".'
+            description='Name template for the public certificate fullchain file (cert + ca). Placeholders "{{name}}" '
+                        'and "%s" are replaced by the name of the certificate being uploaded. Leave blank to use '
+                        'default "{{name}}/fullchain.pem".'
         ),
         # Remote SSH
         remote_ssh_host=dict(
@@ -102,7 +111,8 @@ def run_module():
         ),
         remote_ssh_host_key=dict(
             type='str', required=False,
-            description='SSH server host key, formatted as in \'known_hosts\'. Leave blank to auto accept host key on first connect (not as secure as specifying it).'
+            description='SSH server host key, formatted as in \'known_hosts\'. Leave blank to auto accept host key on '
+                        'first connect (not as secure as specifying it).'
         ),
         remote_ssh_port=dict(
             type='int', required=False, defalt=22,
@@ -188,7 +198,9 @@ def run_module():
         ),
         acme_vault_prefix=dict(
             type='str', required=False, default='acme',
-            description='This specifies the prefix path in Vault. If you select KV v2 you need to add .../data/... between the secret-mount-path and the path. Example: v1 prefix path: secret/acme, v2 prefix path: secret/data/acme.'
+            description='This specifies the prefix path in Vault. If you select KV v2 you need to add .../data/... '
+                        'between the secret-mount-path and the path. Example: v1 prefix path: secret/acme, v2 prefix '
+                        'path: secret/data/acme.'
         ),
         acme_vault_token=dict(
             type='str', required=False, no_log=True,
@@ -222,15 +234,18 @@ def run_module():
         ),
         acme_synology_dsm_create=dict(
             type='bool', required=False, default=True,
-            description='This option ensures that a new certificate is created in Synology DSM if it does not exist yet. If unchecked only existing certificates will be updated.'
+            description='This option ensures that a new certificate is created in Synology DSM if it does not exist '
+                        'yet. If unchecked only existing certificates will be updated.'
         ),
         acme_synology_dsm_deviceid=dict(
             type='str', required=False,
-            description='If Synology DSM has OTP enabled, then the device ID has to be provided so that no OTP is required when running the automation.'
+            description='If Synology DSM has OTP enabled, then the device ID has to be provided so that no OTP is '
+                        'required when running the automation.'
         ),
         acme_synology_dsm_devicename=dict(
             type='str', required=False,
-            description='If Synology DSM has OTP enabled, then the device name has to be provided so that no OTP is required when running the automation.'
+            description='If Synology DSM has OTP enabled, then the device name has to be provided so that no OTP is '
+                        'required when running the automation.'
         ),
         # ACME TrueNAS
         acme_truenas_apikey=dict(
@@ -249,7 +264,8 @@ def run_module():
         # ACME unifi
         acme_unifi_keystore=dict(
             type='str', required=False, default='/usr/local/share/java/unifi/data/keystore',
-            description='Path to the Unifi keystore file in the local filesystem, i.e. /usr/local/share/java/unifi/data/keystore.'
+            description='Path to the Unifi keystore file in the local filesystem, i.e. '
+                        '/usr/local/share/java/unifi/data/keystore.'
         ),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,

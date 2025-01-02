@@ -22,7 +22,9 @@ class Certificate(BaseModule):
     API_CONT_GET = 'settings'
     API_CONT_REL = 'service'
     API_CMD_REL = 'reconfigure'
-    FIELDS_CHANGE = ['name', 'alt_names', 'account', 'validation', 'restart_actions', 'auto_renewal', 'renew_interval', 'aliasmode']
+    FIELDS_CHANGE = [
+        'name', 'alt_names', 'account', 'validation', 'restart_actions', 'auto_renewal', 'renew_interval', 'aliasmode'
+    ]
     FIELDS_ALL = [
         'enabled', 'description', 'domainalias', 'challengealias'
     ]
@@ -73,44 +75,47 @@ class Certificate(BaseModule):
         self._base_check()
 
         if self.p['state'] == 'present':
-            if is_unset(self.p['account']):
-                self.m.fail_json(f"You need to provide an account to create/update certificates!")
+            self.resolve_relations()
+
+    def resolve_relations(self) -> None:
+        if is_unset(self.p['account']):
+            self.m.fail_json('You need to provide an account to create/update certificates!')
+        else:
+            for key, values in self.existing_accounts.items():
+                if values['name'] == self.p['account']:
+                    self.p['account'] = key
+                    break
             else:
-                for key, values in self.existing_accounts.items():
-                    if values['name'] == self.p['account']:
-                        self.p['account'] = key
-                        break
-                else:
-                    self.m.fail_json(f"Account {self.p['account']} does not exist! {self.existing_accounts}")
+                self.m.fail_json(f"Account {self.p['account']} does not exist! {self.existing_accounts}")
 
-            if is_unset(self.p['validation']):
-                self.m.fail_json(f"You need to provide the validation to create/update certificates!")
+        if is_unset(self.p['validation']):
+            self.m.fail_json('You need to provide the validation to create/update certificates!')
+        else:
+            for key, values in self.existing_validations.items():
+                if values['name'] == self.p['validation']:
+                    self.p['validation'] = key
+                    break
             else:
-                for key, values in self.existing_validations.items():
-                    if values['name'] == self.p['validation']:
-                        self.p['validation'] = key
-                        break
-                else:
-                    self.m.fail_json(f"Validation {self.p['validation']} does not exist!")
+                self.m.fail_json(f"Validation {self.p['validation']} does not exist!")
 
-            if not is_unset(self.p['restart_actions']):
-                mapping = {
-                    values['name']: key
-                    for key, values in self.existing_actions.items()
-                }
+        if not is_unset(self.p['restart_actions']):
+            mapping = {
+                values['name']: key
+                for key, values in self.existing_actions.items()
+            }
 
-                missing = [
-                    action
-                    for action in self.p['restart_actions']
-                    if action not in mapping
-                ]
-                if any(missing):
-                    self.m.fail_json(f"Actions {missing.join(',')} do not exist!")
+            missing = [
+                action
+                for action in self.p['restart_actions']
+                if action not in mapping
+            ]
+            if any(missing):
+                self.m.fail_json(f"Actions {missing.join(',')} do not exist!")
 
-                self.p['restart_actions'] = [
-                    mapping[action]
-                    for action in self.p['restart_actions']
-                ]
+            self.p['restart_actions'] = [
+                mapping[action]
+                for action in self.p['restart_actions']
+            ]
 
     def create(self) -> None:
         cont_get, mod_get = self.API_CONT, self.API_MOD
