@@ -155,6 +155,11 @@ run_test 'dhcp_controlagent' 1
 run_test 'dhcp_reservation' 1
 run_test 'system' 1
 run_test 'package' 1
+run_test 'acme_general' 1
+run_test 'acme_account' 1
+run_test 'acme_validation' 1
+run_test 'acme_action' 1
+run_test 'acme_certificate' 0
 
 echo ''
 echo '##############################'

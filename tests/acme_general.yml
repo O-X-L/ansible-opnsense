@@ -1,0 +1,84 @@
+---
+
+- name: Testing ACME Setting
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'acme_general'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid challenge_port
+      ansibleguy.opnsense.acme_general:
+        challenge_port: 10
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Configuring - failing because of invalid tls_challenge_port
+      ansibleguy.opnsense.acme_general:
+        tls_challenge_port: 10
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Configuring - failing because of invalid restart_timeout
+      ansibleguy.opnsense.acme_general:
+        restart_timeout: 100000
+      register: opn_fail3
+      failed_when: not opn_fail3.failed
+
+    - name: Configuring
+      ansibleguy.opnsense.acme_general:
+        enabled: true
+        auto_renewal: false
+        challenge_port: 1042
+        tls_challenge_port: 1043
+        restart_timeout: 642
+        log_level: extended
+        show_intro: false
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing
+      ansibleguy.opnsense.acme_general:
+        enabled: false
+        auto_renewal: true
+        challenge_port: 43580
+        tls_challenge_port: 43581
+        restart_timeout: 600
+        log_level: normal
+        show_intro: true
+        debug: true
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      ansibleguy.opnsense.acme_general:
+        enabled: false
+        auto_renewal: true
+        challenge_port: 43580
+        tls_challenge_port: 43581
+        restart_timeout: 600
+        log_level: normal
+        show_intro: true
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        opn3.changed
+      when: not ansible_check_mode

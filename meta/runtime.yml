@@ -127,6 +127,12 @@ action_groups:
   dhcp:
     - ansibleguy.opnsense.dhcp_reservation
     - ansibleguy.opnsense.dhcp_controlagent
+  acme:
+    - ansibleguy.opnsense.acme_general
+    - ansibleguy.opnsense.acme_account
+    - ansibleguy.opnsense.acme_validation
+    - ansibleguy.opnsense.acme_action
+    - ansibleguy.opnsense.acme_certificate
   all:
     - metadata:
         extend_group:
@@ -150,6 +156,7 @@ action_groups:
           - ansibleguy.opnsense.openvpn
           - ansibleguy.opnsense.dhcrelay
           - ansibleguy.opnsense.dhcp
+          - ansibleguy.opnsense.acme
 
 plugin_routing:
   modules:
@@ -197,3 +204,7 @@ plugin_routing:
       redirect: ansibleguy.opnsense.dhcrelay_destination
     unbound_domain:
       redirect: ansibleguy.opnsense.unbound_forward
+    acme_challenge:
+      redirect: ansibleguy.opnsense.acme_validation
+    acme_automation:
+      redirect: ansibleguy.opnsense.acme_action
