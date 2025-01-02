@@ -40,26 +40,22 @@ def run_module():
         ca=dict(
             type='str', required=False, default='letsencrypt',
             choices=[
-                'buypass', 'buypass_test', 'google', 'google_test',
-                'letsencrypt', 'letsencrypt_test', 'sslcom',
+                'buypass', 'buypass_test', 'google', 'google_test', 'letsencrypt', 'letsencrypt_test', 'sslcom',
                 'zerossl', 'custom',
             ],
         ),
         custom_ca=dict(
             type='str', required=False,
-            description='The HTTPS URL of the custom ACME CA that should be used for '
-                        'this account and all associated certificates. For example: '
-                        'https://ca.internal/acme/directory'
+            description='The HTTPS URL of the custom ACME CA that should be used for this account and all associated '
+                        'certificates. For example: https://ca.internal/acme/directory'
         ),
         eab_kid=dict(
             type='str', required=False,
-            description='An value provided by the CA when using ACME External '
-                        'Account Binding (EAB).',
+            description='An value provided by the CA when using ACME External Account Binding (EAB).',
         ),
         eab_hmac=dict(
             type='str', required=False,
-            description='An value provided by the CA when using ACME External '
-                        'Account Binding (EAB).',
+            description='An value provided by the CA when using ACME External Account Binding (EAB).',
         ),
         register=dict(
             type='bool', required=False, default=False,

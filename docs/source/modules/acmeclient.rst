@@ -383,9 +383,9 @@ ansibleguy.opnsense.acme_certificate
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
     :widths: 15 10 10 10 10 45
 
-    "name","string","false","\-","\-","Common Name (CN) and first Alt Name (subjectAltName) for this certificate."
+    "name","string","false","\-","cn","Common Name (CN) and first Alt Name (subjectAltName) for this certificate."
     "description","string","true","\-","desc","Description for this certificate."
-    "alt_names","list","false","\-","\-","Configure additional names that should be part of the certificate, i.e. www.example.com or mail.example.com."
+    "alt_names","list","false","\-","subject_alt_name","Configure additional names that should be part of the certificate, i.e. www.example.com or mail.example.com."
     "account","string","false","\-","\-","Set the ACME CA account to use for this certificate."
     "validation","string","false","\-","\-","Set the ACME challenge type for this certificate."
     "auto_renew","boolean","false","true","\-","Enable automatic renewal for this certificate to prevent expiration. When disabled, the cron job will ignore this certificate."

@@ -36,10 +36,9 @@ def run_module():
         type=dict(
             type='str', required=False,
             choices=[
-                'configd_restart_gui', 'configd_restart_haproxy', 'configd_restart_nginx',
-                'configd_upload_sftp', 'configd_remote_ssh', 'acme_fritzbox',
-                'acme_panos', 'acme_proxmoxve', 'acme_vault', 'acme_synology_dsm',
-                'acme_truenas', 'acme_unifi', 'configd_generic',
+                'configd_restart_gui', 'configd_restart_haproxy', 'configd_restart_nginx','configd_upload_sftp',
+                'configd_remote_ssh', 'acme_fritzbox', 'acme_panos', 'acme_proxmoxve', 'acme_vault',
+                'acme_synology_dsm', 'acme_truenas', 'acme_unifi', 'configd_generic',
             ],
         ),
         sftp_host=dict(

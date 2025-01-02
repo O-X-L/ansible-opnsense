@@ -26,7 +26,7 @@ except MODULE_EXCEPTIONS:
 def run_module():
     module_args = dict(
         name=dict(
-            type='str', required=False,
+            type='str', required=False, aliases=['cn'],
             description='Common Name (CN) and first Alt Name (subjectAltName) for this certificate.',
         ),
         description=dict(
@@ -34,16 +34,16 @@ def run_module():
             description='Description for this certificate.',
         ),
         alt_names=dict(
-            type='list', required=False, elements='str', default=[],
-            description='Optional e-mail address for this account.',
+            type='list', required=False, elements='str', default=[], aliases=['subject_alt_name'],
+            description='Configure additional names that should be part of the certificate, i.e. www.example.com or '
+                        'mail.example.com. Use TAB key to complete typing a FQDN.',
         ),
         account=dict(type='str', required=False),
         validation=dict(type='str', required=False),
         auto_renewal=dict(
             type='bool', required=False, default=True,
-            description='Enable automatic renewal for this certificate to prevent '
-                        'expiration. When disabled, the cron job will ignore this '
-                        'certificate.',
+            description='Enable automatic renewal for this certificate to prevent expiration. When disabled, the cron '
+                        'job will ignore this certificate.',
         ),
         renew_interval=dict(
             type='int', required=False, default=60,
@@ -60,8 +60,7 @@ def run_module():
         ),
         restart_actions=dict(
             type='list', required=False, elements='str', default=[],
-            description='Choose the automations that should be run after certificate '
-                        'creation and renewal.',
+            description='Choose the automations that should be run after certificate creation and renewal.',
         ),
         aliasmode=dict(
             type='str', required=False, default='none',
@@ -70,15 +69,13 @@ def run_module():
         ),
         domainalias=dict(
             type='str', required=False,
-            description='When setting DNS alias mode to "Domain Alias", enter the domain '
-                        'name that should be used for certificate validation. Please '
-                        'refer to the acme.sh documentation for further information. ',
+            description='When setting DNS alias mode to "Domain Alias", enter the domain name that should be used for '
+                        'certificate validation. Please refer to the acme.sh documentation for further information. ',
         ),
         challengealias=dict(
             type='str', required=False,
-            description='When setting DNS alias mode to "Challenge Alias", enter the '
-                        'domain name that should be used for certificate validation. '
-                        'Please refer to the acme.sh documentation for further '
+            description='When setting DNS alias mode to "Challenge Alias", enter the domain name that should be used '
+                        'for certificate validation. Please refer to the acme.sh documentation for further '
                         'information.',
         ),
         **RELOAD_MOD_ARG,

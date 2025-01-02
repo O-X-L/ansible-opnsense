@@ -26,28 +26,25 @@ def run_module():
     module_args = dict(
         auto_renewal=dict(
             type='bool', required=False, default=True,
-            description='Enable automatic renewal for certificates to prevent expiration. '
-                        'This will add a cron job to the system.',
+            description='Enable automatic renewal for certificates to prevent expiration. This will add a cron job '
+                        'to the system.',
         ),
         challenge_port=dict(
             type='int', required=False, default=43580,
-            description='When using HTTP-01 as challenge type, a local webserver is used '
-                        'to provide acme challenge data to the ACME CA. The local '
-                        'webserver is NOT directly exposed to the outside and should NOT '
-                        'use port 80 or any other well-known port. This setting allows '
-                        'you to change the local port of this webserver in case it '
-                        'interferes with another local service.',
+            description='When using HTTP-01 as challenge type, a local webserver is used to provide acme challenge '
+                        'data to the ACME CA. The local webserver is NOT directly exposed to the outside and should '
+                        'NOT use port 80 or any other well-known port. This setting allows you to change the local '
+                        'port of this webserver in case it interferes with another local service.',
         ),
         tls_challenge_port=dict(
             type='int', required=False, default=43581,
-            description='The service port when using TLS-ALPN-01 as challenge type. '
-                        'It works similar to the HTTP-01 challenge type.',
+            description='The service port when using TLS-ALPN-01 as challenge type. It works similar to the HTTP-01 '
+                        'challenge type.',
         ),
         restart_timeout=dict(
             type='int', required=False, default=600,
-            description='The maximum time in seconds to wait for an automation to '
-                        'complete. When the timeout is reached the command is '
-                        'forcefully aborted.',
+            description='The maximum time in seconds to wait for an automation to complete. When the timeout is '
+                        'reached the command is forcefully aborted.',
         ),
         haproxy_integration=dict(
             type='bool', required=False, default=False,
