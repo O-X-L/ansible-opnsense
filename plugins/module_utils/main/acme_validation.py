@@ -127,20 +127,12 @@ class Validation(BaseModule):
                 ]
         self._base_check()
 
-    def create(self) -> None:
-        cont_get, mod_get = self.API_CONT, self.API_MOD
-        self.call_cnf['controller'] = cont_get
-        self.call_cnf['module'] = mod_get
-        self.b.create()
+    def _search_call(self) -> list:
+        result = self.b.search()
 
-    def update(self) -> None:
+        # Reset controller and module
         cont_get, mod_get = self.API_CONT, self.API_MOD
         self.call_cnf['controller'] = cont_get
         self.call_cnf['module'] = mod_get
-        self.b.update()
 
-    def delete(self) -> None:
-        cont_get, mod_get = self.API_CONT, self.API_MOD
-        self.call_cnf['controller'] = cont_get
-        self.call_cnf['module'] = mod_get
-        self.b.delete()
+        return result
