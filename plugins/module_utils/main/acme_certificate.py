@@ -117,6 +117,10 @@ class Certificate(BaseModule):
                 for action in self.p['restart_actions']
             ]
 
+    def reload(self) -> dict:
+        # no reload required
+        pass
+
     def _search_call(self) -> list:
         result = self.b.search()
 

@@ -127,6 +127,10 @@ class Validation(BaseModule):
                 ]
         self._base_check()
 
+    def reload(self) -> dict:
+        # no reload required
+        pass
+
     def _search_call(self) -> list:
         result = self.b.search()
 

@@ -60,6 +60,10 @@ class Account(BaseModule):
                 'command': 'register',
             })
 
+    def reload(self) -> dict:
+        # no reload required
+        pass
+
     def _search_call(self) -> list:
         result = self.b.search()
 
