@@ -405,7 +405,7 @@ def run_module():
 
         elif target == 'acme_account':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.acme_account import \
-                Account as Target_Objd
+                Account as Target_Obj
 
         elif target == 'acme_validation':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.acme_validation import \
