@@ -19,8 +19,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/en/latest/modules/acme_account.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/en/latest/modules/acme_account.html'
+# DOCUMENTATION = 'https://opnsense.ansibleguy.net/en/latest/modules/acmeclient.html'
+# EXAMPLES = 'https://opnsense.ansibleguy.net/en/latest/modules/acmeclient.html'
 
 
 def run_module():
