@@ -45,6 +45,24 @@ If you DO NOT want to use Ansible - [this fork](https://github.com/O-X-L/opnsens
 
 ----
 
+## Contribute
+
+Feel free to contribute to this project using [pull-requests](https://github.com/ansibleguy/collection_opnsense/pulls), [issues](https://github.com/ansibleguy/collection_opnsense/issues) and [discussions](https://github.com/ansibleguy/collection_opnsense/discussions)!
+
+See also: [Contributing](https://github.com/ansibleguy/collection_opnsense/blob/latest/CONTRIBUTING.md)
+
+<img src="https://contrib.rocks/image?repo=ansibleguy/collection_opnsense&max=7" />
+
+----
+
+## Version Support
+
+The `ansibleguy.opnsense` modules always support the latest version of OPNSense.
+
+If an API changed, the current module-implementation might fail for firewalls running an older firmware.
+
+----
+
 ## Advertisement
 
 * Need **professional support** using Ansible or OPNSense? Contact us:
@@ -55,31 +73,10 @@ If you DO NOT want to use Ansible - [this fork](https://github.com/O-X-L/opnsens
 
   Web: [EN](https://www.o-x-l.com) | [DE](https://www.oxl.at)
 
-  Language: German or English
 
 * You want a simple **Ansible GUI**?
 
   Check-out this [Ansible WebUI](https://github.com/ansibleguy/webui)
-
-* It was a lot of work (100+ hours) to get those modules working.
-
-  If you are happy with the functionality they provide: please [consider donating a few bucks](https://ko-fi.com/ansible0guy)
-
-----
-
-## Contribute
-
-Feel free to contribute to this project using [pull-requests](https://github.com/ansibleguy/collection_opnsense/pulls), [issues](https://github.com/ansibleguy/collection_opnsense/issues) and [discussions](https://github.com/ansibleguy/collection_opnsense/discussions)!
-
-See also: [Contributing](https://github.com/ansibleguy/collection_opnsense/blob/latest/CONTRIBUTING.md)
-
-----
-
-## Version Support
-
-The `ansibleguy.opnsense` modules always support the latest version of OPNSense.
-
-If an API changed, the current module-implementation might fail for firewalls running an older firmware.
 
 ----
 
