@@ -38,7 +38,7 @@ echo ''
 echo 'RUNNING CLEANUP'
 echo ''
 
-ansible-playbook tests/cleanup.yml
+ansible-playbook tests/1_cleanup.yml
 
 echo ''
 echo 'FINISHED CLEANUP!'

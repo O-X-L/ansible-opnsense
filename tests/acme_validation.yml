@@ -1,0 +1,358 @@
+---
+
+- name: Testing ACME Validation
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'acme_validation'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | length != 0
+
+    - name: Removing - does not exist
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      register: opn_pre2
+      failed_when: >
+        opn_pre2.failed or
+        opn_pre2.changed
+
+    - name: Adding 1 - failing because of invalid value
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_1'
+        method: ANSIBLE_TEST_1_1
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Adding 1
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_1'
+        method: http01
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing 1
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_1'
+        method: http01
+        http_opn_autodiscovery: false
+        http_opn_ipaddresses:
+          - 1.2.3.4
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Changing 1 - nothing changed
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_1'
+        method: http01
+        http_opn_autodiscovery: false
+        http_opn_ipaddresses:
+          - 1.2.3.4
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        opn3.changed
+      when: not ansible_check_mode
+
+    - name: Disabling 1
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_1'
+        method: http01
+        http_opn_autodiscovery: false
+        http_opn_ipaddresses:
+          - 1.2.3.4
+        enabled: false
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        not opn4.changed
+      when: not ansible_check_mode
+
+    - name: Disabling 1 - nothing changed
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_1'
+        method: http01
+        http_opn_autodiscovery: false
+        http_opn_ipaddresses:
+          - 1.2.3.4
+        enabled: false
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        opn5.changed
+      when: not ansible_check_mode
+
+    - name: Enabling 1
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_1'
+        method: http01
+        http_opn_autodiscovery: false
+        http_opn_ipaddresses:
+          - 1.2.3.4
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        not opn6.changed
+      when: not ansible_check_mode
+
+    - name: Adding 2 - HTTP HAProxy
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_2'
+        method: http01
+        http_service: haproxy
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+
+    - name: Adding 2 - HTTP HAProxy - nothing changed
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_2'
+        method: http01
+        http_service: haproxy
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        opn8.changed
+      when: not ansible_check_mode
+
+    - name: Adding 3 - TLS ALPN
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_3'
+        method: tlsalpn01
+        tlsalpn_acme_ipaddresses:
+          - 1.2.3.4
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+
+    - name: Adding 3 - TLS ALPN - nothing changed
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_3'
+        method: tlsalpn01
+        tlsalpn_acme_ipaddresses:
+          - 1.2.3.4
+      register: opn10
+      failed_when: >
+        opn10.failed or
+        opn10.changed
+      when: not ansible_check_mode
+
+    - name: Adding 4 - DNS Active24
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_4'
+        dns_service: dns_active24
+        dns_active24_token: SECRET
+      register: opn11
+      failed_when: >
+        opn11.failed or
+        not opn11.changed
+
+    - name: Adding 4 - DNS Active24 - nothing changed
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_4'
+        dns_service: dns_active24
+        dns_active24_token: SECRET
+      register: opn12
+      failed_when: >
+        opn12.failed or
+        opn12.changed
+      when: not ansible_check_mode
+
+    - name: Adding 5 - DNS aliyun.com
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_5'
+        dns_service: dns_ali
+        dns_ali_key: KEY
+        dns_ali_secret: SECRET
+      register: opn13
+      failed_when: >
+        opn13.failed or
+        not opn13.changed
+
+    - name: Adding 5 - DNS aliyun.com - nothing changed
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_5'
+        dns_service: dns_ali
+        dns_ali_key: KEY
+        dns_ali_secret: SECRET
+      register: opn14
+      failed_when: >
+        opn14.failed or
+        opn14.changed
+      when: not ansible_check_mode
+
+    - name: Adding 6 - DNS AutoDNS
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_6'
+        dns_service: dns_autodns
+        dns_autodns_user: auto
+        dns_autodns_password: SECRET
+        dns_autodns_context: OPN
+      register: opn15
+      failed_when: >
+        opn15.failed or
+        not opn15.changed
+
+    - name: Adding 6 - DNS AutoDNS - nothing changed
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_6'
+        dns_service: dns_autodns
+        dns_autodns_user: auto
+        dns_autodns_password: SECRET
+        dns_autodns_context: OPN
+      register: opn16
+      failed_when: >
+        opn16.failed or
+        opn16.changed
+      when: not ansible_check_mode
+
+    - name: Adding 7 - DNS AWS
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_7'
+        dns_service: dns_aws
+        dns_aws_id: ID
+        dns_aws_secret: SECRET
+      register: opn17
+      failed_when: >
+        opn17.failed or
+        not opn17.changed
+
+    - name: Adding 7 - DNS AWS - nothing changed
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_7'
+        dns_service: dns_aws
+        dns_aws_id: ID
+        dns_aws_secret: SECRET
+      register: opn18
+      failed_when: >
+        opn18.failed or
+        opn18.changed
+      when: not ansible_check_mode
+
+    - name: Adding 8 - DNS Azure
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_8'
+        dns_service: dns_azure
+        dns_azuredns_subscriptionid: SUB
+        dns_azuredns_tenantid: TENANT
+        dns_azuredns_appid: APP
+        dns_azuredns_clientsecret: SECRET
+      register: opn19
+      failed_when: >
+        opn19.failed or
+        not opn19.changed
+
+    - name: Adding 8 - DNS Azure - nothing changed
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_8'
+        dns_service: dns_azure
+        dns_azuredns_subscriptionid: SUB
+        dns_azuredns_tenantid: TENANT
+        dns_azuredns_appid: APP
+        dns_azuredns_clientsecret: SECRET
+      register: opn20
+      failed_when: >
+        opn20.failed or
+        opn20.changed
+      when: not ansible_check_mode
+
+    - name: Adding 9 - DNS Bunny
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_9'
+        dns_service: dns_bunny
+        dns_bunny_api_key: SECRET
+      register: opn21
+      failed_when: >
+        opn21.failed or
+        not opn21.changed
+
+    - name: Adding 9 - DNS Bunny - nothing changed
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_9'
+        dns_service: dns_bunny
+        dns_bunny_api_key: SECRET
+      register: opn22
+      failed_when: >
+        opn22.failed or
+        opn22.changed
+      when: not ansible_check_mode
+
+    - name: Adding 10 - DNS Cloudflare
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_10'
+        dns_service: dns_cf
+        dns_cf_email: cf@example.com
+        dns_cf_key: KEY
+        dns_cf_token: SECRET
+        dns_cf_account_id: Account
+        dns_cf_zone_id: ZONE
+      register: opn23
+      failed_when: >
+        opn23.failed or
+        not opn23.changed
+
+    - name: Adding 10 - Unifi - nothing changed
+      ansibleguy.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_10'
+        dns_service: dns_cf
+        dns_cf_email: cf@example.com
+        dns_cf_key: KEY
+        dns_cf_token: SECRET
+        dns_cf_account_id: Account
+        dns_cf_zone_id: ZONE
+      register: opn24
+      failed_when: >
+        opn24.failed or
+        opn24.changed
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn8
+      failed_when: >
+        'data' not in opn8 or
+        opn8.data | length != 10
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.acme_validation:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_1_5'
+        - 'ANSIBLE_TEST_1_6'
+        - 'ANSIBLE_TEST_1_7'
+        - 'ANSIBLE_TEST_1_8'
+        - 'ANSIBLE_TEST_1_9'
+        - 'ANSIBLE_TEST_1_10'
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_clean1
+      failed_when: >
+        'data' not in opn_clean1 or
+        opn_clean1.data | length != 0
+      when: not ansible_check_mode

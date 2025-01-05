@@ -1,0 +1,398 @@
+---
+
+- name: Testing ACME Action / Automations
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'acme_action'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | length != 0
+
+    - name: Removing - does not exist
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      register: opn_pre2
+      failed_when: >
+        opn_pre2.failed or
+        opn_pre2.changed
+
+    - name: Adding 1 - failing because of invalid value
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_1'
+        type: ANSIBLE_TEST_1_1
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Adding 1 - failing because of invalid domain
+      ansibleguy.opnsense.acme_action:
+        field1: '!INVALID-DOMAIN!'
+        field2: 'INVALID-IP'
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Adding 1
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_1'
+        type: configd_restart_gui
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing 1
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_1'
+        type: configd_restart_haproxy
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Changing 1 - nothing changed
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_1'
+        type: configd_restart_haproxy
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        opn3.changed
+      when: not ansible_check_mode
+
+    - name: Disabling 1
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_1'
+        type: configd_restart_haproxy
+        enabled: false
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        not opn4.changed
+      when: not ansible_check_mode
+
+    - name: Disabling 1 - nothing changed
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_1'
+        type: configd_restart_haproxy
+        enabled: false
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        opn5.changed
+      when: not ansible_check_mode
+
+    - name: Enabling 1
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_1'
+        type: configd_restart_haproxy
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        not opn6.changed
+      when: not ansible_check_mode
+
+    - name: Adding 2 - Upload SFTP
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_2'
+        type: configd_upload_sftp
+        sftp_host: 127.0.0.1
+        sftp_user: root
+        sftp_port: 42
+        sftp_identity_type: ecdsa
+        sftp_remote_path: /tmp
+        sftp_chgrp: 1000
+        sftp_chmod: '0444'
+        sftp_chmod_key: '0440'
+        sftp_filename_cert: '%s_cert.pem'
+        sftp_filename_key: '%s_key.pem'
+        sftp_filename_ca: '%s_ca.pem'
+        sftp_filename_fullchain: '%s_chain.pem'
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+
+    - name: Adding 2 - Upload SFTP - nothing changed
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_2'
+        type: configd_upload_sftp
+        sftp_host: 127.0.0.1
+        sftp_user: root
+        sftp_port: 42
+        sftp_identity_type: ecdsa
+        sftp_remote_path: /tmp
+        sftp_chgrp: 1000
+        sftp_chmod: '0444'
+        sftp_chmod_key: '0440'
+        sftp_filename_cert: '%s_cert.pem'
+        sftp_filename_key: '%s_key.pem'
+        sftp_filename_ca: '%s_ca.pem'
+        sftp_filename_fullchain: '%s_chain.pem'
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        opn8.changed
+      when: not ansible_check_mode
+
+    - name: Adding 3 - Remote SSH
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_3'
+        type: configd_remote_ssh
+        remote_ssh_host: 127.0.0.1
+        remote_ssh_port: 42
+        remote_ssh_user: root
+        remote_ssh_command: date
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+
+    - name: Adding 3 - Remote SSH - nothing changed
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_3'
+        type: configd_remote_ssh
+        remote_ssh_host: 127.0.0.1
+        remote_ssh_port: 42
+        remote_ssh_user: root
+        remote_ssh_command: date
+      register: opn10
+      failed_when: >
+        opn10.failed or
+        opn10.changed
+      when: not ansible_check_mode
+
+    - name: Adding 4 - FRITZ!Box
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_4'
+        type: acme_fritzbox
+        acme_fritzbox_url: https://fritzbox.example.com
+        acme_fritzbox_username: fritz
+        acme_fritzbox_password: box
+      register: opn11
+      failed_when: >
+        opn11.failed or
+        not opn11.changed
+
+    - name: Adding 4 - FRITZ!Box - nothing changed
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_4'
+        type: acme_fritzbox
+        acme_fritzbox_url: https://fritzbox.example.com
+        acme_fritzbox_username: fritz
+        acme_fritzbox_password: box
+      register: opn12
+      failed_when: >
+        opn12.failed or
+        opn12.changed
+      when: not ansible_check_mode
+
+    - name: Adding 5 - PANOS
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_5'
+        type: acme_panos
+        acme_panos_username: palo
+        acme_panos_password: alto
+        acme_panos_host: fw
+      register: opn13
+      failed_when: >
+        opn13.failed or
+        not opn13.changed
+
+    - name: Adding 5 - PANOS - nothing changed
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_5'
+        type: acme_panos
+        acme_panos_username: palo
+        acme_panos_password: alto
+        acme_panos_host: fw
+      register: opn14
+      failed_when: >
+        opn14.failed or
+        opn14.changed
+      when: not ansible_check_mode
+
+    - name: Adding 6 - Proxmox
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_6'
+        type: acme_proxmoxve
+        acme_proxmoxve_user: prox
+        acme_proxmoxve_server: prox1
+        acme_proxmoxve_port: 8007
+        acme_proxmoxve_nodename: prox1a
+        acme_proxmoxve_realm: ldap
+        acme_proxmoxve_tokenid: opnacme
+        acme_proxmoxve_tokenkey: SECRET
+      register: opn15
+      failed_when: >
+        opn15.failed or
+        not opn15.changed
+
+    - name: Adding 6 - Proxmox - nothing changed
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_6'
+        type: acme_proxmoxve
+        acme_proxmoxve_user: prox
+        acme_proxmoxve_server: prox1
+        acme_proxmoxve_port: 8007
+        acme_proxmoxve_nodename: prox1a
+        acme_proxmoxve_realm: ldap
+        acme_proxmoxve_tokenid: opnacme
+        acme_proxmoxve_tokenkey: SECRET
+      register: opn16
+      failed_when: >
+        opn16.failed or
+        opn16.changed
+      when: not ansible_check_mode
+
+    - name: Adding 7 - Vault
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_7'
+        type: acme_vault
+        acme_vault_url: http://vault.example.com:8200.
+        acme_vault_prefix: opnacme
+        acme_vault_token: SECRET
+        acme_vault_kvv2: true
+      register: opn17
+      failed_when: >
+        opn17.failed or
+        not opn17.changed
+
+    - name: Adding 7 - Vault - nothing changed
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_7'
+        type: acme_vault
+        acme_vault_url: http://vault.example.com:8200.
+        acme_vault_prefix: opnacme
+        acme_vault_token: SECRET
+        acme_vault_kvv2: true
+      register: opn18
+      failed_when: >
+        opn18.failed or
+        opn18.changed
+      when: not ansible_check_mode
+
+    - name: Adding 8 - Synology DSM
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_8'
+        type: acme_synology_dsm
+        acme_synology_dsm_hostname: synology.example.com
+        acme_synology_dsm_port: 5042
+        acme_synology_dsm_scheme: https
+        acme_synology_dsm_username: synology
+        acme_synology_dsm_password: DSM
+        acme_synology_dsm_create: true
+        acme_synology_dsm_deviceid: id1
+        acme_synology_dsm_devicename: name1
+      register: opn19
+      failed_when: >
+        opn19.failed or
+        not opn19.changed
+
+    - name: Adding 8 - Synology DSM - nothing changed
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_8'
+        type: acme_synology_dsm
+        acme_synology_dsm_hostname: synology.example.com
+        acme_synology_dsm_port: 5042
+        acme_synology_dsm_scheme: https
+        acme_synology_dsm_username: synology
+        acme_synology_dsm_password: DSM
+        acme_synology_dsm_create: true
+        acme_synology_dsm_deviceid: id1
+        acme_synology_dsm_devicename: name1
+      register: opn20
+      failed_when: >
+        opn20.failed or
+        opn20.changed
+      when: not ansible_check_mode
+
+    - name: Adding 9 - TrueNAS
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_9'
+        type: acme_truenas
+        acme_truenas_apikey: SECRET
+        acme_truenas_hostname: truenas.example.com
+        acme_truenas_scheme: https
+      register: opn21
+      failed_when: >
+        opn21.failed or
+        not opn21.changed
+
+    - name: Adding 9 - TrueNAS - nothing changed
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_9'
+        type: acme_truenas
+        acme_truenas_apikey: SECRET
+        acme_truenas_hostname: truenas.example.com
+        acme_truenas_scheme: https
+      register: opn22
+      failed_when: >
+        opn22.failed or
+        opn22.changed
+      when: not ansible_check_mode
+
+    - name: Adding 10 - Unifi
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_10'
+        type: acme_unifi
+        acme_unifi_keystore: /tmp/keystore
+      register: opn23
+      failed_when: >
+        opn23.failed or
+        not opn23.changed
+
+    - name: Adding 10 - Unifi - nothing changed
+      ansibleguy.opnsense.acme_action:
+        name: 'ANSIBLE_TEST_1_10'
+        type: acme_unifi
+        acme_unifi_keystore: /tmp/keystore
+      register: opn24
+      failed_when: >
+        opn24.failed or
+        opn24.changed
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn8
+      failed_when: >
+        'data' not in opn8 or
+        opn8.data | length != 10
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.acme_action:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_1_5'
+        - 'ANSIBLE_TEST_1_6'
+        - 'ANSIBLE_TEST_1_7'
+        - 'ANSIBLE_TEST_1_8'
+        - 'ANSIBLE_TEST_1_9'
+        - 'ANSIBLE_TEST_1_10'
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_clean1
+      failed_when: >
+        'data' not in opn_clean1 or
+        opn_clean1.data | length != 0
+      when: not ansible_check_mode

@@ -389,7 +389,7 @@ There are `module-templates <https://github.com/ansibleguy/collection_opnsense/b
 
     Rename all calls to the new module.
 
-  - Add a cleanup-task in :code:`<COLLECTION>/tests/cleanup.yml` (set state we will expect when re-running the tests)
+  - Add a cleanup-task in :code:`<COLLECTION>/tests/1_cleanup.yml` (set state we will expect when re-running the tests)
 
   - Enable the test once it runs successfully - add it to :code:`<COLLECTION>/scripts/test.sh`
 

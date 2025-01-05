@@ -107,8 +107,7 @@
       loop:
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
-        - 'ANSIBLE_TEST_1_3
-'
+        - 'ANSIBLE_TEST_1_3'
         - 'ANSIBLE_TEST_2_1'
 
     - name: Cleanup syslog
@@ -663,3 +662,58 @@
         enabled: false
         http_host: '127.0.0.1'
         http_port: 8000
+
+    - name: Cleanup ACME Certificates
+      ansibleguy.opnsense.acme_certificate:
+        description: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+
+    - name: Cleanup ACME General
+      ansibleguy.opnsense.acme_general:
+        enabled: false
+
+    - name: Cleanup ACME Account
+      ansibleguy.opnsense.acme_account:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_DUMMY_1_1'
+
+    - name: Cleanup ACME Action
+      ansibleguy.opnsense.acme_action:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_1_5'
+        - 'ANSIBLE_TEST_1_6'
+        - 'ANSIBLE_TEST_1_7'
+        - 'ANSIBLE_TEST_1_8'
+        - 'ANSIBLE_TEST_1_9'
+        - 'ANSIBLE_TEST_1_10'
+        - 'ANSIBLE_TEST_DUMMY_1_1'
+
+    - name: Cleanup ACME Validation
+      ansibleguy.opnsense.acme_validation:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_1_5'
+        - 'ANSIBLE_TEST_1_6'
+        - 'ANSIBLE_TEST_1_7'
+        - 'ANSIBLE_TEST_1_8'
+        - 'ANSIBLE_TEST_1_9'
+        - 'ANSIBLE_TEST_1_10'
+        - 'ANSIBLE_TEST_DUMMY_1_1'

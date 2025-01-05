@@ -54,6 +54,8 @@ echo ''
 run_test 'list' 0
 run_test 'reload' 0
 run_test 'service' 1
+run_test 'package' 1
+run_test '1_dependencies' 0
 run_test 'alias' 1
 run_test 'alias_multi' 1
 run_test 'alias_purge' 0
@@ -154,7 +156,11 @@ run_test 'dhcrelay_relay' 1
 run_test 'dhcp_controlagent' 1
 run_test 'dhcp_reservation' 1
 run_test 'system' 1
-run_test 'package' 1
+run_test 'acme_general' 1
+run_test 'acme_account' 1
+run_test 'acme_validation' 1
+run_test 'acme_action' 1
+run_test 'acme_certificate' 0  # check mode => dependency on other acme-entries
 
 echo ''
 echo '##############################'
