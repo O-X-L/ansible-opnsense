@@ -1,0 +1,24 @@
+---
+
+- name: Installing Test-Dependencies
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.package:
+      timeout: 120
+
+  tasks:
+    - name: Installing packages
+      ansibleguy.opnsense.package:
+        name: "{{ item }}"
+        action: 'install'
+      loop:
+        - 'os-squid'
+        - 'os-frr'
+        - 'os-bind'
+        - 'os-acme-client'

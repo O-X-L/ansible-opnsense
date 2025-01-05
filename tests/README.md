@@ -21,6 +21,9 @@ Some tests need packages to be pre-installed:
 * webproxy_* - `os-squid`
 * frr_* - `os-frr`
 * bind_* - `os-bind`
+* acme_* - `os-acme-client`
+
+See also: `1_dependencies.yml`
 
 ### Interfaces
 

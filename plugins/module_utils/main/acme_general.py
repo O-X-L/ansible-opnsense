@@ -35,7 +35,6 @@ class General(GeneralModule):
     }
     FIELDS_TYPING = {
         'bool': ['enabled', 'auto_renewal', 'haproxy_integration', 'show_intro'],
-        'list': [],
         'select': ['log_level'],
         'int': ['challenge_port', 'tls_challenge_port', 'restart_timeout'],
     }
@@ -49,10 +48,3 @@ class General(GeneralModule):
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
         self.settings = {}
-
-    def check2(self) -> None:
-        if self.p['enabled']:
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-
-        self.settings = self._search_call()
-        self._build_diff()

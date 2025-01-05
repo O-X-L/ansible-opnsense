@@ -314,18 +314,18 @@
 
     - name: Cleanup Dummy Account
       ansibleguy.opnsense.acme_account:
-        name: ANSIBLE_TEST_DUMMY_1_1
+        name: 'ANSIBLE_TEST_DUMMY_1_1'
         state: 'absent'
       diff: false
 
     - name: Cleanup Dummy Validation
       ansibleguy.opnsense.acme_validation:
-        name: ANSIBLE_TEST_DUMMY_1_1
+        name: 'ANSIBLE_TEST_DUMMY_1_1'
         state: 'absent'
       diff: false
 
     - name: Cleanup Dummy Action
       ansibleguy.opnsense.acme_action:
-        name: ANSIBLE_TEST_DUMMY_1_1
+        name: 'ANSIBLE_TEST_DUMMY_1_1'
         state: 'absent'
       diff: false

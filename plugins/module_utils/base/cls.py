@@ -48,6 +48,9 @@ class BaseModule:
         if self.p['state'] == 'present':
             self.r['diff']['after'] = self.b.build_diff(data=self.p)
 
+    def check(self) -> None:
+        self._base_check()
+
     def get_existing(self) -> list:
         return self.b.get_existing()
 

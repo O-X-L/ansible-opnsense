@@ -20,8 +20,6 @@ class Certificate(BaseModule):
     API_MOD = 'acmeclient'
     API_CONT = 'certificates'
     API_CONT_GET = 'settings'
-    API_CONT_REL = 'service'
-    API_CMD_REL = 'reconfigure'
     FIELDS_CHANGE = [
         'name', 'alt_names', 'account', 'validation', 'restart_actions', 'auto_renewal', 'renew_interval', 'aliasmode'
     ]
@@ -68,33 +66,40 @@ class Certificate(BaseModule):
             validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
 
             if self.p['aliasmode'] == 'domain':
-                self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['domainalias']
+                self.FIELDS_CHANGE.append('domainalias')
+
             elif self.p['aliasmode'] == 'challenge':
-                self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['challengealias']
+                self.FIELDS_CHANGE.append('challengealias')
 
         self._base_check()
 
         if self.p['state'] == 'present':
-            self.resolve_relations()
+            self._resolve_relations()
 
-    def resolve_relations(self) -> None:
+    def _resolve_relations(self) -> None:
         if is_unset(self.p['account']):
             self.m.fail_json('You need to provide an account to create/update certificates!')
+
         else:
-            for key, values in self.existing_accounts.items():
-                if values['name'] == self.p['account']:
-                    self.p['account'] = key
-                    break
+            if len(self.existing_accounts) > 0:
+                for key, values in self.existing_accounts.items():
+                    if values['name'] == self.p['account']:
+                        self.p['account'] = key
+                        break
+
             else:
                 self.m.fail_json(f"Account {self.p['account']} does not exist! {self.existing_accounts}")
 
         if is_unset(self.p['validation']):
             self.m.fail_json('You need to provide the validation to create/update certificates!')
+
         else:
-            for key, values in self.existing_validations.items():
-                if values['name'] == self.p['validation']:
-                    self.p['validation'] = key
-                    break
+            if len(self.existing_validations) > 0:
+                for key, values in self.existing_validations.items():
+                    if values['name'] == self.p['validation']:
+                        self.p['validation'] = key
+                        break
+
             else:
                 self.m.fail_json(f"Validation {self.p['validation']} does not exist!")
 
@@ -117,16 +122,6 @@ class Certificate(BaseModule):
                 for action in self.p['restart_actions']
             ]
 
-    def reload(self) -> dict:
+    def reload(self):
         # no reload required
         pass
-
-    def _search_call(self) -> list:
-        result = self.b.search()
-
-        # Reset controller and module
-        cont_get, mod_get = self.API_CONT, self.API_MOD
-        self.call_cnf['controller'] = cont_get
-        self.call_cnf['module'] = mod_get
-
-        return result

@@ -197,6 +197,9 @@ class Base:
                 self.i.call_cnf['params'] = [match[self.field_pk]]
 
     def process(self) -> None:
+        self.i.call_cnf['controller'] = self.i.API_CONT
+        self.i.call_cnf['module'] = self.i.API_MOD
+
         if 'state' in self.i.p and self.i.p['state'] == 'absent':
             if self.i.exists:
                 if hasattr(self.i, 'delete'):

@@ -61,7 +61,6 @@
         restart_timeout: 600
         log_level: normal
         show_intro: true
-        debug: true
       register: opn2
       failed_when: >
         opn2.failed or
@@ -82,3 +81,7 @@
         opn3.failed or
         opn3.changed
       when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.acme_general:
+        enabled: false

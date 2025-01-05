@@ -20,8 +20,6 @@ class Validation(BaseModule):
     API_MOD = 'acmeclient'
     API_CONT = 'validations'
     API_CONT_GET = 'settings'
-    API_CONT_REL = 'service'
-    API_CMD_REL = 'reconfigure'
     FIELDS_CHANGE = ['description', 'method']
     FIELDS_ALL = [
         'name',
@@ -80,12 +78,15 @@ class Validation(BaseModule):
         'http_haproxy_frontends': 'http_haproxyFrontends',
     }
     FIELDS_TYPING = {
-        'bool': ['enabled', 'http_opn_autodiscovery', 'http_haproxy_inject', 'tlsalpn_acme_autodiscovery'],
+        'bool': [
+            'enabled', 'http_opn_autodiscovery', 'http_haproxy_inject', 'tlsalpn_acme_autodiscovery',
+            'dns_opnsense_insecure', 'dns_ispconfig_insecure',
+        ],
         'list': ['http_opn_ipaddresses', 'http_haproxy_frontends', 'tlsalpn_acme_ipaddresses'],
-        'select': ['method', 'http_service', 'http_opn_interface', 'tlsalpn_acme_interface', 'dns_service'],
-        'int': [],
-    }
-    INT_VALIDATIONS = {
+        'select': [
+            'method', 'http_service', 'http_opn_interface', 'tlsalpn_acme_interface', 'dns_service',
+            'dns_kas_authtype',
+        ],
     }
     EXIST_ATTR = 'validation'
 
@@ -97,7 +98,6 @@ class Validation(BaseModule):
         if self.p['state'] == 'present':
             if is_unset(self.p['method']):
                 self.m.fail_json('You need to provide method to create/update validations!')
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
 
             if self.p['method'] == 'http01':
                 self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['http_service']
@@ -107,36 +107,30 @@ class Validation(BaseModule):
                         for field in self.FIELDS_ALL
                         if field.startswith('http_opn')
                     ]
+
                 else:
                     self.FIELDS_CHANGE = self.FIELDS_CHANGE + [
                         field
                         for field in self.FIELDS_ALL
                         if field.startswith('http_haproxy')
                     ]
+
             elif self.p['method'] == 'tlsalpn01':
                 self.FIELDS_CHANGE = self.FIELDS_CHANGE + [
                     field
                     for field in self.FIELDS_ALL
                     if field.startswith('tlsalpn_')
                 ]
+
             elif self.p['method'] == 'dns01':
                 self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['dns_service'] + [
                     field
                     for field in self.FIELDS_ALL
                     if field.startswith(self.p['dns_service'])
                 ]
+
         self._base_check()
 
-    def reload(self) -> dict:
+    def reload(self):
         # no reload required
         pass
-
-    def _search_call(self) -> list:
-        result = self.b.search()
-
-        # Reset controller and module
-        cont_get, mod_get = self.API_CONT, self.API_MOD
-        self.call_cnf['controller'] = cont_get
-        self.call_cnf['module'] = mod_get
-
-        return result

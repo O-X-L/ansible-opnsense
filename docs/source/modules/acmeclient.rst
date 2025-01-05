@@ -8,7 +8,12 @@ ACME Client
 
 **STATE**: unstable
 
-**TESTS**: `acme_certificate <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_certificate.yml>`_
+**TESTS**: `acme_account <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_account.yml>`_ |
+`acme_action <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_action.yml>`_ |
+`acme_certificate <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_certificate.yml>`_ |
+`acme_general <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_general.yml>`_ |
+`acme_validation <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_validation.yml>`_
+
 
 **API Docs**: `Plugins - Acmeclient <https://docs.opnsense.org/development/api/plugins/acmeclient.html>`_
 
@@ -16,7 +21,7 @@ ACME Client
 Contribution
 ************
 
-Thanks to `@jiuka <https://github.com/jiuka>`_ for developing this module!
+Thanks to `@jiuka <https://github.com/jiuka>`_ for developing these modules!
 
 Prerequisites
 *************
@@ -27,7 +32,9 @@ You need to install the FRR plugin:
 os-acme-client
 ```
 
-You can also install it using the package module.
+You can also install it using the `package module <https://opnsense.ansibleguy.net/modules/package.html>`_.
+
+----
 
 Definition
 **********
@@ -35,7 +42,7 @@ Definition
 .. include:: ../_include/param_basic.rst
 
 ansibleguy.opnsense.acme_general
-====================================
+================================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -400,6 +407,8 @@ ansibleguy.opnsense.acme_certificate
 
 .. include:: ../_include/param_basic.rst
 
+----
+
 Usage
 *****
 
@@ -411,6 +420,7 @@ Setting up this plugin for the first time involves the following steps
  * Add **actions** / automations using the acme_action module. This is optional, but recommended when using short-lived certificates. Automations allow to automatically run tasks when a certificate was created or renewed.
  * Create **certificates**: Finally create the certificates using the acme_certificate module.
 
+----
 
 Examples
 ********

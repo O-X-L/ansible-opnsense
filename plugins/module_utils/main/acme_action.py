@@ -20,8 +20,6 @@ class Action(BaseModule):
     API_MOD = 'acmeclient'
     API_CONT = 'actions'
     API_CONT_GET = 'settings'
-    API_CONT_REL = 'service'
-    API_CMD_REL = 'reconfigure'
     FIELDS_CHANGE = ['type']
     FIELDS_ALL = [
         'enabled', 'name', 'description',
@@ -53,13 +51,12 @@ class Action(BaseModule):
         'acme_unifi_keystore',
     ]
     FIELDS_ALL.extend(FIELDS_CHANGE)
-    FIELDS_TRANSLATE = {
-        #'field1': 'apifield1',
-    }
     FIELDS_TYPING = {
         'bool': ['enabled', 'acme_vault_kvv2', 'acme_synology_dsm_create'],
-        'list': [],
-        'select': ['type', 'remote_ssh_identity_type', 'acme_synology_dsm_scheme', 'acme_truenas_scheme'],
+        'select': [
+            'type', 'remote_ssh_identity_type', 'acme_synology_dsm_scheme', 'acme_truenas_scheme',
+            'sftp_identity_type',
+        ],
         'int': ['sftp_port', 'remote_ssh_port', 'acme_proxmoxve_port', 'acme_synology_dsm_port'],
     }
     INT_VALIDATIONS = {
@@ -75,6 +72,7 @@ class Action(BaseModule):
         if self.p['state'] == 'present':
             if is_unset(self.p['type']):
                 self.m.fail_json('You need to provide type to create/update actions!')
+
             validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
 
             if self.p['type'].startswith('acme_'):
@@ -84,16 +82,6 @@ class Action(BaseModule):
 
         self._base_check()
 
-    def reload(self) -> dict:
+    def reload(self):
         # no reload required
         pass
-
-    def _search_call(self) -> list:
-        result = self.b.search()
-
-        # Reset controller and module
-        cont_get, mod_get = self.API_CONT, self.API_MOD
-        self.call_cnf['controller'] = cont_get
-        self.call_cnf['module'] = mod_get
-
-        return result

@@ -52,7 +52,7 @@ def run_module():
             description='Choose the interface where this IP address is currently configured.',
         ),
         http_opn_ipaddresses=dict(
-            type='list', required=False, elements='str',
+            type='list', required=False, elements='str', default=[],
             description='Enter the all of these IP addresses here.',
         ),
         http_haproxy_inject=dict(
@@ -76,7 +76,7 @@ def run_module():
             description='Choose the interface where this IP address is currently configured.',
         ),
         tlsalpn_acme_ipaddresses=dict(
-            type='list', required=False, elements='str',
+            type='list', required=False, elements='str', default=[],
             description='Enter the all of these IP addresses here.',
         ),
         dns_service=dict(

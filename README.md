@@ -93,8 +93,8 @@ not implemented => development => [testing](https://github.com/ansibleguy/collec
 ### Implemented
 
 
-| Function                  | Module                                                                 | Usage                                                                                                                        | State    |
-|:--------------------------|:-----------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------|:---------|
+| Function                  | Module                                                                 | Usage                                                                                                              | State    |
+|:--------------------------|:-----------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------|:---------|
 | **Base**                  | ansibleguy.opnsense.list                                               | [Docs](https://opnsense.ansibleguy.net/modules/2_list.html)                                                        | stable   |
 | **Base**                  | ansibleguy.opnsense.reload                                             | [Docs](https://opnsense.ansibleguy.net/modules/2_reload.html)                                                      | stable   |
 | **Services**              | ansibleguy.opnsense.service                                            | [Docs](https://opnsense.ansibleguy.net/modules/service.html)                                                       | stable   |
@@ -195,6 +195,11 @@ not implemented => development => [testing](https://github.com/ansibleguy/collec
 | **DHCP Relay**            | ansibleguy.opnsense.dhcrelay_destination                               | [Docs](https://opnsense.ansibleguy.net/modules/dhcrelay_destination.html)                                          | unstable |
 | **DHCP Reservation**      | ansibleguy.opnsense.dhcp_reservation                                   | [Docs](https://opnsense.ansibleguy.net/modules/dhcp.html)                                                          | unstable |
 | **DHCP Controlagent**     | ansibleguy.opnsense.dhcp_controlagent                                  | [Docs](https://opnsense.ansibleguy.net/modules/dhcp.html)                                                          | unstable |
+| **ACME (Certificates)**   | ansibleguy.opnsense.acme_account                                       | [Docs](https://opnsense.ansibleguy.net/modules/acmeclient.html)                                                    | unstable |
+| **ACME (Certificates)**   | ansibleguy.opnsense.acme_action                                        | [Docs](https://opnsense.ansibleguy.net/modules/acmeclient.html)                                                    | unstable |
+| **ACME (Certificates)**   | ansibleguy.opnsense.acme_general                                       | [Docs](https://opnsense.ansibleguy.net/modules/acmeclient.html)                                                    | unstable |
+| **ACME (Certificates)**   | ansibleguy.opnsense.acme_validation                                    | [Docs](https://opnsense.ansibleguy.net/modules/acmeclient.html)                                                    | unstable |
+| **ACME (Certificates)**   | ansibleguy.opnsense.acme_certificate                                   | [Docs](https://opnsense.ansibleguy.net/modules/acmeclient.html)                                                    | unstable |
 
 
 ### Roadmap

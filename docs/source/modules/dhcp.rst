@@ -18,7 +18,7 @@ DHCP
 Contribution
 ************
 
-Thanks to `@KalleDK <https://github.com/KalleDK>`_ for developing these module!
+Thanks to `@KalleDK <https://github.com/KalleDK>`_ for developing these modules!
 
 ----
 
