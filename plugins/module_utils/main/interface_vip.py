@@ -20,6 +20,7 @@ class Vip(BaseModule):
     FIELDS_CHANGE = [
         'address', 'mode', 'expand', 'bind', 'gateway', 'password', 'vhid',
         'advertising_base', 'advertising_skew', 'description', 'interface',
+        'peer', 'peer6',
     ]
     FIELDS_ALL = FIELDS_CHANGE
     FIELDS_TRANSLATE = {

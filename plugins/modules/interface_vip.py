@@ -51,6 +51,18 @@ def run_module():
             description='For some interface types a gateway is required to configure an '
                         'IP Alias (ppp/pppoe/tun), leave this field empty for all other interface types'
         ),
+        peer=dict(
+            type='str', required=False,
+            description='Destination address to use when announcing, defaults to multicast, '
+                        'but can be configured as unicast address when multicast can not be '
+                        'used (for example with cloud providers)'
+        ),
+        peer6=dict(
+            type='str', required=False,
+            description='Destination address to use when announcing, defaults to multicast, '
+                        'but can be configured as unicast address when multicast can not be '
+                        'used (for example with cloud providers)'
+        ),
         password=dict(
             type='str', required=False, aliases=['pwd'],
             description='VHID group password', no_log=True,
