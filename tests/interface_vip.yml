@@ -94,6 +94,77 @@
         not opn7.changed
       when: not ansible_check_mode
 
+    - name: Adding 3 - unicast peer
+      ansibleguy.opnsense.interface_vip:
+        interface: 'opt1'
+        address: '192.168.2.1/24'
+        mode: 'carp'
+        peer: '192.168.3.3'
+        vhid: 10
+        password: 'top_secret'
+        advertising_base: 2
+        advertising_skew: 1
+        bind: false
+      register: opn_carpuni1
+      failed_when: >
+        opn_carpuni1.failed or
+        not opn_carpuni1.changed
+
+    - name: Removing 3
+      ansibleguy.opnsense.interface_vip:
+        interface: 'opt1'
+        address: '192.168.2.1/24'
+        state: 'absent'
+      register: opn_carpuni2
+      failed_when: >
+        opn_carpuni2.failed or
+        not opn_carpuni2.changed
+      when: not ansible_check_mode
+
+    - name: Adding 4 - unicast peer6
+      ansibleguy.opnsense.interface_vip:
+        interface: 'opt1'
+        address: '2001:db8::1/128'
+        mode: 'carp'
+        peer6: '2001:db8::3'
+        vhid: 10
+        password: 'top_secret'
+        advertising_base: 2
+        advertising_skew: 1
+        bind: false
+      register: opn_carpuni3
+      failed_when: >
+        opn_carpuni3.failed or
+        not opn_carpuni3.changed
+
+    - name: Adding 4 - nothing changed
+      ansibleguy.opnsense.interface_vip:
+        interface: 'opt1'
+        address: '2001:db8::1/128'
+        mode: 'carp'
+        peer6: '2001:db8::3'
+        vhid: 10
+        password: 'top_secret'
+        advertising_base: 2
+        advertising_skew: 1
+        bind: false
+      register: opn_carpuni4
+      failed_when: >
+        opn_carpuni4.failed or
+        opn_carpuni4.changed
+      when: not ansible_check_mode
+
+    - name: Removing 4
+      ansibleguy.opnsense.interface_vip:
+        interface: 'opt1'
+        address: '2001:db8::1/128'
+        state: 'absent'
+      register: opn_carpuni4
+      failed_when: >
+        opn_carpuni4.failed or
+        not opn_carpuni4.changed
+      when: not ansible_check_mode
+
     - name: Listing
       ansibleguy.opnsense.list:
       register: opn8
@@ -110,6 +181,7 @@
       loop:
         - {int: 'lan', ip: '192.168.1.1/30'}
         - {int: 'opt1', ip: '192.168.2.1/24'}
+        - {int: 'opt1', ip: '2001:db8::1/128'}
       when: not ansible_check_mode
 
     - name: Listing
