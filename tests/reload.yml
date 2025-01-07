@@ -37,4 +37,5 @@
         - 'ids'
         - 'openvpn'
         - 'dhcrelay'
+        - 'dhcp'
         # - 'gateway'  # issue 88
