@@ -21,18 +21,29 @@ try:
 except MODULE_EXCEPTIONS:
     module_dependency_error()
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/nginx.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/nginx.html'
+# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/dhcp.html'
+# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/dhcp.html'
 
 
 def run_module():
     module_args = dict(
-        interfaces=dict(type='str', required=False, default='LAN',
+        interfaces=dict(
+            type='list', elements='str', required=False, default=[], aliases=['ints'],
             description='Comma separated list of network interfaces to listen on for DHCP requests'
         ),
-        dhcp_socket_type=dict(type='str', required=False, default='raw', choices=['raw', 'udp'], description='Socket type used for DHCP communication'),
-        fwrules=dict(type='bool', required=False, default=True, description='Automatically add a basic set of firewall rules to allow dhcp traffic, more fine grained controls can be offered manually when disabling this option'),
-        valid_lifetime=dict(type='int', required=False, default=4000, description='Defines how long the addresses (leases) given out by the server are valid (in seconds)'),
+        socket_type=dict(
+            type='str', required=False, default='raw', choices=['raw', 'udp'], aliases=['dhcp_socket_type'],
+            description='Socket type used for DHCP communication',
+        ),
+        fw_rules=dict(
+            type='bool', required=False, default=True, aliases=['fwrules', 'rules'],
+            description='Automatically add a basic set of firewall rules to allow dhcp traffic, '
+                        'more fine grained controls can be offered manually when disabling this option',
+        ),
+        lifetime=dict(
+            type='int', required=False, default=4000, aliases=['valid_lifetime'],
+            description='Defines how long the addresses (leases) given out by the server are valid (in seconds)',
+        ),
         **EN_ONLY_MOD_ARG,
         **RELOAD_MOD_ARG,
         **OPN_MOD_ARGS,

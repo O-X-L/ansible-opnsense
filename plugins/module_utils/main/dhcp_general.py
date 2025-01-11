@@ -6,7 +6,6 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 
 
 class General(GeneralModule):
-    FIELD_ID = 'name'
     CMDS = {
         'set': 'set',
         'search': 'get'
@@ -17,17 +16,22 @@ class General(GeneralModule):
     API_CONT = 'dhcpv4'
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
-        'enabled', 'interfaces', 'dhcp_socket_type', 'fwrules', 'valid_lifetime'
+        'enabled', 'interfaces', 'socket_type', 'fw_rules', 'lifetime'
     ]
-
     FIELDS_ALL = FIELDS_CHANGE
-    FIELDS_TYPING = {
-        'bool': ['enabled', 'fwrules',],
-        'int': ['valid_lifetime'],
+    FIELDS_TRANSLATE = {
+        'lifetime': 'valid_lifetime',
+        'fw_rules': 'fwrules',
+        'socket_type': 'dhcp_socket_type',
     }
-
+    FIELDS_TYPING = {
+        'bool': ['enabled', 'fw_rules'],
+        'int': ['lifetime'],
+        'list': ['interfaces'],
+        'select': ['socket_type'],
+    }
     INT_VALIDATIONS = {
-        'valid_lifetime': {'min': 0},
+        'lifetime': {'min': 0},
     }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):

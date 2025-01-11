@@ -407,7 +407,6 @@ def run_module():
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.acme_account import \
                 Account as Target_Obj
 
-<<<<<<< Updated upstream
         elif target == 'acme_validation':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.acme_validation import \
                 Validation as Target_Obj
@@ -419,11 +418,10 @@ def run_module():
         elif target == 'acme_certificate':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.acme_certificate import \
                 Certificate as Target_Obj
-=======
+
         elif target == 'dhcp_general':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dhcp_general import \
                 General as Target_Obj
->>>>>>> Stashed changes
 
     except AttributeError:
         module_dependency_error()
