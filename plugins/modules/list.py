@@ -423,7 +423,6 @@ def run_module():
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dhcp_subnet_v4 import \
                 SubnetV4 as Target_Obj
 
-
     except AttributeError:
         module_dependency_error()
 

@@ -154,6 +154,7 @@ run_test 'nginx_upstream_server' 1
 run_test 'dhcrelay_destination' 1
 run_test 'dhcrelay_relay' 1
 run_test 'dhcp_controlagent' 1
+run_test 'dhcp_subnet' 1
 run_test 'dhcp_reservation' 1
 run_test 'system' 1
 run_test 'acme_general' 1
