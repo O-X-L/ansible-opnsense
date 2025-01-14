@@ -1,21 +1,38 @@
 from re import match as regex_match
 from typing import Callable
+from ipaddress import ip_network, ip_address
 
 from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
     BUILTIN_ALIASES, BUILTIN_INTERFACE_ALIASES_REG
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    is_valid_mac_address, is_valid_url
+    is_valid_mac_address, is_valid_url, is_valid_domain
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
+    get_selected
 
 
-def validate_values(cnf: dict, error_func: Callable) -> None:
+def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> None:
     v_type = cnf['type']
+
+    if isinstance(existing_entries, dict):
+        existing_entries = {
+            a['name']: get_selected(a['type'])
+            for a in existing_entries.values()
+        }
+    else:
+        existing_entries = {
+            a['name']: a['type']
+            for a in existing_entries
+        }
 
     for value in cnf['content']:
         error = f"Value '{value}' is invalid for type '{v_type}'!"
 
         if v_type == 'port':
+            if value in existing_entries and existing_entries[value] == 'port':
+                continue
+
             if str(value).find(':') != -1:
                 to_check = value.split(':')
 
@@ -39,24 +56,32 @@ def validate_values(cnf: dict, error_func: Callable) -> None:
             if not is_valid_url(value):
                 error_func(error)
 
-        # unable to check because of alias-nesting support
-        # if v_type == 'network':
-        #     value = value[1:] if value.startswith('!') else value
-        #
-        #     try:
-        #         ip_network(value)
-        #
-        #     except ValueError:
-        #         error_func(error)
+        elif v_type == 'network':
+            if value in existing_entries and existing_entries[value] in ['network', 'host']:
+                continue
 
-        # unable to check because of alias-nesting support and ip-ranges
-        # if v_type == 'host':
-        #     try:
-        #         ip_address(value)
-        #
-        #     except ValueError:
-        #         if not is_valid_domain(value):
-        #             error_func(error)
+            value = value[1:] if value.startswith('!') else value
+
+            try:
+                ip_network(value)
+
+            except ValueError:
+                error_func(error)
+
+        elif v_type == 'host':
+            if value in existing_entries and existing_entries[value] in ['network', 'host']:
+                continue
+
+            if is_valid_domain(value):
+                continue
+
+            for _value in value.split('-', 1):
+                _value = _value[1:] if _value.startswith('!') else _value
+                try:
+                    ip_address(_value)
+
+                except ValueError:
+                    error_func(error)
 
 
 def check_purge_filter(module: AnsibleModule, existing_rule: dict) -> bool:

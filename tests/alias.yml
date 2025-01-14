@@ -138,6 +138,8 @@
         name: 'ANSIBLE_TEST_1_2_HOST3'
         type: 'host'
         content: ['ANSIBLE_TEST_1_2_HOST2', 'ANSIBLE_TEST_1_2_HOST1']
+      register: opnhost2
+      failed_when: opnhost2.failed != ansible_check_mode
 
     - name: Adding ip range
       ansibleguy.opnsense.alias:
@@ -145,16 +147,21 @@
         type: 'host'
         content: '1.1.1.1-1.1.1.4'
 
-    # NOTE: cannot fail as validation was disabled because of alias-nesting and ip-range support
-    #    - name: Adding invalid host
-    #      ansibleguy.opnsense.alias:
-    #        name: 'ANSIBLE_TEST_1_2_HOST3'
-    #        type: 'host'
-    #        content: "{{ item }}"
-    #      register: opnhost1
-    #      failed_when: not opnhost1.failed
-    #      loop:
-    #        - ['1.1.1.n']
+    - name: Adding exclusion
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_HOST5'
+        type: 'host'
+        content: '!1.1.1.1'
+
+    - name: Adding invalid host
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_HOST3'
+        type: 'host'
+        content: "{{ item }}"
+      register: opnhost1
+      failed_when: not opnhost1.failed
+      loop:
+        - ['1.1.1.n']
 
     # networks
 
@@ -170,16 +177,23 @@
         type: 'network'
         content: ['192.168.0.0/24', '192.168.1.0/24']
 
-    # NOTE: cannot fail as validation was disabled because of alias-nesting support
-    #    - name: Adding invalid network
-    #      ansibleguy.opnsense.alias:
-    #        name: 'ANSIBLE_TEST_1_2_NET3'
-    #        type: 'network'
-    #        content: "{{ item }}"
-    #      register: opnnet1
-    #      failed_when: not opnnet1.failed
-    #      loop:
-    #        - ['192.168.0.0/240']
+    - name: Adding invalid network
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_NET3'
+        type: 'network'
+        content: "{{ item }}"
+      register: opnnet1
+      failed_when: not opnnet1.failed
+      loop:
+        - ['192.168.0.0/240']
+
+    - name: Adding nested network
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_NET3'
+        type: 'network'
+        content: ['ANSIBLE_TEST_1_2_NET1', 'ANSIBLE_TEST_1_2_NET2']
+      register: opnnet2
+      failed_when: opnnet2.failed != ansible_check_mode
 
     # ports
 
@@ -210,6 +224,30 @@
         name: 'ANSIBLE_TEST_1_2_PORT4'
         type: 'port'
         content: '9000:9500'
+
+    - name: Adding nested ports
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_PORT5'
+        type: 'port'
+        content:
+          - 'ANSIBLE_TEST_1_2_PORT1'
+          - 'ANSIBLE_TEST_1_2_PORT2'
+      register: opnport2
+      failed_when: opnport2.failed != ansible_check_mode
+
+    # mac
+
+    - name: Adding mac
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_MAC1'
+        type: 'mac'
+        content: f4:90:ea:00:00:01
+
+    - name: Adding multiple macs
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_MAC2'
+        type: 'mac'
+        content: ['f4:90:ea:00:00:01', 'f4:90:ea:00:00:02']
 
     # urls
 
@@ -336,13 +374,18 @@
         - 'ANSIBLE_TEST_1_2_URL1'
         - 'ANSIBLE_TEST_1_2_URL2'
         - 'ANSIBLE_TEST_1_2_URL3'
+        - 'ANSIBLE_TEST_1_2_PORT5'
         - 'ANSIBLE_TEST_1_2_PORT1'
         - 'ANSIBLE_TEST_1_2_PORT2'
         - 'ANSIBLE_TEST_1_2_PORT3'
         - 'ANSIBLE_TEST_1_2_PORT4'
+        - 'ANSIBLE_TEST_1_2_MAC1'
+        - 'ANSIBLE_TEST_1_2_MAC2'
+        - 'ANSIBLE_TEST_1_2_NET3'
         - 'ANSIBLE_TEST_1_2_NET1'
         - 'ANSIBLE_TEST_1_2_NET2'
-        - 'ANSIBLE_TEST_1_2_NET3'
+        - 'ANSIBLE_TEST_1_2_NET4'
+        - 'ANSIBLE_TEST_1_2_HOST5'
         - 'ANSIBLE_TEST_1_2_HOST4'
         - 'ANSIBLE_TEST_1_2_HOST3'
         - 'ANSIBLE_TEST_1_2_HOST2'

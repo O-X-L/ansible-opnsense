@@ -66,10 +66,10 @@ class Alias(BaseModule):
                 f"must be shorter than {self.MAX_ALIAS_LEN} characters",
             )
 
-        if self.p['state'] == 'present':
-            validate_values(error_func=self._error, cnf=self.p)
-
         self.b.find(match_fields=[self.FIELD_ID])
+
+        if self.p['state'] == 'present':
+            validate_values(error_func=self._error, cnf=self.p, existing_entries=self.existing_entries)
 
         if self.p['state'] == 'present':
             self.r['diff']['after'] = self.b.build_diff(data=self.p)
