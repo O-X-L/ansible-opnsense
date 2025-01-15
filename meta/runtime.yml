@@ -134,6 +134,7 @@ action_groups:
     - ansibleguy.opnsense.acme_action
     - ansibleguy.opnsense.acme_certificate
   all:
+    - ansibleguy.opnsense.category
     - metadata:
         extend_group:
           - ansibleguy.opnsense.alias

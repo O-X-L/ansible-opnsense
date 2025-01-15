@@ -37,7 +37,7 @@ TARGETS = [
     'unbound_acl', 'ids_general', 'ids_policy', 'ids_rule', 'ids_ruleset', 'ids_user_rule', 'ids_policy_rule',
     'openvpn_instance', 'openvpn_static_key', 'openvpn_client_override', 'dhcrelay_destination', 'dhcrelay_relay',
     'interface_lagg', 'interface_loopback', 'unbound_dnsbl', 'dhcp_reservation', 'acme_general', 'acme_account',
-    'acme_validation', 'acme_action', 'acme_certificate',
+    'acme_validation', 'acme_action', 'acme_certificate', 'category',
 ]
 
 
@@ -418,6 +418,10 @@ def run_module():
         elif target == 'acme_certificate':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.acme_certificate import \
                 Certificate as Target_Obj
+
+        elif target == 'category':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.category import \
+                Category as Target_Obj
 
     except AttributeError:
         module_dependency_error()
