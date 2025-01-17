@@ -19,7 +19,8 @@ ALIAS_MOD_ARG_ALIASES = {
     'description': ['desc'],
     'state': ['st'],
     'enabled': ['en'],
-    'interface': ['int', 'if']
+    'interface': ['int', 'if'],
+    'categories': ['cat'],
 }
 
 ALIAS_MOD_ARGS = dict(
@@ -45,6 +46,11 @@ ALIAS_MOD_ARGS = dict(
         type='str', default=ALIAS_DEFAULTS['interface'],
         aliases=ALIAS_MOD_ARG_ALIASES['interface'], required=False,
         description=' Select the interface for the V6 dynamic IP.',
+    ),
+    categories=dict(
+        type='list', requird=False,
+        aliases=ALIAS_MOD_ARG_ALIASES['categories'], elements='str',
+        description='Select the categories for the alias.',
     ),
     **STATE_MOD_ARG,
     **OPN_MOD_ARGS,

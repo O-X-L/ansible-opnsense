@@ -23,7 +23,7 @@ class Alias(BaseModule):
     API_KEY_PATH = 'alias.aliases.alias'
     API_MOD = 'firewall'
     API_CONT = 'alias'
-    FIELDS_CHANGE = ['content', 'description']
+    FIELDS_CHANGE = ['content', 'description', 'categories']
     FIELDS_ALL = ['name', 'type', 'enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
     FIELDS_ALL.extend(['updatefreq_days', 'interface'])
@@ -33,6 +33,7 @@ class Alias(BaseModule):
     FIELDS_TYPING = {
         'bool': ['enabled'],
         'select': ['type', 'interface'],
+        'list': ['categories'],
     }
     EXIST_ATTR = 'alias'
     JOIN_CHAR = '\n'
@@ -68,6 +69,18 @@ class Alias(BaseModule):
 
         if self.p['state'] == 'present':
             validate_values(error_func=self._error, cnf=self.p)
+
+            if not is_unset(self.p['categories']):
+                self.existing_categories = self.s.get(cnf={
+                    **self.call_cnf,
+                    'controller': 'category',
+                    'command': 'get',
+                })
+                self.p['categories'] = [
+                    k
+                    for k,v in self.existing_categories['category']['categories']['category'].items()
+                    if v['name'] in self.p['categories']
+                ]
 
         self.b.find(match_fields=[self.FIELD_ID])
 
@@ -139,3 +152,7 @@ class Alias(BaseModule):
                 simplify_func=self.simplify_existing,
             )
         )
+
+    def _build_request(self) -> dict:
+        self.p['categories'] = ','.join(self.p['categories'])
+        return self.b.build_request()

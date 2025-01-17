@@ -1,0 +1,240 @@
+---
+- name: Setup Test dummy
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  tasks:
+    - name: Adding dummy alias
+      ansibleguy.opnsense.category:
+        name: 'ANSIBLE_TEST_DUMMY_1_1'
+        color: ff0000
+
+    - name: Adding dummy alias
+      ansibleguy.opnsense.category:
+        name: 'ANSIBLE_TEST_DUMMY_1_2'
+        color: 00ff00
+
+- name: Testing Alias - category
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  tasks:
+    - name: Adding 1
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_1'
+        categories: 'ANSIBLE_TEST_DUMMY_1_1'
+        content: '1.1.1.1'
+      register: opn1
+      failed_when: >
+        not opn1.changed or
+        opn1.failed
+
+    - name: Nothing changed
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_1'
+        categories: 'ANSIBLE_TEST_DUMMY_1_1'
+        content: '1.1.1.1'
+      register: opn3
+      failed_when: >
+        opn3.changed or
+        opn3.failed
+
+    - name: Changing
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_1'
+        categories:
+          - 'ANSIBLE_TEST_DUMMY_1_1'
+          - 'ANSIBLE_TEST_DUMMY_1_2'
+        content: '1.1.1.1'
+      register: opn4
+      failed_when: >
+        not opn4.changed or
+        opn4.failed
+
+    - name: Changing
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_1'
+        categories:
+          - 'ANSIBLE_TEST_DUMMY_1_2'
+        content: '1.1.1.1'
+      register: opn4
+      failed_when: >
+        not opn4.changed or
+        opn4.failed
+
+    - name: Removing
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      register: opn4
+      failed_when: >
+        not opn4.changed or
+        opn4.failed
+
+- name: Testing Multiple Alias - category
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  tasks:
+    - name: Adding
+      ansibleguy.opnsense.alias_multi:
+        aliases:
+          ANSIBLE_TEST_2_1:
+            content: '192.168.1.1'
+            categories: 'ANSIBLE_TEST_DUMMY_1_1'
+          ANSIBLE_TEST_2_2:
+            content: '192.168.1.2'
+            categories: 'ANSIBLE_TEST_DUMMY_1_1'
+        reload: false  # geoip and urltable take LONG time
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+
+    - name: Changing
+      ansibleguy.opnsense.alias_multi:
+        aliases:
+          ANSIBLE_TEST_2_1:
+            content: '192.168.1.1'
+            categories: 'ANSIBLE_TEST_DUMMY_1_2'
+          ANSIBLE_TEST_2_2:
+            content: '192.168.1.2'
+            categories: ['ANSIBLE_TEST_DUMMY_1_1', 'ANSIBLE_TEST_DUMMY_1_2']
+        reload: false  # geoip and urltable take LONG time
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+
+    - name: Not Changing
+      ansibleguy.opnsense.alias_multi:
+        aliases:
+          ANSIBLE_TEST_2_1:
+            content: '192.168.1.1'
+            categories: 'ANSIBLE_TEST_DUMMY_1_2'
+          ANSIBLE_TEST_2_2:
+            content: '192.168.1.2'
+            categories: ['ANSIBLE_TEST_DUMMY_1_1', 'ANSIBLE_TEST_DUMMY_1_2']
+        reload: false  # geoip and urltable take LONG time
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+
+    - name: Removing
+      ansibleguy.opnsense.alias_multi:
+        aliases:
+          ANSIBLE_TEST_2_1:
+          ANSIBLE_TEST_2_2:
+        state: 'absent'
+
+- name: Testing Purging of Alias - category
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  tasks:
+    - name: Adding
+      ansibleguy.opnsense.alias_multi:
+        aliases:
+          ANSIBLE_TEST_3_1:
+            content: '192.168.1.1'
+            categories: 'ANSIBLE_TEST_DUMMY_1_1'
+          ANSIBLE_TEST_3_2:
+            content: '192.168.1.2'
+            categories: ['ANSIBLE_TEST_DUMMY_1_1', 'ANSIBLE_TEST_DUMMY_1_2']
+          ANSIBLE_TEST_3_3:
+            content: '192.168.1.3'
+            categories: 'ANSIBLE_TEST_DUMMY_1_2'
+
+    - name: Filtered purge
+      ansibleguy.opnsense.alias_purge:
+        filters:
+          categories: 'ANSIBLE_TEST_DUMMY_1_1'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Listing aliases
+      ansibleguy.opnsense.list:
+        target: 'alias'
+      register: opn2
+      failed_when: >
+        'data' not in opn2 or
+        opn2.data | length != 2
+
+    - name: Filtered purge partial
+      ansibleguy.opnsense.alias_purge:
+        filter_partial: true
+        filters:
+          categories: 'ANSIBLE_TEST_DUMMY_1_1'
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Listing aliases
+      ansibleguy.opnsense.list:
+        target: 'alias'
+      register: opn4
+      failed_when: >
+        'data' not in opn4 or
+        opn4.data | length != 1
+
+    - name: Filtered purge invert
+      ansibleguy.opnsense.alias_purge:
+        filter_invert: true
+        filters:
+          categories: 'ANSIBLE_TEST_DUMMY_1_1'
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+
+    - name: Listing aliases
+      ansibleguy.opnsense.list:
+        target: 'alias'
+      register: opn6
+      failed_when: >
+        'data' not in opn6 or
+        opn6.data | length != 0
+
+- name: Cleanup Test dummy
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  tasks:
+    - name: Adding dummy alias
+      ansibleguy.opnsense.category:
+        name: 'ANSIBLE_TEST_DUMMY_1_1'
+        state: 'absent'
+
+    - name: Adding dummy alias
+      ansibleguy.opnsense.category:
+        name: 'ANSIBLE_TEST_DUMMY_1_2'
+        state: 'absent'

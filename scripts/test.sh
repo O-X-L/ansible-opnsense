@@ -59,6 +59,7 @@ run_test '1_dependencies' 0
 run_test 'alias' 1
 run_test 'alias_multi' 1
 run_test 'alias_purge' 0
+run_test 'alias_category' 0 # check mode => dependency on category
 run_test 'rule' 1
 run_test 'rule_multi' 1
 run_test 'rule_purge' 0
@@ -161,6 +162,7 @@ run_test 'acme_account' 1
 run_test 'acme_validation' 1
 run_test 'acme_action' 1
 run_test 'acme_certificate' 0  # check mode => dependency on other acme-entries
+run_test 'category' 1
 
 echo ''
 echo '##############################'

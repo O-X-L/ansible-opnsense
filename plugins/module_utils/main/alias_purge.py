@@ -58,6 +58,18 @@ def process(m: AnsibleModule, p: dict, r: dict) -> None:
                 )
 
     else:
+        if not is_unset(p['filters']) and 'categories' in p['filters']:
+            existing_categories = meta_alias.s.get(cnf={
+                **meta_alias.call_cnf,
+                'controller': 'category',
+                'command': 'get',
+            })
+            p['filters']['categories'] = [
+                k
+                for k, v in existing_categories['category']['categories']['category'].items()
+                if v['name'] in p['filters']['categories']
+            ]
+
         # checking if existing alias should be purged
         for alias in existing_aliases:
             if not builtin_alias(name=alias['name']):
@@ -69,7 +81,7 @@ def process(m: AnsibleModule, p: dict, r: dict) -> None:
                 if to_purge:
                     if p['debug']:
                         m.warn(
-                            f"Existing alias '{alias[p['key_field']]}' "
+                            f"Existing alias '{alias['name']}' "
                             f"will be purged!"
                         )
 
