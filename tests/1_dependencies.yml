@@ -17,6 +17,10 @@
       ansibleguy.opnsense.package:
         name: "{{ item }}"
         action: 'install'
+      register: opn_dep_install
+      failed_when:
+        - opn_dep_install.failed
+        - "'system needs to be upgraded beforehand' not in opn_dep_install.msg"
       loop:
         - 'os-squid'
         - 'os-frr'
