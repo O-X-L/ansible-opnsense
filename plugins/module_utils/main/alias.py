@@ -6,6 +6,8 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api impor
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import \
     validate_values, filter_builtin_alias
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.category import \
+    resolve_categories
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
     get_simple_existing, simplify_translate, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
@@ -71,16 +73,7 @@ class Alias(BaseModule):
             validate_values(error_func=self._error, cnf=self.p)
 
             if not is_unset(self.p['categories']):
-                self.existing_categories = self.s.get(cnf={
-                    **self.call_cnf,
-                    'controller': 'category',
-                    'command': 'get',
-                })
-                self.p['categories'] = [
-                    k
-                    for k,v in self.existing_categories['category']['categories']['category'].items()
-                    if v['name'] in self.p['categories']
-                ]
+                resolve_categories(self, self.p)
 
         self.b.find(match_fields=[self.FIELD_ID])
 

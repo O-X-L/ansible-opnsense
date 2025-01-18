@@ -5,6 +5,8 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias i
     check_purge_configured, builtin_alias
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.purge import \
     purge, check_purge_filter
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.category import \
+    resolve_categories
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.alias import Alias
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.rule import Rule
@@ -59,16 +61,7 @@ def process(m: AnsibleModule, p: dict, r: dict) -> None:
 
     else:
         if not is_unset(p['filters']) and 'categories' in p['filters']:
-            existing_categories = meta_alias.s.get(cnf={
-                **meta_alias.call_cnf,
-                'controller': 'category',
-                'command': 'get',
-            })
-            p['filters']['categories'] = [
-                k
-                for k, v in existing_categories['category']['categories']['category'].items()
-                if v['name'] in p['filters']['categories']
-            ]
+            resolve_categories(meta_alias, p['filters'])
 
         # checking if existing alias should be purged
         for alias in existing_aliases:
