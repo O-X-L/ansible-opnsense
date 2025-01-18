@@ -26,31 +26,22 @@ def purge(
 
 
 def check_purge_filter(module: AnsibleModule, item: dict) -> bool:
-    to_purge = True
+    matched = not module.params['filter_invert']
 
     for filter_key, filter_value in module.params['filters'].items():
-        if module.params['filter_invert']:
-            # purge all except matches
+        if isinstance(filter_value, list):
             if module.params['filter_partial']:
-                if str(item[filter_key]).find(filter_value) != -1:
-                    to_purge = False
-                    break
-
-            else:
-                if item[filter_key] == filter_value:
-                    to_purge = False
-                    break
-
+                if any(fv not in item[filter_key] for fv in filter_value):
+                    return not matched
+            elif isinstance(filter_value, list):
+                if sorted(item[filter_key]) != sorted(filter_value):
+                    return not matched
         else:
-            # purge only matches
+
             if module.params['filter_partial']:
-                if str(item[filter_key]).find(filter_value) == -1:
-                    to_purge = False
-                    break
+                if filter_value not in str(item[filter_key]):
+                    return not matched
+            elif item[filter_key] != filter_value:
+                return not matched
 
-            else:
-                if item[filter_key] != filter_value:
-                    to_purge = False
-                    break
-
-    return to_purge
+    return matched
