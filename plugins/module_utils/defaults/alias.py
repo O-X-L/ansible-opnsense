@@ -9,7 +9,8 @@ ALIAS_DEFAULTS = {
     'content': [],
     'debug': False,
     'updatefreq_days': 7.0,
-    'interface': None
+    'interface': None,
+    'categories': [],
 }
 
 ALIAS_MOD_ARG_ALIASES = {
@@ -48,7 +49,7 @@ ALIAS_MOD_ARGS = dict(
         description=' Select the interface for the V6 dynamic IP.',
     ),
     categories=dict(
-        type='list', requird=False,
+        type='list', requird=False, default=ALIAS_DEFAULTS['categories'],
         aliases=ALIAS_MOD_ARG_ALIASES['categories'], elements='str',
         description='Select the categories for the alias.',
     ),
