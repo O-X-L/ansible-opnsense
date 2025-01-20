@@ -95,6 +95,7 @@ action_groups:
     - ansibleguy.opnsense.gateway
   nat:
     - ansibleguy.opnsense.source_nat
+    - ansibleguy.opnsense.one_to_one
   system:
     - ansibleguy.opnsense.list
     - ansibleguy.opnsense.reload

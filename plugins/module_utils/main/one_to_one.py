@@ -1,0 +1,63 @@
+from ansible.module_utils.basic import AnsibleModule
+
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+    Session
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
+    validate_int_fields, is_unset
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+
+
+class OneToOne(BaseModule):
+    FIELD_ID = 'name'
+    CMDS = {
+        'add': 'addRule',
+        'del': 'delRule',
+        'set': 'setRule',
+        'search': 'get',
+        'toggle': 'toggleRule',
+    }
+    API_KEY_PATH = 'filter.onetoone.rule'
+    API_MOD = 'firewall'
+    API_CONT = 'one_to_one'
+    FIELDS_CHANGE = [
+        'log', 'sequence', 'interface', 'type', 'source_net', 'source_invert', 'destination_net', 'destination_invert',
+        'external', 'nat_reflection', 'description'
+
+    ]
+    FIELDS_ALL = ['enabled']
+    FIELDS_ALL.extend(FIELDS_CHANGE)
+    FIELDS_TRANSLATE = {
+        'source_invert': 'source_not',
+        'destination_invert': 'destination_not',
+        'nat_reflection': 'natreflection',
+    }
+    FIELDS_TYPING = {
+        'bool': ['enabled', 'log', 'source_invert', 'destination_invert'],
+        'list': [],
+        'select': ['interface', 'type', 'nat_reflection'],
+        'int': [],
+    }
+    INT_VALIDATIONS = {
+        'sequence': {'min': 1, 'max': 99999},
+    }
+    EXIST_ATTR = 'rule'
+    API_CMD_REL = 'apply'
+
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session)
+        self.rule = {}
+        self.existing_additionalstuff = None
+
+    def check(self) -> None:
+        if self.p['state'] == 'present':
+            if is_unset(self.p['interface']):
+                self.m.fail_json(
+                    "You need to provide an 'interface' to create a one-to-one"
+                )
+
+            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
+
+        self.b.find(match_fields=self.p['match_fields'])
+
+        if self.p['state'] == 'present':
+            self.r['diff']['after'] = self.b.build_diff(data=self.p)
