@@ -43,6 +43,7 @@ Definition
     "type","string","false","'host'","t","Type of value the alias should hold. One of: 'host', 'network', 'port', 'url', 'urltable', 'geoip', 'networkgroup', 'mac', 'dynipv6host', 'internal', 'external'"
     "updatefreq_days","float","false","7.0","\-","Needed only for the alias-type 'urltable'. Interval to update its content. Per example: 0.5 for every 12 hours"
     "interface","string","false","\-","int, if","Needed only for the alias-type 'dynipv6host'. Select the interface for the V6 dynamic IP"
+    "categories","list","false","\-","cat",":ref:`Categories <modules_category>` for this alias."
     "reload","boolean","false","false","\-", .. include:: ../_include/param_reload.rst
 
 .. include:: ../_include/param_basic.rst
@@ -75,6 +76,7 @@ Examples
             # type: 'host'  # default
             # updatefreq_days: 3  # used only for type 'urltable'
             # interface: lan # used only for the type 'dynipv6host'
+            # category: ['Ansible managed']
             # ssl_ca_file: '/etc/ssl/certs/custom/ca.crt'
             # ssl_verify: False
             # api_key: !vault ...  # alternative to 'api_credential_file'
