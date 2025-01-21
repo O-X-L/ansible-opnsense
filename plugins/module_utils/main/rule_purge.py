@@ -3,6 +3,8 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.purge import \
     purge, check_purge_filter
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.category import \
+    resolve_categories
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.rule import \
     check_purge_configured
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
@@ -11,7 +13,8 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.rule impo
 
 def process(m: AnsibleModule, p: dict, r: dict) -> None:
     s = Session(module=m)
-    existing_rules = Rule(module=m, session=s, result={}).get_existing()
+    meta_rule = Rule(module=m, session=s, result={})
+    existing_rules = meta_rule.get_existing()
     rules_to_purge = []
 
     def obj_func(rule_to_purge: dict) -> Rule:
@@ -51,6 +54,9 @@ def process(m: AnsibleModule, p: dict, r: dict) -> None:
                 )
 
         else:
+            if not is_unset(p['filters']) and 'categories' in p['filters']:
+                resolve_categories(meta_rule, p['filters'])
+
             # checking if existing rule should be purged
             for existing_rule in existing_rules:
                 to_purge = check_purge_configured(module=m, existing_rule=existing_rule)

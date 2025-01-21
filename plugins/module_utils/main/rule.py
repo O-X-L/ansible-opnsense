@@ -2,8 +2,10 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
     ModuleSoftError
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.category import \
+    resolve_categories
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    validate_int_fields
+    validate_int_fields, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.rule import \
     validate_values
@@ -25,7 +27,7 @@ class Rule(BaseModule):
         'sequence', 'action', 'quick', 'interface', 'direction',
         'ip_protocol', 'protocol', 'source_invert', 'source_net', 'source_port',
         'destination_invert', 'destination_net', 'destination_port', 'log',
-        'description', 'gateway',
+        'description', 'gateway', 'categories',
     ]
     FIELDS_ALL = ['enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
@@ -37,7 +39,7 @@ class Rule(BaseModule):
     FIELDS_TYPING = {
         'bool': ['enabled', 'log', 'quick', 'source_invert', 'destination_invert'],
         'select': ['action', 'direction', 'ip_protocol', 'protocol', 'gateway'],
-        'list': ['interface'],
+        'list': ['interface', 'categories'],
     }
     EXIST_ATTR = 'rule'
     TIMEOUT = 60.0  # urltable etc reload
@@ -84,6 +86,8 @@ class Rule(BaseModule):
                 field_minmax=self.INT_VALIDATIONS,
                 error_func=self._error
             )
+            if not is_unset(self.p['categories']):
+                resolve_categories(self, self.p)
 
         self._build_log_name()
         self.b.find(match_fields=self.p['match_fields'])

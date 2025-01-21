@@ -21,6 +21,7 @@ RULE_DEFAULTS = {
     'enabled': True,
     'description': '',
     'debug': False,
+    'categories': [],
 }
 
 RULE_MOD_ARG_ALIASES = {
@@ -42,6 +43,7 @@ RULE_MOD_ARG_ALIASES = {
     'description': ['desc'],
     'state': ['st'],
     'enabled': ['en'],
+    'categories': ['cat'],
 }
 
 RULE_MATCH_FIELDS_ARG = dict(
@@ -119,6 +121,11 @@ RULE_MOD_ARGS = dict(
         aliases=RULE_MOD_ARG_ALIASES['description']
     ),
     uuid=dict(type='str', required=False, description='Optionally you can supply the uuid of an existing rule'),
+    categories=dict(
+        type='list', requird=False, default=RULE_DEFAULTS['categories'],
+        aliases=RULE_MOD_ARG_ALIASES['categories'], elements='str',
+        description='Select the categories for the rule.',
+    ),
     **STATE_MOD_ARG,
     **RULE_MATCH_FIELDS_ARG,
     **OPN_MOD_ARGS,

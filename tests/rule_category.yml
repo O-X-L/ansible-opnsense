@@ -1,0 +1,283 @@
+---
+- name: Setup Test dummy
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  tasks:
+    - name: Adding dummy alias
+      ansibleguy.opnsense.category:
+        name: 'ANSIBLE_TEST_DUMMY_1_1'
+        color: ff0000
+
+    - name: Adding dummy alias
+      ansibleguy.opnsense.category:
+        name: 'ANSIBLE_TEST_DUMMY_1_2'
+        color: 00ff00
+
+- name: Testing Rule - category
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+      match_fields: ['description']
+
+  tasks:
+    - name: Adding 1
+      ansibleguy.opnsense.rule:
+        source_net: '192.168.0.0/24'
+        destination_net: '192.168.1.0/24'
+        destination_port: 443
+        protocol: 'TCP'
+        description: 'ANSIBLE_TEST_1_1'
+        categories: 'ANSIBLE_TEST_DUMMY_1_1'
+      register: opn1
+      failed_when: >
+        not opn1.changed or
+        opn1.failed
+
+    - name: Nothing changed
+      ansibleguy.opnsense.rule:
+        source_net: '192.168.0.0/24'
+        destination_net: '192.168.1.0/24'
+        destination_port: 443
+        protocol: 'TCP'
+        description: 'ANSIBLE_TEST_1_1'
+        categories: 'ANSIBLE_TEST_DUMMY_1_1'
+      register: opn3
+      failed_when: >
+        opn3.changed or
+        opn3.failed
+
+    - name: Changing
+      ansibleguy.opnsense.rule:
+        source_net: '192.168.0.0/24'
+        destination_net: '192.168.1.0/24'
+        destination_port: 443
+        protocol: 'TCP'
+        description: 'ANSIBLE_TEST_1_1'
+        categories:
+          - 'ANSIBLE_TEST_DUMMY_1_1'
+          - 'ANSIBLE_TEST_DUMMY_1_2'
+      register: opn4
+      failed_when: >
+        not opn4.changed or
+        opn4.failed
+
+    - name: Removing
+      ansibleguy.opnsense.rule:
+        description: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      register: opn4
+      failed_when: >
+        not opn4.changed or
+        opn4.failed
+
+- name: Testing Multiple Rule - category
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+      match_fields: ['description']
+      key_field: 'description'
+
+  tasks:
+    - name: Adding
+      ansibleguy.opnsense.rule_multi:
+        rules:
+          ANSIBLE_TEST_2_1:
+            source_net: '192.168.1.0/24'
+            destination_invert: true
+            destination_net: '10.0.0.0/8'
+            action: 'block'
+            categories: 'ANSIBLE_TEST_DUMMY_1_1'
+          ANSIBLE_TEST_2_2:
+            source_net: '192.168.0.0/24'
+            destination_net: '192.168.10.0/24'
+            destination_port: 443
+            protocol: 'TCP'
+            interface: 'lan'
+            categories: 'ANSIBLE_TEST_DUMMY_1_1'
+        reload: false
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+
+    - name: Changing
+      ansibleguy.opnsense.rule_multi:
+        rules:
+          ANSIBLE_TEST_2_1:
+            source_net: '192.168.1.0/24'
+            destination_invert: true
+            destination_net: '10.0.0.0/8'
+            action: 'block'
+            categories: 'ANSIBLE_TEST_DUMMY_1_2'
+          ANSIBLE_TEST_2_2:
+            source_net: '192.168.0.0/24'
+            destination_net: '192.168.10.0/24'
+            destination_port: 443
+            protocol: 'TCP'
+            interface: 'lan'
+            categories:
+              - 'ANSIBLE_TEST_DUMMY_1_1'
+              - 'ANSIBLE_TEST_DUMMY_1_2'
+        reload: false
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        not opn6.changed
+
+    - name: Not Changing
+      ansibleguy.opnsense.rule_multi:
+        rules:
+          ANSIBLE_TEST_2_1:
+            source_net: '192.168.1.0/24'
+            destination_invert: true
+            destination_net: '10.0.0.0/8'
+            action: 'block'
+            categories: 'ANSIBLE_TEST_DUMMY_1_2'
+          ANSIBLE_TEST_2_2:
+            source_net: '192.168.0.0/24'
+            destination_net: '192.168.10.0/24'
+            destination_port: 443
+            protocol: 'TCP'
+            interface: 'lan'
+            categories:
+              - 'ANSIBLE_TEST_DUMMY_1_1'
+              - 'ANSIBLE_TEST_DUMMY_1_2'
+        reload: false
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        opn7.changed
+
+    - name: Removing
+      ansibleguy.opnsense.rule_multi:
+        rules:
+          ANSIBLE_TEST_2_1:
+          ANSIBLE_TEST_2_2:
+        state: 'absent'
+
+- name: Testing Purging of Rules - category
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.rule_multi:
+      match_fields: ['description']
+      key_field: 'description'
+
+    ansibleguy.opnsense.rule_purge:
+      match_fields: ['description']
+      key_field: 'description'
+
+  tasks:
+    - name: Adding
+      ansibleguy.opnsense.rule_multi:
+        rules:
+          ANSIBLE_TEST_3_1:
+            source_net: '192.168.1.0/24'
+            destination_invert: true
+            destination_net: '10.0.0.0/8'
+            action: 'block'
+            categories: 'ANSIBLE_TEST_DUMMY_1_1'
+          ANSIBLE_TEST_3_2:
+            source_net: '192.168.0.0/24'
+            destination_net: '192.168.10.0/24'
+            destination_port: 443
+            protocol: 'TCP'
+            interface: 'lan'
+            categories: ['ANSIBLE_TEST_DUMMY_1_1', 'ANSIBLE_TEST_DUMMY_1_2']
+          ANSIBLE_TEST_3_3:
+            source_invert: true
+            source_net: 'bogons'
+            action: 'block'
+            categories: 'ANSIBLE_TEST_DUMMY_1_2'
+
+    - name: Filtered purge
+      ansibleguy.opnsense.rule_purge:
+        filters:
+          categories: 'ANSIBLE_TEST_DUMMY_1_1'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Listing rules
+      ansibleguy.opnsense.list:
+        target: 'rule'
+      register: opn2
+      failed_when: >
+        'data' not in opn2 or
+        opn2.data | length != 2
+
+    - name: Filtered purge partial
+      ansibleguy.opnsense.rule_purge:
+        filter_partial: true
+        filters:
+          categories: 'ANSIBLE_TEST_DUMMY_1_1'
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Listing rules
+      ansibleguy.opnsense.list:
+        target: 'rule'
+      register: opn4
+      failed_when: >
+        'data' not in opn4 or
+        opn4.data | length != 1
+
+    - name: Filtered purge invert
+      ansibleguy.opnsense.rule_purge:
+        filter_invert: true
+        filters:
+          categories: 'ANSIBLE_TEST_DUMMY_1_1'
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+
+    - name: Listing rules
+      ansibleguy.opnsense.list:
+        target: 'rule'
+      register: opn6
+      failed_when: >
+        'data' not in opn6 or
+        opn6.data | length != 0
+
+- name: Cleanup Test dummy
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  tasks:
+    - name: Adding dummy alias
+      ansibleguy.opnsense.category:
+        name: 'ANSIBLE_TEST_DUMMY_1_1'
+        state: 'absent'
+
+    - name: Adding dummy alias
+      ansibleguy.opnsense.category:
+        name: 'ANSIBLE_TEST_DUMMY_1_2'
+        state: 'absent'
