@@ -35,7 +35,9 @@ Manage categories to ease maintenance of larger rulesets.
 
 It currently just works with the 'Firewall' plugin:
 
-- :ref:`ansibleguy.opnsense.alias <modules_alias>`
+- :ref:`ansibleguy.opnsense.alias <modules_alias>`, :ref:`ansibleguy.opnsense.alias_multi <modules_alias_multi>`
+- :ref:`ansibleguy.opnsense.rule <modules_rule>`, :ref:`ansibleguy.opnsense.rule_multi <modules_rule_multi>`
+- :ref:`ansibleguy.opnsense.source_nat <modules_source_nat>`
 
 Examples
 ********

@@ -74,6 +74,7 @@ Module alias: ansibleguy.opnsense.snat
     "target_port","string","false","\-","np, nat_port",""
     "log","boolean","false","true","l","If rule matches should be shown in the firewall logs"
     "description","string","false","\-","desc","Description for the rule"
+    "categories","list","false","\-","cat",":ref:`Categories <modules_category>` for this alias."
     "state","string","false","'present'","st","State of the rule. One of: 'present', 'absent'"
     "enabled","boolean","false","true","en","If the rule should be en- or disabled"
     "uuid","string","false","\-","\-","Optionally you can supply the uuid of an existing rule"
@@ -133,6 +134,7 @@ Examples
             # target_port: none
             # no_nat: false
             # log: true
+            # category: ['Ansible managed']
             # enabled: true
             # debug: false
             # state: 'present'

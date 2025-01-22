@@ -79,6 +79,7 @@ Definition
     "gateway","string","false","\-","g, gw","Existing gateway to use"
     "log","boolean","false","true","l","If rule matches should be shown in the firewall logs"
     "description","string","false","\-","desc","Description for the rule"
+    "categories","list","false","\-","cat",":ref:`Categories <modules_category>` for this alias."
     "state","string","false","'present'","st","State of the rule. One of: 'present', 'absent'"
     "enabled","boolean","false","true","en","If the rule should be en- or disabled"
     "uuid","string","false","\-","\-","Optionally you can supply the uuid of an existing rule"
@@ -138,6 +139,7 @@ Basic
             # destination_invert: false
             # log: true
             # gateway: 'LAN_GW'
+            # category: ['Ansible managed']
             # state: 'present'
             # enabled: true
             # uuid: 'a9d85c00-0aa2-4705-b855-96aae16e05d7'  # optionally use uuid to identify existing rules
