@@ -41,6 +41,7 @@ def run_module():
         'log': RULE_MOD_ARGS['log'],
         'uuid': RULE_MOD_ARGS['uuid'],
         'description': RULE_MOD_ARGS['description'],
+        'categories': RULE_MOD_ARGS['categories'],
     }
 
     module_args = dict(

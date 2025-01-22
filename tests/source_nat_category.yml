@@ -1,0 +1,98 @@
+---
+- name: Setup Test dummy
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  tasks:
+    - name: Adding dummy alias
+      ansibleguy.opnsense.category:
+        name: 'ANSIBLE_TEST_DUMMY_1_1'
+        color: ff0000
+
+    - name: Adding dummy alias
+      ansibleguy.opnsense.category:
+        name: 'ANSIBLE_TEST_DUMMY_1_2'
+        color: 00ff00
+
+- name: Testing source-nat - category
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+      match_fields: ['description']
+
+  tasks:
+    - name: Adding 1
+      ansibleguy.opnsense.source_nat:
+        description: 'ANSIBLE_TEST_1_1'
+        interface: 'lan'
+        destination: '192.168.0.1'
+        target: '192.168.0.2'
+        categories: 'ANSIBLE_TEST_DUMMY_1_1'
+      register: opn1
+      failed_when: >
+        not opn1.changed or
+        opn1.failed
+
+    - name: Nothing changed
+      ansibleguy.opnsense.source_nat:
+        description: 'ANSIBLE_TEST_1_1'
+        interface: 'lan'
+        destination: '192.168.0.1'
+        target: '192.168.0.2'
+        categories: 'ANSIBLE_TEST_DUMMY_1_1'
+      register: opn2
+      failed_when: >
+        opn2.changed or
+        opn2.failed
+
+    - name: Changing
+      ansibleguy.opnsense.source_nat:
+        description: 'ANSIBLE_TEST_1_1'
+        interface: 'lan'
+        destination: '192.168.0.1'
+        target: '192.168.0.2'
+        categories:
+          - 'ANSIBLE_TEST_DUMMY_1_1'
+          - 'ANSIBLE_TEST_DUMMY_1_2'
+      register: opn3
+      failed_when: >
+        not opn3.changed or
+        opn3.failed
+
+    - name: Removing
+      ansibleguy.opnsense.source_nat:
+        description: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      register: opn4
+      failed_when: >
+        not opn4.changed or
+        opn4.failed
+
+- name: Cleanup Test dummy
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  tasks:
+    - name: Adding dummy alias
+      ansibleguy.opnsense.category:
+        name: 'ANSIBLE_TEST_DUMMY_1_1'
+        state: 'absent'
+
+    - name: Adding dummy alias
+      ansibleguy.opnsense.category:
+        name: 'ANSIBLE_TEST_DUMMY_1_2'
+        state: 'absent'

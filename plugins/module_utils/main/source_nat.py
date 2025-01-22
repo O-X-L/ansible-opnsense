@@ -2,6 +2,8 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.category import \
+    resolve_categories
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
     validate_int_fields, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.rule import \
@@ -23,7 +25,7 @@ class SNat(BaseModule):
     FIELDS_CHANGE = [
         'sequence', 'no_nat', 'interface', 'target', 'target_port', 'description',
         'ip_protocol', 'protocol', 'source_invert', 'source_net', 'source_port',
-        'destination_invert', 'destination_net', 'destination_port', 'log',
+        'destination_invert', 'destination_net', 'destination_port', 'log', 'categories',
     ]
     FIELDS_ALL = ['enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
@@ -35,7 +37,7 @@ class SNat(BaseModule):
     }
     FIELDS_TYPING = {
         'bool': ['enabled', 'log', 'source_invert', 'no_nat', 'destination_invert'],
-        'list': [],
+        'list': ['categories'],
         'select': ['interface', 'ip_protocol', 'protocol'],
         'int': [],
     }
@@ -62,6 +64,9 @@ class SNat(BaseModule):
                 )
 
             validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
+
+            if not is_unset(self.p['categories']):
+                resolve_categories(self, self.p)
 
         self._build_log_name()
         self.b.find(match_fields=self.p['match_fields'])

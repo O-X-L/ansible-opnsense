@@ -63,6 +63,7 @@ run_test 'alias_category' 0 # check mode => dependency on category
 run_test 'rule' 1
 run_test 'rule_multi' 1
 run_test 'rule_purge' 0
+run_test 'rule_category' 0 # check mode => dependency on category
 run_test 'rule_interface_group' 1
 run_test 'savepoint' 1
 run_test 'cron' 1
@@ -92,6 +93,7 @@ run_test 'interface_vip' 1
 run_test 'interface_lagg' 1
 run_test 'interface_loopback' 1
 run_test 'source_nat' 1
+run_test 'source_nat_category' 0 # check mode => dependency on category
 run_test 'frr_diagnostic' 1
 run_test 'frr_general' 1
 run_test 'frr_bfd_general' 1
