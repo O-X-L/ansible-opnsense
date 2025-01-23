@@ -1,4 +1,6 @@
 from ansible.module_utils.basic import AnsibleModule
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+    ModuleSoftError
 
 
 def purge(
@@ -12,17 +14,20 @@ def purge(
         result['diff']['after'][item_to_purge[diff_param]] = None
 
     if not module.check_mode:
-        _obj = obj_func(item_to_purge)
-        _obj.exists = True
+        try:
+            _obj = obj_func(item_to_purge)
+            _obj.exists = True
 
-        if module.params['action'] == 'delete':
-            _obj.delete()
+            if module.params['action'] == 'delete':
+                _obj.delete()
 
-        else:
-            if _obj.b.is_enabled():
-                result['diff']['before'][item_to_purge[diff_param]] = {'enabled': True}
-                result['diff']['after'][item_to_purge[diff_param]] = {'enabled': False}
-                _obj.b.disable()
+            else:
+                if _obj.b.is_enabled():
+                    result['diff']['before'][item_to_purge[diff_param]] = {'enabled': True}
+                    result['diff']['after'][item_to_purge[diff_param]] = {'enabled': False}
+                    _obj.b.disable()
+        except ModuleSoftError:
+            pass
 
 
 def check_purge_filter(module: AnsibleModule, item: dict) -> bool:
