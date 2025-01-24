@@ -717,3 +717,73 @@
         - 'ANSIBLE_TEST_1_9'
         - 'ANSIBLE_TEST_1_10'
         - 'ANSIBLE_TEST_DUMMY_1_1'
+
+    - name: Cleanup Psotfix General
+      ansibleguy.opnsense.postfix_general:
+        reload: false  # speed
+
+    - name: Cleanup Postfix Address
+      ansibleguy.opnsense.postfix_address:
+        address: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'alice@example.com'
+        - 'bob@example.com'
+
+    - name: Cleanup Postfix Domain
+      ansibleguy.opnsense.postfix_domain:
+        domainname: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'example.com'
+        - 'example.net'
+
+    - name: Cleanup Postfix Headercheck
+      ansibleguy.opnsense.postfix_headercheck:
+        expression: '/^\s*User-Agent/ IGNORE'
+        filter: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'WHILE_RECEIVING'
+        - 'WHILE_DELIVERING'
+
+    - name: Cleanup Postfix Recipient
+      ansibleguy.opnsense.postfix_recipient:
+        address: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'alice@example.com'
+        - 'bob@example.com'
+
+    - name: Cleanup Postfix Recipient BCC
+      ansibleguy.opnsense.postfix_recipientbcc:
+        address: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'alice@example.com'
+        - 'bob@example.com'
+
+    - name: Cleanup Postfix Sender
+      ansibleguy.opnsense.postfix_sender:
+        address: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'alice@example.com'
+        - 'bob@example.com'
+
+    - name: Cleanup Postfix Sender BCC
+      ansibleguy.opnsense.postfix_senderbcc:
+        address: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'alice@example.com'
+        - 'bob@example.com'
+
+
+    - name: Cleanup Postfix Sender Canonical
+      ansibleguy.opnsense.postfix_sendercanonical:
+        address: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'alice@example.com'
+        - 'bob@example.com'
