@@ -818,3 +818,11 @@
       loop:
         - 'alice@example.com'
         - 'bob@example.com'
+
+    - name: Cleanup IPSec Manual SPD
+      ansibleguy.opnsense.ipsec_manual_spd:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
