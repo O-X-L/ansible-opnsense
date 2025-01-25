@@ -53,6 +53,18 @@ ansibleguy.opnsense.dhcp_controlagent
     "http_port","int","false","8000","","MAC/Ether address of the client in question"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
+ansibleguy.opnsense.dhcp_general
+================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "interfaces", "list", "false", "[]", "ints", "Comma separated list of network interfaces to listen on for DHCP requests"
+    "socket_type", "string", "false", "raw", "dhcp_socket_type", "Socket type used for DHCP communication. Allowed values: 'raw', 'udp'"
+    "fw_rules", "boolean", "false", "true", "fwrules, rules", "Automatically add a basic set of firewall rules to allow DHCP traffic"
+    "lifetime", "int", "false", "4000", "valid_lifetime", "Defines how long the addresses (leases) given out by the server are valid (in seconds)"
+
 ----
 
 Examples
@@ -132,3 +144,23 @@ ansibleguy.opnsense.dhcp_controlagent
           ansibleguy.opnsense.dhcp_controlagent:
             enabled: false
             reload: true
+
+----
+
+ansibleguy.opnsense.dhcp_general
+================================
+
+.. code-block:: yaml
+
+      - hosts: localhost
+        gather_facts: no
+        module_defaults:
+          group/ansibleguy.opnsense.all:
+            firewall: 'opnsense.template.ansibleguy.net'
+            api_credentials_file: '/home/guy/.secret/opn.key'
+
+        tasks:
+          - name: Listen to network interfaces
+            ansibleguy.opnsense.dhcp_general:
+            enabled: true
+            interfaces: 'lan,opt1,opt2,vlan0.10'
