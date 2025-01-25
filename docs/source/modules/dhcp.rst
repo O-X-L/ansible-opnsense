@@ -55,6 +55,29 @@ ansibleguy.opnsense.dhcp_controlagent
 
 ----
 
+ansibleguy.opnsense.dhcp_subnet
+===============================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "subnet","string","true","\-","\-","Subnet to use. should be large enough to hold the specified pools and reservations"
+    "description","string","false","\-","desc","Optional description of the subnet"
+    "pools","list","false","\-","\-","List of pools, one per line in range or subnet format (e.g. 192.168.0.100 - 192.168.0.200)"
+    "auto_options","bool,"false","true","option_data_autocollect","Automatically update option data for relevant attributes as routers, dns servers and ntp servers when applying settings from the gui."
+    "gateway","list","false","gw,routers","\-","Default gateways to offer to the clients"
+    "routes","str","false","static_routes","\-","Static routes that the client should install in its routing cache, defined as dest-ip1,router-ip1;dest-ip2,router-ip2"
+    "dns","list","false","dns_servers,dns_srv","\-","DNS servers to offer to the clients"
+    "domain","str","false","domain_name,dom_name,dom","\-","The domain name to offer to the client, set to this firewall's domain name when left empty"
+    "domain_search","list","false","dom_search","\-","Specifies a 'search list' of Domain Names to be used by the client to locate not-fully-qualified domain names."
+    "ntp_servers","list","false","ntp_srv,ntp","\-","Specifies a list of IP addresses indicating NTP (RFC 5905) servers available to the client."
+    "time_servers","list","false","time_srv","\-","Specifies a list of RFC 868 time servers available to the client."
+    "next_server","str","false","next_srv","\-","Next server IP address"
+    "tftp_server","str","false","tftp,tftp_srv,tftp_server_name","\-","TFTP server address or fqdn"
+    "tftp_file","str","false","tftp_boot_file,boot_file_name","\-","Boot filename to request"
+
+
 Examples
 ********
 
@@ -132,3 +155,23 @@ ansibleguy.opnsense.dhcp_controlagent
           ansibleguy.opnsense.dhcp_controlagent:
             enabled: false
             reload: true
+
+----
+
+ansibleguy.opnsense.dhcp_subnet
+
+.. code-block:: yaml
+
+    - host: localhost
+      gather_facts: no
+      module_defaults:
+
+      tasks:
+        - name: Add subnet
+          ansibleguy.opnsense.dhcp_subnet:
+          subnet: '10.0.100.0/24'
+
+        - name: Remove subnet
+          ansibleguy.opnsense.dhcp_subnet:
+          subnet: '10.0.100.0/24'
+          state: absent
