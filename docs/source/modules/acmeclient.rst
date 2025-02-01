@@ -48,7 +48,7 @@ ansibleguy.opnsense.acme_general
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
     :widths: 15 10 10 10 10 45
 
-    "enable","boolean","false","false","\-","Enable ACME client plugin."
+    "enabled","boolean","false","false","\-","Enable ACME client plugin."
     "auto_renewal","boolean","false","true","\-","Enable automatic renewal for certificates to prevent expiration."
     "challenge_port","integer","false","43580","\-","When using HTTP-01 as challenge type, a local webserver is used to provide acme challenge data to the ACME CA. The local webserver is NOT directly exposed to the outside and should NOT use port 80 or any other well-known port. This setting allows you to change the local port of this webserver in case it interferes with another local service."
     "tls_challenge_port","integer","false","43581","\-","The service port when using TLS-ALPN-01 as challenge type. It works similar to the HTTP-01 challenge type."
@@ -67,6 +67,7 @@ ansibleguy.opnsense.acme_account
     :widths: 15 10 10 10 10 45
 
     "name","string","true","\-","\-","Name to identify this account."
+    "enabled","boolean","false","true","\-","Enable this automation."
     "description","string","false","\-","desc","Description for this account."
     "email","string","false","\-","\-","E-mail address for this account."
     "ca","string","false","letsencrypt","\-","One of: 'buypass', 'buypass_test', 'google', 'google_test', 'letsencrypt', 'letsencrypt_test', 'sslcom', 'zerossl', 'custom'"
@@ -331,6 +332,7 @@ ansibleguy.opnsense.acme_action
     :widths: 15 10 10 10 10 45
 
     "name","string","true","\-","\-","Name to identify this automation."
+    "enabled","boolean","false","true","\-","Enable this automation."
     "description","string","false","\-","desc","Description for this automation."
     "type","string","false","\-","\-","Pre-defined commands for this automation. One of: 'configd_restart_gui', 'configd_restart_haproxy', 'configd_restart_nginx', 'configd_upload_sftp', 'configd_remote_ssh', 'acme_fritzbox', 'acme_panos', 'acme_proxmoxve', 'acme_vault', 'acme_synology_dsm', 'acme_truenas', 'acme_unifi', 'configd_generic'"
     "sftp_host","string","false","\-","\-","IP address or hostname of the SFTP server. For type: 'configd_upload_sftp'"
@@ -391,6 +393,7 @@ ansibleguy.opnsense.acme_certificate
     :widths: 15 10 10 10 10 45
 
     "name","string","false","\-","cn","Common Name (CN) and first Alt Name (subjectAltName) for this certificate."
+    "enabled","boolean","false","true","\-","Enable this certificate."
     "description","string","true","\-","desc","Description for this certificate."
     "alt_names","list","false","\-","subject_alt_name","Configure additional names that should be part of the certificate, i.e. www.example.com or mail.example.com."
     "account","string","false","\-","\-","Set the ACME CA account to use for this certificate."
