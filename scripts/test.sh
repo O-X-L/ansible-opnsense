@@ -91,6 +91,7 @@ run_test 'interface_vxlan' 1
 run_test 'interface_vip' 1
 run_test 'interface_lagg' 1
 run_test 'interface_loopback' 1
+run_test 'interface_gre' 1
 run_test 'source_nat' 1
 run_test 'frr_diagnostic' 1
 run_test 'frr_general' 1

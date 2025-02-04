@@ -37,7 +37,7 @@ TARGETS = [
     'unbound_acl', 'ids_general', 'ids_policy', 'ids_rule', 'ids_ruleset', 'ids_user_rule', 'ids_policy_rule',
     'openvpn_instance', 'openvpn_static_key', 'openvpn_client_override', 'dhcrelay_destination', 'dhcrelay_relay',
     'interface_lagg', 'interface_loopback', 'unbound_dnsbl', 'dhcp_reservation', 'acme_general', 'acme_account',
-    'acme_validation', 'acme_action', 'acme_certificate',
+    'acme_validation', 'acme_action', 'acme_certificate', 'interface_gre',
 ]
 
 
@@ -183,6 +183,10 @@ def run_module():
         elif target == 'interface_loopback':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface_loopback import \
                 Loopback as Target_Obj
+
+        elif target == 'interface_gre':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface_gre import \
+                Gre as Target_Obj
 
         elif target == 'source_nat':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.source_nat import \
