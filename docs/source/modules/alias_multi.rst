@@ -19,6 +19,13 @@ This module allows you to manage multiple aliases.
 
 It is faster than the 'alias' module as it reduces the needed api/http calls.
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing these modules!
+
+----
+
 Info
 ****
 
@@ -67,6 +74,8 @@ ansibleguy.opnsense.alias_purge
     "force_all","boolean","false","false","\-","If set to true and neither aliases, nor filters are provided - all non-builtin aliases will be purged"
     "fail_all","boolean","false","false","fail","Fail module if single alias fails to be purged"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+----
 
 Examples
 ********

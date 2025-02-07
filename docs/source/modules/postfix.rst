@@ -28,6 +28,8 @@ Contribution
 
 Thanks to `@jiuka <https://github.com/jiuka>`_ for developing these modules!
 
+----
+
 Prerequisites
 *************
 

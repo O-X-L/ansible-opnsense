@@ -8,6 +8,12 @@
 
 **Service Docs**: [Monit](https://docs.opnsense.org/manual/monit.html)
 
+## Contribution
+
+Thanks to [@Rath](https://github.com/superstes) for developing these modules!
+
+----
+
 ## Info
 
 For mail alerts to work:
@@ -64,6 +70,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | polltime | string   | false         | -             | -           | Set the service poll time. Either as a number of cycles 'NUMBER CYCLES' or Cron-style '* 8-19 * * 1-5'                                                                                    |
 | description | string   | false         | -             | -           |                                                                                                                                                                                           |
 
+----
 
 ## Examples
 

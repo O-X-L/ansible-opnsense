@@ -14,6 +14,13 @@ Rule
 
 **Service Docs**: `Rules <https://docs.opnsense.org/manual/firewall.html#rules.html>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
+
 Limitations
 ***********
 
@@ -32,6 +39,8 @@ This plugin has some limitations you need to know of:
 
   * per example see menu: 'Interface - Assignments - Interface ID (in brackets)'
   * this brings problems if the interface-names are not the same on both nodes when using HA-setups
+
+----
 
 Info
 ****
@@ -92,6 +101,7 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
+----
 
 Usage
 *****
@@ -105,6 +115,8 @@ You need to set how this matching is done by setting the 'match_fields' paramete
 It is **recommended** to use/set **unique identifiers** like 'description' to make sure rules can be matched without overlapping.
 
 You could also use the UUID of existing rules as ID - but you would have to pull (*list*) and configure those 'manually'.
+
+----
 
 Examples
 ********

@@ -15,6 +15,13 @@ Rule - Mass Management
 
 **Service Docs**: `Rules <https://docs.opnsense.org/manual/firewall.html#rules.html>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing these modules!
+
+----
+
 Info
 ****
 
@@ -26,6 +33,8 @@ Multi
 - Each rule has the attributes as defined in the :ref:`'single' ansibleguy.opnsense.rule <modules_rule>` module
 
 - To ensure valid configuration - the attributes of each rule get verified using ansible's built-in verifier
+
+----
 
 Definition
 **********
@@ -69,6 +78,8 @@ ansibleguy.opnsense.rule_purge
     "force_all","boolean","false","false","\-","'If set to true and neither rules, nor filters are provided - all rules will be purged"
     "fail_all","boolean","false","false","fail","Fail module if single rule fails to be purged"
 
+----
+
 Usage
 *****
 
@@ -79,6 +90,7 @@ You could either invoke this module:
 - once for all rules
 - once per logical grouping of rules
 
+----
 
 Examples
 ********

@@ -17,9 +17,15 @@
 
 **FRR Docs**: [FRRouting](https://docs.frrouting.org/) (_make sure you are looking at the current OPNSense package version!_)
 
+## Contribution
+
+Thanks to [@Rath](https://github.com/superstes) for developing these modules!
+
 ## Sponsoring
 
 Thanks to [@telmich](https://github.com/telmich) for sponsoring the development of these modules!
+
+----
 
 ## Prerequisites
 
@@ -30,6 +36,7 @@ os-frr
 
 You can also install it using the [package module](https://opnsense.ansibleguy.net/modules/package.html).
 
+----
 
 ## Definition
 
@@ -140,6 +147,9 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | priority       | integer  | false    | -                     | prio     | Integer between 0 and 4294967295                                                                                                                                                                                                                                 |
 | network_type       | string  | false    | -                     | nw_type         | One of: 'broadcast', 'point-to-point'                                                                                                                                                                                                                            |
 | reload       | boolean | false    | true                  | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+
+
+----
 
 ## Examples
 

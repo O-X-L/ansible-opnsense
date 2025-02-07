@@ -14,6 +14,13 @@ NAT Source
 
 **Service Docs**: `Outbound NAT <https://docs.opnsense.org/manual/nat.html#outbound>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
+
 Limitations
 ***********
 
@@ -97,6 +104,7 @@ It is **recommended** to use/set **unique identifiers** like 'description' to ma
 
 You could also use the UUID of existing rules as ID - but you would have to pull (*list*) and configure those 'manually'. 
 
+----
 
 Examples
 ********

@@ -19,6 +19,8 @@ Contribution
 
 Thanks to `@jiuka <https://github.com/jiuka>`_ for developing this module!
 
+----
+
 Definition
 **********
 
@@ -34,6 +36,7 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
+----
 
 Examples
 ********

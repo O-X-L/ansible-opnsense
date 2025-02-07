@@ -14,6 +14,12 @@ Package
 
 **Service Docs**: `Plugins <https://docs.opnsense.org/manual/firmware.html#plugins>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
 
 Info
 ****
@@ -41,6 +47,8 @@ Definition
     "timeout","float","false","30.0","Seconds until the action request times-out"
 
 .. include:: ../_include/param_basic.rst
+
+----
 
 Examples
 ********

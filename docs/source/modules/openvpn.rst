@@ -18,6 +18,13 @@ OpenVPN
 
 **Service Docs**: `OpenVPN <https://docs.opnsense.org/troubleshooting/openvpn.html>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing these modules!
+
+----
+
 Info
 ****
 

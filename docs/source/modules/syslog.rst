@@ -12,6 +12,12 @@ Syslog
 
 **API Docs**: `Core - Syslog <https://docs.opnsense.org/development/api/core/syslog.html>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
 
 Definition
 **********
@@ -31,6 +37,8 @@ Definition
     "match_fields","list","false","['target', 'facility', 'program']","\-","Fields that are used to match configured syslog-destinations with the running config - if any of those fields are changed, the module will think it's a new entry. At least one of: 'target', 'transport', 'facility', 'program', 'level', 'port', 'description'"
 
 .. include:: ../_include/param_basic.rst
+
+----
 
 Examples
 ********

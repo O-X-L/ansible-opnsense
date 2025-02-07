@@ -20,10 +20,17 @@ DNS - BIND
 
 **Service Docs**: `Bind <https://docs.opnsense.org/manual/how-tos/bind.html>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing these modules!
+
 Sponsoring
 **********
 
 Thanks to `@telmich <https://github.com/telmich>`_ for sponsoring the development of these modules!
+
+----
 
 Prerequisites
 *************
@@ -169,6 +176,8 @@ ansibleguy.opnsense.bind_record_multi
     "output_info","boolean","false","false","info","Enable to show some information on processing at runtime. Will be hidden if the tasks 'no_log' parameter is set to 'true'."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
+----
+
 Info
 ****
 
@@ -216,6 +225,7 @@ But the default behaviour is that you can only delete all of them at once.
 
 If a change is needed, you will have to run the module using 'state=absent' first and then re-create all the records.
 
+----
 
 Examples
 ********

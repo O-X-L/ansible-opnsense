@@ -16,6 +16,12 @@ Alias
 
 This module allows you to manage single aliases.
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
 
 Info
 ****
@@ -45,6 +51,8 @@ Definition
     "reload","boolean","false","false","\-", .. include:: ../_include/param_reload.rst
 
 .. include:: ../_include/param_basic.rst
+
+----
 
 Examples
 ********

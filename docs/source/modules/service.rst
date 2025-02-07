@@ -10,6 +10,13 @@ Service
 
 **TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/service.yml>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
+
 Info
 ****
 
@@ -26,6 +33,8 @@ Definition
     "action","string","true","\-","do, a","What action to execute. Some services may not support all of these actions (*the module will inform you in that case*). One of: 'status', 'start', 'reload', 'restart', 'stop'"
 
 .. include:: ../_include/param_basic.rst
+
+----
 
 Examples
 ********

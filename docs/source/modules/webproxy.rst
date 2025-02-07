@@ -27,6 +27,14 @@ Web Proxy
 `Caching Proxy <https://docs.opnsense.org/manual/how-tos/cachingproxy.html>`_ |
 `Web Proxy/Filter <https://docs.opnsense.org/manual/how-tos/proxywebfilter.html>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing these modules!
+
+----
+
+
 Prerequisites
 *************
 
@@ -131,6 +139,7 @@ ansibleguy.opnsense.webproxy_pac_rule
 
 This module manages the Proxy-Auto-Config Rule entries that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - Proxy Auto-Config - Rules (*DropDown*)' (*URL 'ui/proxy#subtab_pac_rules'*)
 
+----
 
 Definition
 **********
@@ -373,6 +382,7 @@ ansibleguy.opnsense.webproxy_pac_rule
     "enabled","boolean","false","true","\-","En- or disable the rule"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
+----
 
 Examples
 ********

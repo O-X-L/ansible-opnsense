@@ -31,6 +31,9 @@ Contribution
 
 Thanks to `@kdhlab <https://github.com/kdhlab>`_ for developing the :code:`gateway` module!
 
+Thanks to `@Rath <https://github.com/superstes>`_ for developing the :code:`route` module!
+
+----
 
 Definition
 **********
@@ -80,6 +83,8 @@ ansibleguy.opnsense.gateway
     "match_fields","list of strings","false","['name', 'gateway']","\-","Fields that are used to match configured gateways with the running config - if any of those fields are changed, the module will think it's a new gateway, possible options: ['name', 'gateway', 'description']"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
+----
+
 Usage
 *****
 
@@ -93,6 +98,7 @@ The default behaviour is that a route is matched by its 'gateway' and 'network'.
 
 However - it is **recommended** to use/set 'description' as **unique identifier** if many routes are used.
 
+----
 
 Examples
 ********

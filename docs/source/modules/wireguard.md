@@ -11,6 +11,12 @@
 
 **Service Docs**: [WireGuard - Site to Site](https://docs.opnsense.org/manual/how-tos/wireguard-s2s.html) | [WireGuard - Client to Site](https://docs.opnsense.org/manual/how-tos/wireguard-client.html)
 
+## Contribution
+
+Thanks to [@Rath](https://github.com/superstes) for developing these modules!
+
+----
+
 ## Definition
 
 For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic.html)
@@ -55,11 +61,13 @@ Will return the information seen at the `VPN - Wireguard - Diagnostics` page
 |:----------|:--------|:---------|:--------------|:---------------------------------------------------------------------------------------------------|:------------------------------------------------|
 | enabled   | boolean | false    | true          | -                                                                                                  | Used to enable or disable the wireguard service |
 
+----
 
 ## Usage
 
 To make a dynamic WireGuard endpoint to re-connect you may want to create a [gateway monitoring (_dpinger_)](https://docs.opnsense.org/manual/gateways.html#settings) targeting the remote tunnel-address.
 
+----
 
 ## Examples
 

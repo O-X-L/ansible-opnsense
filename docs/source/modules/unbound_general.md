@@ -12,6 +12,8 @@
 
 Thanks to [@gjdoornink](https://github.com/gjdoornink) for developing this module!
 
+----
+
 ## Info
 
 **WARNING:** Unbound service actions like :code:`reload` can take long. Please be aware of the **possible downtime**!
@@ -19,6 +21,7 @@ Thanks to [@gjdoornink](https://github.com/gjdoornink) for developing this modul
 
 You may also need to increase the module `timeout`.
 
+----
 
 ## Definition
 
@@ -46,6 +49,8 @@ For basic parameters see: [Basics](https://github.com/ansibleguy/collection_opns
 | outgoing_interfaces           | list    | false    | -             | -       | The interface(s) that Unbound will use to send queries to authoritative servers and receive their replies                                                                                                                                                                                |
 | wpad                          | bool    | false    | false         | -       | En- or disable to automatically add CNAME records for the WPAD host of all configured domains as well as overrides for TXT records for domains                                                                                                                                           |
 | reload                        | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. For mass-managing items you might want to reload it 'manually' after all changes are done => using the [reload module](https://github.com/ansibleguy/collection_opnsense/blob/latest/docs/use_reload.md). |
+
+----
 
 ## Examples
 
