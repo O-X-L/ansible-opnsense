@@ -7,6 +7,8 @@ echo ''
 TMP_DIR="/tmp/.opnsense_test_$(date +%s)"
 TMP_COL_DIR="$TMP_DIR/collections"
 
+export ANSIBLE_NO_TARGET_SYSLOG=True
+
 if [ -z "$1" ] || [ -z "$2" ] || [ -z "$3" ]
 then
   echo 'Arguments:'
