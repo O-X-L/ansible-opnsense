@@ -192,6 +192,8 @@ not implemented => development => [testing](https://github.com/ansibleguy/collec
 | **Nginx**                 | ansibleguy.opnsense.nginx_upstream_server                              | [Docs](https://opnsense.ansibleguy.net/modules/nginx.html#ansibleguy-opnsense-nginx-upstream-server)               | unstable |
 | **DHCP Relay**            | ansibleguy.opnsense.dhcrelay                                           | [Docs](https://opnsense.ansibleguy.net/modules/dhcrelay_relay.html)                                                | unstable |
 | **DHCP Relay**            | ansibleguy.opnsense.dhcrelay_destination                               | [Docs](https://opnsense.ansibleguy.net/modules/dhcrelay_destination.html)                                          | unstable |
+| **DHCP**                  | ansibleguy.opnsense.dhcp_general                                       | [Docs](https://opnsense.ansibleguy.net/modules/dhcp.html)                                                          | unstable |
+| **DHCP Subnet**           | ansibleguy.opnsense.dhcp_subnet                                        | [Docs](https://opnsense.ansibleguy.net/modules/dhcp.html)                                                          | unstable |
 | **DHCP Reservation**      | ansibleguy.opnsense.dhcp_reservation                                   | [Docs](https://opnsense.ansibleguy.net/modules/dhcp.html)                                                          | unstable |
 | **DHCP Controlagent**     | ansibleguy.opnsense.dhcp_controlagent                                  | [Docs](https://opnsense.ansibleguy.net/modules/dhcp.html)                                                          | unstable |
 | **ACME (Certificates)**   | ansibleguy.opnsense.acme_account                                       | [Docs](https://opnsense.ansibleguy.net/modules/acmeclient.html)                                                    | unstable |
@@ -199,7 +201,15 @@ not implemented => development => [testing](https://github.com/ansibleguy/collec
 | **ACME (Certificates)**   | ansibleguy.opnsense.acme_general                                       | [Docs](https://opnsense.ansibleguy.net/modules/acmeclient.html)                                                    | unstable |
 | **ACME (Certificates)**   | ansibleguy.opnsense.acme_validation                                    | [Docs](https://opnsense.ansibleguy.net/modules/acmeclient.html)                                                    | unstable |
 | **ACME (Certificates)**   | ansibleguy.opnsense.acme_certificate                                   | [Docs](https://opnsense.ansibleguy.net/modules/acmeclient.html)                                                    | unstable |
-
+| **Postfix**               | ansibleguy.opnsense.postfix_general                                    | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
+| **Postfix**               | ansibleguy.opnsense.postfix_domain                                     | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
+| **Postfix**               | ansibleguy.opnsense.postfix_recipient                                  | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
+| **Postfix**               | ansibleguy.opnsense.postfix_recipientbcc                               | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
+| **Postfix**               | ansibleguy.opnsense.postfix_sender                                     | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
+| **Postfix**               | ansibleguy.opnsense.postfix_senderbcc                                  | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
+| **Postfix**               | ansibleguy.opnsense.postfix_sendercanonical                            | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
+| **Postfix**               | ansibleguy.opnsense.postfix_headercheck                                | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
+| **Postfix**               | ansibleguy.opnsense.postfix_address                                    | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
 
 ### Roadmap
 

@@ -91,6 +91,7 @@ run_test 'interface_vxlan' 1
 run_test 'interface_vip' 1
 run_test 'interface_lagg' 1
 run_test 'interface_loopback' 1
+run_test 'interface_gre' 1
 run_test 'source_nat' 1
 run_test 'frr_diagnostic' 1
 run_test 'frr_general' 1
@@ -154,13 +155,24 @@ run_test 'nginx_general' 1
 run_test 'nginx_upstream_server' 1
 run_test 'dhcrelay_destination' 1
 run_test 'dhcrelay_relay' 1
+run_test 'dhcp_general' 1
 run_test 'dhcp_controlagent' 1
+run_test 'dhcp_subnet' 1
 run_test 'dhcp_reservation' 1
 run_test 'acme_general' 1
 run_test 'acme_account' 1
 run_test 'acme_validation' 1
 run_test 'acme_action' 1
 run_test 'acme_certificate' 0  # check mode => dependency on other acme-entries
+run_test 'postfix_general' 1
+run_test 'postfix_domain' 1
+run_test 'postfix_recipient' 1
+run_test 'postfix_recipientbcc' 1
+run_test 'postfix_sender' 1
+run_test 'postfix_senderbcc' 1
+run_test 'postfix_sendercanonical' 1
+run_test 'postfix_headercheck' 1
+run_test 'postfix_address' 1
 
 echo ''
 echo '##############################'

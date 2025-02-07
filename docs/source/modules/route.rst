@@ -11,7 +11,7 @@ Routing
 Static Routes
 =============
 
-**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/route.yml>`_
+**TESTS**: `route <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/route.yml>`_
 
 **API Docs**: `Core - Routes <https://docs.opnsense.org/development/api/core/routes.html>`_
 
@@ -20,7 +20,7 @@ Static Routes
 Gateway Groups
 ==============
 
-**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/gateway.yml>`_
+**TESTS**: `gateway <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/gateway.yml>`_
 
 **API Docs**: `Core - routings <https://docs.opnsense.org/development/api/core/routing.html>`_
 

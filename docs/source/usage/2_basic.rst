@@ -2,7 +2,7 @@
 
 .. include:: ../_include/head.rst
 
-.. |img_ansible_execution_local| image:: ../../_static/img/ansible_execution_local.jpg
+.. |img_ansible_execution_local| image:: ../_static/img/ansible_execution_local.jpg
    :class: wiki-img
 
 

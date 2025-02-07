@@ -13,7 +13,8 @@ Interface
 `vxlan <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/interface_vxlan.yml>`_ |
 `vip <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/interface_vip.yml>`_ |
 `lagg <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/interface_lagg.yml>`_ |
-`loopback <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/interface_loopback.yml>`_
+`loopback <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/interface_loopback.yml>`_ |
+`gre <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/interface_gre.yml>`_
 
 **API Docs**: `Core - Interfaces <https://docs.opnsense.org/development/api/core/interfaces.html>`_
 
@@ -21,7 +22,7 @@ Interface
 `VxLAN Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=vlan#vxlan>`_ |
 `VIP Docs <https://docs.opnsense.org/manual/firewall_vip.html>`_ |
 `LAGG Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=lagg#lagg>`_ |
-`Loopback Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=loopback#loopback>`_
+`GRE Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=gre#gre>`_
 
 
 Info
@@ -48,15 +49,20 @@ ansibleguy.opnsense.interface_lagg
 This module manages LAGG configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - LAGG'
 
 ansibleguy.opnsense.interface_loopback
-===================================
+======================================
 
 This module manages Loopback configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - Loopback'
+
+ansibleguy.opnsense.interface_gre
+===================================
+
+This module manages GRE Tunnel configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - GRE'
 
 
 Contribution
 ************
 
-Thanks to `@jiuka <https://github.com/jiuka>`_ for developing the :code:`interface_loopback` module!
+Thanks to `@jiuka <https://github.com/jiuka>`_ for developing the :code:`interface_loopback` and :code:`interface_gre` module!
 
 Definition
 **********
@@ -146,6 +152,21 @@ ansibleguy.opnsense.interface_loopback
     :widths: 15 10 10 10 10 45
 
     "description","string","true","\-","desc, name","The unique description used to match the configured entries to the existing ones"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+ansibleguy.opnsense.interface_gre
+======================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "description","string","true","\-","desc, name","The unique description used to match the configured entries to the existing ones"
+    "local","string","true","\-","l, local_addr","The local address or interface to use."
+    "remote","string","true","\-","r, remote_addr","Peer address where encapsulated gre packets will be sent."
+    "tunnel_local","string","true","\-","tl, tunnel_local_addr","Local gre tunnel endpoint."
+    "tunnel_remote","string","true","\-","tr, tunnel_remote_addr","Remote gre tunnel endpoint."
+    "tunnel_remote_net","integer","false","32","\-","Netmask `ipv4` or prefix `ipv6` to use for this tunnel "
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
@@ -394,4 +415,54 @@ ansibleguy.opnsense.interface_loopback
         - name: Removing Loopback
           ansibleguy.opnsense.interface_loopback:
             description: 'MyLoopback'
+            state: 'absent'
+
+ansibleguy.opnsense.interface_gre
+======================================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: no
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+    
+        ansibleguy.opnsense.list:
+          target: 'interface_gre'
+    
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.interface_gre:
+            description: 'MyGRETunnel'
+            local: 'lan'
+            remote: '192.168.100.1'
+            tunnel_local: '10.0.0.1'
+            tunnel_remote: '10.0.0.2'
+            # tunnel_remote_net: 32
+            # debug: false
+            # state: 'present'
+            # reload: true
+    
+        - name: Adding GRE Tunnel
+          ansibleguy.opnsense.interface_gre:
+            description: 'MyGRETunnel'
+            local: 'lan'
+            remote: '192.168.100.1'
+            tunnel_local: '10.0.0.1'
+            tunnel_remote: '10.0.0.2'
+    
+        - name: Listing
+          ansibleguy.opnsense.list:
+          #  target: 'interface_gre'
+          register: existing_entries
+    
+        - name: Printing Loopbacks
+          ansible.builtin.debug:
+            var: existing_entries.data
+    
+        - name: Removing GRE
+          ansibleguy.opnsense.interface_gre:
+            description: 'MyGRETunnel'
             state: 'absent'
