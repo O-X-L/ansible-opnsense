@@ -239,6 +239,14 @@
         device: 'lagg0'
         state: 'absent'
 
+    - name: Cleanup GRE interfaces
+      ansibleguy.opnsense.interface_gre:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
     - name: Cleanup source-nat
       ansibleguy.opnsense.source_nat:
         description: "{{ item }}"

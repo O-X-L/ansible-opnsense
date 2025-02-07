@@ -48,6 +48,7 @@ action_groups:
     - ansibleguy.opnsense.interface_vip
     - ansibleguy.opnsense.interface_lagg
     - ansibleguy.opnsense.interface_loopback
+    - ansibleguy.opnsense.interface_gre
   frr:
     - ansibleguy.opnsense.frr_diagnostic
     - ansibleguy.opnsense.frr_general

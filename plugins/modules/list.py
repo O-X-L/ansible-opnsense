@@ -39,7 +39,7 @@ TARGETS = [
     'interface_lagg', 'interface_loopback', 'unbound_dnsbl', 'dhcp_reservation', 'acme_general', 'acme_account',
     'acme_validation', 'acme_action', 'acme_certificate', 'postfix_general', 'postfix_domain', 'postfix_recipient',
     'postfix_recipientbcc', 'postfix_sender', 'postfix_senderbcc', 'postfix_sendercanonical', 'postfix_headercheck',
-    'postfix_address', 'dhcp_subnet', 'dhcp_general',
+    'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre',
 ]
 
 
@@ -185,6 +185,10 @@ def run_module():
         elif target == 'interface_loopback':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface_loopback import \
                 Loopback as Target_Obj
+
+        elif target == 'interface_gre':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface_gre import \
+                Gre as Target_Obj
 
         elif target == 'source_nat':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.source_nat import \
