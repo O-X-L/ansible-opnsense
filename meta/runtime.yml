@@ -128,12 +128,24 @@ action_groups:
   dhcp:
     - ansibleguy.opnsense.dhcp_reservation
     - ansibleguy.opnsense.dhcp_controlagent
+    - ansibleguy.opnsense.dhcp_general
+    - ansibleguy.opnsense.dhcp_subnet
   acme:
     - ansibleguy.opnsense.acme_general
     - ansibleguy.opnsense.acme_account
     - ansibleguy.opnsense.acme_validation
     - ansibleguy.opnsense.acme_action
     - ansibleguy.opnsense.acme_certificate
+  postfix:
+    - ansibleguy.opnsense.postfix_general
+    - ansibleguy.opnsense.postfix_domain
+    - ansibleguy.opnsense.postfix_recipient
+    - ansibleguy.opnsense.postfix_recipientbcc
+    - ansibleguy.opnsense.postfix_sender
+    - ansibleguy.opnsense.postfix_senderbcc
+    - ansibleguy.opnsense.postfix_sendercanonical
+    - ansibleguy.opnsense.postfix_headercheck
+    - ansibleguy.opnsense.postfix_address
   all:
     - metadata:
         extend_group:
@@ -158,6 +170,7 @@ action_groups:
           - ansibleguy.opnsense.dhcrelay
           - ansibleguy.opnsense.dhcp
           - ansibleguy.opnsense.acme
+          - ansibleguy.opnsense.postfix
 
 plugin_routing:
   modules:

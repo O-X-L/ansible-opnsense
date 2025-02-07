@@ -49,7 +49,7 @@ ansibleguy.opnsense.interface_lagg
 This module manages LAGG configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - LAGG'
 
 ansibleguy.opnsense.interface_loopback
-===================================
+======================================
 
 This module manages Loopback configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - Loopback'
 

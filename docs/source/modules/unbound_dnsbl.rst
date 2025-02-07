@@ -26,13 +26,17 @@ Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
     :widths: 15 10 10 10 10 45
 
-    "parameter name","parameter type","if is required","default value","aliases","description"
     "safesearch","boolean","false","false","\-","Force the usage of SafeSearch on Google, DuckDuckGo, Bing, Qwant, PixaBay and YouTube"
     "type","list of strings","false","[]","\-","Select which kind of DNSBL you want to use"
     "whitelists","list of strings","false","[]","whitelist, allowlist, allowlists","List of domains to whitelist. You can use regular expressions"
     "blocklists","list of strings","false","[]","blocklist","List of domains to blocklist. Only exact matches are supported"
     "wildcards","list of strings","false","[]","wildcard","List of wildcard domains to blocklist. All subdomains of the given domain will be blocked. Blocking first-level domains is not supported"
-    "address","strings","false","","\-","Destination ip address for entries in the blocklist (leave empty to use default: 0.0.0.0). Not used when "Return NXDOMAIN" is checked"
+    "address","strings","false","\-","\-","Destination ip address for entries in the blocklist (leave empty to use default: 0.0.0.0). Not used when 'Return NXDOMAIN' is checked"
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
     "nxdomain","bool","false","false","\-","Use the DNS response code NXDOMAIN instead of a destination address"
     "enabled","boolean","false","true","\-","Enable the usage of DNS blocklists"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst

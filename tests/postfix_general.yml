@@ -1,0 +1,102 @@
+---
+
+- name: Testing Postfix Setting
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'postfix_general'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid inet_port
+      ansibleguy.opnsense.postfix_general:
+        inet_port: 999999
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Configuring - failing because of invalid ip_version
+      ansibleguy.opnsense.postfix_general:
+        ip_version: ipv5
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Configuring
+      ansibleguy.opnsense.postfix_general:
+        myhostname: mx.example.com
+        mydomain: example.com
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing
+      ansibleguy.opnsense.postfix_general:
+        myhostname: mx.example.com
+        mydomain: example.com
+        inet_port: 26
+        ip_version: ipv4
+        mynetworks:
+          - '127.0.0.0/8'
+          - '[::1]/128'
+          - '[:ffff:127.0.0.0]/104'
+          - '192.168.0.0/16'
+        masquerade_domains:
+          - example.com
+          - example.net
+        tls_server_compatibility: modern
+        tls_client_compatibility: modern
+        tlswrappermode: true
+        smtpclient_security: encrypt
+        relayhost: relay.example.com
+        smtpauth_enabled: true
+        smtpauth_user: postfix
+        smtpauth_password: SECRET
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      ansibleguy.opnsense.postfix_general:
+        myhostname: mx.example.com
+        mydomain: example.com
+        inet_port: 26
+        ip_version: ipv4
+        mynetworks:
+          - '127.0.0.0/8'
+          - '[::1]/128'
+          - '[:ffff:127.0.0.0]/104'
+          - '192.168.0.0/16'
+        masquerade_domains:
+          - example.com
+          - example.net
+        tls_server_compatibility: modern
+        tls_client_compatibility: modern
+        tlswrappermode: true
+        smtpclient_security: encrypt
+        relayhost: relay.example.com
+        smtpauth_enabled: true
+        smtpauth_user: postfix
+        smtpauth_password: SECRET
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        opn3.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.postfix_general:
+        enabled: false

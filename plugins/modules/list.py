@@ -37,7 +37,9 @@ TARGETS = [
     'unbound_acl', 'ids_general', 'ids_policy', 'ids_rule', 'ids_ruleset', 'ids_user_rule', 'ids_policy_rule',
     'openvpn_instance', 'openvpn_static_key', 'openvpn_client_override', 'dhcrelay_destination', 'dhcrelay_relay',
     'interface_lagg', 'interface_loopback', 'unbound_dnsbl', 'dhcp_reservation', 'acme_general', 'acme_account',
-    'acme_validation', 'acme_action', 'acme_certificate', 'interface_gre',
+    'acme_validation', 'acme_action', 'acme_certificate', 'postfix_general', 'postfix_domain', 'postfix_recipient',
+    'postfix_recipientbcc', 'postfix_sender', 'postfix_senderbcc', 'postfix_sendercanonical', 'postfix_headercheck',
+    'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre',
 ]
 
 
@@ -403,6 +405,15 @@ def run_module():
         elif target == 'dhcp_reservation':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dhcp_reservation_v4 import \
                 ReservationV4 as Target_Obj
+
+        elif target == 'dhcp_general':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dhcp_general import \
+                General as Target_Obj
+
+        elif target == 'dhcp_subnet':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dhcp_subnet_v4 import \
+                SubnetV4 as Target_Obj
+
         elif target == 'acme_general':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.acme_general import \
                 General as Target_Obj
@@ -422,6 +433,42 @@ def run_module():
         elif target == 'acme_certificate':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.acme_certificate import \
                 Certificate as Target_Obj
+
+        elif target == 'postfix_general':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.postfix_general import \
+                General as Target_Obj
+
+        elif target == 'postfix_domain':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.postfix_domain import \
+                Domain as Target_Obj
+
+        elif target == 'postfix_recipient':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.postfix_recipient import \
+                Recipient as Target_Obj
+
+        elif target == 'postfix_recipientbcc':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.postfix_recipientbcc import \
+                RecipientBCC as Target_Obj
+
+        elif target == 'postfix_sender':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.postfix_sender import \
+                Sender as Target_Obj
+
+        elif target == 'postfix_senderbcc':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.postfix_senderbcc import \
+                SenderBCC as Target_Obj
+
+        elif target == 'postfix_sendercanonical':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.postfix_sendercanonical import \
+                SenderCanonical as Target_Obj
+
+        elif target == 'postfix_headercheck':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.postfix_headercheck import \
+                Headercheck as Target_Obj
+
+        elif target == 'postfix_address':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.postfix_address import \
+                Address as Target_Obj
 
     except AttributeError:
         module_dependency_error()
