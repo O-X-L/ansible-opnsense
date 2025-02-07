@@ -5,7 +5,7 @@
 [![Unit Test Status](https://github.com/ansibleguy/collection_opnsense/actions/workflows/unit_test.yml/badge.svg)](https://github.com/ansibleguy/collection_opnsense/actions/workflows/unit_test.yml)
 [![Ansible Galaxy](https://badges.ansibleguy.net/galaxy.badge.svg)](https://galaxy.ansible.com/ui/repo/published/ansibleguy/opnsense)
 
-Functional Test Logs: [Short](https://badges.ansibleguy.net/log/collection_opnsense_test_short.log), [Full](https://badges.ansibleguy.net/log/collection_opnsense_test.log), [Full via API](https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70)
+Functional Test Logs: [Short](https://badges.ansibleguy.net/log/collection_opnsense_test_short.log), [Full](https://badges.ansibleguy.net/log/collection_opnsense_test.log), [Full via API](https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000)
 
 ----
 
