@@ -38,7 +38,7 @@
     - name: Changing
       ansibleguy.opnsense.dhcp_general:
         enabled: true
-        interfaces: ['opt1']
+        interfaces: ['opt1', 'lan']
         fw_rules: false
         lifetime: 5000
       register: opn2
@@ -50,7 +50,7 @@
     - name: Nothing changed
       ansibleguy.opnsense.dhcp_general:
         enabled: true
-        interfaces: ['opt1']
+        interfaces: ['opt1', 'lan']
         fw_rules: false
         lifetime: 5000
       register: opn3
