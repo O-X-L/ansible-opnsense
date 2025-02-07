@@ -126,6 +126,31 @@
         opn7.data | length != 1
       when: not ansible_check_mode
 
+    - name: Adding 4
+      ansibleguy.opnsense.alias_multi:
+        aliases:
+          ANSIBLE_TEST_4_1:
+            content: ['192.168.1.1', '192.168.1.2']
+          ANSIBLE_TEST_4_2:
+            content: 'ANSIBLE_TEST_4_1'
+      when: not ansible_check_mode
+
+    - name: Purge used alias
+      ansibleguy.opnsense.alias_purge:
+        aliases:
+          ANSIBLE_TEST_4_2:
+      when: not ansible_check_mode
+      register: opn11
+      failed_when: >
+        opn11.failed or
+        'warnings' not in opn11
+
+    - name: Purge using alias first
+      ansibleguy.opnsense.alias_purge:
+        aliases:
+          ANSIBLE_TEST_4_1:
+      when: not ansible_check_mode
+
     - name: Purge ALL - not forced
       ansibleguy.opnsense.alias_purge:
       when: not ansible_check_mode
