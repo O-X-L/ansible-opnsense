@@ -663,6 +663,19 @@
         http_host: '127.0.0.1'
         http_port: 8000
 
+    - name: Cleanup DHCP Settings
+      ansibleguy.opnsense.dhcp_general:
+        enabled: false
+
+    - name: Cleanup DHCP Subnets
+      ansibleguy.opnsense.dhcp_subnet:
+        subnet: "{{ item }}"
+        state: 'absent'
+      loop:
+        - '192.168.69.0/24'
+        - '192.168.88.0/24'
+        - '192.168.89.0/24'
+
     - name: Cleanup ACME Certificates
       ansibleguy.opnsense.acme_certificate:
         description: '{{ item }}'
@@ -718,7 +731,7 @@
         - 'ANSIBLE_TEST_1_10'
         - 'ANSIBLE_TEST_DUMMY_1_1'
 
-    - name: Cleanup Psotfix General
+    - name: Cleanup Postfix General
       ansibleguy.opnsense.postfix_general:
         reload: false  # speed
 
@@ -778,7 +791,6 @@
       loop:
         - 'alice@example.com'
         - 'bob@example.com'
-
 
     - name: Cleanup Postfix Sender Canonical
       ansibleguy.opnsense.postfix_sendercanonical:

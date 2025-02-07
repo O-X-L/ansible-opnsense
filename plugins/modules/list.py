@@ -39,7 +39,7 @@ TARGETS = [
     'interface_lagg', 'interface_loopback', 'unbound_dnsbl', 'dhcp_reservation', 'acme_general', 'acme_account',
     'acme_validation', 'acme_action', 'acme_certificate', 'postfix_general', 'postfix_domain', 'postfix_recipient',
     'postfix_recipientbcc', 'postfix_sender', 'postfix_senderbcc', 'postfix_sendercanonical', 'postfix_headercheck',
-    'postfix_address',
+    'postfix_address', 'dhcp_subnet', 'dhcp_general',
 ]
 
 
@@ -401,6 +401,14 @@ def run_module():
         elif target == 'dhcp_reservation':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dhcp_reservation_v4 import \
                 ReservationV4 as Target_Obj
+
+        elif target == 'dhcp_general':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dhcp_general import \
+                General as Target_Obj
+
+        elif target == 'dhcp_subnet':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dhcp_subnet_v4 import \
+                SubnetV4 as Target_Obj
 
         elif target == 'acme_general':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.acme_general import \
