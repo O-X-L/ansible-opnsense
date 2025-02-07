@@ -1,6 +1,6 @@
 ---
 
-name: Integration Tests
+name: Integration-Test Execution
 
 on: workflow_dispatch
 
