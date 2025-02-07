@@ -19,7 +19,7 @@ DHCP
 Contribution
 ************
 
-Thanks to `@KalleDK <https://github.com/KalleDK>`_ and `@woelfle <https://github.com/woelfle>`_ for developing these modules!
+Thanks to `@KalleDK <https://github.com/KalleDK>`_, `@superstes <https://github.com/superstes>`_ and `@woelfle <https://github.com/woelfle>`_ for developing these modules!
 
 
 ----
