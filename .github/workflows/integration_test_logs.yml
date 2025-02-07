@@ -1,10 +1,11 @@
 ---
 
-name: Pull Integration-Test Logs
+name: Integration-Test Logs
 
 on:
   schedule:
     - cron: "24 6 * * *"
+  workflow_dispatch:
 
 jobs:
   test:
