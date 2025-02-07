@@ -19,6 +19,6 @@ tags:
 dependencies: {}
 repository: 'https://github.com/ansibleguy/collection_opnsense'
 documentation: 'https://opnsense.ansibleguy.net'
-homepage: 'https://www.o-x-l.com'
+homepage: 'https://www.O-X-L.com'
 issues: 'https://github.com/ansibleguy/collection_opnsense/issues'
 build_ignore: []
