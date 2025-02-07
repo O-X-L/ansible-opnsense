@@ -5,6 +5,7 @@ set -u
 mkdir -p "$TMP_COL_DIR"
 cd "$TMP_DIR"
 export ANSIBLE_COLLECTIONS_PATH="$TMP_COL_DIR"
+export ANSIBLE_NO_TARGET_SYSLOG=True
 
 if [[ "$LOCAL_COLLECTION" == '0' ]]
 then
