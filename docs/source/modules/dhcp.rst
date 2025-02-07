@@ -10,7 +10,8 @@ DHCP
 
 **TESTS**: `Reservation <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/dhcp_reservation.yml>`_ |
 `ControlAgent <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/dhcp_controlagent.yml>`_ |
-`Subnet <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/dhcp_subnet.yml>`_
+`Subnet <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/dhcp_subnet.yml>`_ |
+`Subnet <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/dhcp_general.yml>`_
 
 **API Docs**: `Core - KEA <https://docs.opnsense.org/development/api/core/kea.html>`_
 
@@ -20,7 +21,6 @@ Contribution
 ************
 
 Thanks to `@KalleDK <https://github.com/KalleDK>`_, `@superstes <https://github.com/superstes>`_ and `@woelfle <https://github.com/woelfle>`_ for developing these modules!
-
 
 ----
 
@@ -36,10 +36,10 @@ ansibleguy.opnsense.dhcp_general
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
     :widths: 15 10 10 10 10 45
 
-    "interfaces", "list", "false", "[]", "ints", "Comma separated list of network interfaces to listen on for DHCP requests"
-    "socket_type", "string", "false", "raw", "dhcp_socket_type", "Socket type used for DHCP communication. Allowed values: 'raw', 'udp'"
-    "fw_rules", "boolean", "false", "true", "fwrules, rules", "Automatically add a basic set of firewall rules to allow DHCP traffic"
-    "lifetime", "int", "false", "4000", "valid_lifetime", "Defines how long the addresses (leases) given out by the server are valid (in seconds)"
+    "interfaces","list","false","\-","ints","Comma separated list of network interfaces to listen on for DHCP requests"
+    "socket_type","string","false","raw","dhcp_socket_type","One of: 'raw', 'udp'. Socket type used for DHCP communication."
+    "fw_rules","boolean","false","true","fwrules, rules","Automatically add a basic set of firewall rules to allow DHCP traffic"
+    "lifetime","int","false","4000","valid_lifetime","Defines how long the addresses (leases) given out by the server are valid (in seconds)"
 
 ansibleguy.opnsense.dhcp_reservation
 ====================================
@@ -110,8 +110,11 @@ ansibleguy.opnsense.dhcp_general
         tasks:
           - name: Listen to network interfaces
             ansibleguy.opnsense.dhcp_general:
-            enabled: true
-            interfaces: 'lan,opt1,opt2,vlan0.10'
+              enabled: true
+              interfaces: 'lan,opt1,opt2,vlan0.10'
+              # socket_type: 'raw'
+              # fw_rules: true
+              # lifetime: 4000
 
 ----
 
