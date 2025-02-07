@@ -43,7 +43,7 @@ SERVICES = {
         },
     },
     #   note: these would support more actions:
-    'ids': {}, 'proxy': {}, 'unbound': {},
+    'ids': {}, 'proxy': {}, 'unbound': {}, 'kea': {},
     # plugins
     'ftp_proxy': {'c': 'ftpproxy'},
     'iperf': {'a': ['reload', 'status', 'start', 'restart']},

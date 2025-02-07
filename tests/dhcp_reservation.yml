@@ -13,8 +13,6 @@
       target: 'dhcp_reservation'
 
   tasks:
-    # todo: add subnet via module
-
     - name: Listing
       ansibleguy.opnsense.list:
       register: opn_pre1
@@ -60,6 +58,11 @@
       register: opn_fail4
       failed_when: not opn_fail4.failed
       when: not ansible_check_mode
+
+    - name: Adding dummy DHCP-subnet
+      ansibleguy.opnsense.dhcp_subnet:
+        subnet: '192.168.69.0/24'
+      check_mode: false
 
     - name: Adding 1
       ansibleguy.opnsense.dhcp_reservation:
@@ -138,6 +141,12 @@
         - '192.168.69.76'
         - '192.168.69.86'
       when: not ansible_check_mode
+
+    - name: Cleanup dummy DHCP-subnet
+      ansibleguy.opnsense.dhcp_subnet:
+        subnet: '192.168.69.0/24'
+        state: 'absent'
+      check_mode: false
 
     - name: Listing
       ansibleguy.opnsense.list:

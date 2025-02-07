@@ -721,3 +721,12 @@
     - name: Cleanup DHCP Settings
       ansibleguy.opnsense.dhcp_general:
         enabled: false
+
+    - name: Cleanup DHCP Subnets
+      ansibleguy.opnsense.dhcp_subnet:
+        subnet: "{{ item }}"
+        state: 'absent'
+      loop:
+        - '192.168.69.0/24'
+        - '192.168.88.0/24'
+        - '192.168.89.0/24'
