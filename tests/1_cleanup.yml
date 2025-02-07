@@ -256,6 +256,15 @@
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
 
+    - name: Cleanup on-to-one nat
+      ansibleguy.opnsense.one_to_one:
+        description: "{{ item }}"
+        state: 'absent'
+        match_fields: ['description']
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
     - name: Cleanup FRR general settings
       ansibleguy.opnsense.frr_general:
         enabled: false

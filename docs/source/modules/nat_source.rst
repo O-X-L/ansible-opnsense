@@ -1,14 +1,14 @@
-.. _modules_source_nat:
+.. _modules_nat_source:
 
 .. include:: ../_include/head.rst
 
 ==========
-Source NAT
+NAT Source
 ==========
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/source_nat.yml>`_
+**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/nat_source.yml>`_
 
 **API Docs**: `Core - Firewall <https://docs.opnsense.org/development/api/core/firewall.html>`_
 
@@ -32,6 +32,7 @@ This plugin has some limitations you need to know of:
   * per example see menu: 'Interface - Assignments - Interface ID (in brackets)'
   * this brings problems if the interface-names are not the same on both nodes when using HA-setups
 
+----
 
 Info
 ****
@@ -81,6 +82,8 @@ Module alias: ansibleguy.opnsense.snat
 
 .. include:: ../_include/param_basic.rst
 
+----
+
 Usage
 *****
 
@@ -107,15 +110,15 @@ Examples
           firewall: 'opnsense.template.ansibleguy.net'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.source_nat:
+        ansibleguy.opnsense.nat_source:
           match_fields: ['description']
 
         ansibleguy.opnsense.list:
-          target: 'source_nat'
+          target: 'nat_source'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.source_nat:
+          ansibleguy.opnsense.nat_source:
             description: 'example'
             match_fields: ['description']
             target: '192.168.0.1'
@@ -139,7 +142,7 @@ Examples
             # reload: true
 
         - name: Adding rule
-          ansibleguy.opnsense.source_nat:
+          ansibleguy.opnsense.nat_source:
             description: 'test1'
             source: '192.168.0.0/24'
             destination: '10.0.0.0/24'
@@ -148,7 +151,7 @@ Examples
             # match_fields: ['description']
 
         - name: Disabling rule
-          ansibleguy.opnsense.source_nat:
+          ansibleguy.opnsense.nat_source:
             description: 'test1'
             source: '192.168.0.0/24'
             destination: '10.0.0.0/24'
@@ -159,7 +162,7 @@ Examples
 
         - name: Listing
           ansibleguy.opnsense.list:
-          #  target: 'source_nat'
+          #  target: 'nat_source'
           register: existing_entries
 
         - name: Printing peers
@@ -167,7 +170,7 @@ Examples
             var: existing_entries.data
 
         - name: Removing rule
-          ansibleguy.opnsense.source_nat:
+          ansibleguy.opnsense.nat_source:
             description: 'test1'
             state: 'absent'
             # match_fields: ['description']

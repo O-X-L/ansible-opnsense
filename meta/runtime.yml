@@ -95,7 +95,8 @@ action_groups:
     - ansibleguy.opnsense.route
     - ansibleguy.opnsense.gateway
   nat:
-    - ansibleguy.opnsense.source_nat
+    - ansibleguy.opnsense.nat_source
+    - ansibleguy.opnsense.nat_one_to_one
   system:
     - ansibleguy.opnsense.list
     - ansibleguy.opnsense.reload
@@ -222,3 +223,7 @@ plugin_routing:
       redirect: ansibleguy.opnsense.acme_validation
     acme_automation:
       redirect: ansibleguy.opnsense.acme_action
+    source_nat:
+      redirect: ansibleguy.opnsense.nat_source
+    one_to_one:
+      redirect: ansibleguy.opnsense.nat_one_to_one

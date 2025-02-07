@@ -17,14 +17,14 @@ try:
         RULE_MOD_ARGS
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.source_nat import SNat
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.nat_source import SNat
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/source_nat.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/source_nat.html'
+# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/nat_source.html'
+# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/nat_source.html'
 
 
 def run_module():
