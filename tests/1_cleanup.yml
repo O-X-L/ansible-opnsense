@@ -750,7 +750,7 @@
 
     - name: Cleanup Postfix General
       ansibleguy.opnsense.postfix_general:
-        reload: false  # speed
+        enabled: false
 
     - name: Cleanup Postfix Address
       ansibleguy.opnsense.postfix_address:
