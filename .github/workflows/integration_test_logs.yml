@@ -1,0 +1,32 @@
+---
+
+name: Pull Integration-Test Logs
+
+on:
+  schedule:
+    - cron: "24 6 * * *"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Install dependencies
+        run: sudo apt install curl jq
+        shell: bash
+
+      - name: Pulling logs
+        run: curl https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=${{ secrets.CI_TOKEN_RO }} | jq > /tmp/test.log
+        shell: bash
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-logs
+          path: /tmp/test.log
+          retention-days: 14
