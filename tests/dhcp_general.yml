@@ -1,0 +1,64 @@
+---
+
+- name: Testing DHCP Setting
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'dhcp_general'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid lifetime
+      ansibleguy.opnsense.dhcp_general:
+        lifetime: -1
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Configuring
+      ansibleguy.opnsense.dhcp_general:
+        enabled: true
+        interfaces: ['opt1']
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing
+      ansibleguy.opnsense.dhcp_general:
+        enabled: true
+        interfaces: ['opt1', 'lan']
+        fw_rules: false
+        lifetime: 5000
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      ansibleguy.opnsense.dhcp_general:
+        enabled: true
+        interfaces: ['opt1', 'lan']
+        fw_rules: false
+        lifetime: 5000
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        opn3.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.dhcp_general:
+        enabled: false

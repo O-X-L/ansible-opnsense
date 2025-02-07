@@ -718,6 +718,10 @@
         - 'ANSIBLE_TEST_1_10'
         - 'ANSIBLE_TEST_DUMMY_1_1'
 
+    - name: Cleanup DHCP Settings
+      ansibleguy.opnsense.dhcp_general:
+        enabled: false
+
     - name: Cleanup DHCP Subnets
       ansibleguy.opnsense.dhcp_subnet:
         subnet: "{{ item }}"

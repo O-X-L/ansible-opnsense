@@ -127,6 +127,7 @@ action_groups:
   dhcp:
     - ansibleguy.opnsense.dhcp_reservation
     - ansibleguy.opnsense.dhcp_controlagent
+    - ansibleguy.opnsense.dhcp_general
     - ansibleguy.opnsense.dhcp_subnet
   acme:
     - ansibleguy.opnsense.acme_general
