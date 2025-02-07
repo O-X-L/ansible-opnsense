@@ -9,7 +9,8 @@ DHCP
 **STATE**: unstable
 
 **TESTS**: `Reservation <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/dhcp_reservation.yml>`_ |
-`ControlAgent <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/dhcp_controlagent.yml>`_
+`ControlAgent <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/dhcp_controlagent.yml>`_ |
+`Subnet <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/dhcp_subnet.yml>`_
 
 **API Docs**: `Core - KEA <https://docs.opnsense.org/development/api/core/kea.html>`_
 
@@ -18,7 +19,8 @@ DHCP
 Contribution
 ************
 
-Thanks to `@KalleDK <https://github.com/KalleDK>`_ for developing these modules!
+Thanks to `@KalleDK <https://github.com/KalleDK>`_, `@superstes <https://github.com/superstes>`_ and `@woelfle <https://github.com/woelfle>`_ for developing these modules!
+
 
 ----
 
@@ -52,6 +54,29 @@ ansibleguy.opnsense.dhcp_controlagent
     "http_host","string","false","127.0.0.1","","Address on which the RESTful interface should be available"
     "http_port","int","false","8000","","MAC/Ether address of the client in question"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+ansibleguy.opnsense.dhcp_subnet
+===============================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "subnet","string","true","\-","\-","Subnet to use. should be large enough to hold the specified pools and reservations"
+    "description","string","false","\-","desc","Optional description of the subnet"
+    "pools","list","false","\-","\-","List of pools, one per line in range or subnet format (e.g. 192.168.0.100 - 192.168.0.200)"
+    "auto_options","boolean,"false","true","option_data_autocollect","Automatically update option data for relevant attributes as routers, dns servers and ntp servers when applying settings from the gui."
+    "gateway","list","false","\-","gw,routers","Default gateways to offer to the clients"
+    "routes","string","false","\-","static_routes","Static routes that the client should install in its routing cache, defined as dest-ip1,router-ip1;dest-ip2,router-ip2"
+    "dns","list","false","\-","dns_servers,dns_srv","DNS servers to offer to the clients"
+    "domain","string","false","\-","domain_name,dom_name,dom","The domain name to offer to the client, set to this firewall's domain name when left empty"
+    "domain_search","list","false","\-","dom_search","Specifies a 'search list' of Domain Names to be used by the client to locate not-fully-qualified domain names."
+    "ntp_servers","list","false","\-","ntp_srv,ntp","Specifies a list of IP addresses indicating NTP (RFC 5905) servers available to the client."
+    "time_servers","list","false","\-","time_srv","Specifies a list of RFC 868 time servers available to the client."
+    "next_server","string","false","\-","next_srv","Next server IP address"
+    "tftp_server","string","false","\-","tftp,tftp_srv,tftp_server_name","TFTP server address or fqdn"
+    "tftp_file","string","false","\-","tftp_boot_file,boot_file_name","TFTP Boot filename to request"
+    "ipv","int","false","4","ip_version","IP version - one of '4', '6'"
 
 ----
 
@@ -132,3 +157,56 @@ ansibleguy.opnsense.dhcp_controlagent
           ansibleguy.opnsense.dhcp_controlagent:
             enabled: false
             reload: true
+
+----
+
+ansibleguy.opnsense.dhcp_subnet
+===============================
+
+.. code-block:: yaml
+
+    - host: localhost
+      gather_facts: no
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+        ansibleguy.opnsense.list:
+          target: 'dhcp_reservation'
+
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.dhcp_subnet:
+            subnet: '192.168.89.0/24'
+            # description: ''
+            # pools: []
+            # auto_options: true
+            # gateway: ''
+            # routes: ''
+            # dns: []
+            # domain: ''
+            # domain_search: []
+            # ntp_servers: []
+            # time_servers: []
+            # next_server: ''
+            # tftp_server: ''
+            # tftp_file: ''
+            # ipv: 4
+            # match_fields: ['subnet']
+
+        - name: Add subnet
+          ansibleguy.opnsense.dhcp_subnet:
+            subnet: '10.0.100.0/24'
+            pools:
+              - '10.0.100.1-10.0.100.99'
+              - '10.0.100.150-10.0.100.199'
+            auto_options: false
+            gateway: '192.168.89.254'
+            dns: ['1.1.1.2', '1.0.0.2']
+            domain: 'test.lan'
+
+        - name: Remove subnet
+          ansibleguy.opnsense.dhcp_subnet:
+            subnet: '10.0.100.0/24'
+            state: absent
