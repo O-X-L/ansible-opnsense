@@ -29,3 +29,4 @@ jobs:
         with:
           name: integration-test-logs
           path: /tmp/test.log
+          retention-days: 14
