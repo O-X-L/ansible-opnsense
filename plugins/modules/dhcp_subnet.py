@@ -84,7 +84,7 @@ def run_module():
         ),
         tftp_file=dict(
             type='str', required=False, aliases=['tftp_boot_file', 'boot_file_name'], default='',
-            description='Boot filename to request',
+            description='TFTP Boot filename to request',
         ),
         ipv=dict(type='int', required=False, default=4, choices=[4, 6], aliases=['ip_version']),
         match_fields=dict(
