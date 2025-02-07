@@ -163,6 +163,15 @@ run_test 'acme_account' 1
 run_test 'acme_validation' 1
 run_test 'acme_action' 1
 run_test 'acme_certificate' 0  # check mode => dependency on other acme-entries
+run_test 'postfix_general' 1
+run_test 'postfix_domain' 1
+run_test 'postfix_recipient' 1
+run_test 'postfix_recipientbcc' 1
+run_test 'postfix_sender' 1
+run_test 'postfix_senderbcc' 1
+run_test 'postfix_sendercanonical' 1
+run_test 'postfix_headercheck' 1
+run_test 'postfix_address' 1
 
 echo ''
 echo '##############################'
