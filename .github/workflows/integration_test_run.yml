@@ -26,4 +26,6 @@ jobs:
       - name: You can pull the current logs at this URL
         run: >
           echo "You can pull the current logs at this URL:"
-          echo " > https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/tail?token=${{ secrets.CI_TOKEN_RO }}"
+          echo " > https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/tail?token=${CI_TOKEN_RO}"
+        env:
+          CI_TOKEN_RO: "2b7bba30-9a37-4b57-be8a-99e23016ce70"

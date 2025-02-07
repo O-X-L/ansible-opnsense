@@ -23,7 +23,7 @@ jobs:
         shell: bash
 
       - name: Pulling logs
-        run: curl https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=${{ secrets.CI_TOKEN_RO }} | jq > /tmp/test.log
+        run: curl https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=${{ secrets.CI_TOKEN_RO }}&lines=100000 | jq > /tmp/test.log
         shell: bash
 
       - uses: actions/upload-artifact@v4
