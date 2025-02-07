@@ -34,7 +34,7 @@ def run_module():
         ),
         controller=dict(
             type='str', required=False, default='filter', description='Target API controller',
-            choices=['source_nat', 'filter']
+            choices=['source_nat', 'filter', 'one_to_one']
         ),
         api_module=dict(type='str', required=False, default='firewall', choices=['firewall']),
         **OPN_MOD_ARGS

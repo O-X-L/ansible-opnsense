@@ -15,14 +15,14 @@ try:
         RULE_MOD_ARGS, RULE_MOD_ARG_ALIASES
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.one_to_one import OneToOne
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.nat_one_to_one import OneToOne
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/one_to_one.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/one_to_one.html'
+# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/nat_one_to_one.html'
+# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/nat_one_to_one.html'
 
 
 def run_module():

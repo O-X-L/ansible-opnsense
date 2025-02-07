@@ -27,7 +27,8 @@ Here is the basic process:
 It currently just works with the 'Firewall' plugin:
 
 - :ref:`ansibleguy.opnsense.rule <modules_rule>`
-- :ref:`ansibleguy.opnsense.source_nat <modules_source_nat>`
+- :ref:`ansibleguy.opnsense.nat_source <modules_nat_source>`
+- :ref:`ansibleguy.opnsense.nat_one_to_one <modules_nat_one_to_one>`
 
 Definition
 **********
@@ -38,7 +39,7 @@ Definition
 
     "name","string","false","'create'","Action to execute. One of: 'create', 'revert', 'apply', 'cancel_rollback', 'cancel'"
     "revision","string","false, true if action is one of 'apply', 'revert' or 'cancel_rollback'","\-","Savepoint revision to apply, revert or cancel_rollback"
-    "controller","string","false","'filter'","Controller to manage the savepoint of. One of: 'source_nat', 'filter'"
+    "controller","string","false","'filter'","Controller to manage the savepoint of. One of: 'source_nat', 'filter', 'one_to_one'"
     "api_module","string","false","'firewall'","Module to manage the savepoint of. Currently only supports 'firewall'"
 
 .. include:: ../_include/param_basic.rst

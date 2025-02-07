@@ -1,18 +1,25 @@
-.. _modules_one_to_one:
+.. _modules_nat_one_to_one:
 
 .. include:: ../_include/head.rst
 
 ==============
-One-To-One NAT
+NAT One-To-One
 ==============
 
 **STATE**: unstable
 
-**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/one_to_one.yml>`_
+**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/nat_one_to_one.yml>`_
 
 **API Docs**: `one_to_one <https://docs.opnsense.org/development/api/core/firewall.html>`_
 
 **Service Docs**: `one_to_one <https://docs.opnsense.org/manual/nat.html#one-to-one>`_
+
+Contribution
+************
+
+Thanks to `@jiuka <https://github.com/jiuka>`_ for developing this module!
+
+----
 
 Info
 ****
@@ -51,6 +58,8 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
+----
+
 Usage
 *****
 
@@ -69,14 +78,14 @@ Examples
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
-          target: 'one_to_one'
+          target: 'nat_one_to_one'
 
       tasks:
         # add optional parameters commented-out
         # required ones normally
         # add their default values to get a brief overview of how the module works
         - name: Example
-          ansibleguy.opnsense.one_to_one:
+          ansibleguy.opnsense.nat_one_to_one:
             #sequence: 1
             interface: 'lan'
             #type: binnat
@@ -93,7 +102,7 @@ Examples
 
         - name: Listing jobs
           ansibleguy.opnsense.list:
-          #  target: 'one_to_one'
+          #  target: 'nat_one_to_one'
           register: existing_one_to_one
 
         - name: Printing

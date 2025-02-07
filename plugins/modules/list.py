@@ -39,7 +39,7 @@ TARGETS = [
     'interface_lagg', 'interface_loopback', 'unbound_dnsbl', 'dhcp_reservation', 'acme_general', 'acme_account',
     'acme_validation', 'acme_action', 'acme_certificate', 'postfix_general', 'postfix_domain', 'postfix_recipient',
     'postfix_recipientbcc', 'postfix_sender', 'postfix_senderbcc', 'postfix_sendercanonical', 'postfix_headercheck',
-    'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre', 'one_to_one',
+    'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre', 'nat_one_to_one', 'nat_source',
 ]
 
 
@@ -190,12 +190,12 @@ def run_module():
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface_gre import \
                 Gre as Target_Obj
 
-        elif target == 'source_nat':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.source_nat import \
+        elif target in ['source_nat', 'nat_source']:
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.nat_source import \
                 SNat as Target_Obj
 
-        elif target == 'one_to_one':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.one_to_one import \
+        elif target == 'nat_one_to_one':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.nat_one_to_one import \
                 OneToOne as Target_Obj
 
         elif target == 'frr_general':

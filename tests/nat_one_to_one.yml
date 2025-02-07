@@ -11,7 +11,7 @@
       # match_fields: ['description']
 
     ansibleguy.opnsense.list:
-      target: 'one_to_one'
+      target: 'nat_one_to_one'
 
   tasks:
     - name: Listing
