@@ -36,6 +36,12 @@ This plugin has some limitations you need to know of:
 Info
 ****
 
+Tips
+====
+
+* If you want to reference :code:`This firewall` - you need to use :code:`(self)` instead.
+
+
 Savepoint
 =========
 

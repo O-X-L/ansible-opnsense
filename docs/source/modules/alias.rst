@@ -24,7 +24,6 @@ For more detailed information on what alias types are supported - see `the docum
 
 To use GeoIP alias types - you need to configure a source for it first. See: `documentation <https://docs.opnsense.org/manual/how-tos/maxmind_geo_ip.html>`_
 
-
 Mass-Manage
 ===========
 

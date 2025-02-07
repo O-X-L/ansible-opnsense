@@ -134,6 +134,18 @@
         protocol: 'TCP'
         description: 'ANSIBLE_TEST_1_12'
 
+    - name: Test self (this firewall)
+      ansibleguy.opnsense.rule:
+        destination_net: '(self)'
+        destination_port: 69
+        protocol: 'UDP'
+        description: 'ANSIBLE_TEST_1_13'
+      register: opn21
+      failed_when: >
+        opn21.failed or
+        not opn21.changed
+      when: not ansible_check_mode
+
     - name: Cleanup
       ansibleguy.opnsense.rule:
         description: "{{ item }}"
@@ -145,6 +157,7 @@
         - 'ANSIBLE_TEST_1_10'
         - 'ANSIBLE_TEST_1_11'
         - 'ANSIBLE_TEST_1_12'
+        - 'ANSIBLE_TEST_1_13'
 
 - name: Testing Rules - aliases
   hosts: localhost
