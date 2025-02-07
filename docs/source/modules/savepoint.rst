@@ -2,7 +2,7 @@
 
 .. include:: ../_include/head.rst
 
-.. |rollback_process| image:: ../../_static/img/savepoint_rollback.png
+.. |rollback_process| image:: ../_static/img/savepoint_rollback.png
 
 ==================
 Firewall Savepoint

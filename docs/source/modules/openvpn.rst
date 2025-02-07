@@ -14,7 +14,7 @@ OpenVPN
 `ansibleguy.opnsense.openvpn_client_override <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/openvpn_client_override.yml>`_ |
 `ansibleguy.opnsense.openvpn_status <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/openvpn_status.yml>`_
 
-**API Docs**: `OpenVPN <https://docs.opnsense.org/development/api/core/openvpn.html>`_
+**API Docs**: `Core - OpenVPN <https://docs.opnsense.org/development/api/core/openvpn.html>`_
 
 **Service Docs**: `OpenVPN <https://docs.opnsense.org/troubleshooting/openvpn.html>`_
 

@@ -2,10 +2,10 @@
 
 .. include:: ../_include/head.rst
 
-.. |img_module_abstraction| image:: ../../_static/img/module_abstraction.svg
+.. |img_module_abstraction| image:: ../_static/img/module_abstraction.svg
    :class: wiki-img
 
-.. |img_module_abstraction_actions| image:: ../../_static/img/module_abstraction_actions.svg
+.. |img_module_abstraction_actions| image:: ../_static/img/module_abstraction_actions.svg
    :class: wiki-img
 
 ===========
