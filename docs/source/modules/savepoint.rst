@@ -14,6 +14,12 @@ Firewall Savepoint
 
 **API Docs**: `Core - Firewall <https://docs.opnsense.org/development/api/core/firewall.html>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
 
 Info
 ****
@@ -30,6 +36,8 @@ It currently just works with the 'Firewall' plugin:
 - :ref:`ansibleguy.opnsense.nat_source <modules_nat_source>`
 - :ref:`ansibleguy.opnsense.nat_one_to_one <modules_nat_one_to_one>`
 
+----
+
 Definition
 **********
 
@@ -43,6 +51,8 @@ Definition
     "api_module","string","false","'firewall'","Module to manage the savepoint of. Currently only supports 'firewall'"
 
 .. include:: ../_include/param_basic.rst
+
+----
 
 Examples
 ********

@@ -10,6 +10,12 @@
 
 **Service Docs**: [Traffic Shaping](https://docs.opnsense.org/manual/shaping.html)
 
+## Contribution
+
+Thanks to [@Rath](https://github.com/superstes) for developing these modules!
+
+----
+
 ## Info
 
 The description is used to match the configured entries with the existing ones. It must be unique!
@@ -19,6 +25,7 @@ Interfaces for 'shaper_rules' must be provided as used in the network config (_p
   * per example see menu: 'Interface - Assignments - Interface ID (in brackets)'
   * this brings problems if the interface-names are not the same on both nodes when using HA-setups
 
+----
 
 ## Definition
 
@@ -88,6 +95,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | reload             | boolean | false    | true          | -                                 | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html).                                                                                                                                                                           |
 | reset              | boolean | false    | false         | flush                             | Can be used instead of 'reload'. If the running config should be flushed and reloaded on change - this will take some time. This might have impact on other services using the same technology underneath (such as Captive portal). You might want to reload it 'manually' after all changes are done => using the [service module](https://opnsense.ansibleguy.net/modules/service.html) (_action 'restart'_). |
 
+----
 
 ## Examples
 

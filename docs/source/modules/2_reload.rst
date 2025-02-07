@@ -10,6 +10,13 @@
 
 **TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/reload.yml>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
+
 Info
 ****
 
@@ -29,6 +36,8 @@ Definition
     "target","string","true","\-","tgt, t","What part of the running config should be reloaded. One of: 'alias', 'rule', 'route', 'cron', 'unbound', 'syslog', 'ipsec', 'ipsec_legacy', 'shaper', 'monit', 'wireguard', 'interface_vlan', 'interface_vxlan', 'interface_vip', 'interface_lagg', 'frr', 'webproxy', 'bind', 'ids', 'dhcrelay', 'dhcp', 'kea'"
 
 .. include:: ../_include/param_basic.rst
+
+----
 
 Examples
 ********

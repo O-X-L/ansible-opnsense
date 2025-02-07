@@ -65,6 +65,8 @@ Usage
 
 To add One-to-One NAT rules - see: `OPNSense Documentation <https://docs.opnsense.org/manual/nat.html#one-to-one>`_
 
+----
+
 Examples
 ********
 

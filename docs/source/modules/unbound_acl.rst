@@ -19,6 +19,8 @@ Contribution
 
 Thanks to `@gjdoornink <https://github.com/gjdoornink>`_ for developing this module!
 
+----
+
 Info
 ****
 
@@ -31,6 +33,8 @@ The configured lists are matched by its unique file-name.
     Unbound service actions like :code:`reload` can take long. Please be aware of the **possible downtime**!
 
     You may also need to increase the module :code:`timeout`.
+
+----
 
 Definition
 **********
@@ -46,6 +50,8 @@ Definition
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 .. include:: ../_include/param_basic.rst
+
+----
 
 Examples
 ********

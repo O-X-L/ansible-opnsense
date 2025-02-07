@@ -10,9 +10,15 @@
 
 **FRR Docs**: [FRRouting](https://docs.frrouting.org/) (_make sure you are looking at the current OPNSense package version!_)
 
+## Contribution
+
+Thanks to [@Rath](https://github.com/superstes) for developing these modules!
+
 ## Sponsoring
 
 Thanks to [@telmich](https://github.com/telmich) for sponsoring the development of these modules!
+
+----
 
 ## Prerequisites
 

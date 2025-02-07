@@ -10,6 +10,16 @@
 
 **FRR Docs**: [FRRouting](https://docs.frrouting.org/) (_make sure you are looking at the current OPNSense package version!_)
 
+## Contribution
+
+Thanks to [@Rath](https://github.com/superstes) for developing this module!
+
+## Sponsoring
+
+Thanks to [@telmich](https://github.com/telmich) for sponsoring the development of this module!
+
+----
+
 ## Prerequisites
 
 You need to install the FRR plugin:
@@ -18,6 +28,8 @@ os-frr
 ```
 
 You can also install it using the [package module](https://opnsense.ansibleguy.net/modules/package.html).
+
+----
 
 ## Definition
 
@@ -34,6 +46,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | carp      | bool   | false     | false                       | carp_failover | Will activate the routing service only on the primary device                                                                                 |
 | snmp_agentx      | bool   | false     | false                       | -             | En- or disable support for Net-SNMP AgentX                                                                                                   |
 
+----
 
 ## Examples
 

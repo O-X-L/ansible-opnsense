@@ -14,6 +14,12 @@ DNS - Unbound - DNS-over-TLS
 
 **Service Docs**: `Unbound <https://docs.opnsense.org/manual/unbound.html>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
 
 Definition
 **********
@@ -30,6 +36,8 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
+----
+
 Info
 ****
 
@@ -42,6 +50,8 @@ This module manages DNS-over-TLS configuration that can be found in the WEB-UI m
     Unbound service actions like :code:`reload` can take long. Please be aware of the **possible downtime**!
 
     You may also need to increase the module :code:`timeout`.
+
+----
 
 Examples
 ********

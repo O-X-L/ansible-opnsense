@@ -62,7 +62,11 @@ This module manages GRE Tunnel configuration that can be found in the WEB-UI men
 Contribution
 ************
 
-Thanks to `@jiuka <https://github.com/jiuka>`_ for developing the :code:`interface_loopback` and :code:`interface_gre` module!
+Thanks to `@jiuka <https://github.com/jiuka>`_ for developing the :code:`interface_loopback` and :code:`interface_gre` modules!
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing the other modules!
+
+----
 
 Definition
 **********
@@ -169,6 +173,7 @@ ansibleguy.opnsense.interface_gre
     "tunnel_remote_net","integer","false","32","\-","Netmask `ipv4` or prefix `ipv6` to use for this tunnel "
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
+----
 
 Examples
 ********

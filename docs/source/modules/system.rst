@@ -12,6 +12,12 @@ System
 
 **API Docs**: `Core - Firmware <https://docs.opnsense.org/development/api/core/firmware.html>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
 
 .. warning::
 
@@ -36,6 +42,7 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
+----
 
 Examples
 ********

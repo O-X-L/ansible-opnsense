@@ -19,6 +19,8 @@ Contribution
 
 Thanks to `@jiuka <https://github.com/jiuka>`_ for developing this module!
 
+----
+
 Definition
 **********
 
@@ -34,12 +36,16 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
+----
+
 Info
 ****
 
 This module manages DHCRelay relays. Each interface can be assigned a single relay.
 
 Note: You can also use the shortform module name: :code:`ansibleguy.opnsense.dhcrelay`
+
+----
 
 Examples
 ********

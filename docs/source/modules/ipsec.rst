@@ -25,6 +25,9 @@ Contribution
 
 Thanks to `@atammy-narmi <https://github.com/atammy-narmi>`_ for developing the :code:`ipsec_psk` module!
 
+Thanks to `@Rath <https://github.com/superstes>`_ for developing the other modules!
+
+----
 
 Definition
 **********
@@ -157,6 +160,7 @@ ansibleguy.opnsense.ipsec_psk
     "psk","string","true","\-","key, secret","\-"
     "type","string","false","\-","kind","One of: 'PSK', 'EAP'"
 
+----
 
 Usage
 *****
@@ -177,6 +181,7 @@ You may want to use '**ansible-vault**' to **encrypt** your 'private_key' conten
     # or encrypt the private_key file beforehand (might be easier)
     ansible-vault encrypt /path/to/private/key/file.pem
 
+----
 
 Examples
 ********

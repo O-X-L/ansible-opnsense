@@ -10,9 +10,15 @@
 
 **FRR Docs**: [FRRouting](https://docs.frrouting.org/) (_make sure you are looking at the current OPNSense package version!_)
 
+## Contribution
+
+Thanks to [@Rath](https://github.com/superstes) for developing this module!
+
 ## Sponsoring
 
-Thanks to [@telmich](https://github.com/telmich) for sponsoring the development of these modules!
+Thanks to [@telmich](https://github.com/telmich) for sponsoring the development of this module!
+
+----
 
 ## Prerequisites
 
@@ -23,6 +29,8 @@ os-frr
 
 You can also install it using the [package module](https://opnsense.ansibleguy.net/modules/package.html).
 
+----
+
 ## Definition
 
 For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic.html)
@@ -32,6 +40,8 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | Parameter   | Type            | Required | Default value         | Aliases | Comment                                                                                                                                                                                                                                                                                                                                  |
 |:------------|:----------------|:---------|:----------------------|:--------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | target      | string          | true     | -                     | -       | What information to query. One of: 'bgpneighbors', 'bgproute', 'bgproute4', 'bgproute6', 'bgpsummary', 'generalroute', 'generalroute4', 'generalroute6', 'generalrunningconfig', 'ospfdatabase', 'ospfinterface', 'ospfneighbor', 'ospfoverview', 'ospfroute', 'ospfv3database', 'ospfv3interface', 'ospfv3neighbor', 'ospfv3overview', 'ospfv3route' |
+
+----
 
 ## Examples
 

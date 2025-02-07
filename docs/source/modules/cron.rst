@@ -12,6 +12,12 @@ Cron Jobs
 
 **API Docs**: `Core - Cron <https://docs.opnsense.org/development/api/core/cron.html>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
 
 Definition
 **********
@@ -33,11 +39,14 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
+----
+
 Usage
 *****
 
 To add custom cron-job scripts - see: `OPNSense Documentation <https://docs.opnsense.org/development/backend/configd.html>`_ | `OPNSense Forum <https://forum.opnsense.org/index.php?topic=6177.0>`_
 
+----
 
 Examples
 ********

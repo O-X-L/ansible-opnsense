@@ -20,6 +20,12 @@ Intrusion Prevention System
 
 **Service Docs**: `Intrusion Prevention System <https://docs.opnsense.org/manual/ips.html>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing these modules!
+
+----
 
 Definition
 **********
@@ -136,6 +142,7 @@ ansibleguy.opnsense.ids_policy_rule
     "enabled","boolean","false","true","\-","En- or disable the rule"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
+----
 
 Info
 ****
@@ -143,6 +150,8 @@ Info
 .. warning::
 
     The :code:`list` module will not return all details of the existing entries `as the current implementation does not scale well <https://github.com/opnsense/core/issues/7094>`_.
+
+----
 
 Examples
 ********

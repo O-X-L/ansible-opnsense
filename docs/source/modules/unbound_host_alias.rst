@@ -14,6 +14,13 @@ DNS - Unbound - Host Alias
 
 **Service Docs**: `Unbound <https://docs.opnsense.org/manual/unbound.html>`_
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
+
 Definition
 **********
 
@@ -29,6 +36,8 @@ Definition
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 .. include:: ../_include/param_basic.rst
+
+----
 
 Info
 ****
@@ -47,6 +56,8 @@ Keep in mind that all resource record types (i.e. A, AAAA, MX, etc. records) of 
 
     You may also need to increase the module :code:`timeout`.
 
+----
+
 Usage
 *****
 
@@ -61,6 +72,8 @@ The default behaviour is that a host-alias is matched by its 'alias' and 'domain
 However - it is **recommended** to use/set 'description' as **unique identifier** if many aliases are used.
 
 .. include:: ../_include/unbound_mass.rst
+
+----
 
 Examples
 ********

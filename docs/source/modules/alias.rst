@@ -16,6 +16,12 @@ Alias
 
 This module allows you to manage single aliases.
 
+Contribution
+************
+
+Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
+
+----
 
 Info
 ****
@@ -23,7 +29,6 @@ Info
 For more detailed information on what alias types are supported - see `the documentation <https://docs.opnsense.org/manual/aliases.html>`_.
 
 To use GeoIP alias types - you need to configure a source for it first. See: `documentation <https://docs.opnsense.org/manual/how-tos/maxmind_geo_ip.html>`_
-
 
 Mass-Manage
 ===========
@@ -46,6 +51,8 @@ Definition
     "reload","boolean","false","false","\-", .. include:: ../_include/param_reload.rst
 
 .. include:: ../_include/param_basic.rst
+
+----
 
 Examples
 ********

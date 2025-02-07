@@ -10,9 +10,15 @@
 
 **FRR Docs**: [FRRouting](https://docs.frrouting.org/) (_make sure you are looking at the current OPNSense package version!_)
 
+## Contribution
+
+Thanks to [@Rath](https://github.com/superstes) for developing this module!
+
 ## Sponsoring
 
-Thanks to [@telmich](https://github.com/telmich) for sponsoring the development of these modules!
+Thanks to [@telmich](https://github.com/telmich) for sponsoring the development of this module!
+
+----
 
 ## Prerequisites
 
@@ -22,6 +28,8 @@ os-frr
 ```
 
 You can also install it using the [package module](https://opnsense.ansibleguy.net/modules/package.html).
+
+----
 
 ## Definition
 
@@ -37,6 +45,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | networks    | list    | false    | -             | nets               | Enter your networks in CIDR notation                                                                                                           |                                                                                                                                                  |
 | redistribute    | list    | false    | -             | -                  | Select other routing sources, which should be redistributed to the other nodes. One or more of: 'bgp', 'ospf', 'connected', 'kernel', 'static' |                                                                                                                                                  |
 
+----
 
 ## Examples
 

@@ -19,6 +19,8 @@ Contribution
 
 Thanks to `@atammy-narmi <https://github.com/atammy-narmi>`_ for developing these modules!
 
+----
+
 Prerequisites
 *************
 
@@ -65,11 +67,14 @@ ansibleguy.opnsense.nginx_upstream_server
     "state","string","false","present","\-","Choice of 'present' or 'absent'."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
+----
 
 Usage
 *****
 
 Enabling the nginx configured services.
+
+----
 
 Examples
 ********
