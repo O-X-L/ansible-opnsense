@@ -61,6 +61,7 @@ class Upstream(BaseModule):
         self.upstream = {}
         self.existing_upstream_servers = None
         self.existing_tls_client_certificates = None
+        self.existing_tls_trusted_certificates = None
 
     def check(self):
         if self.p['state'] == 'present':
@@ -99,6 +100,11 @@ class Upstream(BaseModule):
         self.existing_tls_client_certificates = self.s.get(cnf={
             **{'module': 'trust', 'command': 'search', 'controller': 'cert'}
         })['rows']
+
+    def _search_tls_trusted_certificates(self) -> None:
+        self.existing_tls_trusted_certificates = self.s.get(cnf={
+            **{'module': 'trust', 'command': 'search', 'controller': 'ca'}
+        })['rows']
     
     def _resolve_relations(self) -> None:
         if not is_unset(self.p['serverentries']):
@@ -115,7 +121,6 @@ class Upstream(BaseModule):
             ]
             if any(missing):
                 self.m.fail_json(f"Server entries {missing.join(',')} do not exist!")
-
 
             self.p['serverentries'] = [
                 mapping[entry]
@@ -134,6 +139,27 @@ class Upstream(BaseModule):
                 self.m.fail_json(f"TLS client certificate {tls_client_certificate} does not exist!")
 
             self.p['tls_client_certificate'] = mapping[tls_client_certificate]
+
+        if not is_unset(self.p['tls_trusted_certificate']):
+            self._search_tls_trusted_certificates()
+            mapping = {
+                ca['descr']: ca['refid']
+                for ca in self.existing_tls_trusted_certificates
+            }
+
+            missing = [
+                entry
+                for entry in self.p['tls_trusted_certificate']
+                if entry not in mapping
+            ]
+            if any(missing):
+                self.m.fail_json(f"TLS trusted certificates {missing.join(',')} do not exist!")
+
+            self.p['tls_trusted_certificate'] = [
+                mapping[entry]
+                for entry in self.p['tls_trusted_certificate']
+            ]
+
 
     def update(self) -> None:
         self.b.update(enable_switch=False)

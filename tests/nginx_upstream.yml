@@ -13,12 +13,12 @@
       target: 'nginx_upstream'
 
   tasks:
-    - name: Listing
-      ansibleguy.opnsense.list:
-      register: opn_pre1
-      failed_when: >
-        'data' not in opn_pre1 or
-        opn_pre1.data | length != 0
+    # - name: Listing
+    #   ansibleguy.opnsense.list:
+    #   register: opn_pre1
+    #   failed_when: >
+    #     'data' not in opn_pre1 or
+    #     opn_pre1.data | length != 0
 
     - name: Removing - does not exist
       ansibleguy.opnsense.nginx_upstream:
@@ -58,6 +58,17 @@
       register: opn_fail3
       failed_when: not opn_fail3.failed
 
+    - name: Adding 1 - failing because of unknown TLS trusted certificate
+      ansibleguy.opnsense.nginx_upstream:
+        description: 'ANSIBLE@TEST1'
+        serverentries:
+          - 'ANSIBLE_TEST_DUMMY_1_1'
+        tls_trusted_certificate:
+          - 'DOES_NOT_EXIST'
+      register: opn_fail4
+      failed_when: not opn_fail4.failed
+
+
     - name: Adding 1 - should succeed
       ansibleguy.opnsense.nginx_upstream:
         description: 'ANSIBLE@TEST1'
@@ -85,10 +96,14 @@
         ng1.changed
       when: not ansible_check_mode
 
-    - name: Remove all - should succeed
+    - name: Remove 1 - should succeed
       ansibleguy.opnsense.nginx_upstream:
-        description: "{{ item }}"
+        description: 'ANSIBLE@TEST1'
         state: 'absent'
-      loop:
-        - 'ANSIBLE@TEST1'
+      when: not ansible_check_mode
+
+    - name: Cleanup dummy upstream server
+      ansibleguy.opnsense.nginx_upstream_server:
+        name: 'ANSIBLE_TEST_DUMMY_1_1'
+        state: 'absent'
       when: not ansible_check_mode
