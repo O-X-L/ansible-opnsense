@@ -1,6 +1,6 @@
 ---
 
-name: Functional-Test Execution
+name: Functional-Tests Execution
 
 on: workflow_dispatch
 

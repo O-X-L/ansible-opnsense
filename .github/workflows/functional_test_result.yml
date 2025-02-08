@@ -34,6 +34,5 @@ jobs:
 
       - name: Checking job-state
         run: >
-          RESULT="$(curl https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/state?token=${{ secrets.CI_TOKEN_RO }} | jq -r '.state')"
-          if [[ "$RESULT" == "failed" ]]; then exit 1; fi
+          curl https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/state?token=${{ secrets.CI_TOKEN_RO }} | jq -r '.state' | grep -q 'failed' && exit 1 || exit 0
         shell: bash
