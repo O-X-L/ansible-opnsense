@@ -11,6 +11,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 1
+    env:
+      CI_JOB: 'ansible-test-collection-opnsense'
+      CI_DOMAIN: 'ci.ansibleguy.net'
 
     steps:
       - name: Checkout
@@ -23,16 +26,15 @@ jobs:
         shell: bash
 
       - name: Pulling logs
-        run: curl https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=${{ secrets.CI_TOKEN_RO }} | jq > /tmp/test.log
+        run: curl -f https://${{ env.CI_DOMAIN }}/api/job/${{ env.CI_JOB }}/logs?token=${{ secrets.CI_TOKEN_RO }} | jq > /tmp/test.log
         shell: bash
 
       - uses: actions/upload-artifact@v4
         with:
-          name: integration-test-logs
+          name: test-logs
           path: /tmp/test.log
           retention-days: 14
 
       - name: Checking job-state
-        run: >
-          curl https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/state?token=${{ secrets.CI_TOKEN_RO }} | jq -r '.state' | grep -q 'failed' && exit 1 || exit 0
+        run: curl -f https://${{ env.CI_DOMAIN }}/api/job/${{ env.CI_JOB }}/state?token=${{ secrets.CI_TOKEN_RO }} | jq -r '.state' | grep -q 'failed' && exit 1 || exit 0
         shell: bash
