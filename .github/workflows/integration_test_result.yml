@@ -1,10 +1,10 @@
 ---
 
-name: Integration-Test Logs
+name: Integration-Test Result
 
 on:
   schedule:
-    - cron: "24 6 * * *"
+    - cron: "25 6 * * *"
   workflow_dispatch:
 
 jobs:
@@ -22,12 +22,11 @@ jobs:
         run: sudo apt install curl jq
         shell: bash
 
-      - name: Pulling logs
-        run: curl https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=${{ secrets.CI_TOKEN_RO }} | jq > /tmp/test.log
+      - name: Checking job-state
+        run: >
+          RESULT="$(curl https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/state?token=${{ secrets.CI_TOKEN_RO }} | jq -r '.state')"
+          if [[ "$RESULT" == "failed" ]]
+          then
+            exit 1
+          fi
         shell: bash
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: integration-test-logs
-          path: /tmp/test.log
-          retention-days: 14
