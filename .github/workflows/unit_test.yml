@@ -8,11 +8,13 @@ on:
     paths:
       - '**.py'
       - '.github/workflows/unit_test.yml'
+      - 'pytest.ini'
   pull_request:
     branches: [latest]
     paths:
       - '**.py'
       - '.github/workflows/unit_test.yml'
+      - 'pytest.ini'
 
 jobs:
   test:
