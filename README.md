@@ -11,6 +11,8 @@
 [Daily Archive](https://github.com/ansibleguy/collection_opnsense/actions/workflows/functional_test_result.yml) |
 [Short](https://badges.ansibleguy.net/log/collection_opnsense_test_short.log) | [Full](https://badges.ansibleguy.net/log/collection_opnsense_test.log)
 
+Internal CI: [Tester Role](https://github.com/ansibleguy/_meta_cicd) | [Jobs API](https://github.com/O-X-L/github-self-hosted-jobs-systemd)
+
 ----
 
 ## Requirements
