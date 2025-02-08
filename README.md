@@ -1,6 +1,6 @@
 # Ansible Collection - ansibleguy.opnsense
 
-[![Lint Test Status](https://badges.ansibleguy.net/opnsense.collection.lint.svg)](https://github.com/ansibleguy/collection_opnsense/blob/latest/scripts/lint.sh)
+[![Lint](https://github.com/ansibleguy/collection_opnsense/actions/workflows/lint.yml/badge.svg)](https://github.com/ansibleguy/collection_opnsense/actions/workflows/lint.yml)
 [![Unit Test Status](https://github.com/ansibleguy/collection_opnsense/actions/workflows/unit_test.yml/badge.svg)](https://github.com/ansibleguy/collection_opnsense/actions/workflows/unit_test.yml)
 [![Ansible Galaxy](https://badges.ansibleguy.net/galaxy.badge.svg)](https://galaxy.ansible.com/ui/repo/published/ansibleguy/opnsense)
 
