@@ -1,10 +1,10 @@
 ---
 
-name: Integration-Test Logs
+name: Functional-Tests
 
 on:
   schedule:
-    - cron: "24 6 * * *"
+    - cron: "25 6 * * *"
   workflow_dispatch:
 
 jobs:
@@ -31,3 +31,9 @@ jobs:
           name: integration-test-logs
           path: /tmp/test.log
           retention-days: 14
+
+      - name: Checking job-state
+        run: >
+          RESULT="$(curl https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/state?token=${{ secrets.CI_TOKEN_RO }} | jq -r '.state')"
+          if [[ "$RESULT" == "failed" ]]; then exit 1; fi
+        shell: bash
