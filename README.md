@@ -1,13 +1,14 @@
 # Ansible Collection - ansibleguy.opnsense
 
-[![Functional Test Status](https://badges.ansibleguy.net/opnsense.collection.test.svg)](https://github.com/ansibleguy/collection_opnsense/blob/latest/scripts/test.sh)
 [![Lint Test Status](https://badges.ansibleguy.net/opnsense.collection.lint.svg)](https://github.com/ansibleguy/collection_opnsense/blob/latest/scripts/lint.sh)
 [![Unit Test Status](https://github.com/ansibleguy/collection_opnsense/actions/workflows/unit_test.yml/badge.svg)](https://github.com/ansibleguy/collection_opnsense/actions/workflows/unit_test.yml)
 [![Ansible Galaxy](https://badges.ansibleguy.net/galaxy.badge.svg)](https://galaxy.ansible.com/ui/repo/published/ansibleguy/opnsense)
 
-Functional Tests: [Full via API](https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000) |
+**Functional Tests**: 
+
+* Status: [![Functional Test Status](https://badges.ansibleguy.net/opnsense.collection.test.svg)](https://github.com/ansibleguy/collection_opnsense/blob/latest/scripts/test.sh) | [![Functional-Tests](https://github.com/ansibleguy/collection_opnsense/actions/workflows/functional_test_result.yml/badge.svg)](https://github.com/ansibleguy/collection_opnsense/actions/workflows/functional_test_result.yml) |
+* Logs: [Full via API](https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000) |
 [Daily Archive](https://github.com/ansibleguy/collection_opnsense/actions/workflows/functional_test_result.yml)
-[![Functional-Tests](https://github.com/ansibleguy/collection_opnsense/actions/workflows/functional_test_result.yml/badge.svg)](https://github.com/ansibleguy/collection_opnsense/actions/workflows/functional_test_result.yml) |
 [Short](https://badges.ansibleguy.net/log/collection_opnsense_test_short.log) | [Full](https://badges.ansibleguy.net/log/collection_opnsense_test.log)
 
 ----
