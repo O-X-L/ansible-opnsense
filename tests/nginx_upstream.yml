@@ -1,0 +1,94 @@
+---
+
+- name: Testing Nginx upstream
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'nginx_upstream'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | length != 0
+
+    - name: Removing - does not exist
+      ansibleguy.opnsense.nginx_upstream:
+        description: 'ANSIBLE@TEST1'
+        state: 'absent'
+      register: opn_pre2
+      failed_when: >
+        opn_pre2.failed or
+        opn_pre2.changed
+    
+    - name: Adding dummy upstream server
+      ansibleguy.opnsense.nginx_upstream_server:
+        name: 'ANSIBLE_TEST_DUMMY_1_1'
+        server: 192.168.1.1
+        port: 80
+        priority: 1
+
+    - name: Adding 1 - failing because of missing serverentries
+      ansibleguy.opnsense.nginx_upstream:
+        description: 'ANSIBLE@TEST1'
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Adding 1 - failing because of missing description
+      ansibleguy.opnsense.nginx_upstream:
+        serverentries:
+          - 'ANSIBLE@SERVER1'
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Adding 1 - failing because of unknown TLS client certificate
+      ansibleguy.opnsense.nginx_upstream:
+        description: 'ANSIBLE@TEST1'
+        serverentries:
+          - 'ANSIBLE_TEST_DUMMY_1_1'
+        tls_client_certificate: 'DOES_NOT_EXIST'
+      register: opn_fail3
+      failed_when: not opn_fail3.failed
+
+    - name: Adding 1 - should succeed
+      ansibleguy.opnsense.nginx_upstream:
+        description: 'ANSIBLE@TEST1'
+        serverentries:
+          - 'ANSIBLE_TEST_DUMMY_1_1'
+        load_balancing_algorithm: 'ip_hash'
+        keepalive: 32
+        keepalive_requests: 100
+        keepalive_timeout: 60
+        host_port: 80
+
+    - name: Adding 1 - should succeed and not change
+      ansibleguy.opnsense.nginx_upstream:
+        description: 'ANSIBLE@TEST1'
+        serverentries:
+          - 'ANSIBLE_TEST_DUMMY_1_1'
+        load_balancing_algorithm: 'ip_hash'
+        keepalive: 32
+        keepalive_requests: 100
+        keepalive_timeout: 60
+        host_port: 80
+      register: ng1
+      failed_when: >
+        ng1.failed or
+        ng1.changed
+      when: not ansible_check_mode
+
+    - name: Remove all - should succeed
+      ansibleguy.opnsense.nginx_upstream:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE@TEST1'
+      when: not ansible_check_mode

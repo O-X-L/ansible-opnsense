@@ -152,6 +152,7 @@ run_test 'openvpn_client_override' 0  # check mode => dependency on server-entry
 # run_test 'openvpn_client_export' 1
 run_test 'nginx_general' 1
 run_test 'nginx_upstream_server' 1
+run_test 'nginx_upstream' 1
 run_test 'dhcrelay_destination' 1
 run_test 'dhcrelay_relay' 1
 run_test 'dhcp_controlagent' 1

@@ -624,6 +624,11 @@
         name: 'ANSIBLE@TEST1'
         state: 'absent'
 
+    - name: Cleanup Nginx Upstream
+      ansibleguy.opnsense.nginx_upstream:
+        name: 'ANSIBLE@TEST1'
+        state: 'absent'
+
     - name: Cleanup Gateways
       ansibleguy.opnsense.gateway:
         name: "{{ item }}"
