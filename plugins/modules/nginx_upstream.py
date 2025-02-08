@@ -26,7 +26,7 @@ except MODULE_EXCEPTIONS:
 def run_module():
     module_args = dict(
         description=dict(type='str', required=True, aliases=['name']),
-        serverentries=dict(type='list', required=True, elements='str'),
+        serverentries=dict(type='list', required=False, elements='str'),
         load_balancing_algorithm=dict(
             type='str', required=False, choices=['ip_hash']
         ),
