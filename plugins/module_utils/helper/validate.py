@@ -70,6 +70,7 @@ MATCH_URL_RAW = regex_compile(
 )
 MATCH_URL = regex_compile(MATCH_URL_RAW)
 MATCH_MAC_ADDRESS = regex_compile(r'^(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$')
+MATCH_PARTIAL_MAC_ADDRESS = regex_compile(r'^(?:[0-9a-fA-F]{2}:){1,5}[0-9a-fA-F]{2}$')
 
 
 def _is_matching(compiled_regex, value: (str, None)) -> bool:
@@ -114,3 +115,7 @@ def is_valid_url(value: str) -> bool:
 def is_valid_mac_address(value: str) -> bool:
     # see: https://validators.readthedocs.io/en/latest/_modules/validators/mac_address.html
     return _is_matching(compiled_regex=MATCH_MAC_ADDRESS, value=value)
+
+def is_valid_partial_mac_address(value: str) -> bool:
+    # see: https://validators.readthedocs.io/en/latest/_modules/validators/mac_address.html
+    return _is_matching(compiled_regex=MATCH_PARTIAL_MAC_ADDRESS, value=value)

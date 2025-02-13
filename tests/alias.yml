@@ -235,6 +235,12 @@
       register: opnport2
       failed_when: opnport2.failed != ansible_check_mode
 
+    - name: Adding port service name
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_PORT6'
+        type: 'port'
+        content: 'smtp'
+
     # mac
 
     - name: Adding mac
@@ -248,6 +254,12 @@
         name: 'ANSIBLE_TEST_1_2_MAC2'
         type: 'mac'
         content: ['f4:90:ea:00:00:01', 'f4:90:ea:00:00:02']
+
+    - name: Adding partial mac
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_MAC3'
+        type: 'mac'
+        content: f4:90:ea:00
 
     # urls
 
@@ -379,8 +391,10 @@
         - 'ANSIBLE_TEST_1_2_PORT2'
         - 'ANSIBLE_TEST_1_2_PORT3'
         - 'ANSIBLE_TEST_1_2_PORT4'
+        - 'ANSIBLE_TEST_1_2_PORT6'
         - 'ANSIBLE_TEST_1_2_MAC1'
         - 'ANSIBLE_TEST_1_2_MAC2'
+        - 'ANSIBLE_TEST_1_2_MAC3'
         - 'ANSIBLE_TEST_1_2_NET3'
         - 'ANSIBLE_TEST_1_2_NET1'
         - 'ANSIBLE_TEST_1_2_NET2'

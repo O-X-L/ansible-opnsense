@@ -1,5 +1,6 @@
 from re import match as regex_match
 from typing import Callable
+import socket
 from ipaddress import ip_network, ip_address
 
 from ansible.module_utils.basic import AnsibleModule
@@ -7,7 +8,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
     BUILTIN_ALIASES, BUILTIN_INTERFACE_ALIASES_REG
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    is_valid_mac_address, is_valid_url, is_valid_domain
+    is_valid_partial_mac_address, is_valid_url, is_valid_domain
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
     get_selected
 
@@ -16,30 +17,31 @@ def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> 
     v_type = cnf['type']
 
     if isinstance(existing_entries, dict):
-        existing_entries = {
-            a['name']: get_selected(a['type'])
+        existing_entries = [
+            a['name']
             for a in existing_entries.values()
-        }
+        ]
     else:
-        existing_entries = {
-            a['name']: a['type']
+        existing_entries = [
+            a['name']
             for a in existing_entries
-        }
+        ]
 
     for value in cnf['content']:
         error = f"Value '{value}' is invalid for type '{v_type}'!"
 
+        # Ignore all nested alises
+        if value in existing_entries:
+            continue
+
         if v_type == 'port':
-            if value in existing_entries and existing_entries[value] == 'port':
+            try:
+                socket.getservbyname(value)
                 continue
+            except Exception:
+                pass
 
-            if str(value).find(':') != -1:
-                to_check = value.split(':')
-
-            else:
-                to_check = [value]
-
-            for _value in to_check:
+            for _value in value.split(':', 1):
                 try:
                     if int(_value) < 1 or int(_value) > 65535:
                         error_func(error)
@@ -48,19 +50,15 @@ def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> 
                     error_func(error)
 
         elif v_type == 'mac':
-            # todo: support for partial mac addresses?
-            if not is_valid_mac_address(value):
+            if not is_valid_partial_mac_address(value):
                 error_func(error)
 
-        elif v_type in ['url', 'urltable']:
+        elif v_type in ['url', 'urltable', 'urljson']:
             if not is_valid_url(value):
                 error_func(error)
 
         elif v_type == 'network':
-            if value in existing_entries and existing_entries[value] in ['network', 'host']:
-                continue
-
-            value = value[1:] if value.startswith('!') else value
+            value = value.strip('!')
 
             try:
                 ip_network(value)
@@ -68,20 +66,28 @@ def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> 
             except ValueError:
                 error_func(error)
 
-        elif v_type == 'host':
-            if value in existing_entries and existing_entries[value] in ['network', 'host']:
-                continue
+        elif v_type == 'networkgroup':
+            error_func(error)
 
+        elif v_type == 'host':
             if is_valid_domain(value):
                 continue
 
             for _value in value.split('-', 1):
-                _value = _value[1:] if _value.startswith('!') else _value
+                _value = _value.strip('!')
                 try:
                     ip_address(_value)
 
                 except ValueError:
                     error_func(error)
+
+        elif v_type == 'asn':
+            try:
+                if int(value) < 1 or int(value) > 4294967296:
+                    error_func(error)
+
+            except ValueError:
+                error_func(error)
 
 
 def check_purge_filter(module: AnsibleModule, existing_rule: dict) -> bool:
