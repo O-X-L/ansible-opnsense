@@ -43,6 +43,7 @@ def run_module():
         ),
         port=dict(type='int', required=False),
         keepalive=dict(type='int', required=False),
+        servers=dict(type='list', elements='str', required=False, default=[], aliases=['instances']),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,
         **OPN_MOD_ARGS,

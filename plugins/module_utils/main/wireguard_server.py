@@ -117,19 +117,21 @@ class Server(BaseModule):
                 module=self.m, result={}, session=self.s
             ).get_existing()
 
-        if len(self.p['peers']) > 0:
-            for peer in self.existing_peers:
-                existing[peer['name']] = peer['uuid']
+        if len(self.p['peers']) == 0:
+            return []
 
-            for peer in self.p['peers']:
-                if peer not in existing and peer not in existing.values():
-                    self.m.fail_json(f"Peer '{peer}' does not exist!")
+        for peer in self.existing_peers:
+            existing[peer['name']] = peer['uuid']
 
-                if peer in existing:
-                    peers.append(existing[peer])
+        for peer in self.p['peers']:
+            if peer not in existing and peer not in existing.values():
+                self.m.fail_json(f"Peer '{peer}' does not exist!")
 
-                else:
-                    peers.append(peer)
+            if peer in existing:
+                peers.append(existing[peer])
+
+            else:
+                peers.append(peer)
 
         return peers
 

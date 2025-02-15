@@ -227,3 +227,5 @@ plugin_routing:
       redirect: ansibleguy.opnsense.nat_source
     one_to_one:
       redirect: ansibleguy.opnsense.nat_one_to_one
+    wireguard_client:
+      redirect: ansibleguy.opnsense.wireguard_peer
