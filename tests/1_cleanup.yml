@@ -194,6 +194,7 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_1_3'
         - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_2_1'
 
     - name: Cleanup wireguard peers
       ansibleguy.opnsense.wireguard_peer:
@@ -203,6 +204,7 @@
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_3_1'
 
     - name: Cleanup wireguard general
       ansibleguy.opnsense.wireguard_general:

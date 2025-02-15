@@ -23,7 +23,7 @@ jobs:
         shell: bash
 
       - name: Starting Tests
-        run: curl -XPOST https://${{ env.CI_DOMAIN }}/api/job/${{ env.CI_JOB }}?token=${{ secrets.CI_TOKEN_RW }}
+        run: curl --fail-with-body -XPOST https://${{ env.CI_DOMAIN }}/api/job/${{ env.CI_JOB }}?token=${{ secrets.CI_TOKEN_RW }}
         shell: bash
 
       - name: You can pull the current logs at this URL
