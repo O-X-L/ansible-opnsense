@@ -360,13 +360,13 @@ Examples
             # enable: true
 
         - name: Strip User-Agent header
-          ansibleguy.opnsense.header_check
+          ansibleguy.opnsense.header_check:
             expression: /^\s*User-Agent/ IGNORE
             filter: WHILE_DELIVERING
             # enable: true
 
         - name: Address Rewriting
-          ansibleguy.opnsense.postfix_address
+          ansibleguy.opnsense.postfix_address:
             address: root@ansibleguy.net
             to: alice@ansibleguy.net
             # enable: true
