@@ -68,23 +68,6 @@ If an API changed, the current module-implementation might fail for firewalls ru
 
 ----
 
-## Advertisement
-
-* Need **professional support** using Ansible or OPNSense? Contact us:
-
-  E-Mail: [contact@oxl.at](mailto:contact@oxl.at)
-
-  Tel: [+43 3115 40 900 0](tel:+433115409000)
-
-  Web: [EN](https://www.o-x-l.com) | [DE](https://www.oxl.at)
-
-
-* You want a simple **Ansible GUI**?
-
-  Check-out this [Ansible WebUI](https://github.com/ansibleguy/webui)
-
-----
-
 
 ## Modules
 
