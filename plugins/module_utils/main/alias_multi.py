@@ -87,6 +87,9 @@ def process(m: AnsibleModule, p: dict, r: dict, ) -> None:
             alias.check()
             alias.process()
 
+            # Append new alias for nested alias validation
+            existing_aliases.append(alias_config)
+
             if alias_result['changed']:
                 r['changed'] = True
                 alias_result['diff'] = diff_remove_empty(alias_result['diff'])
