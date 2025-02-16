@@ -1,18 +1,17 @@
 from re import match as regex_match
 from typing import Callable
-import socket
-from ipaddress import ip_network, ip_address
 
 from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
     BUILTIN_ALIASES, BUILTIN_INTERFACE_ALIASES_REG
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    is_valid_partial_mac_address, is_valid_url, is_valid_domain
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    get_selected
+    is_valid_partial_mac_address, is_valid_url, is_valid_port, is_valid_network, \
+    is_valid_host, is_ip_address
 
 
+# This should be keept aligned with getValidators from the AliasContentField
+# https://github.com/opnsense/core/blob/master/src/opnsense/mvc/app/models/OPNsense/Firewall/FieldTypes/AliasContentField.php
 def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> None:
     v_type = cnf['type']
 
@@ -28,58 +27,31 @@ def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> 
         ]
 
     for value in cnf['content']:
-        error = f"Value '{value}' is invalid for type '{v_type}'!"
-
-        # Ignore all nested alises
         if value in existing_entries:
             continue
 
-        if v_type == 'port':
-            try:
-                socket.getservbyname(value)
-                continue
-            except Exception:
-                pass
+        error = f"Value '{value}' is invalid for type '{v_type}'!"
 
-            for _value in value.split(':', 1):
-                try:
-                    if int(_value) < 1 or int(_value) > 65535:
-                        error_func(error)
-
-                except ValueError:
-                    error_func(error)
-
-        elif v_type == 'mac':
-            if not is_valid_partial_mac_address(value):
-                error_func(error)
-
-        elif v_type in ['url', 'urltable', 'urljson']:
-            if not is_valid_url(value):
-                error_func(error)
-
-        elif v_type == 'network':
-            value = value.strip('!')
-
-            try:
-                ip_network(value)
-
-            except ValueError:
-                error_func(error)
-
-        elif v_type == 'networkgroup':
+        if v_type == 'port' and not is_valid_port(value):
             error_func(error)
 
-        elif v_type == 'host':
-            if is_valid_domain(value):
-                continue
+        elif v_type == 'host' and not is_valid_host(value):
+            error_func(error)
 
-            for _value in value.split('-', 1):
-                _value = _value.strip('!')
-                try:
-                    ip_address(_value)
+        #elif v_type == 'geoip':
+        #    pass
 
-                except ValueError:
-                    error_func(error)
+        elif v_type == 'network' and not is_valid_network(value):
+            error_func(error)
+
+        elif v_type == 'networkgroup':
+            error_func(f"Value '{value}' is not a valid alias!")
+
+        elif v_type == 'mac' and not is_valid_partial_mac_address(value):
+            error_func(error)
+
+        elif v_type == 'dynipv6host' and not is_ip_address(f"0000{value}"):
+            error_func(error)
 
         elif v_type == 'asn':
             try:
@@ -88,6 +60,13 @@ def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> 
 
             except ValueError:
                 error_func(error)
+
+        #elif v_type == 'authgroup':
+        #    pass
+
+        # OPNsense has no validation for urls in the API
+        elif v_type in ['url', 'urltable', 'urljson'] and not is_valid_url(value):
+            error_func(error)
 
 
 def check_purge_filter(module: AnsibleModule, existing_rule: dict) -> bool:

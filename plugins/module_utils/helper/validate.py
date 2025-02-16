@@ -1,6 +1,8 @@
 from re import compile as regex_compile
 from re import IGNORECASE as REGEX_IGNORECASE
 from re import UNICODE as REGEX_UNICODE
+from socket import getservbyname
+from ipaddress import ip_network, ip_address
 
 MATCH_DOMAIN = regex_compile(
     r'^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|'
@@ -116,6 +118,63 @@ def is_valid_mac_address(value: str) -> bool:
     # see: https://validators.readthedocs.io/en/latest/_modules/validators/mac_address.html
     return _is_matching(compiled_regex=MATCH_MAC_ADDRESS, value=value)
 
+
 def is_valid_partial_mac_address(value: str) -> bool:
     # see: https://validators.readthedocs.io/en/latest/_modules/validators/mac_address.html
     return _is_matching(compiled_regex=MATCH_PARTIAL_MAC_ADDRESS, value=value)
+
+
+def is_ip_address(value: str) -> bool:
+    try:
+        ip_address(value)
+        return True
+    except ValueError:
+        return False
+
+
+def is_ip_network(value: str) -> bool:
+    try:
+        ip_network(value)
+        return True
+    except ValueError:
+        return False
+
+
+def is_valid_port(value: str) -> bool:
+    for _value in value.split(':', 1):
+        if _value.isdecimal():
+            if int(_value) < 1 or int(_value) > 65535:
+                return False
+        else:
+            try:
+                getservbyname(value)
+            except OSError:
+                return False
+    return True
+
+
+def is_valid_network(value: str) -> bool:
+    if '-' in value:
+        for _value in value.split('-', 1):
+            if not is_ip_address(_value):
+                return False
+        return True
+
+    value = value.lstrip('!')
+    if is_ip_address(value):
+        return True
+    if is_ip_network(value):
+        return True
+
+    return False
+
+
+def is_valid_host(value: str) -> bool:
+    if is_valid_domain(value):
+        return True
+
+    for _value in value.split('-', 1):
+        _value = _value.strip('!')
+        if not is_ip_address(_value):
+            return False
+    return True

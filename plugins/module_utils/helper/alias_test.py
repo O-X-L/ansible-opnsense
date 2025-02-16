@@ -1,7 +1,7 @@
-import pytest
 from unittest.mock import Mock
+import pytest
 
-@pytest.mark.parametrize('type, value, valid', [
+@pytest.mark.parametrize('aliastype, value, valid', [
     ('port', '10', True),
     ('port', '999999', False),
     ('port', '!10', False),
@@ -22,8 +22,8 @@ from unittest.mock import Mock
     ('network', '!192.168.1.0/24', True),
     ('network', '192.168.1.0/255.255.255.0', True),
     ('network', '!192.168.1.0/255.255.255.0', True),
-    #('network', '192.168.2.0/0.0.0.255 ', True),
-    #('network', '!192.168.2.0/0.0.0.255 ', True),
+    ('network', '192.168.2.0/0.0.0.255', True),
+    ('network', '!192.168.2.0/0.0.0.255', True),
     ('network', 'alias1', True),
     ('networkgroup', 'alias1', True),
     ('networkgroup', 'noalias', False),
@@ -37,12 +37,12 @@ from unittest.mock import Mock
     ('asn', '10', True),
     ('asn', '4294967297', False),
 ])
-def test_validate_values(type, value, valid):
+def test_validate_values(aliastype, value, valid):
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import validate_values
 
     error_func = Mock()
 
-    validate_values(dict(type=type, content=[value]), error_func, [{'name': 'alias1'}])
+    validate_values(dict(type=aliastype, content=[value]), error_func, [{'name': 'alias1'}])
 
     if valid:
         error_func.assert_not_called()

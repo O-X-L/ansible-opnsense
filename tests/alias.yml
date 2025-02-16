@@ -261,6 +261,21 @@
         type: 'mac'
         content: f4:90:ea:00
 
+    - name: Adding invalid mac
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_MAC4'
+        type: 'mac'
+        content: "{{ item }}"
+      register: opnmac1
+      failed_when: not opnmac1.failed
+      loop:
+        - ['aa:bb:cc:dd:ee:gg']
+        - ['aa:bb:cc:dd:ee:fff']
+        - ['aa:bb:cc:dd:ee:ff:ff']
+        - ['aa:bb:cc:dd:ee:f']
+        - ['aa:bb:cc:dd:ee:']
+        - ['aa:']
+
     # urls
 
     - name: Adding url
@@ -395,6 +410,7 @@
         - 'ANSIBLE_TEST_1_2_MAC1'
         - 'ANSIBLE_TEST_1_2_MAC2'
         - 'ANSIBLE_TEST_1_2_MAC3'
+        - 'ANSIBLE_TEST_1_2_MAC4'
         - 'ANSIBLE_TEST_1_2_NET3'
         - 'ANSIBLE_TEST_1_2_NET1'
         - 'ANSIBLE_TEST_1_2_NET2'
