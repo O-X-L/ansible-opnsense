@@ -179,7 +179,7 @@
             content: ['ANSIBLE_TEST_2_5', 'ANSIBLE_TEST_2_6']
 
         reload: false  # geoip and urltable take LONG time
-        
+
       register: opn7
       failed_when: >
         opn7.failed or
