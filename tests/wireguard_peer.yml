@@ -237,7 +237,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup dummy instance
-      ansibleguy.opnsense.wireguard_peer:
+      ansibleguy.opnsense.wireguard_server:
         name: 'ANSIBLE_TEST_2_1'
         state: 'absent'
       when: not ansible_check_mode
