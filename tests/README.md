@@ -22,6 +22,8 @@ Some tests need packages to be pre-installed:
 * frr_* - `os-frr`
 * bind_* - `os-bind`
 * acme_* - `os-acme-client`
+* postfix_* - `os-postfix`
+* nginx_* - `os-nginx`
 
 See also: `1_dependencies.yml`
 

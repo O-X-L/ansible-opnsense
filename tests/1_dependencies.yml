@@ -27,3 +27,4 @@
         - 'os-bind'
         - 'os-acme-client'
         - 'os-postfix'
+        - 'os-nginx'
