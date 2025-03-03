@@ -199,6 +199,8 @@ not implemented => development => [testing](https://github.com/ansibleguy/collec
 | **Postfix**               | ansibleguy.opnsense.postfix_sendercanonical                            | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
 | **Postfix**               | ansibleguy.opnsense.postfix_headercheck                                | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
 | **Postfix**               | ansibleguy.opnsense.postfix_address                                    | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
+| **High Availability**     | ansibleguy.opnsense.hasync_general                                     | [Docs](https://opnsense.ansibleguy.net/modules/hasync.html)                                                    | unstable |
+| **High Availability**     | ansibleguy.opnsense.hasync_service                                     | [Docs](https://opnsense.ansibleguy.net/modules/hasync.html)                                                    | unstable |
 
 ### Roadmap
 
