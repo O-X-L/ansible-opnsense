@@ -40,6 +40,7 @@ TARGETS = [
     'acme_validation', 'acme_action', 'acme_certificate', 'postfix_general', 'postfix_domain', 'postfix_recipient',
     'postfix_recipientbcc', 'postfix_sender', 'postfix_senderbcc', 'postfix_sendercanonical', 'postfix_headercheck',
     'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre', 'nat_one_to_one', 'nat_source',
+    'ipsec_manual_spd'
 ]
 
 
@@ -361,6 +362,10 @@ def run_module():
         elif target == 'ipsec_auth_remote':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.ipsec_auth_remote import \
                 Auth as Target_Obj
+
+        elif target == 'ipsec_manual_spd':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.ipsec_manual_spd import \
+                ManualSPD as Target_Obj
 
         elif target == 'ids_general':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.ids_general import \
