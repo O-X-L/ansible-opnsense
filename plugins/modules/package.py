@@ -59,7 +59,6 @@ def run_module():
             check=process, kwargs=dict(
                 m=module, p=module.params, r=result,
             ),
-            log_file='package.log'  # /tmp/ansibleguy.opnsense/
         )
 
     else:
