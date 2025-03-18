@@ -68,7 +68,7 @@ def check_or_load_credentials(module: AnsibleModule) -> tuple[(str, None), (str,
     if module.params['api_credential_file'] is not None:
         return _load_credential_file(module)
 
-    elif module.params['api_key'] is None and module.params['api_secret'] is None:
+    if module.params['api_key'] is None and module.params['api_secret'] is None:
         module.fail_json("Neither 'api_key' & 'api_secret' nor 'api_credential_file' were provided!")
 
     return None, None
