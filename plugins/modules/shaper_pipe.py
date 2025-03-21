@@ -27,7 +27,7 @@ except MODULE_EXCEPTIONS:
 
 def run_module():
     module_args = dict(
-        # id=dict(type='int', required=True, alises=['number']),  # ignored and set automatically
+        # id=dict(type='int', required=True, aliases=['number']),  # ignored and set automatically
         bandwidth=dict(
             type='int', required=False, aliases=['bw']
         ),
