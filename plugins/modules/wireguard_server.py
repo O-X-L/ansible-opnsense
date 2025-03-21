@@ -29,7 +29,7 @@ def run_module():
     module_args = dict(
         name=dict(type='str', required=True),
         public_key=dict(type='str', required=False, alises=['pubkey', 'pub']),
-        private_key=dict(type='str', required=False, alises=['privkey', 'priv']),
+        private_key=dict(type='str', required=False, no_log=True, alises=['privkey', 'priv']),
         port=dict(type='int', required=False),
         mtu=dict(type='int', required=False, default=1420),
         dns_servers=dict(
