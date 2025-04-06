@@ -40,6 +40,13 @@ def run_module():
         type=dict(
             type='str', required=False, choices=['PSK', 'EAP'], default='PSK', aliases=['kind'],
         ),
+        match_fields=dict(
+            type='list', required=False, elements='str',
+            description='Fields that are used to match configured PSK with the running config - '
+                        "if any of those fields are changed, the module will think it's a new entry",
+            choices=['identity_local', 'identity_remote'],
+            default=['identity_local'],
+        ),
         **RELOAD_MOD_ARG_DEF_FALSE,
         **STATE_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,
