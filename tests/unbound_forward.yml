@@ -1,4 +1,3 @@
----
 
 # todo: test default matching
 
@@ -40,7 +39,7 @@
       ansibleguy.opnsense.unbound_forward:
         domain: 'fwd.opnsense.test.ansibleguy.net'
         target: '1.1.1.1'
-        reload: false  # speed
+        reload: false # speed
       register: opn4
       failed_when: >
         opn4.failed or
@@ -50,7 +49,7 @@
       ansibleguy.opnsense.unbound_forward:
         domain: 'fwd.opnsense.test.ansibleguy.net'
         target: '1.1.1.2'
-        reload: false  # speed
+        reload: false # speed
       register: opn5
       failed_when: >
         opn5.failed or
@@ -59,11 +58,32 @@
     - name: Adding 3 - catch-all
       ansibleguy.opnsense.unbound_forward:
         target: '1.1.1.3'
-        reload: false  # speed
+        reload: false # speed
       register: opn11
       failed_when: >
         opn11.failed or
         not opn11.changed
+
+    - name: Adding 4 - description
+      ansibleguy.opnsense.unbound_acl:
+        target: '1.1.1.4'
+        reload: false # speed
+        description: 'Deny access'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Adding - failing because of an invalid description was provided
+      ansibleguy.opnsense.unbound_acl:
+        target: '1.1.1.3'
+        reload: false # speed
+        description: >-
+          123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+          123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+          12345678901234567890123456789012345678901234567890123456
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
 
     - name: Disabling 2
       ansibleguy.opnsense.unbound_forward:
@@ -82,7 +102,7 @@
         domain: 'fwd.opnsense.test.ansibleguy.net'
         target: '1.1.1.2'
         enabled: false
-        reload: false  # speed
+        reload: false # speed
       register: opn9
       failed_when: >
         opn9.failed or
@@ -93,7 +113,7 @@
       ansibleguy.opnsense.unbound_forward:
         domain: 'fwd.opnsense.test.ansibleguy.net'
         target: '1.1.1.2'
-        reload: false  # speed
+        reload: false # speed
       register: opn7
       failed_when: >
         opn7.failed or
@@ -105,7 +125,7 @@
         domain: 'fwd.opnsense.test.ansibleguy.net'
         target: '1.1.1.2'
         forward_tcp: true
-        reload: false  # speed
+        reload: false # speed
       register: opn12
       failed_when: >
         opn12.failed or
@@ -117,7 +137,7 @@
         domain: 'fwd.opnsense.test.ansibleguy.net'
         target: '1.1.1.2'
         state: 'absent'
-        reload: false  # speed
+        reload: false # speed
       register: opn8
       failed_when: >
         opn8.failed or
