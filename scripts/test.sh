@@ -105,6 +105,7 @@ run_test 'frr_bgp_community_list' 1
 run_test 'frr_bgp_as_path' 1
 run_test 'frr_bgp_route_map' 1
 run_test 'frr_bgp_neighbor' 1
+run_test 'frr_bgp_redistribution' 1
 run_test 'frr_ospf_general' 1
 run_test 'frr_ospf_prefix_list' 1
 run_test 'frr_ospf_interface' 1

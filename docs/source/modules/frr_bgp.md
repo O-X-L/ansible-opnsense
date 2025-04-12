@@ -7,7 +7,8 @@
 [frr_bgp_prefix_list](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_prefix_list.yml) | 
 [frr_bgp_route_map](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_route_map.yml) | 
 [frr_bgp_community_list](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_community_list.yml) | 
-[frr_bgp_as_path](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_as_path.yml)
+[frr_bgp_as_path](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_as_path.yml) |
+[frr_bgp_redistribution](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_redistribution.yml)
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
 
@@ -129,6 +130,15 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | as_pattern         | string  | false for state changes, else true    | -             | as      | The AS pattern you want to match, regexp allowed (e.g. .$ or _1$). It's not validated so please be careful!  |
 | reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
 
+### ansibleguy.opnsense.frr_bgp_redistribution
+
+| Parameter      | Type    | Required | Default value | Aliases | Comment |
+|:---------------|:--------|:---------|:--------------|:--------|:--------|
+| redistribution | string  | false    | -             | -       | Select routing sources to redistribute to other nodes. One of: 'ospf', 'connected', 'kernel', 'rip' or 'static'. |
+| description    | string  | true     | -             | desc    | Description for this distribution. |
+| route_map      | string  | false    | -             | map, rm | Optional Route-map to apply to this redistribution. |
+| reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+
 ----
 
 ## Examples
@@ -153,7 +163,6 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
         # id: '10.0.0.1'
         # graceful: false
         # networks: []
-        # redistribute: []
         # enabled: true
         # reload: true
 
@@ -163,7 +172,6 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
         id: '10.0.0.1'
         graceful: true
         networks: ['10.0.10.0/24']
-        redistribute: ['static']
 
     - name: Disabling BGP
       ansibleguy.opnsense.frr_bgp_general:
@@ -171,7 +179,6 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
         id: '10.0.0.1'
         graceful: true
         networks: ['10.0.10.0/24']
-        redistribute: ['static']
         enabled: false
 
     - name: Pulling settings
@@ -489,6 +496,53 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 
     - name: Removing as-path
       ansibleguy.opnsense.frr_bgp_as_path:
+        description: 'test2'
+        state: 'absent'
+```
+
+### ansibleguy.opnsense.frr_bgp_redistribution
+
+```yaml
+- hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: 'opnsense.template.ansibleguy.net'
+      api_credential_file: '/home/guy/.secret/opn.key'
+
+    ansibleguy.opnsense.list:
+      target: 'frr_bgp_redistribution'
+
+  tasks:
+    - name: Example
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'test1'
+        redistribution: ospf
+        # enabled: true
+        # reload: true
+
+    - name: Creating redistribution
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'test2'
+        redistribution: ospf
+
+    - name: Disabling redistribution
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'test2'
+        redistribution: ospf
+        enabled: false
+
+    - name: Pulling redistributions
+      ansibleguy.opnsense.list:
+      #  target: 'frr_bgp_redistribution'
+      register: existing_entries
+
+    - name: Printing redistributions
+      ansible.builtin.debug:
+        var: existing_entries.data
+
+    - name: Removing redistribution
+      ansibleguy.opnsense.frr_bgp_redistribution:
         description: 'test2'
         state: 'absent'
 ```
