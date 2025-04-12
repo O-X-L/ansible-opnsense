@@ -42,12 +42,6 @@ def run_module():
             description='Select the network to advertise, you have to set a '
                         'Null route via System -> Routes'
         ),
-        redistribute=dict(
-            type='list', elements='str', required=False, default=[],
-            options=['ospf', 'connected', 'kernel', 'rip', 'static'],
-            description='Select other routing sources, which should be '
-                        'redistributed to the other nodes'
-        ),
         **RELOAD_MOD_ARG,
         **EN_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,
