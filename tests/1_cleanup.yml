@@ -382,6 +382,15 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
 
+    - name: Cleanup OSPFv3 route-maps
+      ansibleguy.opnsense.frr_ospf3_route_map:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+
     - name: Cleanup OSPF networks
       ansibleguy.opnsense.frr_ospf_network:
         ip: "{{ item.ip }}"
@@ -402,6 +411,34 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_3_1'
+
+    - name: Cleanup OSPFv3 prefix-lists
+      ansibleguy.opnsense.frr_ospf3_prefix_list:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_3_1'
+
+    - name: Cleanup FRR OSPF redistributions
+      ansibleguy.opnsense.frr_ospf_redistribution:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+
+    - name: Cleanup FRR OSPFv4 redistributions
+      ansibleguy.opnsense.frr_ospf3_redistribution:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
 
     - name: Cleanup BIND general settings
       ansibleguy.opnsense.bind_general:
