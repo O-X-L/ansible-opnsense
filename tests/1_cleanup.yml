@@ -356,6 +356,15 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
 
+    - name: Cleanup FRR BGP Peer Groups
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+
     - name: Cleanup OSPF general settings
       ansibleguy.opnsense.frr_ospf_general:
         enabled: false

@@ -62,6 +62,7 @@ action_groups:
     - ansibleguy.opnsense.frr_bgp_redistribution
     - ansibleguy.opnsense.frr_bgp_route_map
     - ansibleguy.opnsense.frr_bgp_neighbor
+    - ansibleguy.opnsense.frr_bgp_peer_group
     - ansibleguy.opnsense.frr_ospf_general
     - ansibleguy.opnsense.frr_ospf_prefix_list
     - ansibleguy.opnsense.frr_ospf_interface
