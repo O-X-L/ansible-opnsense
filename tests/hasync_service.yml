@@ -50,7 +50,7 @@
           - aliases
           - rules
       when: hasync_peer
-     
+
     - name: Restart all
       ansibleguy.opnsense.hasync_service:
         action: restart
@@ -59,7 +59,7 @@
         opn1.failed or
         not opn1.changed
       when: hasync_peer and False
-          
+
     - name: Stop login - failing because of unstopable service
       ansibleguy.opnsense.hasync_service:
         name: login
@@ -68,7 +68,7 @@
       failed_when: >
         not opn2.failed
       when: hasync_peer
-          
+
     - name: Stop ntpd
       ansibleguy.opnsense.hasync_service:
         name: ntpd
@@ -83,7 +83,7 @@
       ansible.builtin.pause:
         seconds: 5
       when: hasync_peer
-          
+
     - name: Stop ntpd - nothing changed
       ansibleguy.opnsense.hasync_service:
         name: ntpd
@@ -93,7 +93,7 @@
         opn4.failed or
         opn4.changed
       when: hasync_peer
-          
+
     - name: Start ntpd
       ansibleguy.opnsense.hasync_service:
         name: ntpd
@@ -108,7 +108,7 @@
       ansible.builtin.pause:
         seconds: 5
       when: hasync_peer
-          
+
     - name: Start ntpd - nothing changed
       ansibleguy.opnsense.hasync_service:
         name: ntpd
@@ -118,7 +118,7 @@
         opn6.failed or
         opn6.changed
       when: hasync_peer
-          
+
     - name: Restart ntpd
       ansibleguy.opnsense.hasync_service:
         name: ntpd
