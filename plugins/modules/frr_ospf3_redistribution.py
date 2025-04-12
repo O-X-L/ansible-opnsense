@@ -15,7 +15,8 @@ try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf3_redistribution import Redistribution
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf3_redistribution import \
+        Redistribution
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
