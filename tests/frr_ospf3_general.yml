@@ -23,7 +23,6 @@
     - name: Configuring
       ansibleguy.opnsense.frr_ospf3_general:
         id: '10.0.0.1'
-        redistribute: ['static']
         enabled: true
       register: opn1
       failed_when: >
@@ -33,7 +32,6 @@
     - name: Changing
       ansibleguy.opnsense.frr_ospf3_general:
         id: '10.0.1.1'
-        redistribute: ['static', 'kernel']
         enabled: true
       register: opn5
       failed_when: >
@@ -43,7 +41,6 @@
     - name: Disabling 1
       ansibleguy.opnsense.frr_ospf3_general:
         id: '10.0.1.1'
-        redistribute: ['static', 'kernel']
         enabled: false
       register: opn2
       failed_when: >
@@ -54,7 +51,6 @@
     - name: Disabling 1 - nothing changed
       ansibleguy.opnsense.frr_ospf3_general:
         id: '10.0.1.1'
-        redistribute: ['static', 'kernel']
         enabled: false
       register: opn3
       failed_when: >
@@ -65,7 +61,6 @@
     - name: Enabling 1
       ansibleguy.opnsense.frr_ospf3_general:
         id: '10.0.1.1'
-        redistribute: ['static', 'kernel']
       register: opn4
       failed_when: >
         opn4.failed or

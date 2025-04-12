@@ -15,8 +15,8 @@ class General(GeneralModule):
     API_CONT = 'ospfsettings'
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
-        'carp', 'id', 'cost', 'enabled', 'passive_ints', 'redistribute',
-        'redistribute_map', 'originate', 'originate_always', 'originate_metric',
+        'carp', 'id', 'cost', 'enabled', 'passive_ints',
+        'originate', 'originate_always', 'originate_metric',
     ]
     FIELDS_ALL = FIELDS_CHANGE
     FIELDS_TRANSLATE = {
@@ -26,12 +26,10 @@ class General(GeneralModule):
         'originate_always': 'originatealways',
         'originate_metric': 'originatemetric',
         'passive_ints': 'passiveinterfaces',
-        'redistribute_map': 'redistributemap',
     }
     FIELDS_TYPING = {
         'bool': ['enabled', 'carp', 'originate', 'originate_always'],
-        'list': ['passive_ints', 'redistribute'],
-        'select': ['redistribute_map'],
+        'list': ['passive_ints'],
         'int': ['originate_metric', 'cost'],
     }
     INT_VALIDATIONS = {

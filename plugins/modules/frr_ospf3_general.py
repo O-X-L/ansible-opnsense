@@ -39,12 +39,6 @@ def run_module():
             description='If you have a CARP setup, you may want to configure a router id '
                         'in case of a conflict'
         ),
-        redistribute=dict(
-            type='list', elements='str', required=False, default=[],
-            options=['connected', 'kernel', 'static'],
-            description='Select other routing sources, which should be '
-                        'redistributed to the other nodes'
-        ),
         **RELOAD_MOD_ARG,
         **EN_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,
