@@ -402,6 +402,16 @@
         - {'ip': '10.0.2.0', 'mask': 24}
         - {'ip': '10.0.3.0', 'mask': 24}
 
+    - name: Cleanup OSPFv3 networks
+      ansibleguy.opnsense.frr_ospf3_network:
+        ip: "{{ item.ip }}"
+        mask: "{{ item.mask }}"
+        state: 'absent'
+        match_fields: ['ip', 'mask']
+      loop:
+        - {'ip': '2001:db8:1::', 'mask': 64}
+        - {'ip': '2001:db8::', 'mask': 64}
+
     - name: Cleanup OSPF prefix-lists
       ansibleguy.opnsense.frr_ospf_prefix_list:
         name: "{{ item }}"

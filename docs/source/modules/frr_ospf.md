@@ -7,8 +7,13 @@
 [frr_ospf_interface](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_interface.yml) |
 [frr_ospf_route_map](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_route_map.yml) |
 [frr_ospf_network](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_network.yml) |
+[frr_ospf_redistribution](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_redistribution.yml) |
 [frr_ospf3_general](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_general.yml) |
-[frr_ospf3_interface](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_interface.yml)
+[frr_ospf3_prefix_list](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_prefix_list.yml) |
+[frr_ospf3_interface](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_interface.yml) |
+[frr_ospf3_route_map](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_route_map.yml) |
+[frr_ospf_network](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_network.yml) |
+[frr_ospf3_redistribution](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_redistribution.yml)
 
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
@@ -134,6 +139,19 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | id  | string  | false    | -             | router_id                                           | If you have a CARP setup, you may want to configure a router id in case of a conflict. (_4-byte field/IPv4 Address_)                                                                                                                                      |                                                                                                                                                  |
 | reload       | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
 | enabled          | boolean | false    | true                 | -       | En- or disable the service                                                                                                                                                                                                                                     |
+
+#### ansibleguy.opnsense.frr_ospf3_network
+
+| Parameter    | Type    | Required                           | Default value  | Aliases                              | Comment                                                                                                                                                                                                                                                          |
+|:-------------|:--------|:-----------------------------------|:---------------|:-------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| match_fields | string | false                              | ['ip', 'mask'] | -                                    | Fields that are used to match configured interface with the running config - if any of those fields are changed, the module will think it's a new entry. At least one of: 'ip', 'mask', 'area', 'area_range'                                                     |
+| ip           | string  | true                               | -              | network_address, nw_address, address |                                                                                                                                                                                                                                                                  |
+| mask         | string  | true                               | -              | network_mask, nw_mask                | Integer between 0 and 32                                                                                                                                                                                                                                         |
+| area         | string  | false for state changes, else true | -              | -                                    | Area in wildcard mask style like 0.0.0.0 and no decimal 0. Only use Area in Interface tab or in Network tab once                                                                                                                                                 |
+| area_range   | string  | -                                  | -              | -                                    | Here you can summarize a network for this area like fe80:1234::/56                                                                                                                                                 |
+| prefix_list_in   | string  | -                                  | -              | prefix_in, pre_in                    | Prefix-List for inbound direction                                                                                                                                                 |
+| prefix_list_out   | string  | -                                  | -              | prefix_out, pre_out                  | Prefix-List for outbound direction                                                                                                                                                 |
+| reload       | boolean | false                              | true           | -                                    | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
 
 #### ansibleguy.opnsense.frr_ospf3_interface
 
@@ -675,6 +693,60 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
     - name: Removing route-map
       ansibleguy.opnsense.frr_ospf3_route_map:
         name: 'test2'
+        state: 'absent'
+```
+
+#### ansibleguy.opnsense.frr_ospf3_network
+
+```yaml
+- hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: 'opnsense.template.ansibleguy.net'
+      api_credential_file: '/home/guy/.secret/opn.key'
+
+    ansibleguy.opnsense.frr_ospf3_network:
+      match_fields: ['ip', 'mask']
+
+    ansibleguy.opnsense.list:
+      target: 'frr_ospf_route_map'
+
+  tasks:
+    - name: Example
+      ansibleguy.opnsense.frr_ospf3_network:
+        ip: 'fe80::1234'
+        mask: 64
+        area: '0.0.0.0'
+        # area_range: ''
+        # enabled: true
+
+    - name: Configuring network
+      ansibleguy.opnsense.frr_ospf3_network:
+        ip: 'fe80::1234'
+        mask: 64
+        area: '0.0.1.0'
+
+    - name: Disabling network
+      ansibleguy.opnsense.frr_ospf3_network:
+        ip: 'fe80::1234'
+        mask: 64
+        area: '0.0.1.0'
+        enabled: false
+
+    - name: Pulling settings
+      ansibleguy.opnsense.list:
+      #  target: 'frr_ospf3_network'
+      register: existing_entries
+
+    - name: Printing settings
+      ansible.builtin.debug:
+        var: existing_entries.data
+
+    - name: Removing network
+      ansibleguy.opnsense.frr_ospf3_network:
+        ip: 'fe80::1234'
+        mask: 64
         state: 'absent'
 ```
 

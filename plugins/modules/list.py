@@ -41,7 +41,7 @@ TARGETS = [
     'postfix_recipientbcc', 'postfix_sender', 'postfix_senderbcc', 'postfix_sendercanonical', 'postfix_headercheck',
     'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre', 'nat_one_to_one', 'nat_source',
     'ipsec_manual_spd', 'frr_bgp_redistribution', 'frr_ospf_redistribution', 'frr_ospf3_redistribution', 'frr_ospf3_route_map',
-    'frr_ospf3_prefix_list',
+    'frr_ospf3_prefix_list', 'frr_ospf3_network',
 ]
 
 
@@ -275,6 +275,10 @@ def run_module():
         elif target == 'frr_ospf3_route_map':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf3_route_map \
                 import RouteMap as Target_Obj
+
+        elif target == 'frr_ospf3_network':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf3_network \
+                import Network as Target_Obj
 
         elif target == 'frr_ospf3_prefix_list':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf3_prefix_list \

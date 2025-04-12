@@ -73,6 +73,7 @@ action_groups:
     - ansibleguy.opnsense.frr_ospf3_interface
     - ansibleguy.opnsense.frr_ospf3_redistribution
     - ansibleguy.opnsense.frr_ospf3_route_map
+    - ansibleguy.opnsense.frr_ospf3_network
     - ansibleguy.opnsense.frr_rip
   bind:
     - ansibleguy.opnsense.bind_general
