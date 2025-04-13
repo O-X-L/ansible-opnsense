@@ -176,6 +176,7 @@ run_test 'postfix_senderbcc' 1
 run_test 'postfix_sendercanonical' 1
 run_test 'postfix_headercheck' 1
 run_test 'postfix_address' 1
+run_test 'snapshot' 1
 
 echo ''
 echo '##############################'

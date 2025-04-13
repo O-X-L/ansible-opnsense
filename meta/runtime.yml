@@ -107,6 +107,7 @@ action_groups:
     - ansibleguy.opnsense.system
     - ansibleguy.opnsense.cron
     - ansibleguy.opnsense.syslog
+    - ansibleguy.opnsense.snapshot
   ids:
     - ansibleguy.opnsense.ids_action
     - ansibleguy.opnsense.ids_general
