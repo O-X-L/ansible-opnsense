@@ -15,7 +15,7 @@ class General(GeneralModule):
     API_CONT = 'bgp'
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
-        'as_number', 'id', 'graceful', 'enabled', 'networks',
+        'as_number', 'id', 'graceful', 'enabled', 'networks', 'distance',
     ]
     FIELDS_ALL = FIELDS_CHANGE
     FIELDS_TRANSLATE = {
@@ -25,6 +25,7 @@ class General(GeneralModule):
     FIELDS_TYPING = {
         'bool': ['enabled', 'graceful'],
         'list': ['networks'],
+        'int': ['distance', 'as_number'],
     }
     INT_VALIDATIONS = {
         'as_number': {'min': 1, 'max': 4294967295},

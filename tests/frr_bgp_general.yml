@@ -44,6 +44,7 @@
         id: '10.0.0.1'
         graceful: false
         networks: ['10.0.10.0/25']
+        distance: 21
         enabled: true
       register: opn9
       failed_when: >
@@ -57,6 +58,7 @@
         graceful: false
         networks: ['10.0.10.0/25']
         enabled: false
+        distance: 21
       register: opn2
       failed_when: >
         opn2.failed or
@@ -70,6 +72,7 @@
         graceful: false
         networks: ['10.0.10.0/25']
         enabled: false
+        distance: 21
       register: opn3
       failed_when: >
         opn3.failed or
@@ -82,6 +85,7 @@
         id: '10.0.0.1'
         graceful: false
         networks: ['10.0.10.0/25']
+        distance: 21
       register: opn4
       failed_when: >
         opn4.failed or
