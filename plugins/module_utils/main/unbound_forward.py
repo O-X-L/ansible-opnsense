@@ -32,8 +32,8 @@ class Forward(BaseModule):
         'bool': ['enabled', 'forward_tcp'],
         'int': ['port'],
     }
-    STR_VALIDATIONS = {
-        'description': r'^.{0,255}$',
+    STR_LEN_VALIDATIONS = {
+        'description': {'min': 0, 'max': 255}
     }
     EXIST_ATTR = 'fwd'
 
