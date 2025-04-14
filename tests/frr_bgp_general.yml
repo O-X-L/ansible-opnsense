@@ -32,7 +32,6 @@
         id: '10.0.0.1'
         graceful: true
         networks: ['10.0.10.0/24']
-        redistribute: ['static']
         enabled: true
       register: opn1
       failed_when: >
@@ -45,7 +44,6 @@
         id: '10.0.0.1'
         graceful: false
         networks: ['10.0.10.0/25']
-        redistribute: ['static']
         enabled: true
       register: opn9
       failed_when: >
@@ -58,7 +56,6 @@
         id: '10.0.0.1'
         graceful: false
         networks: ['10.0.10.0/25']
-        redistribute: ['static']
         enabled: false
       register: opn2
       failed_when: >
@@ -72,7 +69,6 @@
         id: '10.0.0.1'
         graceful: false
         networks: ['10.0.10.0/25']
-        redistribute: ['static']
         enabled: false
       register: opn3
       failed_when: >
@@ -86,7 +82,6 @@
         id: '10.0.0.1'
         graceful: false
         networks: ['10.0.10.0/25']
-        redistribute: ['static']
       register: opn4
       failed_when: >
         opn4.failed or

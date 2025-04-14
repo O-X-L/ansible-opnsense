@@ -16,7 +16,6 @@ class General(GeneralModule):
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
         'as_number', 'id', 'graceful', 'enabled', 'networks',
-        'redistribute',
     ]
     FIELDS_ALL = FIELDS_CHANGE
     FIELDS_TRANSLATE = {
@@ -25,10 +24,11 @@ class General(GeneralModule):
     }
     FIELDS_TYPING = {
         'bool': ['enabled', 'graceful'],
-        'list': ['networks', 'redistribute'],
+        'list': ['networks'],
     }
     INT_VALIDATIONS = {
         'as_number': {'min': 1, 'max': 4294967295},
+        'distance': {'min': 1, 'max': 255},
     }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
