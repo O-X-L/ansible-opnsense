@@ -51,6 +51,12 @@ def run_module():
                         'When this virtual address is not in master state, then the instance will be shutdown'
         ),
         peers=dict(type='list', elements='str', required=False, default=[], aliases=['clients']),
+        link_peers=dict(
+            type='bool', default=True, required=False,
+            description="Whether you want to link peers by the server instance. "
+                        "If that is the case - you should disable 'link_servers' on your peer-entries. "
+                        "Will always be true if you supply any peers."
+        ),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,
         **OPN_MOD_ARGS,
