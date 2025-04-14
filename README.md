@@ -44,8 +44,6 @@ See: [Docs](https://opnsense.ansibleguy.net)
 
 [![Docs Uptime](https://status.oxl.at/api/v1/endpoints/4--ansibleguy_ansible-collection---opnsense-documentation/uptimes/7d/badge.svg)](https://status.oxl.at/endpoints/4--ansibleguy_ansible-collection---opnsense-documentation)
 
-[Alternative Link](https://opnsense-ansible.readthedocs.io/)
-
 If you DO NOT want to use Ansible - [this fork](https://github.com/O-X-L/opnsense-api-client) provides you with a raw Python3 interface.
 
 ----
@@ -66,7 +64,7 @@ We try that the `ansibleguy.opnsense` modules always support the latest version 
 
 If an API changed, the current module-implementation might fail for firewalls running an older firmware.
 
-As [this project is unfunded](https://github.com/O-X-L/ansible_opnsense/discussions/199) we do not actively check for API-changes - if you find missing functionalities you need/want to please [report it](https://github.com/O-X-L/ansible_opnsense/issues)!
+As [this project is unfunded](https://github.com/O-X-L/ansible_opnsense/discussions/199) we do not actively check for API-changes - if you find missing functionalities you need/want to have please [report it](https://github.com/O-X-L/ansible_opnsense/issues)!
 
 ----
 
