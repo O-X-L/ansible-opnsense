@@ -22,7 +22,7 @@ jobs:
           ref: ${{ github.ref }}
 
       - name: Install dependencies
-        run: sudo apt install curl jq >/dev/nul
+        run: sudo apt install curl jq > /dev/null
         shell: bash
 
       - name: Pulling logs
