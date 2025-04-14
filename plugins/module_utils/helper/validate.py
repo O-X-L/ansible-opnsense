@@ -1,8 +1,20 @@
+from typing import Callable
+from re import match as regex_match
 from re import compile as regex_compile
 from re import IGNORECASE as REGEX_IGNORECASE
 from re import UNICODE as REGEX_UNICODE
 from socket import getservbyname
-from ipaddress import ip_network, ip_address
+from ipaddress import ip_address, ip_network, IPv4Address, IPv6Address, IPv6Network, AddressValueError, \
+    NetmaskValueError
+
+from ansible.module_utils.basic import AnsibleModule
+
+# pylint: disable=W0611
+#   (proxied imports)
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
+    is_unset, ensure_list, is_true, unset_check_error
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+    exit_bug
 
 MATCH_DOMAIN = regex_compile(
     r'^(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|'
@@ -73,6 +85,8 @@ MATCH_URL_RAW = regex_compile(
 MATCH_URL = regex_compile(MATCH_URL_RAW)
 MATCH_MAC_ADDRESS = regex_compile(r'^(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$')
 MATCH_PARTIAL_MAC_ADDRESS = regex_compile(r'^(?:[0-9a-fA-F]{2}:){1,5}[0-9a-fA-F]{2}$')
+# see: https://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_host_names
+MATCH_HOSTNAME = regex_compile(r'^[a-zA-Z0-9-\.]{1,253}$')
 
 
 def _is_matching(compiled_regex, value: (str, None)) -> bool:
@@ -124,49 +138,32 @@ def is_valid_partial_mac_address(value: str) -> bool:
     return _is_matching(compiled_regex=MATCH_PARTIAL_MAC_ADDRESS, value=value)
 
 
-def is_ip_address(value: str) -> bool:
-    try:
-        ip_address(value)
-        return True
-    except ValueError:
-        return False
-
-
-def is_ip_network(value: str) -> bool:
-    try:
-        ip_network(value)
-        return True
-    except ValueError:
-        return False
-
-
 def is_valid_port(value: str) -> bool:
     for _value in value.split(':', 1):
         if _value.isdecimal():
             if int(_value) < 1 or int(_value) > 65535:
                 return False
+
         else:
             try:
                 getservbyname(value)
+
             except OSError:
                 return False
+
     return True
 
 
 def is_valid_network(value: str) -> bool:
     if '-' in value:
         for _value in value.split('-', 1):
-            if not is_ip_address(_value):
+            if not is_ip(_value):
                 return False
+
         return True
 
     value = value.lstrip('!')
-    if is_ip_address(value):
-        return True
-    if is_ip_network(value):
-        return True
-
-    return False
+    return is_ip_or_network(value)
 
 
 def is_valid_host(value: str) -> bool:
@@ -175,6 +172,150 @@ def is_valid_host(value: str) -> bool:
 
     for _value in value.split('-', 1):
         _value = _value.strip('!')
-        if not is_ip_address(_value):
+        if not is_ip(_value):
             return False
+
     return True
+
+
+def validate_port(module: AnsibleModule, port: (int, str), error_func: Callable = None) -> bool:
+    if error_func is None:
+        error_func = module.fail_json
+
+    if port == 'any' or is_unset(port):
+        return True
+
+    try:
+        if int(port) < 1 or int(port) > 65535:
+            error_func(f"Value '{port}' is an invalid port!")
+            return False
+
+    except (ValueError, TypeError):
+        error_func(f"Value '{port}' is an invalid port!")
+        return False
+
+    return True
+
+
+def validate_int_fields(
+        module: AnsibleModule, data: dict, field_minmax: dict,
+        error_func: Callable = None
+):
+    if error_func is None:
+        error_func = module.fail_json
+
+    for field, valid in field_minmax.items():
+        try:
+            if ('min' in valid and int(data[field]) < valid['min']) or \
+               ('max' in valid and int(data[field]) > valid['max']):
+                error_func(
+                    f"Value of field '{field}' is not valid - "
+                    f"Must be between {valid['min']} and {valid['max']}!"
+                )
+
+        except (TypeError, ValueError):
+            pass
+
+
+def validate_str_fields(
+        module: AnsibleModule, data: dict, field_regex: dict = None,
+        field_minmax_length: dict = None, allow_empty: bool = False,
+) -> None:
+    if field_minmax_length is not None:
+        for field, min_max_length in field_minmax_length.items():
+            if not unset_check_error(params=data, field=field, fail=not allow_empty):
+                continue
+
+            if 'min' not in min_max_length or 'max' not in min_max_length:
+                exit_bug("Values of 'STR_LEN_VALIDATIONS' must have a 'min' and 'max' attribute!")
+
+            if min_max_length['min'] < len(data[field]) > min_max_length['max']:
+                module.fail_json(
+                    f"Value of field '{field}' is not valid - "
+                    f"Invalid length must be between {min_max_length['min']} and {min_max_length['max']}!"
+                )
+
+    if field_regex is not None:
+        for field, regex in field_regex.items():
+            if not unset_check_error(params=data, field=field, fail=not allow_empty):
+                continue
+
+            if regex_match(regex, data[field]) is None:
+                module.fail_json(
+                    f"Value of field '{field}' is not valid - "
+                    f"Must match regex '{regex}'!"
+                )
+
+
+def is_ip(host: str, ignore_empty: bool = False, strip_enclosure: bool = True) -> bool:
+    if ignore_empty and is_unset(host):
+        return True
+
+    if strip_enclosure and host.startswith('['):
+        host = host[1:-1]
+
+    try:
+        ip_address(host)
+        return True
+
+    except ValueError:
+        return False
+
+
+def is_ip4(host: str, ignore_empty: bool = False) -> bool:
+    if ignore_empty and is_unset(host):
+        return True
+
+    try:
+        IPv4Address(host)
+        return True
+
+    except (AddressValueError, NetmaskValueError):
+        return False
+
+
+def is_ip6(host: str, ignore_empty: bool = False, strip_enclosure: bool = True) -> bool:
+    if ignore_empty and is_unset(host):
+        return True
+
+    if strip_enclosure and host.startswith('['):
+        host = host[1:-1]
+
+    try:
+        IPv6Address(host)
+        return True
+
+    except (AddressValueError, NetmaskValueError):
+        return False
+
+
+def is_network(entry: str, strict: bool = False) -> bool:
+    try:
+        ip_network(entry, strict=strict)
+        return True
+
+    except ValueError:
+        return False
+
+
+def is_ip_or_network(entry: str, strict: bool = False) -> bool:
+    valid = is_ip(entry)
+
+    if valid:
+        return valid
+
+    return is_network(entry=entry, strict=strict)
+
+
+def is_ip6_network(entry: str, strict: bool = False) -> bool:
+    try:
+        return isinstance(ip_network(entry, strict=strict), IPv6Network)
+
+    except ValueError:
+        return False
+
+
+def valid_hostname(name: str) -> bool:
+    _valid_domain = is_valid_domain(name)
+    _valid_hostname = _is_matching(compiled_regex=MATCH_HOSTNAME, value=name)
+    return all([_valid_domain, _valid_hostname])

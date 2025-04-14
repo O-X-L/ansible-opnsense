@@ -4,7 +4,9 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api impor
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import GeneralModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    get_selected, is_ip_or_network, is_unset, validate_int_fields, get_key_by_value_from_selection
+    get_selected, get_key_by_value_from_selection
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_ip_or_network, is_unset, validate_int_fields
 
 
 class General(GeneralModule):

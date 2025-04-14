@@ -4,7 +4,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api impor
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.ids_ruleset import Ruleset
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
     is_unset, is_true, ensure_list
 
 

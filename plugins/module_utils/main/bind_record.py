@@ -5,7 +5,9 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    get_multiple_matching, is_unset, is_ip4, is_ip6
+    get_multiple_matching
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_ip4, is_ip6, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 

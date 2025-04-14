@@ -3,7 +3,9 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    validate_int_fields, is_unset, get_key_by_value_from_selection, get_key_by_value_end_from_selection
+    get_key_by_value_from_selection, get_key_by_value_end_from_selection
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    validate_int_fields, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 

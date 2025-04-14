@@ -3,7 +3,9 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    simplify_translate, validate_int_fields, is_ip, is_unset
+    simplify_translate
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    validate_int_fields, is_ip, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import GeneralModule
 
 
