@@ -8,7 +8,7 @@ DNS - Unbound - Blocklists
 
 **STATE**: unstable
 
-**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/unbound_dnsbl.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/unbound_dnsbl.yml>`_
 
 **API Docs**: `unbound_dnsbl <https://docs.opnsense.org/development/api/core/unbound.html>`_
 

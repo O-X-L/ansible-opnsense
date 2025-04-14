@@ -8,11 +8,11 @@ OpenVPN
 
 **STATE**: stable
 
-**TESTS**: `ansibleguy.opnsense.openvpn_client <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/openvpn_client.yml>`_ |
-`ansibleguy.opnsense.openvpn_server <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/openvpn_server.yml>`_ |
-`ansibleguy.opnsense.openvpn_static_key <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/openvpn_static_key.yml>`_ |
-`ansibleguy.opnsense.openvpn_client_override <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/openvpn_client_override.yml>`_ |
-`ansibleguy.opnsense.openvpn_status <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/openvpn_status.yml>`_
+**TESTS**: `ansibleguy.opnsense.openvpn_client <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_client.yml>`_ |
+`ansibleguy.opnsense.openvpn_server <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_server.yml>`_ |
+`ansibleguy.opnsense.openvpn_static_key <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_static_key.yml>`_ |
+`ansibleguy.opnsense.openvpn_client_override <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_client_override.yml>`_ |
+`ansibleguy.opnsense.openvpn_status <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_status.yml>`_
 
 **API Docs**: `Core - OpenVPN <https://docs.opnsense.org/development/api/core/openvpn.html>`_
 
