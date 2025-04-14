@@ -9,7 +9,7 @@ export ANSIBLE_NO_TARGET_SYSLOG=True
 
 if [[ "$LOCAL_COLLECTION" == '0' ]]
 then
-  ansible-galaxy collection install git+https://github.com/ansibleguy/collection_opnsense.git -p "$TMP_COL_DIR"
+  ansible-galaxy collection install git+https://github.com/O-X-L/ansible_opnsense.git -p "$TMP_COL_DIR"
 else
   if [ -d "$LOCAL_COLLECTION" ]
   then
