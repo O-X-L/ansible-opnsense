@@ -2,5 +2,5 @@
 yamllint
 pylint
 ansible-core
-ansible-lint==6.20.3
+ansible-lint==25.1.5
 httpx
