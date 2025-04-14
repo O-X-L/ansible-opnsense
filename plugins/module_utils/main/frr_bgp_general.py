@@ -15,7 +15,8 @@ class General(GeneralModule):
     API_CONT = 'bgp'
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
-        'as_number', 'id', 'graceful', 'enabled', 'networks', 'distance',
+        'as_number', 'id', 'graceful', 'enabled', 'networks', 'distance', 'log_neighbor_changes',
+        'network_import_check',
     ]
     FIELDS_ALL = FIELDS_CHANGE
     FIELDS_TRANSLATE = {
