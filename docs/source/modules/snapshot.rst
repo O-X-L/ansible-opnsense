@@ -14,6 +14,12 @@ Snapshot
 
 **Service Docs**: `Snapshots <https://docs.opnsense.org/manual/snapshots.html>`_
 
+Contribution
+************
+
+Thanks to `@jiuka <https://github.com/jiuka>`_ for developing this module!
+
+----
 
 Definition
 **********
