@@ -15,6 +15,13 @@ High Availability
 
 **Service Docs**: `High Availability <https://docs.opnsense.org/manual/hacarp.html>`_
 
+Contribution
+************
+
+Thanks to `@jiuka <https://github.com/jiuka>`_ for developing this module!
+
+----
+
 .. warning::
 
     This feature is only available in OPNSense version >= 25.1
