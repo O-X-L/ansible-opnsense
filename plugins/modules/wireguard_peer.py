@@ -28,7 +28,7 @@ except MODULE_EXCEPTIONS:
 def run_module():
     module_args = dict(
         name=dict(type='str', required=True),
-        public_key=dict(type='str', required=False, alises=['pubkey', 'pub']),
+        public_key=dict(type='str', required=False, aliases=['pubkey', 'pub']),
         psk=dict(type='str', required=False, no_log=True),
         allowed_ips=dict(
             type='list', elements='str', required=False, default=[],
