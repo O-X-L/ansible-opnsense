@@ -1,0 +1,142 @@
+---
+
+- name: Testing HASync General
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'hasync_general'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Default Setting
+      ansibleguy.opnsense.hasync_general:
+
+    - name: Default Setting - nothing changed
+      ansibleguy.opnsense.hasync_general:
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        opn1.changed
+      when: not ansible_check_mode
+
+    - name: Setting General
+      ansibleguy.opnsense.hasync_general:
+        preempt: true
+        disconnect_ppps: true
+        pfsync_interface: 'lan'
+        pfsync_peer_ip: '4.4.4.4'
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Changing General
+      ansibleguy.opnsense.hasync_general:
+        preempt: true
+        disconnect_ppps: true
+        pfsync_interface: 'lan'
+        pfsync_peer_ip: '4.4.4.5'
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Changing General - nothing changed
+      ansibleguy.opnsense.hasync_general:
+        preempt: true
+        disconnect_ppps: true
+        pfsync_interface: 'lan'
+        pfsync_peer_ip: '4.4.4.5'
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        opn4.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.hasync_general:
+      when: not ansible_check_mode
+
+    - name: Setting Config Sync
+      ansibleguy.opnsense.hasync_general:
+        synchronize_to_ip: '4.4.4.4'
+        username: 'alice'
+        password: 'secret'
+        syncitems:
+          - aliases
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+
+    - name: Changing Config Sync
+      ansibleguy.opnsense.hasync_general:
+        synchronize_to_ip: '4.4.4.5'
+        username: 'alice'
+        password: 'secret2'
+        syncitems:
+          - aliases
+          - rules
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        not opn6.changed
+
+    - name: Changing Config Sync - nothing changed
+      ansibleguy.opnsense.hasync_general:
+        synchronize_to_ip: '4.4.4.5'
+        username: 'alice'
+        password: 'secret2'
+        syncitems:
+          - aliases
+          - rules
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        opn7.changed
+      when: not ansible_check_mode
+
+    - name: Setting Config Sync - update password
+      ansibleguy.opnsense.hasync_general:
+        synchronize_to_ip: '4.4.4.5'
+        username: 'alice'
+        password: 'secret3'
+        syncitems:
+          - aliases
+          - rules
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        not opn8.changed
+      when: not ansible_check_mode
+
+    - name: Setting Config Sync - do not update password
+      ansibleguy.opnsense.hasync_general:
+        synchronize_to_ip: '4.4.4.5'
+        username: 'alice'
+        password: 'secret'
+        update_password: on_create
+        syncitems:
+          - aliases
+          - rules
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        opn9.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.hasync_general:
+      when: not ansible_check_mode

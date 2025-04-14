@@ -149,6 +149,9 @@ action_groups:
     - ansibleguy.opnsense.postfix_sendercanonical
     - ansibleguy.opnsense.postfix_headercheck
     - ansibleguy.opnsense.postfix_address
+  hasync:
+    - ansibleguy.opnsense.hasync_general
+    - ansibleguy.opnsense.hasync_service
   all:
     - metadata:
         extend_group:
@@ -174,6 +177,7 @@ action_groups:
           - ansibleguy.opnsense.dhcp
           - ansibleguy.opnsense.acme
           - ansibleguy.opnsense.postfix
+          - ansibleguy.opnsense.hasync
 
 plugin_routing:
   modules:

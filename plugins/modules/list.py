@@ -40,7 +40,7 @@ TARGETS = [
     'acme_validation', 'acme_action', 'acme_certificate', 'postfix_general', 'postfix_domain', 'postfix_recipient',
     'postfix_recipientbcc', 'postfix_sender', 'postfix_senderbcc', 'postfix_sendercanonical', 'postfix_headercheck',
     'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre', 'nat_one_to_one', 'nat_source',
-    'ipsec_manual_spd', 'snapshot',
+    'ipsec_manual_spd', 'hasync_general', 'snapshot',
 ]
 
 
@@ -478,6 +478,10 @@ def run_module():
         elif target == 'postfix_address':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.postfix_address import \
                 Address as Target_Obj
+
+        elif target == 'hasync_general':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.hasync_general import \
+                General as Target_Obj
 
         elif target == 'snapshot':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.snapshot import \

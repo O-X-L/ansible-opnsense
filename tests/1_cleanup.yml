@@ -827,6 +827,9 @@
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
 
+    - name: Cleanup HASync
+      ansibleguy.opnsense.hasync_general:
+
     - name: Cleanup Snapshots
       ansibleguy.opnsense.snapshot:
         name: 'default'
