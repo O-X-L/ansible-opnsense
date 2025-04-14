@@ -62,9 +62,11 @@ See also: [Contributing](https://github.com/ansibleguy/collection_opnsense/blob/
 
 ## Version Support
 
-The `ansibleguy.opnsense` modules always support the latest version of OPNSense.
+We try that the `ansibleguy.opnsense` modules always support the latest version of OPNSense.
 
 If an API changed, the current module-implementation might fail for firewalls running an older firmware.
+
+As [this project is unfunded](https://github.com/ansibleguy/collection_opnsense/discussions/199) we do not actively check for API-changes - if you find missing functionalities you need/want to please [report it](https://github.com/ansibleguy/collection_opnsense/issues)!
 
 ----
 
@@ -199,6 +201,7 @@ not implemented => development => [testing](https://github.com/ansibleguy/collec
 | **Postfix**               | ansibleguy.opnsense.postfix_sendercanonical                            | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
 | **Postfix**               | ansibleguy.opnsense.postfix_headercheck                                | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
 | **Postfix**               | ansibleguy.opnsense.postfix_address                                    | [Docs](https://opnsense.ansibleguy.net/modules/postfix.html)                                                    | unstable |
+| **Snapshot**              | ansibleguy.opnsense.snapshot                                           | [Docs](https://opnsense.ansibleguy.net/modules/snapshot.html)                                                   | unstable |
 | **High Availability**     | ansibleguy.opnsense.hasync_general                                     | [Docs](https://opnsense.ansibleguy.net/modules/hasync.html)                                                    | unstable |
 | **High Availability**     | ansibleguy.opnsense.hasync_service                                     | [Docs](https://opnsense.ansibleguy.net/modules/hasync.html)                                                    | unstable |
 
