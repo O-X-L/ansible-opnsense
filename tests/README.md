@@ -70,7 +70,7 @@ The DHCRelay tests will not work correctly if the LAN interface mismatches.
 
 You can provide your lan-if via env-vars: `TEST_DHCRELAY_IF`
 
-=======
+
 ### LAGG Interfaces
 
 The LAGG tests will not work correctly if the unassigned interface mismatches.
@@ -82,15 +82,15 @@ And the count of existing LAGGs via `TEST_FIREWALL_LAGG_CNT`
 
 ## High Availability
 
-Tests for hasync_general can be run without a backup firewall. However most of HASync Service tests require
-a backup firewall to work. Tests requiering a backup firewall are skiped unless you provide connection details to the
+Tests for `hasync_general` can be run without a backup firewall. However, most of HASync Service tests require
+a backup firewall to work. Tests requiring a backup firewall are skipped unless you provide connection details to the
 backup firewall.
 
 You can provide your backup firewall connection via env-vars:
 
-    * `TEST_HASYNC_PEER`
-    * `TEST_HASYNC_USERNAME`
-    * `TEST_HASYNC_PASSWORD`
+  * `TEST_HASYNC_PEER`
+  * `TEST_HASYNC_USERNAME`
+  * `TEST_HASYNC_PASSWORD`
 
 ----
 
