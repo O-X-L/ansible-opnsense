@@ -21,9 +21,11 @@ class General(GeneralModule):
     FIELDS_TRANSLATE = {
         'as_number': 'asnumber',
         'id': 'routerid',
+        'log_neighbor_changes': 'logneighborchanges',
+        'network_import_check': 'networkimportcheck',
     }
     FIELDS_TYPING = {
-        'bool': ['enabled', 'graceful'],
+        'bool': ['enabled', 'graceful', 'network_import_check', 'log_neighbor_changes'],
         'list': ['networks'],
         'int': ['distance', 'as_number'],
     }
