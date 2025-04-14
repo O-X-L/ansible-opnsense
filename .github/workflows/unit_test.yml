@@ -34,7 +34,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements_unittest.txt
+          pip install -r requirements_unittest.txt >/dev/nul
         shell: bash
 
       - name: Running Tests

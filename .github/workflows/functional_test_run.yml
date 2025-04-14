@@ -19,7 +19,7 @@ jobs:
           ref: ${{ github.ref }}
 
       - name: Install dependencies
-        run: sudo apt install curl
+        run: sudo apt install curl >/dev/nul
         shell: bash
 
       - name: Starting Tests

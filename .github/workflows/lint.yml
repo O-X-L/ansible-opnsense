@@ -40,7 +40,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements_lint.txt
+          pip install -r requirements_lint.txt >/dev/nul
         shell: bash
 
       - name: Running PyLint
