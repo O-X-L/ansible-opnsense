@@ -40,7 +40,9 @@ TARGETS = [
     'acme_validation', 'acme_action', 'acme_certificate', 'postfix_general', 'postfix_domain', 'postfix_recipient',
     'postfix_recipientbcc', 'postfix_sender', 'postfix_senderbcc', 'postfix_sendercanonical', 'postfix_headercheck',
     'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre', 'nat_one_to_one', 'nat_source',
-    'ipsec_manual_spd', 'hasync_general', 'snapshot',
+    'ipsec_manual_spd', 'hasync_general', 'snapshot', 'frr_bgp_redistribution', 'frr_ospf_redistribution',
+    'frr_ospf3_redistribution', 'frr_ospf3_route_map', 'frr_ospf3_prefix_list', 'frr_ospf3_network',
+    'frr_bgp_peer_group',
 ]
 
 
@@ -231,6 +233,14 @@ def run_module():
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_bgp_as_path \
                 import AsPath as Target_Obj
 
+        elif target == 'frr_bgp_redistribution':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_bgp_redistribution \
+                import Redistribution as Target_Obj
+
+        elif target == 'frr_bgp_peer_group':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_bgp_peer_group \
+                import PeerGroup as Target_Obj
+
         elif target == 'frr_ospf_general':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf_general \
                 import General as Target_Obj
@@ -258,6 +268,26 @@ def run_module():
         elif target == 'frr_ospf_network':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf_network \
                 import Network as Target_Obj
+
+        elif target == 'frr_ospf_redistribution':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf_redistribution \
+                import Redistribution as Target_Obj
+
+        elif target == 'frr_ospf3_redistribution':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf3_redistribution \
+                import Redistribution as Target_Obj
+
+        elif target == 'frr_ospf3_route_map':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf3_route_map \
+                import RouteMap as Target_Obj
+
+        elif target == 'frr_ospf3_network':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf3_network \
+                import Network as Target_Obj
+
+        elif target == 'frr_ospf3_prefix_list':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf3_prefix_list \
+                import Prefix as Target_Obj
 
         elif target == 'frr_rip':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_rip \

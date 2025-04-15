@@ -15,7 +15,7 @@ class General(GeneralModule):
     API_CONT = 'ospf6settings'
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
-        'carp', 'id', 'enabled', 'redistribute',
+        'carp', 'id', 'enabled',
     ]
     FIELDS_ALL = FIELDS_CHANGE
     FIELDS_TRANSLATE = {
@@ -24,7 +24,6 @@ class General(GeneralModule):
     }
     FIELDS_TYPING = {
         'bool': ['enabled', 'carp'],
-        'list': ['redistribute'],
     }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):

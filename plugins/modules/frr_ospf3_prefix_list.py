@@ -14,8 +14,8 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
 try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-        OPN_MOD_ARGS, EN_ONLY_MOD_ARG, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf3_general import General
+        OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_ospf3_prefix_list import Prefix
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
@@ -27,20 +27,12 @@ except MODULE_EXCEPTIONS:
 
 def run_module():
     module_args = dict(
-        carp=dict(
-            type='bool', required=False, default=False, aliases=['carp_demote'],
-            description='Register CARP status monitor, when no neighbors are found, '
-                        'consider this node less attractive. This feature needs syslog '
-                        'enabled using "Debugging" logging to catch all relevant status '
-                        'events. This option is not compatible with "Enable CARP Failover"'
-        ),
-        id=dict(
-            type='str', required=False, aliases=['router_id'],
-            description='If you have a CARP setup, you may want to configure a router id '
-                        'in case of a conflict'
-        ),
+        name=dict(type='str', required=True),
+        seq=dict(type='int', required=False, aliases=['seq_number']),
+        action=dict(type='str', required=False, options=['permit', 'deny']),
+        network=dict(type='str', required=False, aliases=['net']),
         **RELOAD_MOD_ARG,
-        **EN_ONLY_MOD_ARG,
+        **STATE_MOD_ARG,
         **OPN_MOD_ARGS,
     )
 
@@ -57,7 +49,7 @@ def run_module():
         supports_check_mode=True,
     )
 
-    module_wrapper(General(module=module, result=result))
+    module_wrapper(Prefix(module=module, result=result))
     module.exit_json(**result)
 
 

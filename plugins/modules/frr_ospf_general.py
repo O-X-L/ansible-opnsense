@@ -50,16 +50,6 @@ def run_module():
             aliases=['passive_interfaces'],
             description='Select the interfaces, where no OSPF packets should be sent to'
         ),
-        redistribute=dict(
-            type='list', elements='str', required=False, default=[],
-            options=['bgp', 'connected', 'kernel', 'rip', 'static'],
-            description='Select other routing sources, which should be '
-                        'redistributed to the other nodes'
-        ),
-        redistribute_map=dict(
-            type='str', required=False,
-            description='Route Map to set for Redistribution'
-        ),
         originate=dict(
             type='bool', required=False, default=False, aliases=['orig', 'advertise_default_gw'],
             description='This will send the information that we have a default gateway'
