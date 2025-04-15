@@ -1,0 +1,43 @@
+---
+
+- name: Testing RAW
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  tasks:
+    - name: Query interfaces
+      ansibleguy.opnsense.raw:
+        url: 'interfaces/overview/interfacesInfo'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        opn1.response.rows is undefined or
+        opn1.response.rows | length == 0
+
+    - name: Query interfaces 2
+      ansibleguy.opnsense.raw:
+        module: 'interfaces'
+        controller: 'overview'
+        command: 'interfacesInfo'
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        opn2.response.rows is undefined or
+        opn2.response.rows | length == 0
+
+    - name: Execute action
+      ansibleguy.opnsense.raw:
+        module: 'syslog'
+        controller: 'service'
+        command: 'restart'
+        action: 'post'
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        (ansible_check_mode and opn3.changed) or
+        (not ansible_check_mode and not opn3.changed)

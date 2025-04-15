@@ -176,6 +176,10 @@ run_test 'postfix_senderbcc' 1
 run_test 'postfix_sendercanonical' 1
 run_test 'postfix_headercheck' 1
 run_test 'postfix_address' 1
+run_test 'hasync_general' 1
+run_test 'hasync_service' 0 # check mode => dependency on hasync_general
+run_test 'snapshot' 1
+run_test 'raw' 1
 
 echo ''
 echo '##############################'

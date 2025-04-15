@@ -34,6 +34,11 @@ def run_module():
         as_number=dict(
             type='int', required=False, aliases=['as', 'as_nr', 'remote_as']
         ),
+        remote_as_mode=dict(
+            type='str', required=False, aliases=['as_mode'],
+            choices=['internal', 'external'],
+            description='Set a (MD5-hashed) password for BGP authentication.'
+        ),
         password=dict(
             type='str', required=False, aliases=['pwd'], no_log=True,
             description='Set a (MD5-hashed) password for BGP authentication.'

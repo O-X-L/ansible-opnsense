@@ -107,6 +107,7 @@ action_groups:
     - ansibleguy.opnsense.system
     - ansibleguy.opnsense.cron
     - ansibleguy.opnsense.syslog
+    - ansibleguy.opnsense.snapshot
   ids:
     - ansibleguy.opnsense.ids_action
     - ansibleguy.opnsense.ids_general
@@ -148,6 +149,11 @@ action_groups:
     - ansibleguy.opnsense.postfix_sendercanonical
     - ansibleguy.opnsense.postfix_headercheck
     - ansibleguy.opnsense.postfix_address
+  hasync:
+    - ansibleguy.opnsense.hasync_general
+    - ansibleguy.opnsense.hasync_service
+  raw:
+    - ansibleguy.opnsense.raw
   all:
     - metadata:
         extend_group:
@@ -173,6 +179,8 @@ action_groups:
           - ansibleguy.opnsense.dhcp
           - ansibleguy.opnsense.acme
           - ansibleguy.opnsense.postfix
+          - ansibleguy.opnsense.hasync
+          - ansibleguy.opnsense.raw
 
 plugin_routing:
   modules:

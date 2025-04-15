@@ -47,6 +47,7 @@ def run_module():
                         'Please note this setting applies to the domain, so when multiple forwarders are '
                         'defined for the same domain, all are assumed to use tcp only.'
         ),
+        description=dict(type='str', required=False, aliases=['desc']),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,
         **OPN_MOD_ARGS,

@@ -66,7 +66,7 @@ def run_module():
             ('state', 'present', ('request_id', 'connection_child'), True),
         ],
         mutually_exclusive=[
-            ('reqid', 'connection_child'),
+            ('request_id', 'connection_child'),
         ],
     )
 
