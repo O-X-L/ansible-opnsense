@@ -28,6 +28,7 @@ except MODULE_EXCEPTIONS:
 def run_module():
     module_args = dict(
         as_number=dict(type='int', required=True, aliases=['as', 'as_nr']),
+        distance=dict(type='int', required=False),
         id=dict(type='str', required=False, aliases=['router_id']),
         graceful=dict(
             type='bool', required=False, default=False,
@@ -41,6 +42,17 @@ def run_module():
             aliases=['nets'],
             description='Select the network to advertise, you have to set a '
                         'Null route via System -> Routes'
+        ),
+        network_import_check=dict(
+            type='bool', required=False, default=True, aliases=['network_check'],
+            description="When enabled (default), BGP only announces networks set at 'Network' "
+                        "if they are present in the routers routing table (alternatively, "
+                        "you can also set a null-route via System -> Routes). If disabled, "
+                        "all configured networks will be announced."
+        ),
+        log_neighbor_changes=dict(
+            type='bool', required=False, default=False, aliases=['log_neigh'],
+            description='Enable extended logging of BGP neighbor changes'
         ),
         **RELOAD_MOD_ARG,
         **EN_ONLY_MOD_ARG,

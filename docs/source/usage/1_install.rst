@@ -33,8 +33,8 @@ Collection
     ansible-galaxy collection install ansibleguy.opnsense
 
     # latest version:
-    ansible-galaxy collection install git+https://github.com/ansibleguy/collection_opnsense.git
+    ansible-galaxy collection install git+https://github.com/O-X-L/ansible_opnsense.git
 
     # install to specific directory for easier development
     cd $PLAYBOOK_DIR
-    ansible-galaxy collection install git+https://github.com/ansibleguy/collection_opnsense.git -p ./collections
+    ansible-galaxy collection install git+https://github.com/O-X-L/ansible_opnsense.git -p ./collections

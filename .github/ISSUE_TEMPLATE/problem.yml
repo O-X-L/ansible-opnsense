@@ -11,12 +11,12 @@ body:
       value: |
         Please make sure to go through these steps **before opening an issue**:
 
-        - [ ] Read the documentation of the affected module: [Docs](https://github.com/ansibleguy/collection_opnsense/tree/latest/docs)
+        - [ ] Read the documentation of the affected module: [Docs](https://github.com/O-X-L/ansible_opnsense/tree/latest/docs)
 
-        - [ ] Read the troubleshooting info: [Info](https://github.com/ansibleguy/collection_opnsense#errors)
+        - [ ] Read the troubleshooting info: [Info](https://github.com/O-X-L/ansible_opnsense#errors)
 
-        - [ ] Check if there are existing [issues](https://github.com/ansibleguy/collection_opnsense/issues)
-        or [discussions](https://github.com/ansibleguy/collection_opnsense/discussions) regarding your topic
+        - [ ] Check if there are existing [issues](https://github.com/O-X-L/ansible_opnsense/issues)
+        or [discussions](https://github.com/O-X-L/ansible_opnsense/discussions) regarding your topic
 
   - type: textarea
     id: modules

@@ -15,19 +15,24 @@ class General(GeneralModule):
     API_CONT = 'bgp'
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
-        'as_number', 'id', 'graceful', 'enabled', 'networks',
+        'as_number', 'id', 'graceful', 'enabled', 'networks', 'distance', 'log_neighbor_changes',
+        'network_import_check',
     ]
     FIELDS_ALL = FIELDS_CHANGE
     FIELDS_TRANSLATE = {
         'as_number': 'asnumber',
         'id': 'routerid',
+        'log_neighbor_changes': 'logneighborchanges',
+        'network_import_check': 'networkimportcheck',
     }
     FIELDS_TYPING = {
-        'bool': ['enabled', 'graceful'],
+        'bool': ['enabled', 'graceful', 'network_import_check', 'log_neighbor_changes'],
         'list': ['networks'],
+        'int': ['distance', 'as_number'],
     }
     INT_VALIDATIONS = {
         'as_number': {'min': 1, 'max': 4294967295},
+        'distance': {'min': 1, 'max': 255},
     }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):

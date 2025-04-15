@@ -1,0 +1,133 @@
+---
+
+- name: Testing HASync Service
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.hasync_service:
+      ignore_version_mismatch: true
+
+  vars:
+    hasync_peer: "{{ lookup('ansible.builtin.env', 'TEST_HASYNC_PEER') | default(false) }}"
+    hasync_username: "{{ lookup('ansible.builtin.env', 'TEST_HASYNC_USERNAME') }}"
+    hasync_password: "{{ lookup('ansible.builtin.env', 'TEST_HASYNC_PASSWORD') }}"
+
+  tasks:
+    - name: Restart all - failing because of missing peer
+      ansibleguy.opnsense.hasync_service:
+        action: restart
+      register: opn_pre1
+      failed_when: >
+        not opn_pre1.failed
+
+    - name: Setup incorrect peer
+      ansibleguy.opnsense.hasync_general:
+        synchronize_to_ip: "{{ hasync_peer }}"
+        username: "{{ hasync_username }}"
+        password: "invalid{{ hasync_password }}"
+        syncitems:
+          - aliases
+          - rules
+
+    - name: Restart all - failing because of inaccessible peer
+      ansibleguy.opnsense.hasync_service:
+        action: restart
+      register: opn_pre2
+      failed_when: >
+        not opn_pre2.failed
+
+    - name: Setup peer
+      ansibleguy.opnsense.hasync_general:
+        synchronize_to_ip: "{{ hasync_peer }}"
+        username: "{{ hasync_username }}"
+        password: "{{ hasync_password }}"
+        syncitems:
+          - aliases
+          - rules
+      when: hasync_peer is defined
+
+    - name: Restart all
+      ansibleguy.opnsense.hasync_service:
+        action: restart
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+      when: hasync_peer is defined
+
+    - name: Stop login - failing because of unstopable service
+      ansibleguy.opnsense.hasync_service:
+        name: login
+        action: stop
+      register: opn2
+      failed_when: >
+        not opn2.failed
+      when: hasync_peer is defined
+
+    - name: Stop ntpd
+      ansibleguy.opnsense.hasync_service:
+        name: ntpd
+        action: stop
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+      when: hasync_peer is defined
+
+    - name: Pause for 5 seconds
+      ansible.builtin.pause:
+        seconds: 5
+      when: hasync_peer is defined
+
+    - name: Stop ntpd - nothing changed
+      ansibleguy.opnsense.hasync_service:
+        name: ntpd
+        action: stop
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        opn4.changed
+      when: hasync_peer is defined
+
+    - name: Start ntpd
+      ansibleguy.opnsense.hasync_service:
+        name: ntpd
+        action: start
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: hasync_peer is defined
+
+    - name: Pause for 5 seconds
+      ansible.builtin.pause:
+        seconds: 5
+      when: hasync_peer is defined
+
+    - name: Start ntpd - nothing changed
+      ansibleguy.opnsense.hasync_service:
+        name: ntpd
+        action: start
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: hasync_peer is defined
+
+    - name: Restart ntpd
+      ansibleguy.opnsense.hasync_service:
+        name: ntpd
+        action: restart
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+      when: hasync_peer is defined
+
+    - name: Cleanup peer
+      ansibleguy.opnsense.hasync_general:

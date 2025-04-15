@@ -48,6 +48,7 @@ class Peer(BaseModule):
         'name': r'^([0-9a-zA-Z._\-]){1,64}$'
     }
     EXIST_ATTR = 'peer'
+    FIELDS_DIFF_EXCLUDE = []
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session)
@@ -75,6 +76,11 @@ class Peer(BaseModule):
                     "of the peer to create!"
                 )
 
+        link_servers = not is_unset(self.p['servers']) or self.p['link_servers']
+        if not link_servers:
+            self.FIELDS_CHANGE.remove('servers')
+            self.FIELDS_DIFF_EXCLUDE.append('servers')
+
         for entry in self.p['allowed_ips']:
             if not is_ip_or_network(entry):
                 self.m.fail_json(
@@ -94,7 +100,9 @@ class Peer(BaseModule):
             self.p['servers'] = self._translate_servers(self.p['servers'])
 
         if self.exists:
-            self.peer['servers'] = self._translate_servers(self.r['diff']['before']['servers'])
+            if link_servers:
+                self.peer['servers'] = self._translate_servers(self.r['diff']['before']['servers'])
+
             self.r['diff']['before'] = self.b.build_diff(data=self.peer)
 
         self.r['diff']['after'] = self.b.build_diff(data=self.p)

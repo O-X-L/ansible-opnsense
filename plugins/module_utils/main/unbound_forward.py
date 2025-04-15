@@ -21,7 +21,7 @@ class Forward(BaseModule):
     API_MOD = 'unbound'
     API_CONT = 'settings'
     API_CONT_REL = 'service'
-    FIELDS_CHANGE = ['domain', 'target', 'port', 'forward_tcp']
+    FIELDS_CHANGE = ['domain', 'target', 'port', 'forward_tcp', 'description']
     FIELDS_ALL = ['type', 'enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
     FIELDS_TRANSLATE = {
@@ -31,6 +31,9 @@ class Forward(BaseModule):
     FIELDS_TYPING = {
         'bool': ['enabled', 'forward_tcp'],
         'int': ['port'],
+    }
+    STR_LEN_VALIDATIONS = {
+        'description': {'min': 0, 'max': 255}
     }
     EXIST_ATTR = 'fwd'
 

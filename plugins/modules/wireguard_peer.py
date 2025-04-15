@@ -28,7 +28,7 @@ except MODULE_EXCEPTIONS:
 def run_module():
     module_args = dict(
         name=dict(type='str', required=True),
-        public_key=dict(type='str', required=False, alises=['pubkey', 'pub']),
+        public_key=dict(type='str', required=False, aliases=['pubkey', 'pub']),
         psk=dict(type='str', required=False, no_log=True),
         allowed_ips=dict(
             type='list', elements='str', required=False, default=[],
@@ -44,6 +44,12 @@ def run_module():
         port=dict(type='int', required=False),
         keepalive=dict(type='int', required=False),
         servers=dict(type='list', elements='str', required=False, default=[], aliases=['instances']),
+        link_servers=dict(
+            type='bool', default=False, required=False,
+            description="Whether you want to link servers instance by the peer. "
+                        "If that is the case - you should disable 'link_peers' on your server-entries. "
+                        "Will always be true if you supply any servers"
+        ),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,
         **OPN_MOD_ARGS,

@@ -2,7 +2,7 @@
 
 **STATE**: stable
 
-**TESTS**: [Playbook](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/monit.yml)
+**TESTS**: [Playbook](https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/monit.yml)
 
 **API Docs**: [Core - Monit](https://docs.opnsense.org/development/api/core/monit.html)
 
