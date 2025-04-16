@@ -92,6 +92,10 @@ You can provide your backup firewall connection via env-vars:
   * `TEST_HASYNC_USERNAME`
   * `TEST_HASYNC_PASSWORD`
 
+## Snapshots
+
+To run snapshot tests - the target firewall needs to be installed with a ZFS filesystem!
+
 ----
 
 ## Run

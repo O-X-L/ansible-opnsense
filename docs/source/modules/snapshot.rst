@@ -44,7 +44,7 @@ Info
 Usage
 *****
 
-Allows you to create, activate and delete snapshots. Activation only marks the snapshot as thje default boot option.
+Allows you to create, activate and delete snapshots. Activation only marks the snapshot as the default boot option.
 It does **not** change the snapshot currently running.
 
 Examples

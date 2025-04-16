@@ -28,7 +28,7 @@ class Snapshot(BaseModule):
     def check(self) -> None:
         self._base_check()
 
-        if self.p['activate'] and 'R' not in self.snapshot['active']:
+        if self.p['activate'] and 'active' in self.snapshot and 'R' not in self.snapshot['active']:
             self.activate()
 
     def _search_call(self) -> dict:
@@ -36,6 +36,10 @@ class Snapshot(BaseModule):
             **self.call_cnf,
             'command': self.CMDS['search'],
         })['rows']
+
+    def _ensure_zfs(self, resp: dict):
+        if resp['result'] == 'Unsupported root filesystem':
+            self.m.fail_json('Unsupported => Snapshots require a ZFS filesystem!')
 
     def create(self) -> dict:
         self.r['changed'] = True
@@ -47,6 +51,7 @@ class Snapshot(BaseModule):
                 'data': {'name': self.p['name']},
             })
             if resp['status'] != 'ok':
+                self._ensure_zfs(resp)
                 self.m.fail_json(f"Failed creating snapshot '{self.p['name']}'")
 
     def update(self) -> dict:
@@ -62,4 +67,5 @@ class Snapshot(BaseModule):
                 'params': self.snapshot['uuid'],
             })
             if resp['status'] != 'ok':
+                self._ensure_zfs(resp)
                 self.m.fail_json(f"Failed activating snapshot '{self.p['name']}'")
