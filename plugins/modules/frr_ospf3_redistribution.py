@@ -28,7 +28,7 @@ except MODULE_EXCEPTIONS:
 
 def run_module():
     module_args = dict(
-        redistribute=dict(type='str', required=False, choices=['ospf', 'connected', 'kernel', 'rip', 'static']),
+        redistribute=dict(type='str', required=False, choices=['bgp', 'connected', 'kernel', 'rip', 'static']),
         description=dict(type='str', required=False, aliases=['desc']),
         route_map=dict(
             type='str', required=False, aliases=['map', 'rm']

@@ -122,7 +122,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 
 | Parameter      | Type    | Required | Default value | Aliases | Comment |
 |:---------------|:--------|:---------|:--------------|:--------|:--------|
-| redistribution | string  | false    | -             | -       | Select routing sources to redistribute to other nodes. One of: 'ospf', 'connected', 'kernel', 'rip' or 'static'. |
+| redistribution | string  | false    | -             | -       | Select routing sources to redistribute to other nodes. One of: 'bgp', 'connected', 'kernel', 'rip' or 'static'. |
 | description    | string  | true     | -             | desc    | Description for this distribution. |
 | route_map      | string  | false    | -             | map, rm | Optional Route-map to apply to this redistribution. |
 | reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
@@ -197,7 +197,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 
 | Parameter      | Type    | Required | Default value | Aliases | Comment |
 |:---------------|:--------|:---------|:--------------|:--------|:--------|
-| redistribution | string  | false    | -             | -       | Select routing sources to redistribute to other nodes. One of: 'ospf', 'connected', 'kernel', 'rip' or 'static'. |
+| redistribution | string  | false    | -             | -       | Select routing sources to redistribute to other nodes. One of: 'bgp', 'connected', 'kernel', 'rip' or 'static'. |
 | description    | string  | true     | -             | desc    | Description for this distribution. |
 | route_map      | string  | false    | -             | map, rm | Optional Route-map to apply to this redistribution. |
 | reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |

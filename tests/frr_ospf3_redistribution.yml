@@ -40,7 +40,7 @@
     - name: Adding 1 - failing because of non-existent route-map
       ansibleguy.opnsense.frr_ospf3_redistribution:
         description: 'ANSIBLE_TEST_1_1'
-        redistribute: ospf
+        redistribute: bgp
         route_map: 'DOES-NOT-EXIST'
       register: opn_fail2
       failed_when: not opn_fail2.failed
@@ -48,7 +48,7 @@
     - name: Adding 1
       ansibleguy.opnsense.frr_ospf3_redistribution:
         description: 'ANSIBLE_TEST_1_1'
-        redistribute: ospf
+        redistribute: bgp
       register: opn1
       failed_when: >
         opn1.failed or
@@ -98,7 +98,7 @@
     - name: Adding 2
       ansibleguy.opnsense.frr_ospf3_redistribution:
         description: 'ANSIBLE_TEST_1_2'
-        redistribute: ospf
+        redistribute: bgp
       register: opn6
       failed_when: >
         opn6.failed or
@@ -107,7 +107,7 @@
     - name: Adding 2 - nothing changed
       ansibleguy.opnsense.frr_ospf3_redistribution:
         description: 'ANSIBLE_TEST_1_2'
-        redistribute: ospf
+        redistribute: bgp
       register: opn7
       failed_when: >
         opn7.failed or
@@ -180,7 +180,7 @@
     - name: Adding redistribution linked to route-map
       ansibleguy.opnsense.frr_ospf3_redistribution:
         description: 'ANSIBLE_TEST_2_1'
-        redistribute: ospf
+        redistribute: bgp
         route_map: 'ANSIBLE_TEST_3_1'
       register: opn10
       failed_when: >
