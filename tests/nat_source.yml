@@ -32,16 +32,6 @@
         opn_pre2.failed or
         opn_pre2.changed
 
-    - name: Adding 1 - failing because of invalid protocol
-      ansibleguy.opnsense.source_nat:
-        description: 'ANSIBLE_TEST_1_1'
-        interface: 'lan'
-        destination: '192.168.0.1'
-        target: '192.168.0.2'
-        protocol: 'TCP/UDP'
-      register: opn_fail1
-      failed_when: not opn_fail1.failed
-
     - name: Adding 1 - failing because of invalid alias (server-side)
       ansibleguy.opnsense.source_nat:
         description: 'ANSIBLE_TEST_1_1'

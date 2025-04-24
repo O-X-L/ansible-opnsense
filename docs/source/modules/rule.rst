@@ -29,7 +29,7 @@ This plugin has some limitations you need to know of:
 * each of these parameters only takes ONE value per rule:
 
   * port (*port-number, name, alias or range*)
-  * protocol (*or 'any'; 'TCP/UDP' is NOT valid*)
+  * protocol (*or 'any'*)
   * ip-protocol (*IPv4/IPv6*)
   * direction
 
@@ -84,7 +84,7 @@ Definition
     "interface","list","false","['lan']","i, int","One or multiple interfaces use this rule on"
     "direction","string","false","'in'","d, dir","Direction of the traffic. Traffic IN is coming into the firewall interface, while traffic OUT is going out of the firewall interface. In visual terms: [Source] -> IN -> [Firewall] -> OUT -> [Destination]. The default policy is to filter inbound traffic, which means the policy applies to the interface on which the traffic is originally received by the firewall from the source. This is more efficient from a traffic processing perspective. In most cases, the default policy will be the most appropriate."
     "ip_protocol","string","false","'inet'","ipp, ip_proto","IP protocol to match. One of: 'inet', 'inet6' (*IPv4 = 'inet', IPv6 = 'inet6'*)"
-    "protocol","string","false","'any'","p, proto","Protocol like 'TCP', 'UDP', 'ICMP' and so on. For options see the WEB-UI. 'TCP/UDP' is NOT valid!"
+    "protocol","string","false","'any'","p, proto","Protocol like 'TCP', 'UDP', 'ICMP' and so on. For options see the WEB-UI."
     "source_invert","boolean","false","false","si, src_inv, src_not","Inverted matching of the source"
     "source_net","string","false","'any'","s, src, source","Host, network, alias or 'any'"
     "source_port","string","false","\-","sp, src_port","Leave empty to allow all, valid port-number, name, alias or range"
