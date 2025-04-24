@@ -22,11 +22,8 @@ def validate_values(error_func, module: AnsibleModule, cnf: dict) -> None:
     #             except ValueError:
     #                 error_func(error % (cnf[field], field))
 
-    if cnf['protocol'] in ['TCP/UDP']:
-        error_func(error % (cnf['protocol'], 'protocol'))
-
     # some recommendations - maybe the user overlooked something
-    if 'action' in cnf and cnf['action'] == 'pass' and cnf['protocol'] in ['TCP', 'UDP']:
+    if 'action' in cnf and cnf['action'] == 'pass' and cnf['protocol'] in ['TCP', 'UDP', 'TCP/UDP']:
         if cnf['source_net'] == 'any' and cnf['destination_net'] == 'any':
             module.warn(
                 "Configuring allow-rules with 'any' source and "
