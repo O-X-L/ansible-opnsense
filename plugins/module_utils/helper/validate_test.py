@@ -44,11 +44,11 @@ def test_is_valid_partial_mac_address(value, result):
     ('2001:0db8:85a3:08d3:1319:8a2e:0370::', True),
     ('2001:0db8:85a3::1319:8a2e:0370::', False),
 ])
-def test_is_ip_address(value, result):
+def test_is_ip(value, result):
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-        is_ip_address
+        is_ip
 
-    assert is_ip_address(value) == result
+    assert is_ip(value) == result
 
 @pytest.mark.parametrize('value, result', [
     ('1.2.3.4', True),
@@ -66,11 +66,11 @@ def test_is_ip_address(value, result):
     ('2001:0db8:85a3:08d3:1319:8a2e:0370::/96', False),
     ('2001:0db8:85a3::1319:8a2e:0370::', False),
 ])
-def test_is_ip_network(value, result):
+def test_is_network(value, result):
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-        is_ip_network
+        is_network
 
-    assert is_ip_network(value) == result
+    assert is_network(value, strict=True) == result
 
 @pytest.mark.parametrize('value, result', [
     ('0', False),

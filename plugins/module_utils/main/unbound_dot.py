@@ -1,9 +1,11 @@
 from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    is_ip, valid_hostname, validate_port, is_true, is_unset, validate_domain
+    is_ip, valid_hostname, validate_port, is_true, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.unbound import \
+    validate_domain
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 

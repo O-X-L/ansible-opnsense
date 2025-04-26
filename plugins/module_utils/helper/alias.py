@@ -6,7 +6,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
     BUILTIN_ALIASES, BUILTIN_INTERFACE_ALIASES_REG
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    is_valid_partial_mac_address, is_valid_url, is_valid_port, is_network, is_valid_host, is_ip
+    is_valid_partial_mac_address, is_valid_url, is_valid_port, is_valid_network, is_valid_host, is_ip
 
 
 # This should be keept aligned with getValidators from the AliasContentField
@@ -40,7 +40,7 @@ def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> 
         #elif v_type == 'geoip':
         #    pass
 
-        elif v_type == 'network' and not is_network(value):
+        elif v_type == 'network' and not is_valid_network(value):
             error_func(error)
 
         elif v_type == 'networkgroup':
