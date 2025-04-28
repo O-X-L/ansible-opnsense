@@ -1,0 +1,212 @@
+---
+
+- name: Testing FRR BGP Redistribution
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'frr_bgp_redistribution'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | length != 0
+
+    - name: Removing - does not exist
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      register: opn_pre2
+      failed_when: >
+        opn_pre2.failed or
+        opn_pre2.changed
+
+    - name: Adding 1 - failing because of invalid redistribute
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'ANSIBLE_TEST_1_1'
+        redistribute: ansible
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+
+    - name: Adding 1 - failing because of non-existent route-map
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'ANSIBLE_TEST_1_1'
+        redistribute: ospf
+        route_map: 'DOES-NOT-EXIST'
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Adding 1
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'ANSIBLE_TEST_1_1'
+        redistribute: ospf
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing 1
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'ANSIBLE_TEST_1_1'
+        redistribute: connected
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Disabling 1
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'ANSIBLE_TEST_1_1'
+        redistribute: connected
+        enabled: false
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+      when: not ansible_check_mode
+
+    - name: Disabling 1 - nothing changed
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'ANSIBLE_TEST_1_1'
+        redistribute: connected
+        enabled: false
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        opn4.changed
+      when: not ansible_check_mode
+
+    - name: Enabling 1
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'ANSIBLE_TEST_1_1'
+        redistribute: connected
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Adding 2
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'ANSIBLE_TEST_1_2'
+        redistribute: ospf
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        not opn6.changed
+
+    - name: Adding 2 - nothing changed
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'ANSIBLE_TEST_1_2'
+        redistribute: ospf
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        opn7.changed
+      when: not ansible_check_mode
+
+    - name: Removing 2
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'ANSIBLE_TEST_1_2'
+        state: 'absent'
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        not opn8.changed
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn9
+      failed_when: >
+        'data' not in opn9 or
+        opn9.data | length != 1
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_clean1
+      failed_when: >
+        'data' not in opn_clean1 or
+        opn_clean1.data | length != 0
+      when: not ansible_check_mode
+
+- name: Testing FRR BGP Redistribution - linking
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'frr_bgp_redistribution'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre2
+      failed_when: >
+        'data' not in opn_pre2 or
+        opn_pre2.data | length != 0
+      when: not ansible_check_mode
+
+    - name: Adding dummy route-map
+      ansibleguy.opnsense.frr_bgp_route_map:
+        name: 'ANSIBLE_TEST_3_1'
+        id: 50
+        action: 'permit'
+      when: not ansible_check_mode
+
+    - name: Adding redistribution linked to route-map
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'ANSIBLE_TEST_2_1'
+        redistribute: ospf
+        route_map: 'ANSIBLE_TEST_3_1'
+      register: opn10
+      failed_when: >
+        opn10.failed or
+        not opn10.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup redistributions
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_2_2'
+      when: not ansible_check_mode
+
+    - name: Cleanup route-map
+      ansibleguy.opnsense.frr_bgp_route_map:
+        name: 'ANSIBLE_TEST_3_1'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_clean2
+      failed_when: >
+        'data' not in opn_clean2 or
+        opn_clean2.data | length != 0
+      when: not ansible_check_mode

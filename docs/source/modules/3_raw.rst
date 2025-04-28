@@ -2,9 +2,9 @@
 
 .. include:: ../_include/head.rst
 
-===
-Raw
-===
+=======
+3 - Raw
+=======
 
 **STATE**: unstable
 
@@ -36,7 +36,7 @@ You need to either provide :code:`module + controller + command` or :code:`url`!
     :widths: 15 10 10 10 10 45
 
     "module","string","false","\-","m, mod","The API-module to target"
-    "controller","string","false","\-","co, cont","The API-controller to target
+    "controller","string","false","\-","co, cont","The API-controller to target"
     "command","string","false","\-","c, cmd","The API-command to target"
     "parameters","string","false","\-","p, params","Optional: Parameters to send"
     "url","string","false","\-","u","Alternative to module/controller/command</params>"
