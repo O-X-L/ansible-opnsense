@@ -19,7 +19,7 @@
         - 'alias'
         - 'rule'
         - 'route'
-        # - 'cron'  # issue 88
+        - 'cron'  # issue 88
         # - 'unbound'  taking way too long for testing (90+ sec)
         - 'syslog'
         - 'ipsec'
@@ -38,4 +38,4 @@
         - 'openvpn'
         - 'dhcrelay'
         - 'dhcp'
-        # - 'gateway'  # issue 88
+        - 'gateway'  # issue 88

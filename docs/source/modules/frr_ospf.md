@@ -7,8 +7,13 @@
 [frr_ospf_interface](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_interface.yml) |
 [frr_ospf_route_map](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_route_map.yml) |
 [frr_ospf_network](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_network.yml) |
+[frr_ospf_redistribution](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_redistribution.yml) |
 [frr_ospf3_general](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_general.yml) |
-[frr_ospf3_interface](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_interface.yml)
+[frr_ospf3_prefix_list](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_prefix_list.yml) |
+[frr_ospf3_interface](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_interface.yml) |
+[frr_ospf3_route_map](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_route_map.yml) |
+[frr_ospf_network](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_network.yml) |
+[frr_ospf3_redistribution](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_redistribution.yml)
 
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
@@ -52,8 +57,6 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | id               | string  | false    | -             | router_id                                           | If you have a CARP setup, you may want to configure a router id in case of a conflict. (_4-byte field/IPv4 Address_)                                                                                                                                           |                                                                                                                                                  |
 | cost             | integer | false    | -             | reference_cost, ref_cost                            | Here you can adjust the reference cost in Mbps for path calculation. Mostly needed when you bundle interfaces to higher bandwidth                                                                                                                              |                                                                                                                                                  |
 | passive_ints     | list    | false    | -             | passive_interfaces                                  | Select the interfaces, where no OSPF packets should be sent to. You must provide the network port as shown in 'Interface - Assignments - Interface ID (in brackets)'                                                                                           |                                                                                                                                                  |
-| redistribute     | list    | false    | -             | -                                                   | Select other routing sources, which should be redistributed to the other nodes. Choose from: 'bgp', 'connected', 'kernel', 'rip', 'static'                                                                                                                     |                                                                                                                                                  |
-| redistribute_map | string  | false    | -             | -                                                   | Route Map to set for Redistribution                                                                                                                                                                                                                            |
 | originate        | boolean | false    | false         | orig, advertise_default_gw                          | This will send the information that we have a default gateway                                                                                                                                                                                                  |
 | originate_always | boolean | false    | false         | orig_always, always_advertise_default_gw            | This will send the information that we have a default gateway, regardless of if it is available                                                                                                                                                                |
 | originate_metric | integer | false    | -             | orig_metric                                         | This let you manipulate the metric when advertising default gateway                                                                                                                                                                                            |
@@ -115,6 +118,15 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | set  | string  | false    | -             | -         | Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)                                                                                                                                                                                                                        |                                                                                                                                                  |
 | reload       | boolean | false    | true          | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html).                                                                                                                                                                   |
 
+#### ansibleguy.opnsense.frr_ospf_redistribution
+
+| Parameter      | Type    | Required | Default value | Aliases | Comment |
+|:---------------|:--------|:---------|:--------------|:--------|:--------|
+| redistribution | string  | false    | -             | -       | Select routing sources to redistribute to other nodes. One of: 'bgp', 'connected', 'kernel', 'rip' or 'static'. |
+| description    | string  | true     | -             | desc    | Description for this distribution. |
+| route_map      | string  | false    | -             | map, rm | Optional Route-map to apply to this redistribution. |
+| reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+
 ----
 
 ### OSPFv3 (_IPv6_)
@@ -125,9 +137,21 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 |:-------------|:--------|:---------|:--------------|:----------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | carp  | boolean | false    | false         | carp_demote                                         | Register CARP status monitor, when no neighbors are found, consider this node less attractive. This feature needs syslog enabled using "Debugging" logging to catch all relevant status events. This option is not compatible with "Enable CARP Failover" |
 | id  | string  | false    | -             | router_id                                           | If you have a CARP setup, you may want to configure a router id in case of a conflict. (_4-byte field/IPv4 Address_)                                                                                                                                      |                                                                                                                                                  |
-| redistribute  | list    | false    | -             | -                                                   | Select other routing sources, which should be redistributed to the other nodes. Choose from: 'bgp', 'connected', 'kernel', 'rip', 'static'                                                                                                                |                                                                                                                                                  |
 | reload       | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
 | enabled          | boolean | false    | true                 | -       | En- or disable the service                                                                                                                                                                                                                                     |
+
+#### ansibleguy.opnsense.frr_ospf3_network
+
+| Parameter    | Type    | Required                           | Default value  | Aliases                              | Comment                                                                                                                                                                                                                                                          |
+|:-------------|:--------|:-----------------------------------|:---------------|:-------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| match_fields | string | false                              | ['ip', 'mask'] | -                                    | Fields that are used to match configured interface with the running config - if any of those fields are changed, the module will think it's a new entry. At least one of: 'ip', 'mask', 'area', 'area_range'                                                     |
+| ip           | string  | true                               | -              | network_address, nw_address, address |                                                                                                                                                                                                                                                                  |
+| mask         | string  | true                               | -              | network_mask, nw_mask                | Integer between 0 and 32                                                                                                                                                                                                                                         |
+| area         | string  | false for state changes, else true | -              | -                                    | Area in wildcard mask style like 0.0.0.0 and no decimal 0. Only use Area in Interface tab or in Network tab once                                                                                                                                                 |
+| area_range   | string  | -                                  | -              | -                                    | Here you can summarize a network for this area like fe80:1234::/56                                                                                                                                                 |
+| prefix_list_in   | string  | -                                  | -              | prefix_in, pre_in                    | Prefix-List for inbound direction                                                                                                                                                 |
+| prefix_list_out   | string  | -                                  | -              | prefix_out, pre_out                  | Prefix-List for outbound direction                                                                                                                                                 |
+| reload       | boolean | false                              | true           | -                                    | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
 
 #### ansibleguy.opnsense.frr_ospf3_interface
 
@@ -148,6 +172,35 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | network_type       | string  | false    | -                     | nw_type         | One of: 'broadcast', 'point-to-point'                                                                                                                                                                                                                            |
 | reload       | boolean | false    | true                  | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
 
+#### ansibleguy.opnsense.frr_ospf3_prefix_list
+
+| Parameter | Type    | Required | Default value | Aliases    | Comment                                                                                                                                                                                                                                                        |
+|:----------|:--------|:---------|:----------------------|:-----------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| name      | string | true    | -          | -          | The name of the prefix-list |
+| seq       | string | false for state changes, else true    | -          | seq_number | The ACL sequence number (10-99) |
+| network   | string | false for state changes, else true    | -          | net        | The network pattern you want to match. It's not validated so please be careful! |
+| action    | string | false for state changes, else true    | -          | -          | Set permit for match or deny to negate the rule. One of: 'permit', 'deny' |
+| reload    | boolean | false    | true          | -          | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+
+#### ansibleguy.opnsense.frr_ospf3_route_map
+
+| Parameter    | Type    | Required | Default value | Aliases   | Comment                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|:-------------|:--------|:---------|:--------------|:----------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| name           | string  | true     | -             | -         | Name to identify the route-map by                                                                                                                                                                                                                                                                                                                                                                                                  |
+| id  | integer | false for state changes, else true    | -             | -         | Route-map ID between 10 and 99. Be aware that the sorting will be done under the hood, so when you add an entry between it get's to the right position                                                                                                                                                                                                                                                                             |                                                                                                                                                  |
+| action  | string  | false for state changes, else true    | -             | -         | Set permit for match or deny to negate the rule. One of: 'permit', 'deny'                                                                                                                                                                                                                                                                                                                                                          |                                                                                                                                                  |
+| prefix_list  | list    | false    | -             | prefix    | List of prefix-list entries to link                                                                                                                                                                                                                                                                                                                                                                                                |                                                                                                                                                  |
+| set  | string  | false    | -             | -         | Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)                                                                                                                                                                                                                        |                                                                                                                                                  |
+| reload       | boolean | false    | true          | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html).                                                                                                                                                                   |
+
+#### ansibleguy.opnsense.frr_ospf3_redistribution
+
+| Parameter      | Type    | Required | Default value | Aliases | Comment |
+|:---------------|:--------|:---------|:--------------|:--------|:--------|
+| redistribution | string  | false    | -             | -       | Select routing sources to redistribute to other nodes. One of: 'bgp', 'connected', 'kernel', 'rip' or 'static'. |
+| description    | string  | true     | -             | desc    | Description for this distribution. |
+| route_map      | string  | false    | -             | map, rm | Optional Route-map to apply to this redistribution. |
+| reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
 
 ----
 
@@ -174,8 +227,6 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
         # id: '10.0.0.1'
         # cost: 200
         # passive_ints: []
-        # redistribute: []
-        # redistribute_map: ''
         # carp: false
         # originate: false
         # originate_always: false
@@ -187,7 +238,6 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
         id: '10.0.1.1'
         cost: 300
         passive_ints: ['lan']
-        redistribute: ['static', 'bgp']
         originate: true
         originate_metric: 1000
 
@@ -196,7 +246,6 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
         id: '10.0.1.1'
         cost: 300
         passive_ints: ['lan']
-        redistribute: ['static', 'bgp']
         originate: true
         originate_metric: 1000
         enabled: false
@@ -452,6 +501,53 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
         state: 'absent'
 ```
 
+#### ansibleguy.opnsense.frr_ospf_redistribution
+
+```yaml
+- hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: 'opnsense.template.ansibleguy.net'
+      api_credential_file: '/home/guy/.secret/opn.key'
+
+    ansibleguy.opnsense.list:
+      target: 'frr_ospf_redistribution'
+
+  tasks:
+    - name: Example
+      ansibleguy.opnsense.frr_ospf_redistribution:
+        description: 'test1'
+        redistribution: ospf
+        # enabled: true
+        # reload: true
+
+    - name: Creating redistribution
+      ansibleguy.opnsense.frr_ospf_redistribution:
+        description: 'test2'
+        redistribution: ospf
+
+    - name: Disabling redistribution
+      ansibleguy.opnsense.frr_ospf_redistribution:
+        description: 'test2'
+        redistribution: ospf
+        enabled: false
+
+    - name: Pulling redistributions
+      ansibleguy.opnsense.list:
+      #  target: 'frr_ospf_redistribution'
+      register: existing_entries
+
+    - name: Printing redistributions
+      ansible.builtin.debug:
+        var: existing_entries.data
+
+    - name: Removing redistribution
+      ansibleguy.opnsense.frr_ospf_redistribution:
+        description: 'test2'
+        state: 'absent'
+```
+
 ----
 
 ### OSPFv3 (_IPv6_)
@@ -473,19 +569,16 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
     - name: Example
       ansibleguy.opnsense.frr_ospf3_general:
         # id: '10.0.0.1'
-        # redistribute: []
         # carp: false
         # enabled: true
 
     - name: Configuring general settings
       ansibleguy.opnsense.frr_ospf3_general:
         id: '10.0.1.1'
-        redistribute: ['static']
 
     - name: Disabling OSPFv3
       ansibleguy.opnsense.frr_ospf3_general:
         id: '10.0.1.1'
-        redistribute: ['static']
         enabled: false
 
     - name: Pulling settings
@@ -496,6 +589,165 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
     - name: Printing settings
       ansible.builtin.debug:
         var: existing_entries.data
+```
+
+#### ansibleguy.opnsense.frr_ospf3_prefix_list
+
+```yaml
+- hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: 'opnsense.template.ansibleguy.net'
+      api_credential_file: '/home/guy/.secret/opn.key'
+
+    ansibleguy.opnsense.list:
+      target: 'frr_ospf3_prefix_list'
+
+  tasks:
+    - name: Example
+      ansibleguy.opnsense.frr_ospf3_prefix_list:
+        name: 'example'
+        seq: 10
+        action: 'permit'
+        network: '10.0.0.0/24'
+        # enabled: true
+
+    - name: Configuring prefix-list
+      ansibleguy.opnsense.frr_ospf3_prefix_list:
+        name: 'test2'
+        seq: 25
+        action: 'permit'
+        network: '10.0.1.0/24'
+
+    - name: Disabling prefix-list
+      ansibleguy.opnsense.frr_ospf3_prefix_list:
+        name: 'test2'
+        seq: 25
+        action: 'permit'
+        network: '10.0.1.0/24'
+        enabled: false
+
+    - name: Pulling settings
+      ansibleguy.opnsense.list:
+      #  target: 'frr_ospf3_prefix_list'
+      register: existing_entries
+
+    - name: Printing settings
+      ansible.builtin.debug:
+        var: existing_entries.data
+
+    - name: Removing prefix-list
+      ansibleguy.opnsense.frr_ospf3_prefix_list:
+        name: 'test2'
+        state: 'absent'
+```
+
+#### ansibleguy.opnsense.frr_ospf3_route_map
+
+```yaml
+- hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: 'opnsense.template.ansibleguy.net'
+      api_credential_file: '/home/guy/.secret/opn.key'
+
+    ansibleguy.opnsense.list:
+      target: 'frr_ospf3_route_map'
+
+  tasks:
+    - name: Example
+      ansibleguy.opnsense.frr_ospf3route_map:
+        name: 'example'
+        id: 10
+        action: 'permit'
+        # prefix_list: []
+        # set: ''
+        # enabled: true
+
+    - name: Configuring route-map
+      ansibleguy.opnsense.frr_ospf3_route_map:
+        name: 'test2'
+        id: 65
+        action: 'permit'
+        set: 'local-preference 300'
+
+    - name: Disabling route-map
+      ansibleguy.opnsense.frr_ospf3_route_map:
+        name: 'test2'
+        id: 65
+        action: 'permit'
+        set: 'local-preference 300'
+        enabled: false
+
+    - name: Pulling settings
+      ansibleguy.opnsense.list:
+      #  target: 'frr_ospf3_route_map'
+      register: existing_entries
+
+    - name: Printing settings
+      ansible.builtin.debug:
+        var: existing_entries.data
+
+    - name: Removing route-map
+      ansibleguy.opnsense.frr_ospf3_route_map:
+        name: 'test2'
+        state: 'absent'
+```
+
+#### ansibleguy.opnsense.frr_ospf3_network
+
+```yaml
+- hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: 'opnsense.template.ansibleguy.net'
+      api_credential_file: '/home/guy/.secret/opn.key'
+
+    ansibleguy.opnsense.frr_ospf3_network:
+      match_fields: ['ip', 'mask']
+
+    ansibleguy.opnsense.list:
+      target: 'frr_ospf_route_map'
+
+  tasks:
+    - name: Example
+      ansibleguy.opnsense.frr_ospf3_network:
+        ip: 'fe80::1234'
+        mask: 64
+        area: '0.0.0.0'
+        # area_range: ''
+        # enabled: true
+
+    - name: Configuring network
+      ansibleguy.opnsense.frr_ospf3_network:
+        ip: 'fe80::1234'
+        mask: 64
+        area: '0.0.1.0'
+
+    - name: Disabling network
+      ansibleguy.opnsense.frr_ospf3_network:
+        ip: 'fe80::1234'
+        mask: 64
+        area: '0.0.1.0'
+        enabled: false
+
+    - name: Pulling settings
+      ansibleguy.opnsense.list:
+      #  target: 'frr_ospf3_network'
+      register: existing_entries
+
+    - name: Printing settings
+      ansible.builtin.debug:
+        var: existing_entries.data
+
+    - name: Removing network
+      ansibleguy.opnsense.frr_ospf3_network:
+        ip: 'fe80::1234'
+        mask: 64
+        state: 'absent'
 ```
 
 #### ansibleguy.opnsense.frr_ospf3_interface
@@ -571,5 +823,52 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
     - name: Removing interface
       ansibleguy.opnsense.frr_ospf3_interface:
         interface: 'opt1'
+        state: 'absent'
+```
+
+#### ansibleguy.opnsense.frr_ospf3_redistribution
+
+```yaml
+- hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: 'opnsense.template.ansibleguy.net'
+      api_credential_file: '/home/guy/.secret/opn.key'
+
+    ansibleguy.opnsense.list:
+      target: 'frr_ospf3_redistribution'
+
+  tasks:
+    - name: Example
+      ansibleguy.opnsense.frr_ospf3_redistribution:
+        description: 'test1'
+        redistribution: ospf
+        # enabled: true
+        # reload: true
+
+    - name: Creating redistribution
+      ansibleguy.opnsense.frr_ospf3_redistribution:
+        description: 'test2'
+        redistribution: ospf
+
+    - name: Disabling redistribution
+      ansibleguy.opnsense.frr_ospf3_redistribution:
+        description: 'test2'
+        redistribution: ospf
+        enabled: false
+
+    - name: Pulling redistributions
+      ansibleguy.opnsense.list:
+      #  target: 'frr_ospf3_redistribution'
+      register: existing_entries
+
+    - name: Printing redistributions
+      ansible.builtin.debug:
+        var: existing_entries.data
+
+    - name: Removing redistribution
+      ansibleguy.opnsense.frr_ospf3_redistribution:
+        description: 'test2'
         state: 'absent'
 ```

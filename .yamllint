@@ -8,4 +8,4 @@ rules:
     ignore:
       - .github/workflows/
   line-length:
-    max: 180
+    max: 190

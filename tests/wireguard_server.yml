@@ -279,6 +279,34 @@
         opn22.changed
       when: not ansible_check_mode
 
+    - name: Changing 4 - do not link peers
+      ansibleguy.opnsense.wireguard_server:
+        name: 'ANSIBLE_TEST_1_4'
+        allowed_ips: ['192.168.3.1/32']
+        public_key: "{{ test.pub2 }}"
+        private_key: "{{ test.priv2 }}"
+        vip: '192.168.2.1'
+        link_peers: false
+      register: opn23
+      failed_when: >
+        opn23.failed or
+        opn23.changed
+      when: not ansible_check_mode
+
+    - name: Adding 4 - nothing changed
+      ansibleguy.opnsense.wireguard_server:
+        name: 'ANSIBLE_TEST_1_4'
+        allowed_ips: ['192.168.3.1/32']
+        public_key: "{{ test.pub2 }}"
+        private_key: "{{ test.priv2 }}"
+        peers: ['ANSIBLE_TEST_2_1']
+        vip: '192.168.2.1'
+      register: opn24
+      failed_when: >
+        opn24.failed or
+        opn24.changed
+      when: not ansible_check_mode
+
     - name: Cleanup
       ansibleguy.opnsense.wireguard_server:
         name: "{{ item }}"

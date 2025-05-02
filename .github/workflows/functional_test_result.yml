@@ -22,11 +22,11 @@ jobs:
           ref: ${{ github.ref }}
 
       - name: Install dependencies
-        run: sudo apt install curl jq
+        run: sudo apt install curl jq > /dev/null
         shell: bash
 
       - name: Pulling logs
-        run: curl -f https://${{ env.CI_DOMAIN }}/api/job/${{ env.CI_JOB }}/logs?token=${{ secrets.CI_TOKEN_RO }} | jq > /tmp/test.log
+        run: curl --fail-with-body https://${{ env.CI_DOMAIN }}/api/job/${{ env.CI_JOB }}/logs?token=${{ secrets.CI_TOKEN_RO }} | jq > /tmp/test.log
         shell: bash
 
       - uses: actions/upload-artifact@v4
@@ -36,5 +36,5 @@ jobs:
           retention-days: 14
 
       - name: Checking job-state
-        run: curl -f https://${{ env.CI_DOMAIN }}/api/job/${{ env.CI_JOB }}/state?token=${{ secrets.CI_TOKEN_RO }} | jq -r '.state' | grep -q 'failed' && exit 1 || exit 0
+        run: curl --fail-with-body https://${{ env.CI_DOMAIN }}/api/job/${{ env.CI_JOB }}/state?token=${{ secrets.CI_TOKEN_RO }} | jq -r '.state' | grep -q 'failed' && exit 1 || exit 0
         shell: bash

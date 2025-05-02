@@ -37,7 +37,6 @@
         id: '10.0.0.1'
         cost: 250
         passive_ints: ['lan']
-        redistribute: ['static']
         originate: true
         enabled: true
       register: opn1
@@ -50,7 +49,6 @@
         id: '10.0.1.1'
         cost: 300
         passive_ints: ['lan']
-        redistribute: ['static', 'bgp']
         originate: true
         originate_metric: 1000
         enabled: true
@@ -64,7 +62,6 @@
         id: '10.0.1.1'
         cost: 300
         passive_ints: ['lan']
-        redistribute: ['static', 'bgp']
         originate: true
         originate_metric: 1000
         enabled: false
@@ -79,7 +76,6 @@
         id: '10.0.1.1'
         cost: 300
         passive_ints: ['lan']
-        redistribute: ['static', 'bgp']
         originate: true
         originate_metric: 1000
         enabled: false
@@ -94,7 +90,6 @@
         id: '10.0.1.1'
         cost: 300
         passive_ints: ['lan']
-        redistribute: ['static', 'bgp']
         originate: true
         originate_metric: 1000
       register: opn4

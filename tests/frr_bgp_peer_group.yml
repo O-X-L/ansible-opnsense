@@ -1,0 +1,269 @@
+---
+
+- name: Testing FRR BGP Peer Groups
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'frr_bgp_peer_group'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | length != 0
+
+    - name: Removing - does not exist
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      register: opn_pre2
+      failed_when: >
+        opn_pre2.failed or
+        opn_pre2.changed
+
+    - name: Adding 1 - failing because of invalid as_mode
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_1_1'
+        as_mode: 'DOES-NOT-EXIST'
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Adding 1 - failing because of non-existent prefix-list
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_1_1'
+        as_number: 1337
+        prefix_list_in: 'DOES-NOT-EXIST'
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Adding 1 - failing because of non-existent route-map
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_1_1'
+        as_number: 1337
+        route_map_out: 'DOES-NOT-EXIST'
+      register: opn_fail3
+      failed_when: not opn_fail3.failed
+
+    - name: Adding 1
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_1_1'
+        as_number: 1337
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing 1
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_1_1'
+        as_number: 1338
+        source_int: 'opt1'
+        next_hop_self: true
+        send_default_route: true
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Disabling 1
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_1_1'
+        as_number: 1338
+        source_int: 'opt1'
+        next_hop_self: true
+        send_default_route: true
+        enabled: false
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+      when: not ansible_check_mode
+
+    - name: Disabling 1 - nothing changed
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_1_1'
+        as_number: 1338
+        source_int: 'opt1'
+        next_hop_self: true
+        send_default_route: true
+        enabled: false
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        opn4.changed
+      when: not ansible_check_mode
+
+    - name: Enabling 1
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_1_1'
+        as_number: 1338
+        source_int: 'opt1'
+        next_hop_self: true
+        send_default_route: true
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Adding 2
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_1_2'
+        as_mode: internal
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        not opn6.changed
+
+    - name: Adding 2 - nothing changed
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_1_2'
+        as_mode: internal
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        opn7.changed
+      when: not ansible_check_mode
+
+    - name: Removing 2
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_1_2'
+        as_mode: internal
+        state: 'absent'
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        not opn8.changed
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn9
+      failed_when: >
+        'data' not in opn9 or
+        opn9.data | length != 1
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_clean1
+      failed_when: >
+        'data' not in opn_clean1 or
+        opn_clean1.data | length != 0
+      when: not ansible_check_mode
+
+- name: Testing FRR BGP Peer Groups - linking
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'frr_bgp_peer_group'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre3
+      failed_when: >
+        'data' not in opn_pre3 or
+        opn_pre3.data | length != 0
+      when: not ansible_check_mode
+
+    - name: Adding dummy prefix-list
+      ansibleguy.opnsense.frr_bgp_prefix_list:
+        name: 'ANSIBLE_TEST_2_1'
+        network: '10.0.10.0/24'
+        seq: 51
+        action: 'permit'
+      when: not ansible_check_mode
+
+    - name: Adding dummy prefix-list 2 (same name, other sequence)
+      ansibleguy.opnsense.frr_bgp_prefix_list:
+        name: 'ANSIBLE_TEST_2_1'
+        network: '10.0.11.0/24'
+        seq: 50
+        action: 'permit'
+      when: not ansible_check_mode
+
+    - name: Adding neighbor linked to prefix-list
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_2_1'
+        prefix_list_in: 'ANSIBLE_TEST_2_1'
+        as_number: 1337
+      register: opn10
+      failed_when: >
+        opn10.failed or
+        not opn10.changed
+      when: not ansible_check_mode
+
+    - name: Adding dummy route-map
+      ansibleguy.opnsense.frr_bgp_route_map:
+        name: 'ANSIBLE_TEST_3_1'
+        id: 50
+        action: 'permit'
+      when: not ansible_check_mode
+
+    - name: Adding neighbor linked to route-map
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'ANSIBLE_TEST_2_2'
+        route_map_out: 'ANSIBLE_TEST_3_1'
+        as_number: 1338
+      register: opn11
+      failed_when: >
+        opn11.failed or
+        not opn11.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup peergroups
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_2_2'
+      when: not ansible_check_mode
+
+    - name: Cleanup prefix-list
+      ansibleguy.opnsense.frr_bgp_prefix_list:
+        name: 'ANSIBLE_TEST_2_1'
+        seq: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 50
+        - 51
+      when: not ansible_check_mode
+
+    - name: Cleanup route-map
+      ansibleguy.opnsense.frr_bgp_route_map:
+        name: 'ANSIBLE_TEST_3_1'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_clean2
+      failed_when: >
+        'data' not in opn_clean2 or
+        opn_clean2.data | length != 0
+      when: not ansible_check_mode

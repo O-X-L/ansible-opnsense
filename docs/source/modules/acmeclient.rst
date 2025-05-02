@@ -423,7 +423,7 @@ Setting up this plugin for the first time involves the following steps
  * Create an **account** with any of the supported CAs using the acme_account module.
  * Set up a **validation** / challenge type using the acme_validation module.
  * Add **actions** / automations using the acme_action module. This is optional, but recommended when using short-lived certificates. Automations allow to automatically run tasks when a certificate was created or renewed.
- * Create **certificates**: Finally create the certificates using the acme_certificate module.
+ * Create **certificates**: Finally create the certificates using the acme_certificate module. This will only setup the certificate but not initiate the issuence of the certificate. This has to be done in the WebUI.
 
 ----
 
@@ -489,7 +489,7 @@ Examples
             type: configd_restart_gui
 
         - name: Adding ACME Certificate
-          ansibleguy.opnsense.acme_action:
+          ansibleguy.opnsense.acme_certificate:
             name: ansibleguy.net
             description: LE ansibleguy.net
             alt_names: ['ansibleguy.com']

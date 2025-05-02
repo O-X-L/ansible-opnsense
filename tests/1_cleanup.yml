@@ -83,6 +83,7 @@
         - {d: 'fwd.opnsense.test.ansibleguy.net', t: '1.1.1.1'}
         - {d: 'fwd.opnsense.test.ansibleguy.net', t: '1.1.1.2'}
         - {d: '', t: '1.1.1.3'}
+        - {d: '', t: '1.1.1.4'}
 
     - name: Cleanup Unbound DNS host-override aliases
       ansibleguy.opnsense.unbound_host_alias:
@@ -194,6 +195,7 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_1_3'
         - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_2_1'
 
     - name: Cleanup wireguard peers
       ansibleguy.opnsense.wireguard_peer:
@@ -203,6 +205,7 @@
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_3_1'
 
     - name: Cleanup wireguard general
       ansibleguy.opnsense.wireguard_general:
@@ -345,6 +348,24 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
 
+    - name: Cleanup FRR BGP redistributions
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+
+    - name: Cleanup FRR BGP Peer Groups
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+
     - name: Cleanup OSPF general settings
       ansibleguy.opnsense.frr_ospf_general:
         enabled: false
@@ -371,6 +392,15 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
 
+    - name: Cleanup OSPFv3 route-maps
+      ansibleguy.opnsense.frr_ospf3_route_map:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+
     - name: Cleanup OSPF networks
       ansibleguy.opnsense.frr_ospf_network:
         ip: "{{ item.ip }}"
@@ -382,6 +412,16 @@
         - {'ip': '10.0.2.0', 'mask': 24}
         - {'ip': '10.0.3.0', 'mask': 24}
 
+    - name: Cleanup OSPFv3 networks
+      ansibleguy.opnsense.frr_ospf3_network:
+        ip: "{{ item.ip }}"
+        mask: "{{ item.mask }}"
+        state: 'absent'
+        match_fields: ['ip', 'mask']
+      loop:
+        - {'ip': '2001:db8:1::', 'mask': 64}
+        - {'ip': '2001:db8::', 'mask': 64}
+
     - name: Cleanup OSPF prefix-lists
       ansibleguy.opnsense.frr_ospf_prefix_list:
         name: "{{ item }}"
@@ -391,6 +431,34 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_3_1'
+
+    - name: Cleanup OSPFv3 prefix-lists
+      ansibleguy.opnsense.frr_ospf3_prefix_list:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_3_1'
+
+    - name: Cleanup FRR OSPF redistributions
+      ansibleguy.opnsense.frr_ospf_redistribution:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+
+    - name: Cleanup FRR OSPFv4 redistributions
+      ansibleguy.opnsense.frr_ospf3_redistribution:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
 
     - name: Cleanup BIND general settings
       ansibleguy.opnsense.bind_general:
@@ -816,3 +884,27 @@
       loop:
         - 'alice@example.com'
         - 'bob@example.com'
+
+    - name: Cleanup IPSec Manual SPD
+      ansibleguy.opnsense.ipsec_manual_spd:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
+    - name: Cleanup HASync
+      ansibleguy.opnsense.hasync_general:
+
+    - name: Cleanup Snapshots
+      ansibleguy.opnsense.snapshot:
+        name: 'default'
+        activate: true
+
+    - name: Cleanup Snapshots
+      ansibleguy.opnsense.snapshot:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'

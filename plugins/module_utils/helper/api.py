@@ -14,7 +14,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validat
     is_valid_domain, is_ip
 
 
-def _load_credential_file(module: AnsibleModule) -> None:
+def _load_credential_file(module: AnsibleModule) -> tuple[(str, None), (str, None)]:
     cred_file_info = Path(module.params['api_credential_file'])
 
     if cred_file_info.is_file():
@@ -53,8 +53,7 @@ def _load_credential_file(module: AnsibleModule) -> None:
                     'could not be parsed!'
                 )
 
-            module.params['api_key'] = config['key']
-            module.params['api_secret'] = config['secret']
+            return config['key'], config['secret']
 
     else:
         module.fail_json(
@@ -62,13 +61,17 @@ def _load_credential_file(module: AnsibleModule) -> None:
             f"'{module.params['api_credential_file']}' does not exist!"
         )
 
+    return None, None
 
-def check_or_load_credentials(module: AnsibleModule) -> None:
+
+def check_or_load_credentials(module: AnsibleModule) -> tuple[(str, None), (str, None)]:
     if module.params['api_credential_file'] is not None:
-        _load_credential_file(module)
+        return _load_credential_file(module)
 
-    elif module.params['api_key'] is None and module.params['api_secret'] is None:
+    if module.params['api_key'] is None and module.params['api_secret'] is None:
         module.fail_json("Neither 'api_key' & 'api_secret' nor 'api_credential_file' were provided!")
+
+    return None, None
 
 
 def check_host(module: AnsibleModule) -> None:

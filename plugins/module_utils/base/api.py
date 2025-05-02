@@ -23,7 +23,10 @@ class Session:
 
     def _start(self, timeout: float) -> httpx.Client:
         check_host(module=self.m)
-        check_or_load_credentials(module=self.m)
+        api_key, api_secret = check_or_load_credentials(module=self.m)
+        if api_secret is None:
+            api_key = self.m.params['api_key']
+            api_secret = self.m.params['api_secret']
 
         if 'api_timeout' in self.m.params and self.m.params['api_timeout'] is not None:
             timeout = self.m.params['api_timeout']
@@ -36,7 +39,7 @@ class Session:
 
         return httpx.Client(
             base_url=f"https://{fw}:{self.m.params['api_port']}/api",
-            auth=(self.m.params['api_key'], self.m.params['api_secret']),
+            auth=(api_key, api_secret),
             timeout=httpx.Timeout(timeout=timeout, connect=2.0),
             transport=httpx.HTTPTransport(
                 verify=ssl_verification(module=self.m),

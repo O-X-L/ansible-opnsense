@@ -115,6 +115,7 @@ class RouteMap(BaseModule):
 
         else:
             self.p[key] = []
+        self.r['diff']['after'][key] = self.p[key]
 
     def get_existing(self) -> list:
         existing = []

@@ -12,7 +12,8 @@ IPSec
 `ipsec_psk <https://github.com/ansibleguy/collection_opnsense/blob/stable/tests/ipsec_psk.yml>`_ |
 `ipsec_connection <https://github.com/ansibleguy/collection_opnsense/blob/stable/tests/ipsec_connection.yml>`_ |
 `ipsec_pool <https://github.com/ansibleguy/collection_opnsense/blob/stable/tests/ipsec_pool.yml>`_ |
-`ipsec_vti <https://github.com/ansibleguy/collection_opnsense/blob/stable/tests/ipsec_vti.yml>`_
+`ipsec_vti <https://github.com/ansibleguy/collection_opnsense/blob/stable/tests/ipsec_vti.yml>`_ |
+`ipsec_manual_spd <https://github.com/ansibleguy/collection_opnsense/blob/stable/tests/ipsec_manual_spd.yml>`_
 
 **API Docs**: `Core - IPSec <https://docs.opnsense.org/development/api/core/ipsec.html>`_
 
@@ -24,6 +25,7 @@ Contribution
 ************
 
 Thanks to `@atammy-narmi <https://github.com/atammy-narmi>`_ for developing the :code:`ipsec_psk` module!
+Thanks to `@jiuka <https://github.com/jiuka>`_ for developing the :code:`ipsec_manual_spd` module!
 
 Thanks to `@Rath <https://github.com/superstes>`_ for developing the other modules!
 
@@ -160,7 +162,19 @@ ansibleguy.opnsense.ipsec_psk
     "psk","string","true","\-","key, secret","\-"
     "type","string","false","\-","kind","One of: 'PSK', 'EAP'"
 
-----
+ansibleguy.opnsense.ipsec_manual_spd
+====================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "name","string","true","\-","description, desc","Unique name to identify the entry"
+    "request_id","integer","false","\-","req_id, reqid","Reqestid to register this manual spd entry on."
+    "connection_child","string","false","\-","\-","Connection child to register this manual spd entry on."
+    "source","string","false for deletion, else true","\-","s, src, source_net","Source network, usually the networks you would like to accept using network address translation."
+    "destination","string","false","\-","d, dest, destination_net","Destination network, leave empty to use the networks propagated in the child sa."
+
 
 Usage
 *****
@@ -274,3 +288,57 @@ ansibleguy.opnsense.ipsec_psk
           ansibleguy.opnsense.ipsec_psk:
             identity: 'test1'
             state: 'absent'
+
+----
+
+ansibleguy.opnsense.ipsec_manual_spd
+====================================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: no
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+        ansibleguy.opnsense.list:
+          target: 'ipsec_manual_spd'
+
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.ipsec_manual_spd:
+            name: 'example'
+            # request_id: 42
+            connection_child: 'Connection Name - Child Name'
+            source: 192.168.100.0/24
+            # destination: 172.16.0.0/24
+            # state: 'absent'
+            # debug: false
+
+        - name: Adding Manual SPD
+          ansibleguy.opnsense.ipsec_manual_spd:
+            name: 'example'
+            request_id: 100
+            source: 10.0.99.0/24
+
+        - name: Change Manual SPD
+          ansibleguy.opnsense.ipsec_manual_spd:
+            name: 'example'
+            connection_child: 'Connection Name - Child Name'
+            source: 10.0.99.0/24
+
+        - name: Removing Manual SPD
+          ansibleguy.opnsense.ipsec_manual_spd:
+            name: 'example'
+            state: 'absent'
+
+        - name: Listing Manual SPD
+          ansibleguy.opnsense.list:
+          #  target: 'ipsec_manual_spd'
+          register: existing_manual_spd
+
+        - name: Printing
+          ansible.builtin.debug:
+            var: existing_manual_spd.data

@@ -22,6 +22,8 @@ Some tests need packages to be pre-installed:
 * frr_* - `os-frr`
 * bind_* - `os-bind`
 * acme_* - `os-acme-client`
+* postfix_* - `os-postfix`
+* nginx_* - `os-nginx`
 
 See also: `1_dependencies.yml`
 
@@ -68,7 +70,7 @@ The DHCRelay tests will not work correctly if the LAN interface mismatches.
 
 You can provide your lan-if via env-vars: `TEST_DHCRELAY_IF`
 
-=======
+
 ### LAGG Interfaces
 
 The LAGG tests will not work correctly if the unassigned interface mismatches.
@@ -76,6 +78,23 @@ The LAGG tests will not work correctly if the unassigned interface mismatches.
 You can provide your if via env-vars: `TEST_FIREWALL_LAGG_IF`
 
 And the count of existing LAGGs via `TEST_FIREWALL_LAGG_CNT`
+
+
+## High Availability
+
+Tests for `hasync_general` can be run without a backup firewall. However, most of HASync Service tests require
+a backup firewall to work. Tests requiring a backup firewall are skipped unless you provide connection details to the
+backup firewall.
+
+You can provide your backup firewall connection via env-vars:
+
+  * `TEST_HASYNC_PEER`
+  * `TEST_HASYNC_USERNAME`
+  * `TEST_HASYNC_PASSWORD`
+
+## Snapshots
+
+To run snapshot tests - the target firewall needs to be installed with a ZFS filesystem!
 
 ----
 

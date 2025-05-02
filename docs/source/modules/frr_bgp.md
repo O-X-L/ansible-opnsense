@@ -2,12 +2,14 @@
 
 **STATE**: stable
 
-**TESTS**: [frr_bgp_general](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_general.yml) | 
-[frr_bgp_neighbor](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_neighbor.yml) | 
+**TESTS**: [frr_bgp_general](https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/frr_bgp_general.yml) | 
+[frr_bgp_neighbor](https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/frr_bgp_neighbor.yml) | 
 [frr_bgp_prefix_list](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_prefix_list.yml) | 
 [frr_bgp_route_map](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_route_map.yml) | 
 [frr_bgp_community_list](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_community_list.yml) | 
-[frr_bgp_as_path](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_as_path.yml)
+[frr_bgp_as_path](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_as_path.yml) |
+[frr_bgp_redistribution](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_redistribution.yml) |
+[frr_bgp_peer_group](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_peer_group.yml)
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
 
@@ -42,15 +44,17 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 
 ### ansibleguy.opnsense.frr_bgp_general
 
-| Parameter    | Type    | Required | Default value         | Aliases   | Comment                                                                                                                                                                                                                                                        |
-|:-------------|:--------|:---------|:----------------------|:----------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| as_number           | string  | true     | -                     | as, as_nr | BGP AS-Number                                                                                                                                                                                                                                                  |
-| id  | string  | false    | -                     | router_id | In some cases it might be clearer to set a fixed router-id. (_4-byte field/IPv4 Address_)                                                                                                                                                                      |                                                                                                                                                  |
-| graceful  | boolean | false    | -                     | -         | BGP graceful restart functionality as defined in RFC-4724 defines the mechanisms that allows BGP speaker to continue to forward data packets along known routes while the routing protocol information is being restored.                                      |                                                                                                                                                  |
-| networks  | list    | false    | -                     | nets         | Select the network to advertise, you have to set a Null route via System -> Routes                                                                                                                                                                             |                                                                                                                                                  |
-| redistribute  | list    | false    | -                     | -         | Select other routing sources, which should be redistributed to the other nodes. Choose from: 'ospf', 'connected', 'kernel', 'rip', 'static'                                                                                                                    |                                                                                                                                                  |
-| reload       | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
-| enabled          | boolean | false    | true                 | -       | En- or disable the service                                                                                                                                                                                                                                     |
+| Parameter            | Type    | Required | Default value | Aliases       | Comment                                                                                                                                                                                                                                                                                                                                                                 |
+|:---------------------|:--------|:---------|:--------------|:--------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| as_number            | integer | true     | -             | as, as_nr     | BGP AS-Number                                                                                                                                                                                                                                                                                                                                                           |
+| distance             | integer | false    | -             | -             | Adjust BGP administrative distance, typically set to 20. Useful if you want to prefer OSPF-learned routes.                                                                                                                                                                                                                                                              |
+| id                   | string  | false    | -             | router_id     | In some cases it might be clearer to set a fixed router-id. (_4-byte field/IPv4 Address_)                                                                                                                                                                                                                                                                               |                                                                                                                                                  |
+| graceful             | boolean | false    | -             | -             | BGP graceful restart functionality as defined in RFC-4724 defines the mechanisms that allows BGP speaker to continue to forward data packets along known routes while the routing protocol information is being restored.                                                                                                                                               |                                                                                                                                                  |
+| networks             | list    | false    | -             | nets          | Select the network to advertise, you have to set a Null route via System -> Routes                                                                                                                                                                                                                                                                                      |                                                                                                                                                  |
+| network_import_check | boolean | false    | true          | network_check | When enabled (default), BGP only announces networks set at 'Network' if they are present in the routers routing table (alternatively, you can also set a null-route via System -> Routes). If disabled, all configured networks will be announced.                                                                                                                      |
+| log_neighbor_changes | boolean | false    | false         | log_neigh     | Enable extended logging of BGP neighbor changes.                                                                                                                                                                                                                                                                                                                        |
+| reload               | boolean | false    | true          | -             | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html).                                                                                                                                   |
+| enabled              | boolean | false    | true          | -             | En- or disable the service                                                                                                                                                                                                                                                                                                                                              |
 
 ### ansibleguy.opnsense.frr_bgp_neighbor
 
@@ -130,6 +134,31 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | as_pattern         | string  | false for state changes, else true    | -             | as      | The AS pattern you want to match, regexp allowed (e.g. .$ or _1$). It's not validated so please be careful!  |
 | reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
 
+### ansibleguy.opnsense.frr_bgp_redistribution
+
+| Parameter      | Type    | Required | Default value | Aliases | Comment |
+|:---------------|:--------|:---------|:--------------|:--------|:--------|
+| redistribution | string  | false    | -             | -       | Select routing sources to redistribute to other nodes. One of: 'ospf', 'connected', 'kernel', 'rip' or 'static'. |
+| description    | string  | true     | -             | desc    | Description for this distribution. |
+| route_map      | string  | false    | -             | map, rm | Optional Route-map to apply to this redistribution. |
+| reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+
+### ansibleguy.opnsense.frr_bgp_peer_group
+
+| Parameter          | Type    | Required                           | Default value | Aliases                            | Comment                                                                                                                                                                                                          |
+|:-------------------|:--------|:-----------------------------------|:--------------|:-----------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| name               | string  | false                              | -             | -                                  | Name of the peer group                                                                                                                                                                                           |
+| as_mode            | string  | false for state changes, else true | -             | remote_as_mode                     | If not specified will use the number specified in the 'as_number'' field, while 'external' or 'internal' will ignore it in favor of the alternative 'remote-as internal' and 'remote-as external' settings       |
+| as_number          | string  | false for state changes, else true | -             | as, as_nr, remote_as               | BGP AS-Number of the peer group                                                                                                                                                                                  |
+| source_int         | string  | false                              | -             | src_int, update_src, update_source | Physical name of the IPv4 interface facing the peer. You must provide the network port as shown in 'Interface - Assignments - Interface ID (in brackets)'                                                        |
+| next_hop_self      | boolean | false                              | false         | nhs                                | Sets the local router as the next hop for routes advertised to the neighbor                                                                                                                                      |
+| send_default_route | boolean | false                              | false         | default_originate                  | Enable sending of default routes to the peer group.                                                                                                                                                              |
+| prefix_list_in     | string  | false                              | -             | prefix_in, pre_in                  | Prefix-List for inbound direction                                                                                                                                                                                |
+| prefix_list_out    | string  | false                              | -             | prefix_out, pre_out                | Prefix-List for outbound direction                                                                                                                                                                               |
+| route_map_in       | string  | false                              | -             | map_in, rm_in                      | Route-Map for inbound direction                                                                                                                                                                                  |
+| route_map_out      | string  | false                              | -             | map_out, rm_out                    | Route-Map for outbound direction                                                                                                                                                                                 |
+| reload             | boolean | false                              | true          | -             | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+
 ----
 
 ## Examples
@@ -154,7 +183,6 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
         # id: '10.0.0.1'
         # graceful: false
         # networks: []
-        # redistribute: []
         # enabled: true
         # reload: true
 
@@ -164,7 +192,6 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
         id: '10.0.0.1'
         graceful: true
         networks: ['10.0.10.0/24']
-        redistribute: ['static']
 
     - name: Disabling BGP
       ansibleguy.opnsense.frr_bgp_general:
@@ -172,7 +199,6 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
         id: '10.0.0.1'
         graceful: true
         networks: ['10.0.10.0/24']
-        redistribute: ['static']
         enabled: false
 
     - name: Pulling settings
@@ -491,5 +517,109 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
     - name: Removing as-path
       ansibleguy.opnsense.frr_bgp_as_path:
         description: 'test2'
+        state: 'absent'
+```
+
+### ansibleguy.opnsense.frr_bgp_redistribution
+
+```yaml
+- hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: 'opnsense.template.ansibleguy.net'
+      api_credential_file: '/home/guy/.secret/opn.key'
+
+    ansibleguy.opnsense.list:
+      target: 'frr_bgp_redistribution'
+
+  tasks:
+    - name: Example
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'test1'
+        redistribution: ospf
+        # enabled: true
+        # reload: true
+
+    - name: Creating redistribution
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'test2'
+        redistribution: ospf
+
+    - name: Disabling redistribution
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'test2'
+        redistribution: ospf
+        enabled: false
+
+    - name: Pulling redistributions
+      ansibleguy.opnsense.list:
+      #  target: 'frr_bgp_redistribution'
+      register: existing_entries
+
+    - name: Printing redistributions
+      ansible.builtin.debug:
+        var: existing_entries.data
+
+    - name: Removing redistribution
+      ansibleguy.opnsense.frr_bgp_redistribution:
+        description: 'test2'
+        state: 'absent'
+```
+
+### ansibleguy.opnsense.frr_bgp_peer_group
+
+```yaml
+- hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: 'opnsense.template.ansibleguy.net'
+      api_credential_file: '/home/guy/.secret/opn.key'
+
+    ansibleguy.opnsense.list:
+      target: 'frr_bgp_peer_group'
+
+  tasks:
+    - name: Example
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'test1'
+        # as_mode:
+        as_number: 1337
+        # source_int: 'opt1'
+        # next_hop_self: false
+        # send_default_route: false
+        # prefix_list_in: 'prefix1'
+        # prefix_list_out: 'prefix2'
+        # route_map_in: 'map1'
+        # route_map_out: 'map2'
+        # enabled: true
+        # reload: true
+
+    - name: Creating peer group
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'test2'
+        as_number: 1337
+        source_int: 'opt1'
+
+    - name: Disabling peer group
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'test2'
+        as_number: 1337
+        source_int: 'opt1'
+        enabled: false
+
+    - name: Pulling peer groups
+      ansibleguy.opnsense.list:
+      #  target: 'frr_bgp_peer_group'
+      register: existing_entries
+
+    - name: Printing peer groups
+      ansible.builtin.debug:
+        var: existing_entries.data
+
+    - name: Removing peer group
+      ansibleguy.opnsense.frr_bgp_peer_group:
+        name: 'test2'
         state: 'absent'
 ```

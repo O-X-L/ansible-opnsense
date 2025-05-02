@@ -25,7 +25,7 @@ class Neighbor(BaseModule):
         'multi_hop', 'multi_protocol', 'rrclient', 'bfd', 'send_default_route',
         'as_override', 'disable_connected_check', 'keepalive', 'hold_down',
         'connect_timer', 'description', 'prefix_list_in', 'prefix_list_out',
-        'route_map_in', 'route_map_out',
+        'route_map_in', 'route_map_out', 'remote_as_mode',
     ]
     FIELDS_DIFF_NO_LOG = ['password']
     FIELDS_ALL = ['enabled']
@@ -56,7 +56,7 @@ class Neighbor(BaseModule):
         ],
         'select': [
             'source_int', 'ipv6_link_local_int', 'prefix_list_in', 'prefix_list_out',
-            'route_map_in', 'route_map_out',
+            'route_map_in', 'route_map_out', 'remote_as_mode',
         ],
     }
     INT_VALIDATIONS = {
@@ -80,10 +80,8 @@ class Neighbor(BaseModule):
 
     def check(self) -> None:
         if self.p['state'] == 'present':
-            if is_unset(self.p['ip']) or is_unset(self.p['as_number']):
-                self.m.fail_json(
-                    'To create a BGP neighbor you need to provide its AS-number and peer-ip!'
-                )
+            if is_unset(self.p['ip']):
+                self.m.fail_json('To create a BGP neighbor you need to provide its peer-ip!')
 
             if not is_ip(self.p['ip']):
                 self.m.fail_json(f"Provided peer IP '{self.p['ip']}' is not a valid IP-Address!")

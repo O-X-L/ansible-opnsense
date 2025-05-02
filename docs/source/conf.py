@@ -22,8 +22,8 @@ source_suffix = {
     '.md': 'markdown',
 }
 html_theme_options = {
-    'banner_text': '<a href="https://github.com/ansibleguy/collection_opnsense">Repository on GitHub</a> | '
-                   '<a href="https://github.com/ansibleguy/collection_opnsense/issues/new/choose">Report Errors</a> | '
+    'banner_text': '<a href="https://github.com/O-X-L/ansible_opnsense">Repository on GitHub</a> | '
+                   '<a href="https://github.com/O-X-L/ansible_opnsense/issues/new/choose">Report Errors</a> | '
                    '<a href="https://www.o-x-l.com">Get Support</a>'
 }
 html_short_title = 'Ansible OPNSense'

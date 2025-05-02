@@ -180,3 +180,91 @@
         'data' not in opn2 or
         opn2.data | length != 0
       when: not ansible_check_mode
+
+- name: Testing WireGuard peers - linking to instance/server
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  vars:
+    test:
+      pub1: 'Imk0UJX1clYYXKaDW9OdLE6J2N+X6aJ+/MxSlsDLW04='
+      priv1: '2ESImYf/PhpEqgK2s/5med7CbvyZrUNpsQCaKrpsW0g='
+
+  tasks:
+    - name: Adding dummy instance
+      ansibleguy.opnsense.wireguard_server:
+        name: 'ANSIBLE_TEST_2_1'
+        allowed_ips: ['192.168.0.1/32']
+        public_key: "{{ test.pub1 }}"
+        private_key: "{{ test.priv1 }}"
+        link_peers: false
+      when: not ansible_check_mode
+
+    - name: Adding
+      ansibleguy.opnsense.wireguard_peer:
+        name: 'ANSIBLE_TEST_3_1'
+        target: 'wg.test.ansibleguy.net'
+        allowed_ips: ['192.168.0.1/32']
+        public_key: "{{ test.pub1 }}"
+        servers: 'ANSIBLE_TEST_2_1'
+      register: opn16
+      failed_when: >
+        opn16.failed or
+        not opn16.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      ansibleguy.opnsense.wireguard_peer:
+        name: 'ANSIBLE_TEST_3_1'
+        target: 'wg.test.ansibleguy.net'
+        allowed_ips: ['192.168.0.1/32']
+        public_key: "{{ test.pub1 }}"
+        servers: 'ANSIBLE_TEST_2_1'
+      register: opn17
+      failed_when: >
+        opn17.failed or
+        opn17.changed
+      when: not ansible_check_mode
+
+    - name: Server - Nothing changed
+      ansibleguy.opnsense.wireguard_server:
+        name: 'ANSIBLE_TEST_2_1'
+        allowed_ips: ['192.168.0.1/32']
+        public_key: "{{ test.pub1 }}"
+        private_key: "{{ test.priv1 }}"
+        link_peers: false
+      register: opn19
+      failed_when: >
+        opn19.failed or
+        opn19.changed
+      when: not ansible_check_mode
+
+    - name: Peer - Nothing changed
+      ansibleguy.opnsense.wireguard_peer:
+        name: 'ANSIBLE_TEST_3_1'
+        target: 'wg.test.ansibleguy.net'
+        allowed_ips: ['192.168.0.1/32']
+        public_key: "{{ test.pub1 }}"
+        servers: 'ANSIBLE_TEST_2_1'
+      register: opn18
+      failed_when: >
+        opn18.failed or
+        opn18.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup peer
+      ansibleguy.opnsense.wireguard_peer:
+        name: 'ANSIBLE_TEST_3_1'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup dummy instance
+      ansibleguy.opnsense.wireguard_server:
+        name: 'ANSIBLE_TEST_2_1'
+        state: 'absent'
+      when: not ansible_check_mode

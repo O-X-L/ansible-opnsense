@@ -105,13 +105,20 @@ run_test 'frr_bgp_community_list' 1
 run_test 'frr_bgp_as_path' 1
 run_test 'frr_bgp_route_map' 1
 run_test 'frr_bgp_neighbor' 1
+run_test 'frr_bgp_redistribution' 1
+run_test 'frr_bgp_peer_group' 1
 run_test 'frr_ospf_general' 1
 run_test 'frr_ospf_prefix_list' 1
 run_test 'frr_ospf_interface' 1
 run_test 'frr_ospf_route_map' 1
 run_test 'frr_ospf_network' 1
+run_test 'frr_ospf_redistribution' 1
 run_test 'frr_ospf3_general' 1
+run_test 'frr_ospf3_prefix_list' 1
 run_test 'frr_ospf3_interface' 1
+run_test 'frr_ospf3_route_map' 1
+run_test 'frr_ospf3_network' 1
+run_test 'frr_ospf3_redistribution' 1
 run_test 'frr_rip' 1
 run_test 'bind_acl' 1
 run_test 'bind_general' 1
@@ -139,6 +146,7 @@ run_test 'ipsec_vti' 1
 run_test 'ipsec_child' 0  # check mode => dependency on connection-entry
 run_test 'ipsec_auth_local' 0  # check mode => dependency on connection/cert-entry
 run_test 'ipsec_auth_remote' 0  # check mode => dependency on connection/cert-entry
+run_test 'ipsec_manual_spd' 1
 run_test 'ids_action' 1
 run_test 'ids_general' 1
 run_test 'ids_ruleset' 1
@@ -175,6 +183,10 @@ run_test 'postfix_senderbcc' 1
 run_test 'postfix_sendercanonical' 1
 run_test 'postfix_headercheck' 1
 run_test 'postfix_address' 1
+run_test 'hasync_general' 1
+run_test 'hasync_service' 0 # check mode => dependency on hasync_general
+run_test 'snapshot' 1
+run_test 'raw' 1
 
 echo ''
 echo '##############################'

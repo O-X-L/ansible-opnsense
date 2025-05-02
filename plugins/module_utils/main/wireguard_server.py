@@ -52,6 +52,7 @@ class Server(BaseModule):
         'name': r'^([0-9a-zA-Z._\-]){1,64}$'
     }
     EXIST_ATTR = 'server'
+    FIELDS_DIFF_EXCLUDE = []
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session)
@@ -84,6 +85,11 @@ class Server(BaseModule):
                     "You need to provide a 'public_key' and 'private_key'!"
                 )
 
+        link_peers = not is_unset(self.p['peers']) or self.p['link_peers']
+        if not link_peers:
+            self.FIELDS_CHANGE.remove('peers')
+            self.FIELDS_DIFF_EXCLUDE.append('peers')
+
         for entry in self.p['allowed_ips']:
             if not is_ip_or_network(entry):
                 self.m.fail_json(
@@ -102,7 +108,9 @@ class Server(BaseModule):
                 self.p['private_key'] = self.server['private_key']
 
         if self.p['state'] == 'present':
-            self.p['peers'] = self._find_peers()
+            if link_peers:
+                self.p['peers'] = self._find_peers()
+
             if not is_unset(self.p['vip']):
                 self.p['vip'] = self._find_vip()
 
@@ -117,19 +125,21 @@ class Server(BaseModule):
                 module=self.m, result={}, session=self.s
             ).get_existing()
 
-        if len(self.p['peers']) > 0:
-            for peer in self.existing_peers:
-                existing[peer['name']] = peer['uuid']
+        if len(self.p['peers']) == 0:
+            return []
 
-            for peer in self.p['peers']:
-                if peer not in existing and peer not in existing.values():
-                    self.m.fail_json(f"Peer '{peer}' does not exist!")
+        for peer in self.existing_peers:
+            existing[peer['name']] = peer['uuid']
 
-                if peer in existing:
-                    peers.append(existing[peer])
+        for peer in self.p['peers']:
+            if peer not in existing and peer not in existing.values():
+                self.m.fail_json(f"Peer '{peer}' does not exist!")
 
-                else:
-                    peers.append(peer)
+            if peer in existing:
+                peers.append(existing[peer])
+
+            else:
+                peers.append(peer)
 
         return peers
 

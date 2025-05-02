@@ -29,6 +29,7 @@ action_groups:
     - ansibleguy.opnsense.ipsec_psk
     - ansibleguy.opnsense.ipsec_connection
     - ansibleguy.opnsense.ipsec_pool
+    - ansibleguy.opnsense.ipsec_manual_spd
   shaper:
     - ansibleguy.opnsense.shaper_pipe
     - ansibleguy.opnsense.shaper_queue
@@ -58,15 +59,22 @@ action_groups:
     - ansibleguy.opnsense.frr_bgp_prefix_list
     - ansibleguy.opnsense.frr_bgp_community_list
     - ansibleguy.opnsense.frr_bgp_as_path
+    - ansibleguy.opnsense.frr_bgp_redistribution
     - ansibleguy.opnsense.frr_bgp_route_map
     - ansibleguy.opnsense.frr_bgp_neighbor
+    - ansibleguy.opnsense.frr_bgp_peer_group
     - ansibleguy.opnsense.frr_ospf_general
     - ansibleguy.opnsense.frr_ospf_prefix_list
     - ansibleguy.opnsense.frr_ospf_interface
+    - ansibleguy.opnsense.frr_ospf_redistribution
     - ansibleguy.opnsense.frr_ospf_route_map
     - ansibleguy.opnsense.frr_ospf_network
     - ansibleguy.opnsense.frr_ospf3_general
+    - ansibleguy.opnsense.frr_ospf3_prefix_list
     - ansibleguy.opnsense.frr_ospf3_interface
+    - ansibleguy.opnsense.frr_ospf3_redistribution
+    - ansibleguy.opnsense.frr_ospf3_route_map
+    - ansibleguy.opnsense.frr_ospf3_network
     - ansibleguy.opnsense.frr_rip
   bind:
     - ansibleguy.opnsense.bind_general
@@ -106,6 +114,7 @@ action_groups:
     - ansibleguy.opnsense.system
     - ansibleguy.opnsense.cron
     - ansibleguy.opnsense.syslog
+    - ansibleguy.opnsense.snapshot
   ids:
     - ansibleguy.opnsense.ids_action
     - ansibleguy.opnsense.ids_general
@@ -147,6 +156,11 @@ action_groups:
     - ansibleguy.opnsense.postfix_sendercanonical
     - ansibleguy.opnsense.postfix_headercheck
     - ansibleguy.opnsense.postfix_address
+  hasync:
+    - ansibleguy.opnsense.hasync_general
+    - ansibleguy.opnsense.hasync_service
+  raw:
+    - ansibleguy.opnsense.raw
   all:
     - metadata:
         extend_group:
@@ -172,6 +186,8 @@ action_groups:
           - ansibleguy.opnsense.dhcp
           - ansibleguy.opnsense.acme
           - ansibleguy.opnsense.postfix
+          - ansibleguy.opnsense.hasync
+          - ansibleguy.opnsense.raw
 
 plugin_routing:
   modules:
@@ -227,3 +243,5 @@ plugin_routing:
       redirect: ansibleguy.opnsense.nat_source
     one_to_one:
       redirect: ansibleguy.opnsense.nat_one_to_one
+    wireguard_client:
+      redirect: ansibleguy.opnsense.wireguard_peer
