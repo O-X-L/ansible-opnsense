@@ -17,6 +17,8 @@ RULE_DEFAULTS = {
     'destination_port': '',
     'gateway': '',
     'log': True,
+    'tag': '',
+    'tagged': '',
     'state': 'present',
     'enabled': True,
     'description': '',
@@ -114,6 +116,8 @@ RULE_MOD_ARGS = dict(
         aliases=RULE_MOD_ARG_ALIASES['gateway'], description='Existing gateway to use'
     ),
     log=dict(type='bool', required=False, default=RULE_DEFAULTS['log'], aliases=RULE_MOD_ARG_ALIASES['log'],),
+    tag=dict(type='str', required=False, default=RULE_DEFAULTS['tag'],),
+    tagged=dict(type='str', required=False, default=RULE_DEFAULTS['tagged'],),
     description=dict(
         type='str', required=False, default=RULE_DEFAULTS['description'],
         aliases=RULE_MOD_ARG_ALIASES['description']
