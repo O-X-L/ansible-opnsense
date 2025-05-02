@@ -26,16 +26,12 @@ class ControlAgent(GeneralModule):
         'bool': ['enabled'],
         'int': ['http_port'],
     }
-    INT_VALIDATIONS = {
-        'http_port': {'min': 1, 'max': 65535},
-    }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
 
     def check(self) -> None:
-        if not validate_port(module=self.m, port=self.p['http_port']):
-            self.m.fail_json('The provided port is invalid!')
+        validate_port(module=self.m, port=self.p['http_port'])
 
         if not is_ip(self.p['http_host']):
             self.m.fail_json('The provided IP is invalid!')

@@ -3,7 +3,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_int_fields, validate_port
+    validate_int_fields, validate_port_or_range
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -63,8 +63,8 @@ class Rule(BaseModule):
 
     def check(self) -> None:
         validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-        validate_port(module=self.m, port=self.p['source_port'])
-        validate_port(module=self.m, port=self.p['destination_port'])
+        validate_port_or_range(module=self.m, port=self.p['source_port'])
+        validate_port_or_range(module=self.m, port=self.p['destination_port'])
 
         if self.p['state'] == 'present':
             if self.p['target_pipe'] in [None, ''] and \

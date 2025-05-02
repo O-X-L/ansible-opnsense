@@ -138,22 +138,6 @@ def is_valid_partial_mac_address(value: str) -> bool:
     return _is_matching(compiled_regex=MATCH_PARTIAL_MAC_ADDRESS, value=value)
 
 
-def is_valid_port(value: str) -> bool:
-    for _value in value.split(':', 1):
-        if _value.isdecimal():
-            if int(_value) < 1 or int(_value) > 65535:
-                return False
-
-        else:
-            try:
-                getservbyname(value)
-
-            except OSError:
-                return False
-
-    return True
-
-
 def is_valid_network(value: str) -> bool:
     if '-' in value:
         for _value in value.split('-', 1):
@@ -177,21 +161,38 @@ def is_valid_host(value: str) -> bool:
 
     return True
 
+def validate_port(module: AnsibleModule, port: int, error_func: Callable = None) -> bool:
+    if error_func is None:
+        error_func = module.fail_json
 
-def validate_port(module: AnsibleModule, port: (int, str), error_func: Callable = None) -> bool:
+    if is_unset(port):
+        return True
+
+    if 1 <= int(port) <= 65535:
+        return True
+
+    error_func(f"Value '{port}' is an invalid port!")
+    return False
+
+
+def validate_port_or_range(module: AnsibleModule, port: str, error_func: Callable = None, range_sep: str = '-') -> bool:
     if error_func is None:
         error_func = module.fail_json
 
     if port == 'any' or is_unset(port):
         return True
 
-    try:
-        if int(port) < 1 or int(port) > 65535:
-            error_func(f"Value '{port}' is an invalid port!")
-            return False
+    for _value in port.split(range_sep, 1):
+        if _value.isdecimal() and (1 <= int(_value) <= 65535):
+            continue
 
-    except (ValueError, TypeError):
-        error_func(f"Value '{port}' is an invalid port!")
+        try:
+            getservbyname(_value)
+            continue
+        except OSError:
+            pass
+
+        error_func(f"Value '{port}' is an invalid port or range!")
         return False
 
     return True

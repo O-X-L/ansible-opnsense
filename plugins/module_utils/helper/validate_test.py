@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import Mock
 
 @pytest.mark.parametrize('value, result', [
     ('00:11:22:33:44:55', True),
@@ -73,22 +74,6 @@ def test_is_network(value, result):
     assert is_network(value, strict=True) == result
 
 @pytest.mark.parametrize('value, result', [
-    ('0', False),
-    ('10', True),
-    ('65535', True),
-    ('65536', False),
-    ('!10', False),
-    ('20:21', True),
-    ('20:999999', False),
-    ('smtp', True),
-    ('notsmtp', False),
-])
-def test_is_valid_port(value, result):
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import is_valid_port
-
-    assert is_valid_port(value) == result
-
-@pytest.mark.parametrize('value, result', [
     ('1.2.3.4-1.2.3.6', True),
     ('!1.2.3.4-1.2.3.6', False),
     ('1.2.3.4', True),
@@ -126,3 +111,46 @@ def test_is_valid_host(value, result):
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import is_valid_host
 
     assert is_valid_host(value) == result
+
+@pytest.mark.parametrize('value, valid', [
+    (0, False),
+    (80, True),
+    (65536, False),
+])
+def test_validate_port(value, valid):
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import validate_port
+
+    error_func = Mock()
+
+    validate_port(None, value, error_func)
+
+    if valid:
+        error_func.assert_not_called()
+    else:
+        error_func.assert_called_once()
+
+@pytest.mark.parametrize('value, valid, params', [
+    ('any', True, {}),
+    ('0', False, {}),
+    ('80', True, {}),
+    ('!10', False, {}),
+    ('65536', False, {}),
+    ('0-65535', False, {}),
+    ('1-65536', False, {}),
+    ('21-22', True, {}),
+    ('21:22', False, {}),
+    ('21:22', True, {'range_sep': ':'}),
+    ('smtp', True, {}),
+    ('notsmtp', False, {}),
+])
+def test_validate_port_or_range(value, valid, params):
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import validate_port_or_range
+
+    error_func = Mock()
+
+    validate_port_or_range(None, value, error_func, **params)
+
+    if valid:
+        error_func.assert_not_called()
+    else:
+        error_func.assert_called_once()

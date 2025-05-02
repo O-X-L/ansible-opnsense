@@ -6,7 +6,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
     BUILTIN_ALIASES, BUILTIN_INTERFACE_ALIASES_REG
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    is_valid_partial_mac_address, is_valid_url, is_valid_port, is_valid_network, is_valid_host, is_ip
+    is_valid_partial_mac_address, is_valid_url, validate_port_or_range, is_valid_network, is_valid_host, is_ip
 
 
 # This should be keept aligned with getValidators from the AliasContentField
@@ -31,8 +31,8 @@ def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> 
 
         error = f"Value '{value}' is invalid for type '{v_type}'!"
 
-        if v_type == 'port' and not is_valid_port(value):
-            error_func(error)
+        if v_type == 'port':
+            validate_port_or_range(module=None, port=value, error_func=error_func, range_sep=':')
 
         elif v_type == 'host' and not is_valid_host(value):
             error_func(error)
