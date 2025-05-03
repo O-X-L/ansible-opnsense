@@ -4,7 +4,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api impor
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.base import Base
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_int_fields, validate_str_fields 
+    validate_int_fields, validate_str_fields
 
 
 class BaseModule:

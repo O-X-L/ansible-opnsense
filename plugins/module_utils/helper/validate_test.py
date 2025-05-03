@@ -1,5 +1,5 @@
-import pytest
 from unittest.mock import Mock
+import pytest
 
 @pytest.mark.parametrize('value, result', [
     ('00:11:22:33:44:55', True),
