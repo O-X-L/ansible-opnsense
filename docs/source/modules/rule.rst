@@ -93,6 +93,8 @@ Definition
     "destination_port","string","false","\-","dp, dest_port","Leave empty to allow all, valid port-number, name, alias or range"
     "gateway","string","false","\-","g, gw","Existing gateway to use"
     "log","boolean","false","true","l","If rule matches should be shown in the firewall logs"
+    "tag","string","false","\-","\-","Packets matching this rule will be tagged with the specified string"
+    "tagged","string","false","\-","\-","Packets must already be tagged with the given tag in order to match the rule"
     "description","string","false","\-","desc","Description for the rule"
     "state","string","false","'present'","st","State of the rule. One of: 'present', 'absent'"
     "enabled","boolean","false","true","en","If the rule should be en- or disabled"
@@ -155,6 +157,8 @@ Basic
             # source_port: ''
             # destination_invert: false
             # log: true
+            # tag: ''
+            # tagged: ''
             # gateway: 'LAN_GW'
             # state: 'present'
             # enabled: true
