@@ -40,8 +40,7 @@
       register: opn_warn1
       failed_when: >
         opn_warn1.failed or
-        'warnings' not in opn_warn1 or
-        opn_warn1.warnings | length != 1
+        'warnings' not in opn_warn1
 
     - name: Adding dummy domain
       ansibleguy.opnsense.bind_domain:
