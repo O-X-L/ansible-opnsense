@@ -900,6 +900,10 @@
       ansibleguy.opnsense.snapshot:
         name: 'default'
         activate: true
+      register: cl_snap1
+      failed_when:
+        - cl_snap1.failed
+        - "'Unsupported' not in cl_snap1.msg|default('')"
 
     - name: Cleanup Snapshots
       ansibleguy.opnsense.snapshot:
@@ -908,3 +912,7 @@
       loop:
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
+      register: cl_snap2
+      failed_when:
+        - cl_snap2.failed
+        - "'Unsupported' not in cl_snap2.msg|default('')"
