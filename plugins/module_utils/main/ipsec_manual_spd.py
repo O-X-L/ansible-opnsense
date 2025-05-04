@@ -31,7 +31,7 @@ class ManualSPD(BaseModule):
     FIELDS_TYPING = {
         'bool': ['enabled'],
         'list': [],
-        'select': [],
+        'select': ['connection_child'],
         'int': ['request_id'],
     }
     INT_VALIDATIONS = {
@@ -42,7 +42,6 @@ class ManualSPD(BaseModule):
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session)
         self.spd = {}
-        self.existing_childs = None
 
     def check(self) -> None:
         if self.p['state'] == 'present':
@@ -50,13 +49,12 @@ class ManualSPD(BaseModule):
 
         self._base_check()
 
-    def _build_request(self) -> dict:
-        self.b.find_single_link(
-            field='connection_child',
-            existing=self.search_connection_child(),
-            existing_field_id='value',
-        )
-        return self.b.build_request()
+        if self.p['state'] == 'present':
+            self.b.find_single_link(
+                field='connection_child',
+                existing=self.search_connection_child(),
+                existing_field_id='value',
+            )
 
     def search_connection_child(self) -> dict:
         return self.s.get(cnf={
