@@ -3,7 +3,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_int_fields, is_unset
+    is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -46,7 +46,6 @@ class OneToOne(BaseModule):
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session)
         self.rule = {}
-        self.existing_additionalstuff = None
 
     def check(self) -> None:
         if self.p['state'] == 'present':
@@ -55,9 +54,6 @@ class OneToOne(BaseModule):
                     "You need to provide an 'interface' to create a one-to-one"
                 )
 
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-
         self.b.find(match_fields=self.p['match_fields'])
 
-        if self.p['state'] == 'present':
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
+        self._base_check()

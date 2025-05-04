@@ -48,10 +48,6 @@ class General(GeneralModule):
         'delay_warning_time': {'min': 0, 'max': 24},
     }
     EXIST_ATTR = 'settings'
-    SEARCH_ADDITIONAL = {
-        'existing_additionalstuff': 'category.sub_category.additional',
-    }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
-        self.settings = {}

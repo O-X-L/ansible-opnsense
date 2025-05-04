@@ -1,7 +1,7 @@
 from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    is_ip, valid_hostname, validate_port, is_true, is_unset
+    is_ip, valid_hostname, is_true, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.unbound import \
@@ -32,6 +32,9 @@ class DnsOverTls(BaseModule):
         'int': ['port'],
     }
     EXIST_ATTR = 'dot'
+    INT_VALIDATIONS = {
+        'port': {'min': 1, 'max': 65535},
+    }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session)
@@ -40,7 +43,6 @@ class DnsOverTls(BaseModule):
     def check(self) -> None:
         if not is_unset(self.p['domain']):
             validate_domain(module=self.m, domain=self.p['domain'])
-        validate_port(module=self.m, port=self.p['port'])
 
         if not is_unset(self.p['verify']) and \
                 not is_ip(self.p['verify']) and \
@@ -56,8 +58,7 @@ class DnsOverTls(BaseModule):
         else:
             self.b.find(match_fields=['domain', 'target'])
 
-        if self.p['state'] == 'present':
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
+        self._base_check()
 
     def _search_call(self) -> list:
         dots = []

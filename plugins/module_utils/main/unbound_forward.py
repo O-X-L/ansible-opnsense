@@ -5,7 +5,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api impor
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.unbound import \
     validate_domain
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_port, is_true, is_unset
+    is_true, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -33,7 +33,8 @@ class Forward(BaseModule):
         'int': ['port'],
     }
     STR_LEN_VALIDATIONS = {
-        'description': {'min': 0, 'max': 255}
+        'description': {'min': 0, 'max': 255},
+        'port': {'min': 1, 'max': 65535},
     }
     EXIST_ATTR = 'fwd'
 
@@ -45,12 +46,8 @@ class Forward(BaseModule):
         if not is_unset(self.p['domain']):
             validate_domain(module=self.m, domain=self.p['domain'])
 
-        validate_port(module=self.m, port=self.p['port'])
-
         self.b.find(match_fields=['domain', 'target'])
-
-        if self.p['state'] == 'present':
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
+        self._base_check()
 
     def _search_call(self) -> list:
         fwds = []

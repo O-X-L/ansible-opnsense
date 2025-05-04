@@ -3,7 +3,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_str_fields, is_ip_or_network, is_unset
+    is_ip_or_network, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -38,8 +38,6 @@ class Acl(BaseModule):
         self.acl = {}
 
     def check(self) -> None:
-        validate_str_fields(module=self.m, data=self.p, field_regex=self.STR_VALIDATIONS, allow_empty=True)
-
         if self.p['state'] == 'present':
             if is_unset(self.p['networks']):
                 self.m.fail_json('You need to provide a network(s) to create an ACL!')

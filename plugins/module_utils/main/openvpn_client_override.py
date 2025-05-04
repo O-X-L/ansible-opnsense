@@ -66,6 +66,3 @@ class Override(BaseModule):
                 ))
 
             self.p['servers'] = servers
-
-        if self.p['state'] == 'present':
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)

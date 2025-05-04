@@ -45,14 +45,14 @@ class CronJob(BaseModule):
         self.b.find(match_fields=[self.FIELD_ID])
 
         if self.p['state'] == 'present':
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
-
             if self.p['command'] is not None and len(self.available_commands) > 0 and \
                     self.p['command'] not in self.available_commands:
                 self.m.fail_json(
                     'Got unsupported command! '
                     f"Available ones are: {', '.join(self.available_commands)}"
                 )
+
+        self._base_check()
 
     def _build_all_available_cmds(self, raw_cmds: dict):
         if len(self.available_commands) == 0:

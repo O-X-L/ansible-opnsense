@@ -3,7 +3,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_int_fields, is_ip_or_network, is_unset
+    is_ip_or_network, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -58,8 +58,6 @@ class Network(BaseModule):
                     'The combination of the provided ip and network mask is invalid: '
                     f"'{self.p['ip']}/{self.p['mask']}'!"
                 )
-
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
 
         self._base_check()
 

@@ -3,7 +3,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_int_fields, validate_str_fields, is_unset
+    is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -63,12 +63,6 @@ class RouteMap(BaseModule):
                 self.m.fail_json(
                     'To create a BGP route-map you need to provide an ID and action!'
                 )
-
-            validate_str_fields(
-                module=self.m, data=self.p,
-                field_regex=self.STR_VALIDATIONS,
-            )
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
 
         self._base_check()
 

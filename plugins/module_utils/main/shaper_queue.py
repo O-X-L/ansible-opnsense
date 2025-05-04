@@ -2,8 +2,6 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_int_fields
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -48,9 +46,6 @@ class Queue(BaseModule):
         self.existing_pipes = None
 
     def check(self) -> None:
-        if self.p['state'] == 'present':
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-
         self.b.find(match_fields=[self.FIELD_ID])
 
         if self.p['state'] == 'present':
@@ -70,7 +65,8 @@ class Queue(BaseModule):
                 existing=self.existing_pipes,
                 existing_field_id='description',
             )
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
+
+        self._base_check()
 
     def get_existing(self) -> list:
         existing = []
@@ -83,7 +79,6 @@ class Queue(BaseModule):
 
     def reload(self) -> None:
         if self.p['reset']:
-            # pylint: disable=W0201
             self.API_CMD_REL = 'flushreload'
 
         self.b.reload()

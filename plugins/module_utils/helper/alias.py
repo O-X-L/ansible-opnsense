@@ -9,7 +9,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validat
     is_valid_partial_mac_address, is_valid_url, validate_port_or_range, is_valid_network, is_valid_host, is_ip
 
 
-# This should be keept aligned with getValidators from the AliasContentField
+# This should be kept aligned with getValidators from the AliasContentField
 # https://github.com/opnsense/core/blob/master/src/opnsense/mvc/app/models/OPNsense/Firewall/FieldTypes/AliasContentField.php
 def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> None:
     v_type = cnf['type']
@@ -19,6 +19,7 @@ def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> 
             a['name']
             for a in existing_entries.values()
         ]
+
     else:
         existing_entries = [
             a['name']

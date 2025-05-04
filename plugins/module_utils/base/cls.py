@@ -7,8 +7,8 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validat
     validate_int_fields, validate_str_fields
 
 
-class BaseModule:
-    def __init__(self, m: AnsibleModule, r: dict, s: Session = None):
+class BaseShared:
+    def __init__(self, m: AnsibleModule, r: dict, s: Session):
         if hasattr(self, 'TIMEOUT'):
             self.s = Session(
                 module=m,
@@ -29,10 +29,39 @@ class BaseModule:
             'controller': self.b.i.API_CONT,
         }
 
+    def _check_validators(self):
+        if 'state' in self.p and self.p['state'] != 'present':
+            return
+
+        if hasattr(self.b.i, 'STR_VALIDATIONS'):
+            if hasattr(self.b.i, 'STR_LEN_VALIDATIONS'):
+                validate_str_fields(
+                    module=self.m,
+                    data=self.p,
+                    field_regex=self.b.i.STR_VALIDATIONS,
+                    field_minmax_length=self.b.i.STR_LEN_VALIDATIONS
+                )
+
+            else:
+                validate_str_fields(module=self.m, data=self.p, field_regex=self.b.i.STR_VALIDATIONS)
+
+        elif hasattr(self.b.i, 'STR_LEN_VALIDATIONS'):
+            validate_str_fields(module=self.m, data=self.p, field_minmax_length=self.b.i.STR_LEN_VALIDATIONS)
+
+        if hasattr(self.b.i, 'INT_VALIDATIONS'):
+            validate_int_fields(module=self.m, data=self.p, field_minmax=self.b.i.INT_VALIDATIONS)
+
+
+class BaseModule(BaseShared):
+    def __init__(self, m: AnsibleModule, r: dict, s: Session = None):
+        super().__init__(m, r, s)
+
     def _search_call(self) -> list:
         return self.b.search()
 
     def _base_check(self, match_fields: list = None):
+        self._check_validators()
+
         if match_fields is None:
             if 'match_fields' in self.p:
                 match_fields = self.p['match_fields']
@@ -45,7 +74,7 @@ class BaseModule:
             if self.exists:
                 self.call_cnf['params'] = [getattr(self, self.EXIST_ATTR)[self.b.field_pk]]
 
-        if self.p['state'] == 'present':
+        if 'state' not in self.p or self.p['state'] == 'present':
             self.r['diff']['after'] = self.b.build_diff(data=self.p)
 
     def check(self) -> None:
@@ -70,53 +99,21 @@ class BaseModule:
         self.b.reload()
 
 
-class GeneralModule:
+class GeneralModule(BaseShared):
     # has only a single entry; cannot be deleted or created
     EXIST_ATTR = 'settings'
 
     def __init__(self, m: AnsibleModule, r: dict, s: Session = None):
-        if hasattr(self, 'TIMEOUT'):
-            self.s = Session(
-                module=m,
-                timeout=self.TIMEOUT,
-            ) if s is None else s
-
-        else:
-            self.s = Session(module=m) if s is None else s
-
-        self.m = m
-        self.p = m.params
-        self.r = r
-        self.b = Base(instance=self)
-        self.exists = False
-        self.existing_entries = None
-        self.call_cnf = {
-            'module': self.b.i.API_MOD,
-            'controller': self.b.i.API_CONT,
-        }
+        super().__init__(m, r, s)
         self.settings = {}
 
-    def check(self) -> None:
-        if hasattr(self.b.i, 'STR_VALIDATIONS'):
-            if hasattr(self.b.i, 'STR_LEN_VALIDATIONS'):
-                validate_str_fields(
-                    module=self.m,
-                    data=self.p,
-                    field_regex=self.b.i.STR_VALIDATIONS,
-                    field_minmax_length=self.b.i.STR_LEN_VALIDATIONS
-                )
-
-            else:
-                validate_str_fields(module=self.m, data=self.p, field_regex=self.b.i.STR_VALIDATIONS)
-
-        elif hasattr(self.b.i, 'STR_LEN_VALIDATIONS'):
-            validate_str_fields(module=self.m, data=self.p, field_minmax_length=self.b.i.STR_LEN_VALIDATIONS)
-
-        if hasattr(self.b.i, 'INT_VALIDATIONS'):
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.b.i.INT_VALIDATIONS)
-
+    def _base_check(self):
+        self._check_validators()
         self.settings = self._search_call()
         self._build_diff()
+
+    def check(self) -> None:
+        self._base_check()
 
     def _search_call(self) -> dict:
         return self.b.simplify_existing(self.b.search())

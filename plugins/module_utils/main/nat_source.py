@@ -3,7 +3,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_int_fields, is_unset
+    is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.rule import \
     validate_values
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
@@ -61,14 +61,13 @@ class SNat(BaseModule):
                     "You need to provide an 'target' to create a source-nat rule!"
                 )
 
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-
         self._build_log_name()
         self.b.find(match_fields=self.p['match_fields'])
 
         if self.p['state'] == 'present':
             validate_values(module=self.m, cnf=self.p, error_func=self.m.fail_json)
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
+
+        self._base_check()
 
     def _build_log_name(self) -> str:
         if self.p['description'] not in [None, '']:

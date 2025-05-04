@@ -5,7 +5,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api impor
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
     get_key_by_value_from_selection, get_key_by_value_end_from_selection
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_int_fields, is_unset
+    is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -72,8 +72,6 @@ class Client(BaseModule):
         self.p['role'] = 'client'
 
         if self.p['state'] == 'present':
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-
             if is_unset(self.p['remote']):
                 self.m.fail_json(
                     "You need to provide a 'remote' target to create an openvpn-client!"

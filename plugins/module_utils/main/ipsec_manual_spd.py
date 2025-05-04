@@ -2,8 +2,6 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_int_fields
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -43,12 +41,6 @@ class ManualSPD(BaseModule):
         BaseModule.__init__(self=self, m=module, r=result, s=session)
         self.spd = {}
         self.existing_childs = None
-
-    def check(self) -> None:
-        if self.p['state'] == 'present':
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-
-        self._base_check()
 
     def _build_request(self) -> dict:
         self.b.find_single_link(

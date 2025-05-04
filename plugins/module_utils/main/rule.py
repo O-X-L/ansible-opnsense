@@ -89,12 +89,9 @@ class Rule(BaseModule):
         self.b.find(match_fields=self.p['match_fields'])
 
         if self.p['state'] == 'present':
-            validate_values(
-                error_func=self._error,
-                module=self.m,
-                cnf=self.p
-            )
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
+            validate_values(module=self.m, cnf=self.p, error_func=self._error)
+
+        self._base_check()
 
     def _error(self, msg: str, verification: bool = True) -> None:
         if (verification and self.fail_verify) or (not verification and self.fail_proc):

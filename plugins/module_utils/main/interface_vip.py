@@ -2,8 +2,6 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_int_fields
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -53,10 +51,6 @@ class Vip(BaseModule):
         if self.p['address'].find('/') == -1:
             self.m.fail_json('The address needs to include a subnet CIDR!')
 
-        if self.p['state'] == 'present':
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-
-        # pylint: disable=W0201
         self.existing_entries = self.get_existing()
         self._base_check()
 

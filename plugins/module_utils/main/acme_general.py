@@ -45,4 +45,3 @@ class General(GeneralModule):
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
-        self.settings = {}

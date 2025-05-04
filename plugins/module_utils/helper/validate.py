@@ -161,6 +161,7 @@ def is_valid_host(value: str) -> bool:
 
     return True
 
+
 def validate_port(module: AnsibleModule, port: int, error_func: Callable = None) -> bool:
     if error_func is None:
         error_func = module.fail_json
@@ -224,13 +225,16 @@ def validate_str_fields(
 ) -> None:
     if field_minmax_length is not None:
         for field, min_max_length in field_minmax_length.items():
+            if not allow_empty and 'min' in min_max_length and min_max_length['min'] == 0:
+                allow_empty = True
+
             if not unset_check_error(params=data, field=field, fail=not allow_empty):
                 continue
 
             if 'min' not in min_max_length or 'max' not in min_max_length:
                 exit_bug("Values of 'STR_LEN_VALIDATIONS' must have a 'min' and 'max' attribute!")
 
-            if min_max_length['min'] < len(data[field]) > min_max_length['max']:
+            if min_max_length['min'] < len(str(data[field])) > min_max_length['max']:
                 module.fail_json(
                     f"Value of field '{field}' is not valid - "
                     f"Invalid length must be between {min_max_length['min']} and {min_max_length['max']}!"

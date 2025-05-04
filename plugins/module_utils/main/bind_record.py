@@ -61,6 +61,7 @@ class Record(BaseModule):
             else:
                 if self.p['type'] == 'A' and not is_ip4(self.p['value']):
                     self.m.fail_json(f"Value '{self.p['value']}' is not a valid IPv4-address!")
+
                 elif self.p['type'] == 'AAAA' and not is_ip6(self.p['value']):
                     self.m.fail_json(f"Value '{self.p['value']}' is not a valid IPv6-address!")
 
@@ -113,8 +114,7 @@ class Record(BaseModule):
                     self.r['diff']['before'] = self.record
                     self.call_cnf['params'] = [self.record['uuid']]
 
-                if self.p['state'] == 'present':
-                    self.r['diff']['after'] = self.b.build_diff(data=self.p)
+        self._base_check()
 
     def search_call_domains(self) -> dict:
         return self.s.get(cnf={

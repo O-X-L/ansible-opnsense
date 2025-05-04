@@ -5,7 +5,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api impor
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
     simplify_translate
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    validate_int_fields, is_ip, is_unset
+    is_ip, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import GeneralModule
 
 
@@ -77,8 +77,7 @@ class General(GeneralModule):
         self.acls_needed = False
 
     def check(self) -> None:
-        # pylint: disable=W0201
-        validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
+        self._check_validators()
 
         for field in [
             'listen_ipv4', 'query_source_ipv4', 'transfer_source_ipv4',

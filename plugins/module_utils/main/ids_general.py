@@ -6,7 +6,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
     get_selected, get_key_by_value_from_selection
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    is_ip_or_network, is_unset, validate_int_fields
+    is_ip_or_network, is_unset
 
 
 class General(GeneralModule):
@@ -75,9 +75,6 @@ class General(GeneralModule):
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
 
     def check(self) -> None:
-        # pylint: disable=W0201
-        validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-
         if len(self.p['interfaces']) == 0:
             self.m.fail_json("You need to supply 'interfaces'!")
 
@@ -95,8 +92,7 @@ class General(GeneralModule):
                     f"It seems you provided an invalid network in 'local_networks': '{net}'"
                 )
 
-        self.settings = self._search_call()
-        self._build_diff()
+        self._base_check()
 
     def _search_call(self) -> dict:
         settings = self.s.get(cnf={
