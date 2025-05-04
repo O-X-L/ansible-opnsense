@@ -23,7 +23,7 @@
 
     - name: Setting filesystem status
       ansible.builtin.set_fact:
-        opn_zfs: "{{ 'Unsupported' not in opn_test.msg }}"
+        opn_zfs: "{{ 'Unsupported' not in opn_test.msg|default('') }}"
 
     - name: Listing
       ansibleguy.opnsense.list:
