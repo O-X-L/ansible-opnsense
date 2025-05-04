@@ -370,7 +370,7 @@ There are `module-templates <https://github.com/O-X-L/ansible_opnsense/blob/late
 
   :code:`<COLLECTION>/plugins/modules/<MODULE>.py`
 
-  You can copy the template from :code:`<COLLECTION>/plugins/modules/_tmpl_obj.py`
+  You can copy some other module at :code:`<COLLECTION>/plugins/modules/`
 
   Note: When adding module-parameters - you can copy/paste the field-description from the OPNSense web-ui! We don't have to reinvent the wheel. (*'full help' toggle*)
 
@@ -378,7 +378,7 @@ There are `module-templates <https://github.com/O-X-L/ansible_opnsense/blob/late
 
   :code:`<COLLECTION>/plugins/module_utils/main/<MODULE>.py`
 
-  You can copy the template from :code:`<COLLECTION>/plugins/module_utils/main/_tmpl.py`
+  You can copy some other module at :code:`<COLLECTION>/plugins/module_utils/main/`
 
 
 - Add **ansible-based tests**:
