@@ -77,7 +77,7 @@ ansibleguy.opnsense.dhcp_subnet
     "subnet","string","true","\-","\-","Subnet to use. should be large enough to hold the specified pools and reservations"
     "description","string","false","\-","desc","Optional description of the subnet"
     "pools","list","false","\-","\-","List of pools, one per line in range or subnet format (e.g. 192.168.0.100 - 192.168.0.200)"
-    "auto_options","boolean,"false","true","option_data_autocollect","Automatically update option data for relevant attributes as routers, dns servers and ntp servers when applying settings from the gui."
+    "auto_options","boolean","false","true","option_data_autocollect","Automatically update option data for relevant attributes as routers, dns servers and ntp servers when applying settings from the gui."
     "gateway","list","false","\-","gw,routers","Default gateways to offer to the clients"
     "routes","string","false","\-","static_routes","Static routes that the client should install in its routing cache, defined as dest-ip1,router-ip1;dest-ip2,router-ip2"
     "dns","list","false","\-","dns_servers,dns_srv","DNS servers to offer to the clients"
