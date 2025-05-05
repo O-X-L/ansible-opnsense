@@ -11,7 +11,7 @@ DHCP
 **TESTS**: `Reservation <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dhcp_reservation.yml>`_ |
 `ControlAgent <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dhcp_controlagent.yml>`_ |
 `Subnet <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dhcp_subnet.yml>`_ |
-`Subnet <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dhcp_general.yml>`_
+`General <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dhcp_general.yml>`_
 
 **API Docs**: `Core - KEA <https://docs.opnsense.org/development/api/core/kea.html>`_
 
