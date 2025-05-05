@@ -33,7 +33,6 @@ This plugin has some limitations you need to know of:
   * ip-protocol (*IPv4/IPv6*)
   * direction
 
-* gateway-groups are not valid yet => see `OPNSense Forum <https://forum.opnsense.org/index.php?topic=30077.msg146268#msg146268>`_ or `OPNSense Issue <https://github.com/opnsense/plugins/issues/3139>`_
 * the ruleset managed by this plugin is SEPARATE from the default WEB-UI rules (*Firewall - Rules*) - combined usage might bring complications
 * interfaces must be provided as used in the network config (*p.e. 'opt1' instead of 'DMZ'*)
 
@@ -49,6 +48,7 @@ Tips
 ====
 
 * If you want to reference :code:`This firewall` - you need to use :code:`(self)` instead.
+* If you want to create a :code:`Floating` rule  - you need to use :code:`[]`.
 
 
 Savepoint

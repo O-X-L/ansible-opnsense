@@ -10,9 +10,9 @@ NAT One-To-One
 
 **TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/nat_one_to_one.yml>`_
 
-**API Docs**: `one_to_one <https://docs.opnsense.org/development/api/core/firewall.html>`_
+**API Docs**: `Core - Firewall <https://docs.opnsense.org/development/api/core/firewall.html>`_
 
-**Service Docs**: `one_to_one <https://docs.opnsense.org/manual/nat.html#one-to-one>`_
+**Service Docs**: `One-to-one NAT <https://docs.opnsense.org/manual/nat.html#one-to-one>`_
 
 Contribution
 ************
