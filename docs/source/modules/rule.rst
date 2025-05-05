@@ -48,7 +48,7 @@ Tips
 ====
 
 * If you want to reference :code:`This firewall` - you need to use :code:`(self)` instead.
-* If you want to creat a :code:`Floating` rule  - you need to use :code:`[]`.
+* If you want to create a :code:`Floating` rule  - you need to use :code:`[]`.
 
 
 Savepoint
