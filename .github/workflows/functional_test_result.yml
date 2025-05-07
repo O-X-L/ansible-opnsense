@@ -35,6 +35,18 @@ jobs:
           path: /tmp/test.log
           retention-days: 14
 
+      - name: Extracting Results
+        run: |
+          grep 'FINISHED TESTS' -A 1 -B 5 < /tmp/test.log > /tmp/results.txt
+          cat /tmp/results.txt
+        shell: bash
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: /tmp/results.txt
+          retention-days: 14
+
       - name: Checking job-state
         run: curl --fail-with-body https://${{ env.CI_DOMAIN }}/api/job/${{ env.CI_JOB }}/state?token=${{ secrets.CI_TOKEN_RO }} | jq -r '.state' | grep -q 'failed' && exit 1 || exit 0
         shell: bash
