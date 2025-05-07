@@ -25,7 +25,7 @@ class Rule(BaseModule):
         'sequence', 'action', 'quick', 'interface', 'direction',
         'ip_protocol', 'protocol', 'source_invert', 'source_net', 'source_port',
         'destination_invert', 'destination_net', 'destination_port', 'log',
-        'description', 'gateway',
+        'tag', 'tagged', 'description', 'gateway',
     ]
     FIELDS_ALL = ['enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)

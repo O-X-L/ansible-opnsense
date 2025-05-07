@@ -33,7 +33,6 @@ This plugin has some limitations you need to know of:
   * ip-protocol (*IPv4/IPv6*)
   * direction
 
-* gateway-groups are not valid yet => see `OPNSense Forum <https://forum.opnsense.org/index.php?topic=30077.msg146268#msg146268>`_ or `OPNSense Issue <https://github.com/opnsense/plugins/issues/3139>`_
 * the ruleset managed by this plugin is SEPARATE from the default WEB-UI rules (*Firewall - Rules*) - combined usage might bring complications
 * interfaces must be provided as used in the network config (*p.e. 'opt1' instead of 'DMZ'*)
 
@@ -49,6 +48,7 @@ Tips
 ====
 
 * If you want to reference :code:`This firewall` - you need to use :code:`(self)` instead.
+* If you want to create a :code:`Floating` rule  - you need to use :code:`[]`.
 
 
 Savepoint
@@ -93,6 +93,8 @@ Definition
     "destination_port","string","false","\-","dp, dest_port","Leave empty to allow all, valid port-number, name, alias or range"
     "gateway","string","false","\-","g, gw","Existing gateway to use"
     "log","boolean","false","true","l","If rule matches should be shown in the firewall logs"
+    "tag","string","false","\-","\-","Packets matching this rule will be tagged with the specified string"
+    "tagged","string","false","\-","\-","Packets must already be tagged with the given tag in order to match the rule"
     "description","string","false","\-","desc","Description for the rule"
     "state","string","false","'present'","st","State of the rule. One of: 'present', 'absent'"
     "enabled","boolean","false","true","en","If the rule should be en- or disabled"
@@ -155,6 +157,8 @@ Basic
             # source_port: ''
             # destination_invert: false
             # log: true
+            # tag: ''
+            # tagged: ''
             # gateway: 'LAN_GW'
             # state: 'present'
             # enabled: true

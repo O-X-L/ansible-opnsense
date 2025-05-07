@@ -113,8 +113,8 @@ class Base:
                     )
 
                 data.append({
-                    **detail_entry,
                     **base_entry,
+                    **detail_entry,
                 })
                 if self.raw is None:
                     self.raw = data[0]
