@@ -34,6 +34,8 @@ class Forward(BaseModule):
     }
     STR_LEN_VALIDATIONS = {
         'description': {'min': 0, 'max': 255},
+    }
+    INT_VALIDATIONS = {
         'port': {'min': 1, 'max': 65535},
     }
     EXIST_ATTR = 'fwd'

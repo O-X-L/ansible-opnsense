@@ -362,8 +362,6 @@ Optional
 Adding new module
 #################
 
-There are `module-templates <https://github.com/O-X-L/ansible_opnsense/blob/latest/plugins/modules/>`_ that can be copied - so you don't have to re-write the basic structure.
-
 **Checklist**:
 
 - Create the module-file at:
