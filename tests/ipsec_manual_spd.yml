@@ -125,7 +125,7 @@
 
         - name: Adding dummy child
           ansibleguy.opnsense.ipsec_child:
-            name: 'ANSIBLE_TEST_1_1'
+            name: 'ANSIBLE_TEST_2_1'
             connection: 'ANSIBLE_TEST_3_1'
             local_net: '192.168.1.0/28'
             remote_net: '192.168.2.0/28'
@@ -134,7 +134,8 @@
           ansibleguy.opnsense.ipsec_manual_spd:
             description: 'ANSIBLE_TEST_1_2'
             source: 192.168.1.0/24
-            connection_child: 'ANSIBLE_TEST_3_1 - ANSIBLE_TEST_1_1'
+            connection_child: 'ANSIBLE_TEST_3_1 - ANSIBLE_TEST_2_1'
+            debug: true
           register: opn7
           failed_when: >
             opn7.failed or
@@ -144,7 +145,7 @@
           ansibleguy.opnsense.ipsec_manual_spd:
             description: 'ANSIBLE_TEST_1_2'
             source: 192.168.1.0/24
-            connection_child: 'ANSIBLE_TEST_3_1 - ANSIBLE_TEST_1_1'
+            connection_child: 'ANSIBLE_TEST_3_1 - ANSIBLE_TEST_2_1'
           register: opn8
           failed_when: >
             opn8.failed or
@@ -158,6 +159,16 @@
           failed_when: >
             opn9.failed or
             not opn9.changed
+
+        - name: Cleanup dummy child
+          ansibleguy.opnsense.ipsec_child:
+            name: 'ANSIBLE_TEST_2_1'
+            state: 'absent'
+
+        - name: Cleanup dummy connection
+          ansibleguy.opnsense.ipsec_connection:
+            name: 'ANSIBLE_TEST_3_1'
+            state: 'absent'
 
     - name: Listing
       ansibleguy.opnsense.list:
