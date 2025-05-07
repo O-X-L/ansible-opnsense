@@ -903,7 +903,7 @@
       register: cl_snap1
       failed_when:
         - cl_snap1.failed
-        - "'Unsupported' not in cl_snap1.msg|default('')"
+        - "'Unsupported' not in cl_snap1.msg | default('')"
 
     - name: Cleanup Snapshots
       ansibleguy.opnsense.snapshot:
@@ -915,4 +915,4 @@
       register: cl_snap2
       failed_when:
         - cl_snap2.failed
-        - "'Unsupported' not in cl_snap2.msg|default('')"
+        - "'Unsupported' not in cl_snap2.msg | default('')"

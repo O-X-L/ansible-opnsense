@@ -3,7 +3,9 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    validate_int_fields, is_ip, get_selected, is_unset
+    get_selected
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_ip, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -65,8 +67,6 @@ class Domain(BaseModule):
 
     def check(self) -> None:
         if self.p['state'] == 'present':
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-
             for field in ['allow_notify', 'primary']:
                 for ip in self.p[field]:
                     if not is_ip(ip, ignore_empty=True):
@@ -108,7 +108,7 @@ class Domain(BaseModule):
                     existing=self.existing_acls,
                 )
 
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
+        self._base_check()
 
     def _search_acls(self) -> None:
         self.existing_acls = self.s.get(cnf={

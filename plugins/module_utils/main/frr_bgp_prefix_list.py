@@ -2,8 +2,8 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    validate_int_fields, validate_str_fields, is_unset
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -52,12 +52,6 @@ class Prefix(BaseModule):
                     'To create a BGP prefix-list you need to provide a network, '
                     'sequence-number and action!'
                 )
-
-            validate_str_fields(
-                module=self.m, data=self.p,
-                field_regex=self.STR_VALIDATIONS,
-            )
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
 
         self._base_check(match_fields=self.FIELDS_MATCH)
 

@@ -22,7 +22,7 @@
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense._tmpl_obj:
+      ansibleguy.opnsense.list:
 
         state: 'absent'
       register: opn_pre2
@@ -31,20 +31,20 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of invalid value
-      ansibleguy.opnsense._tmpl_obj:
+      ansibleguy.opnsense.list:
         field1: 'INVALID-IP'
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of invalid domain
-      ansibleguy.opnsense._tmpl_obj:
+      ansibleguy.opnsense.list:
         field1: '!INVALID-DOMAIN!'
         field2: 'INVALID-IP'
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Adding 1
-      ansibleguy.opnsense._tmpl_obj:
+      ansibleguy.opnsense.list:
 
       register: opn1
       failed_when: >
@@ -52,7 +52,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense._tmpl_obj:
+      ansibleguy.opnsense.list:
 
       register: opn9
       failed_when: >
@@ -60,7 +60,7 @@
         not opn9.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense._tmpl_obj:
+      ansibleguy.opnsense.list:
 
         enabled: false
       register: opn2
@@ -70,7 +70,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense._tmpl_obj:
+      ansibleguy.opnsense.list:
 
         enabled: false
       register: opn3
@@ -80,7 +80,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense._tmpl_obj:
+      ansibleguy.opnsense.list:
 
       register: opn4
       failed_when: >
@@ -89,7 +89,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense._tmpl_obj:
+      ansibleguy.opnsense.list:
 
       register: opn5
       failed_when: >
@@ -97,7 +97,7 @@
         not opn5.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense._tmpl_obj:
+      ansibleguy.opnsense.list:
 
       register: opn6
       failed_when: >
@@ -106,7 +106,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense._tmpl_obj:
+      ansibleguy.opnsense.list:
 
         state: 'absent'
       register: opn7
@@ -124,7 +124,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense._tmpl_obj:
+      ansibleguy.opnsense.list:
 
         state: 'absent'
       loop:

@@ -49,7 +49,7 @@
         syncitems:
           - aliases
           - rules
-      when: hasync_peer is defined
+      when: hasync_peer | bool
 
     - name: Restart all
       ansibleguy.opnsense.hasync_service:
@@ -58,7 +58,7 @@
       failed_when: >
         opn1.failed or
         not opn1.changed
-      when: hasync_peer is defined
+      when: hasync_peer | bool
 
     - name: Stop login - failing because of unstopable service
       ansibleguy.opnsense.hasync_service:
@@ -67,7 +67,7 @@
       register: opn2
       failed_when: >
         not opn2.failed
-      when: hasync_peer is defined
+      when: hasync_peer | bool
 
     - name: Stop ntpd
       ansibleguy.opnsense.hasync_service:
@@ -77,12 +77,12 @@
       failed_when: >
         opn3.failed or
         not opn3.changed
-      when: hasync_peer is defined
+      when: hasync_peer | bool
 
     - name: Pause for 5 seconds
       ansible.builtin.pause:
         seconds: 5
-      when: hasync_peer is defined
+      when: hasync_peer | bool
 
     - name: Stop ntpd - nothing changed
       ansibleguy.opnsense.hasync_service:
@@ -92,7 +92,7 @@
       failed_when: >
         opn4.failed or
         opn4.changed
-      when: hasync_peer is defined
+      when: hasync_peer | bool
 
     - name: Start ntpd
       ansibleguy.opnsense.hasync_service:
@@ -102,12 +102,12 @@
       failed_when: >
         opn5.failed or
         not opn5.changed
-      when: hasync_peer is defined
+      when: hasync_peer | bool
 
     - name: Pause for 5 seconds
       ansible.builtin.pause:
         seconds: 5
-      when: hasync_peer is defined
+      when: hasync_peer | bool
 
     - name: Start ntpd - nothing changed
       ansibleguy.opnsense.hasync_service:
@@ -117,7 +117,7 @@
       failed_when: >
         opn6.failed or
         opn6.changed
-      when: hasync_peer is defined
+      when: hasync_peer | bool
 
     - name: Restart ntpd
       ansibleguy.opnsense.hasync_service:
@@ -127,7 +127,7 @@
       failed_when: >
         opn7.failed or
         not opn7.changed
-      when: hasync_peer is defined
+      when: hasync_peer | bool
 
     - name: Cleanup peer
       ansibleguy.opnsense.hasync_general:

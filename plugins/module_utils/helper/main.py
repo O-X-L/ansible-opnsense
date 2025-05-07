@@ -1,13 +1,8 @@
 from typing import Callable
-from ipaddress import ip_address, ip_network, IPv4Address, IPv6Address, IPv6Network, AddressValueError, \
-    NetmaskValueError
-from re import match as regex_match
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
     exit_bug, exit_cnf
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    is_valid_domain
 
 
 def diff_remove_empty(diff: dict) -> dict:
@@ -28,82 +23,6 @@ def ensure_list(data: (int, str, list, None)) -> list:
         return []
 
     return [data]
-
-
-def is_ip(host: str, ignore_empty: bool = False, strip_enclosure: bool = True) -> bool:
-    if ignore_empty and is_unset(host):
-        return True
-
-    if strip_enclosure and host.startswith('['):
-        host = host[1:-1]
-
-    try:
-        ip_address(host)
-        return True
-
-    except ValueError:
-        return False
-
-
-def is_ip4(host: str, ignore_empty: bool = False) -> bool:
-    if ignore_empty and is_unset(host):
-        return True
-
-    try:
-        IPv4Address(host)
-        return True
-
-    except (AddressValueError, NetmaskValueError):
-        return False
-
-
-def is_ip6(host: str, ignore_empty: bool = False, strip_enclosure: bool = True) -> bool:
-    if ignore_empty and is_unset(host):
-        return True
-
-    if strip_enclosure and host.startswith('['):
-        host = host[1:-1]
-
-    try:
-        IPv6Address(host)
-        return True
-
-    except (AddressValueError, NetmaskValueError):
-        return False
-
-
-def is_network(entry: str, strict: bool = False) -> bool:
-    try:
-        ip_network(entry, strict=strict)
-        return True
-
-    except ValueError:
-        return False
-
-
-def is_ip_or_network(entry: str, strict: bool = False) -> bool:
-    valid = is_ip(entry)
-
-    if valid:
-        return valid
-
-    return is_network(entry=entry, strict=strict)
-
-
-def is_ip6_network(entry: str, strict: bool = False) -> bool:
-    try:
-        return isinstance(ip_network(entry, strict=strict), IPv6Network)
-
-    except ValueError:
-        return False
-
-
-def valid_hostname(name: str) -> bool:
-    _valid_domain = is_valid_domain(name)
-    # see: https://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_host_names
-    expr_hostname = r'^[a-zA-Z0-9-\.]{1,253}$'
-    _valid_hostname = regex_match(expr_hostname, name) is not None
-    return all([_valid_domain, _valid_hostname])
 
 
 def get_matching(
@@ -179,45 +98,6 @@ def get_multiple_matching(
                 matching.append(_simple)
 
     return matching
-
-
-def validate_port(module: AnsibleModule, port: (int, str), error_func: Callable = None) -> bool:
-    if error_func is None:
-        error_func = module.fail_json
-
-    if port == 'any' or is_unset(port):
-        return True
-
-    try:
-        if int(port) < 1 or int(port) > 65535:
-            error_func(f"Value '{port}' is an invalid port!")
-            return False
-
-    except (ValueError, TypeError):
-        error_func(f"Value '{port}' is an invalid port!")
-        return False
-
-    return True
-
-
-def validate_int_fields(
-        module: AnsibleModule, data: dict, field_minmax: dict,
-        error_func: Callable = None
-):
-    if error_func is None:
-        error_func = module.fail_json
-
-    for field, valid in field_minmax.items():
-        try:
-            if ('min' in valid and int(data[field]) < valid['min']) or \
-               ('max' in valid and int(data[field]) > valid['max']):
-                error_func(
-                    f"Value of field '{field}' is not valid - "
-                    f"Must be between {valid['min']} and {valid['max']}!"
-                )
-
-        except (TypeError, ValueError):
-            pass
 
 
 def is_true(data: (str, int, bool)) -> bool:
@@ -359,36 +239,6 @@ def get_simple_existing(
             simple_entries.append(entries)
 
     return simple_entries
-
-
-def validate_str_fields(
-        module: AnsibleModule, data: dict, field_regex: dict = None,
-        field_minmax_length: dict = None, allow_empty: bool = False,
-) -> None:
-    if field_minmax_length is not None:
-        for field, min_max_length in field_minmax_length.items():
-            if not unset_check_error(params=data, field=field, fail=not allow_empty):
-                continue
-
-            if 'min' not in min_max_length or 'max' not in min_max_length:
-                exit_bug("Values of 'STR_LEN_VALIDATIONS' must have a 'min' and 'max' attribute!")
-
-            if min_max_length['min'] < len(data[field]) > min_max_length['max']:
-                module.fail_json(
-                    f"Value of field '{field}' is not valid - "
-                    f"Invalid length must be between {min_max_length['min']} and {min_max_length['max']}!"
-                )
-
-    if field_regex is not None:
-        for field, regex in field_regex.items():
-            if not unset_check_error(params=data, field=field, fail=not allow_empty):
-                continue
-
-            if regex_match(regex, data[field]) is None:
-                module.fail_json(
-                    f"Value of field '{field}' is not valid - "
-                    f"Must match regex '{regex}'!"
-                )
 
 
 def format_int(data: (int, str)) -> (int, str):

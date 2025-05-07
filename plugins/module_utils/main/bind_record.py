@@ -5,7 +5,9 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    get_multiple_matching, is_unset, is_ip4, is_ip6
+    get_multiple_matching
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_ip4, is_ip6, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -59,6 +61,7 @@ class Record(BaseModule):
             else:
                 if self.p['type'] == 'A' and not is_ip4(self.p['value']):
                     self.m.fail_json(f"Value '{self.p['value']}' is not a valid IPv4-address!")
+
                 elif self.p['type'] == 'AAAA' and not is_ip6(self.p['value']):
                     self.m.fail_json(f"Value '{self.p['value']}' is not a valid IPv6-address!")
 
@@ -111,8 +114,7 @@ class Record(BaseModule):
                     self.r['diff']['before'] = self.record
                     self.call_cnf['params'] = [self.record['uuid']]
 
-                if self.p['state'] == 'present':
-                    self.r['diff']['after'] = self.b.build_diff(data=self.p)
+        self._base_check()
 
     def search_call_domains(self) -> dict:
         return self.s.get(cnf={

@@ -9,9 +9,9 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
     DEBUG_CONFIG
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    ensure_list, is_ip
+    ensure_list
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    is_valid_domain
+    is_valid_domain, is_ip
 
 
 def _load_credential_file(module: AnsibleModule) -> tuple[(str, None), (str, None)]:

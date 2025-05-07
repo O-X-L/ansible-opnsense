@@ -28,9 +28,3 @@ class DnsBL(GeneralModule):
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
-
-    def check(self) -> None:
-        # pylint: disable=W0201
-        self.settings = self._search_call()
-
-        self._build_diff()

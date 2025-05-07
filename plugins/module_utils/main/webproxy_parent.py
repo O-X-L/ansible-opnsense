@@ -2,8 +2,8 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    validate_int_fields, is_ip, is_unset
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_ip, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import GeneralModule
 
 
@@ -45,7 +45,6 @@ class Parent(GeneralModule):
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
 
     def check(self) -> None:
-        # pylint: disable=W0201
         if self.p['enabled']:
             if is_unset(self.p['host']) or is_unset(self.p['port']):
                 self.m.fail_json('To enable a parent proxy, a host and port must be provided!')
@@ -53,7 +52,4 @@ class Parent(GeneralModule):
             if not is_ip(self.p['host']):
                 self.m.fail_json(f"Provided host '{self.p['host']}' is not a valid IP-Address!")
 
-        validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-
-        self.settings = self._search_call()
-        self._build_diff()
+        self._base_check()

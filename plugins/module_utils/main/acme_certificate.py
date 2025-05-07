@@ -2,8 +2,8 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    validate_int_fields, is_unset
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -62,8 +62,6 @@ class Certificate(BaseModule):
         if self.p['state'] == 'present':
             if is_unset(self.p['name']):
                 self.m.fail_json('You need to provide a name to create/update certificates!')
-
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
 
             if self.p['aliasmode'] == 'domain':
                 self.FIELDS_CHANGE.append('domainalias')

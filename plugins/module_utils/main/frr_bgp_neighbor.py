@@ -2,8 +2,8 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    validate_int_fields, is_ip, is_unset
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_ip, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -88,8 +88,6 @@ class Neighbor(BaseModule):
 
             if not is_unset(self.p['local_ip']) and not is_ip(self.p['local_ip']):
                 self.m.fail_json(f"Provided source IP '{self.p['local_ip']}' is not a valid IP-Address!")
-
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
 
         self._base_check()
         self._find_links()

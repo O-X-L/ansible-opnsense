@@ -58,6 +58,7 @@ class Alias(BaseModule):
         if self.p['type'] == 'dynipv6host':
             if is_unset(self.p['interface']):
                 self.m.fail_json('You need to provide an interface to create a dynipv6host alias!')
+
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['interface']
 
         if len(self.p['name']) > self.MAX_ALIAS_LEN:
@@ -66,13 +67,12 @@ class Alias(BaseModule):
                 f"must be shorter than {self.MAX_ALIAS_LEN} characters",
             )
 
-        if self.p['state'] == 'present':
-            validate_values(error_func=self._error, cnf=self.p)
-
         self.b.find(match_fields=[self.FIELD_ID])
 
         if self.p['state'] == 'present':
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
+            validate_values(error_func=self._error, cnf=self.p, existing_entries=self.existing_entries)
+
+        self._base_check()
 
     def simplify_existing(self, alias: dict) -> dict:
         simple = {}

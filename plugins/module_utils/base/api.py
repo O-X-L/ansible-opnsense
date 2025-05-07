@@ -7,7 +7,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.api import \
     check_host, ssl_verification, check_response, get_params_path, debug_api, \
     check_or_load_credentials, api_pretty_exception
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import is_ip6
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import is_ip6
 
 DEFAULT_TIMEOUT = 20.0
 HTTPX_EXCEPTIONS = (

@@ -1,6 +1,6 @@
 ---
 
-- name: Testing Unbound DNS general settings
+- name: Testing Unbound DNS-BL settings
   hosts: localhost
   gather_facts: no
   module_defaults:

@@ -59,7 +59,7 @@ class Alias(BaseModule):
             if not self.target_found:
                 self.m.fail_json(f"Alias-target '{self.p['target']}' was not found!")
 
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
+        self._base_check()
 
     def _find_target(self) -> None:
         if len(self.existing_hosts) > 0:

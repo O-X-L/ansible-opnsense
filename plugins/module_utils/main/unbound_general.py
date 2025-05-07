@@ -2,8 +2,8 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    validate_port, is_unset, is_ip6_network
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_unset, is_ip6_network
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.unbound import \
     validate_domain
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import GeneralModule
@@ -61,6 +61,9 @@ class General(GeneralModule):
         'existing_active_interfaces': 'unbound.general.active_interface',
         'existing_outgoing_interfaces': 'unbound.general.outgoing_interface',
     }
+    INT_VALIDATIONS = {
+        'port': {'min': 1, 'max': 65535},
+    }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
@@ -68,8 +71,7 @@ class General(GeneralModule):
         self.existing_outgoing_interfaces = []
 
     def check(self) -> None:
-        # pylint: disable=W0201
-        validate_port(module=self.m, port=self.p['port'])
+        self._check_validators()
 
         if not is_unset(self.p['dhcp_domain']):
             validate_domain(module=self.m, domain=self.p['dhcp_domain'])

@@ -2,8 +2,8 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    validate_int_fields, validate_port
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    validate_port_or_range
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -62,9 +62,8 @@ class Rule(BaseModule):
         self.existing_pipes = None
 
     def check(self) -> None:
-        validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-        validate_port(module=self.m, port=self.p['source_port'])
-        validate_port(module=self.m, port=self.p['destination_port'])
+        validate_port_or_range(module=self.m, port=self.p['source_port'])
+        validate_port_or_range(module=self.m, port=self.p['destination_port'])
 
         if self.p['state'] == 'present':
             if self.p['target_pipe'] in [None, ''] and \
@@ -94,7 +93,7 @@ class Rule(BaseModule):
                     fail=True,
                 )
 
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
+        self._base_check()
 
     def get_existing(self) -> list:
         existing = []
@@ -117,7 +116,6 @@ class Rule(BaseModule):
 
     def reload(self) -> None:
         if self.p['reset']:
-            # pylint: disable=W0201
             self.API_CMD_REL = 'flushreload'
 
         self.b.reload()

@@ -14,6 +14,7 @@
 
   vars:
     if_grp: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL_RULE_GRP_IF') | default('lan', true) }}"
+    default_grps: ['All OpenVPN interfaces', 'IPsec', 'WireGuard']
 
   tasks:
     - name: Listing
@@ -21,7 +22,7 @@
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
-        opn_pre1.data | length != 2
+        (opn_pre1.data | length) != (default_grps | length)
 
     - name: Removing - does not exist
       ansibleguy.opnsense.rule_interface_group:
@@ -70,7 +71,7 @@
       register: opn3
       failed_when: >
         'data' not in opn3 or
-        opn3.data | length != 3
+        (opn3.data | length) != (default_grps | length + 1)
       when: not ansible_check_mode
 
     - name: Cleanup
@@ -84,5 +85,5 @@
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or
-        opn_clean1.data | length != 2
+        (opn_clean1.data | length) != (default_grps | length)
       when: not ansible_check_mode

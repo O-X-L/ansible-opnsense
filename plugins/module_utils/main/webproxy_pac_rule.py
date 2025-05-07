@@ -56,4 +56,4 @@ class Rule(BaseModule):
                 existing=self.existing_proxies,
             )
 
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
+        self._base_check()

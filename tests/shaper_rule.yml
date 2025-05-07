@@ -76,7 +76,7 @@
         description: 'ANSIBLE_TEST_1_1'
         target_queue: 'ANSIBLE_TEST_2_1'
         protocol: 'tcp'
-        destination_port: 80
+        destination_port: 80-90
         sequence: 40
       register: opn4
       failed_when: >

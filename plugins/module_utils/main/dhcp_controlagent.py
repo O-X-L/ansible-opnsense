@@ -2,8 +2,8 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    is_ip, validate_port
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_ip
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import GeneralModule
 
 
@@ -34,10 +34,7 @@ class ControlAgent(GeneralModule):
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
 
     def check(self) -> None:
-        if not validate_port(module=self.m, port=self.p['http_port']):
-            self.m.fail_json('The provided port is invalid!')
-
         if not is_ip(self.p['http_host']):
             self.m.fail_json('The provided IP is invalid!')
 
-        super().check()
+        self._base_check()

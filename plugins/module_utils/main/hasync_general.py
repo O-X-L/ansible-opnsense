@@ -43,4 +43,4 @@ class General(GeneralModule):
         if self.p['update_password'] == 'always':
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['password']
 
-        GeneralModule.check(self)
+        self._base_check()

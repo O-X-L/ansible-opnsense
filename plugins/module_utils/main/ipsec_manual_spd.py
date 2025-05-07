@@ -2,8 +2,6 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    validate_int_fields
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -44,19 +42,24 @@ class ManualSPD(BaseModule):
         self.spd = {}
 
     def check(self) -> None:
-        if self.p['state'] == 'present':
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-
         self._base_check()
 
         if self.p['state'] == 'present':
             self.b.find_single_link(
                 field='connection_child',
-                existing=self.search_connection_child(),
+                existing=self._search_connection_child(),
                 existing_field_id='value',
             )
 
-    def search_connection_child(self) -> dict:
+    def _build_request(self) -> dict:
+        self.b.find_single_link(
+            field='connection_child',
+            existing=self._search_connection_child(),
+            existing_field_id='value',
+        )
+        return self.b.build_request()
+
+    def _search_connection_child(self) -> dict:
         return self.s.get(cnf={
             **self.call_cnf, **{'command': self.CMDS['detail']}
         })['spd']['connection_child']

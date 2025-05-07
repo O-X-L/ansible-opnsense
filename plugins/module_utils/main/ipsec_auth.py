@@ -2,8 +2,8 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    is_unset, validate_int_fields, validate_str_fields
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
     ModuleSoftError
@@ -58,12 +58,6 @@ class BaseAuth(BaseModule):
 
     def check(self) -> None:
         if self.p['state'] == 'present':
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-            validate_str_fields(
-                module=self.m, data=self.p, allow_empty=True,
-                field_minmax_length=self.STR_LEN_VALIDATIONS
-            )
-
             if is_unset(self.p['connection']):
                 self.m.fail_json(
                     "You need to provide a 'connection' to create an IPSec auth!"
@@ -113,7 +107,6 @@ class BaseAuth(BaseModule):
             self.b.create()
 
             self.auth = {}
-            # pylint: disable=W0201
             self.existing_entries = None
             self.existing_local_auth = None
             self.existing_remote_auth = None

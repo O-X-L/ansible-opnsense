@@ -2,9 +2,8 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    validate_int_fields, validate_str_fields, is_ip, validate_port, is_ip_or_network, \
-    is_unset
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_ip, is_ip_or_network, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.wireguard_peer import Peer
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
@@ -47,6 +46,7 @@ class Server(BaseModule):
     FIELDS_DIFF_NO_LOG = ['private_key']
     INT_VALIDATIONS = {
         'mtu': {'min': 1, 'max': 9300},
+        'port': {'min': 1, 'max': 65535},
     }
     STR_VALIDATIONS = {
         'name': r'^([0-9a-zA-Z._\-]){1,64}$'
@@ -62,13 +62,6 @@ class Server(BaseModule):
 
     def check(self) -> None:
         if self.p['state'] == 'present':
-            validate_port(module=self.m, port=self.p['port'])
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-            validate_str_fields(
-                module=self.m, data=self.p,
-                field_regex=self.STR_VALIDATIONS,
-            )
-
             if is_unset(self.p['allowed_ips']):
                 self.m.fail_json(
                     "You need to provide at least one 'allowed_ips' entry "
@@ -114,7 +107,7 @@ class Server(BaseModule):
             if not is_unset(self.p['vip']):
                 self.p['vip'] = self._find_vip()
 
-            self.r['diff']['after'] = self.b.build_diff(data=self.p)
+        self._base_check()
 
     def _find_peers(self) -> list:
         peers = []

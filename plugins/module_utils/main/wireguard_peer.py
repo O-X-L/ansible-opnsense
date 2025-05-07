@@ -2,9 +2,8 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    validate_int_fields, validate_str_fields, is_ip, validate_port, is_ip_or_network, \
-    is_unset
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_ip, is_ip_or_network, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
     is_valid_domain
@@ -43,6 +42,7 @@ class Peer(BaseModule):
     FIELDS_DIFF_NO_LOG = ['psk']
     INT_VALIDATIONS = {
         'keepalive': {'min': 1, 'max': 86400},
+        'port': {'min': 1, 'max': 65535},
     }
     STR_VALIDATIONS = {
         'name': r'^([0-9a-zA-Z._\-]){1,64}$'
@@ -58,13 +58,6 @@ class Peer(BaseModule):
 
     def check(self) -> None:
         if self.p['state'] == 'present':
-            validate_port(module=self.m, port=self.p['port'])
-            validate_int_fields(module=self.m, data=self.p, field_minmax=self.INT_VALIDATIONS)
-            validate_str_fields(
-                module=self.m, data=self.p,
-                field_regex=self.STR_VALIDATIONS,
-            )
-
             if is_unset(self.p['public_key']):
                 self.m.fail_json(
                     "You need to provide a 'public_key' if you want to create a peer!"
@@ -105,7 +98,7 @@ class Peer(BaseModule):
 
             self.r['diff']['before'] = self.b.build_diff(data=self.peer)
 
-        self.r['diff']['after'] = self.b.build_diff(data=self.p)
+        self._base_check()
 
     def _translate_servers(self, search_in: list) -> list:
         from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.wireguard_server import Server

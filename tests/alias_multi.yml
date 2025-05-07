@@ -26,6 +26,10 @@
           ANSIBLE_TEST_2_8:
           ANSIBLE_TEST_2_9:
           ANSIBLE_TEST_2_10:
+          ANSIBLE_TEST_2_11:
+          ANSIBLE_TEST_2_12:
+          ANSIBLE_TEST_2_13:
+          ANSIBLE_TEST_2_14:
         state: 'absent'
       register: opn1
       failed_when: >
@@ -157,12 +161,46 @@
         opn6.changed
       when: not ansible_check_mode
 
+    - name: Adding nested aliases
+      ansibleguy.opnsense.alias_multi:
+        aliases:
+          # hosts
+          ANSIBLE_TEST_2_12:
+            content: ['ANSIBLE_TEST_2_1', 'ANSIBLE_TEST_2_2']
+
+          # networks
+          ANSIBLE_TEST_2_13:
+            type: 'network'
+            content: ['ANSIBLE_TEST_2_3', 'ANSIBLE_TEST_2_4']
+
+          # ports
+          ANSIBLE_TEST_2_14:
+            type: 'port'
+            content: ['ANSIBLE_TEST_2_5', 'ANSIBLE_TEST_2_6']
+
+        reload: false  # geoip and urltable take LONG time
+
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+      when: not ansible_check_mode
+
     - name: Listing aliases
       ansibleguy.opnsense.list:
       register: opn4
       failed_when: >
         'data' not in opn4 or
-        opn4.data | length != 11
+        opn4.data | length != 14
+      when: not ansible_check_mode
+
+    - name: Removing nesting
+      ansibleguy.opnsense.alias_multi:
+        aliases:
+          ANSIBLE_TEST_2_12:
+          ANSIBLE_TEST_2_13:
+          ANSIBLE_TEST_2_14:
+        state: 'absent'
       when: not ansible_check_mode
 
     - name: Removing
