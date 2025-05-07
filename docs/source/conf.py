@@ -3,8 +3,8 @@ from datetime import datetime
 # pylint: disable=W0622
 
 project = 'Ansible Collection - OPNSense'
-copyright = f'{datetime.now().year}, AnsibleGuy'
-author = 'AnsibleGuy'
+author = 'OXL IT Services'
+copyright = f'{datetime.now().year}, {author}'
 extensions = ['piccolo_theme', 'myst_parser']
 templates_path = ['_templates']
 exclude_patterns = ['_tmpl/*.rst', '_cp/*.rst']
