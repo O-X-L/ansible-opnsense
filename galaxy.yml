@@ -2,7 +2,7 @@
 
 namespace: 'ansibleguy'
 name: 'opnsense'
-version: 1.2.13
+version: 1.2.14
 readme: 'README.md'
 authors:
   - 'OXL IT Services <contact@OXL.at>'
