@@ -51,14 +51,6 @@ class ManualSPD(BaseModule):
                 existing_field_id='value',
             )
 
-    def _build_request(self) -> dict:
-        self.b.find_single_link(
-            field='connection_child',
-            existing=self._search_connection_child(),
-            existing_field_id='value',
-        )
-        return self.b.build_request()
-
     def _search_connection_child(self) -> dict:
         return self.s.get(cnf={
             **self.call_cnf, **{'command': self.CMDS['detail']}

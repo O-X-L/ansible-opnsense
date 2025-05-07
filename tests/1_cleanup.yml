@@ -587,6 +587,7 @@
       loop:
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
 
     - name: Cleanup IPSec connections
       ansibleguy.opnsense.ipsec_connection:
