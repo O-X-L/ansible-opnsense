@@ -161,6 +161,7 @@ ansibleguy.opnsense.ipsec_psk
     "identity_remote","string","false","\-","remote_ident","(optional) This can be either an IP address, fully qualified domain name or an email address to identify the remote host."
     "psk","string","true","\-","key, secret","\-"
     "type","string","false","\-","kind","One of: 'PSK', 'EAP'"
+    "match_fields","list of strings","false","identity_local","\-","At least one of: 'identity_local', 'identity_remote'. Fields that are used to match configured routes with the running config - if any of those fields are changed, the module will think it's a new route"
 
 ansibleguy.opnsense.ipsec_manual_spd
 ====================================

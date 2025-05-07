@@ -13,6 +13,16 @@
       target: 'ipsec_psk'
 
   tasks:
+    - name: Cleanup
+      ansibleguy.opnsense.ipsec_psk:
+        identity: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE@TEST1'
+        - 'ANSIBLE@TEST2'
+        - 'ANSIBLE@TEST2X'
+      when: not ansible_check_mode
+
     - name: Listing
       ansibleguy.opnsense.list:
       register: opn_pre1
@@ -72,6 +82,42 @@
         opn6.changed
       when: not ansible_check_mode
 
+    - name: Change - identity remote
+      ansibleguy.opnsense.ipsec_psk:
+        identity: 'ANSIBLE@TEST2X'
+        identity_remote: 'ANSIBLE@TEST2B'
+        psk: 'LSfmuw3oiksfhnf3uhfwqhfwjuhnakfuwgfjsnhfnh_ooo'
+        match_fields: 'identity_remote'
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+      when: not ansible_check_mode
+
+    - name: Change - identity remote - nothing changed
+      ansibleguy.opnsense.ipsec_psk:
+        identity: 'ANSIBLE@TEST2X'
+        identity_remote: 'ANSIBLE@TEST2B'
+        psk: 'LSfmuw3oiksfhnf3uhfwqhfwjuhnakfuwgfjsnhfnh_ooo'
+        match_fields: 'identity_remote'
+      register: opn10
+      failed_when: >
+        opn10.failed or
+        opn10.changed
+      when: not ansible_check_mode
+
+    - name: Change back - identity remote
+      ansibleguy.opnsense.ipsec_psk:
+        identity: 'ANSIBLE@TEST2'
+        identity_remote: 'ANSIBLE@TEST2B'
+        psk: 'LSfmuw3oiksfhnf3uhfwqhfwjuhnakfuwgfjsnhfnh'
+        match_fields: 'identity_remote'
+      register: opn11
+      failed_when: >
+        opn11.failed or
+        not opn11.changed
+      when: not ansible_check_mode
+
     - name: Removing 2
       ansibleguy.opnsense.ipsec_psk:
         identity: 'ANSIBLE@TEST2'
@@ -97,6 +143,7 @@
       loop:
         - 'ANSIBLE@TEST1'
         - 'ANSIBLE@TEST2'
+        - 'ANSIBLE@TEST2X'
       when: not ansible_check_mode
 
     - name: Listing
