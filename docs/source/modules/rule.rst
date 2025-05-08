@@ -82,6 +82,7 @@ Definition
     "action","string","false","'pass'","a","Rule action. One of: 'pass', 'block' or 'reject'"
     "quick","boolean","false","true","q","When set to quick, the rule is handled on “first match” basis, which means that the first rule matching the packet will take precedence over rules following in sequence."
     "interface","list","false","['lan']","i, int","One or multiple interfaces use this rule on"
+    "interface_invert","boolean","false","false","int_inv, ii, int_not","Use all but selected interfaces"
     "direction","string","false","'in'","d, dir","Direction of the traffic. Traffic IN is coming into the firewall interface, while traffic OUT is going out of the firewall interface. In visual terms: [Source] -> IN -> [Firewall] -> OUT -> [Destination]. The default policy is to filter inbound traffic, which means the policy applies to the interface on which the traffic is originally received by the firewall from the source. This is more efficient from a traffic processing perspective. In most cases, the default policy will be the most appropriate."
     "ip_protocol","string","false","'inet'","ipp, ip_proto","IP protocol to match. One of: 'inet', 'inet6' (*IPv4 = 'inet', IPv6 = 'inet6'*)"
     "protocol","string","false","'any'","p, proto","Protocol like 'TCP', 'UDP', 'ICMP' and so on. For options see the WEB-UI."
@@ -92,9 +93,31 @@ Definition
     "destination_net","string","false","'any'","d, dest, destination","Host, network, alias or 'any'"
     "destination_port","string","false","\-","dp, dest_port","Leave empty to allow all, valid port-number, name, alias or range"
     "gateway","string","false","\-","g, gw","Existing gateway to use"
+    "replyto","string","false","\-","rt","Determines how packets route back in the opposite direction"
+    "disable_replyto","boolean","false","false","\-","Explicit disable reply-to for this rule"
     "log","boolean","false","true","l","If rule matches should be shown in the firewall logs"
+    "allow_opts","boolean","false","false","opts","Allows packets with IP options to pass"
+    "state_type","string","false","keep","\-","State tracking mechanism to use. One of: 'keep', 'sloppy', 'modulate', 'synproxy' or 'none'"
+    "state_policy","string","false","''","\-","State tracking mechanism to use. One of: '', 'if-bound', 'floating'"
+    "state_timeout","int","false","\-","\-","State Timeout in seconds (TCP only)"
+    "max_states","int","false","\-","\-","Limits the number of concurrent states"
+    "max_src_nodes","int","false","\-","\-","Limits the number of source addresses which can simultaneously have state table entries"
+    "max_src_states","int","false","\-","\-","Limits the number of simultaneous state entries that a single source address can create"
+    "max_src_conn","int","false","\-","\-","Limit the number of simultaneous TCP connections a single host can make"
+    "max_src_conn_rate","int","false","\-","\-","Maximum new connections per host, measured over time"
+    "max_src_conn_rates","int","false","\-","\-","Time interval (seconds) to measure the number of connections"
+    "overload","int","false","\-","ol","Overload table used when max new connections per time interval has been reached"
+    "adaptive_start","int","false","\-","\-","When the number of state entries exceeds this value, adaptive scaling begins. All timeout values are scaled linearly with factor (adaptive.end - number of states) / (adaptive.end - adaptive.start)"
+    "adaptive_end","int","false","\-","\-","When reaching this number of state entries, all timeout values become zero, effectively purging all state entries immediately. This value is used to define the scale factor, it should not actually be reached (set a lower state limit)"
+    "prio","string","false","\-","\-","Match packets which have the given queueing priority assigned. One of: '', '0', '1', '2', '3', '4', '5', '6', '7'"
+    "set_prio","string","false","\-","\-","Assigne a specific queueing priority. One of: '', '0', '1', '2', '3', '4', '5', '6', '7'"
+    "set_prio_low","string","false","\-","\-","Assigne a specific queueing priority to packets which have a TOS of lowdelay and TCP ACKs with no data payload. One of: '', '0', '1', '2', '3', '4', '5', '6', '7'"
     "tag","string","false","\-","\-","Packets matching this rule will be tagged with the specified string"
     "tagged","string","false","\-","\-","Packets must already be tagged with the given tag in order to match the rule"
+    "tcp_flags","list","false","\-","\-","TCP flags that must be set for this rule to match. Selection of: 'syn', 'ack', 'fin', 'rst', 'psh', 'urg', 'ece', 'cwr'"
+    "tcp_flags_clear","list","false","\-","\-","TCP flags that must be cleared for this rule to match. Selection of: 'syn', 'ack', 'fin', 'rst', 'psh', 'urg', 'ece', 'cwr'"
+    "schedule","string","false","\-","sched","Match packets during the given schedule"
+    "tos","string","false","\-","\-","Match packets which have the given TOS/DCSP assigned"
     "description","string","false","\-","desc","Description for the rule"
     "state","string","false","'present'","st","State of the rule. One of: 'present', 'absent'"
     "enabled","boolean","false","true","en","If the rule should be en- or disabled"
@@ -151,15 +174,38 @@ Basic
             # action: 'pass'
             # quick: true
             # interface: 'lan'
+            # interface_invert: false
             # direction: 'in'
             # ip_protocol: 'inet' or 'inet6'
             # source_invert: false
             # source_port: ''
             # destination_invert: false
+            # gateway: 'LAN_GW'
+            # replyto: ''
+            # disable_replyto: false
             # log: true
+            # allow_opts: false
+            # state_type: keep
+            # state_policy: None
+            # state_timeout: None
+            # max_states: None
+            # max_src_nodes: None
+            # max_src_states: None
+            # max_src_conn: None
+            # max_src_conn_rate: None
+            # max_src_conn_rates: None
+            # overload: None
+            # adaptive_start: None
+            # adaptive_end: None
+            # prio: ''
+            # set_prio: ''
+            # set_prio_low: ''
             # tag: ''
             # tagged: ''
-            # gateway: 'LAN_GW'
+            # tcp_flags: None
+            # tcp_flags_clear: None
+            # schedule: None
+            # tos: None
             # state: 'present'
             # enabled: true
             # uuid: 'a9d85c00-0aa2-4705-b855-96aae16e05d7'  # optionally use uuid to identify existing rules

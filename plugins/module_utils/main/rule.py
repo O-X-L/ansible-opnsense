@@ -22,27 +22,58 @@ class Rule(BaseModule):
     API_MOD = 'firewall'
     API_CONT = 'filter'
     FIELDS_CHANGE = [
-        'sequence', 'action', 'quick', 'interface', 'direction',
+        'sequence', 'action', 'quick', 'interface', 'interface_invert', 'direction',
         'ip_protocol', 'protocol', 'source_invert', 'source_net', 'source_port',
         'destination_invert', 'destination_net', 'destination_port', 'log',
-        'tag', 'tagged', 'description', 'gateway',
+        'tag', 'tagged', 'description', 'gateway', 'replyto', 'disable_replyto',
+        'allow_opts', 'state_type', 'state_policy', 'state_timeout',
+        'max_states', 'max_src_nodes', 'max_src_states', 'max_src_conn', 'max_src_conn_rate',
+        'max_src_conn_rates', 'overload', 'adaptive_start', 'adaptive_end', 'prio', 'set_prio', 'set_prio_low',
+        'tcp_flags', 'tcp_flags_clear', 'schedule', 'tos',
     ]
     FIELDS_ALL = ['enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
     FIELDS_TRANSLATE = {
+        'interface_invert': 'interfacenot',
         'ip_protocol': 'ipprotocol',
         'source_invert': 'source_not',
         'destination_invert': 'destination_not',
+        'disable_replyto': 'disablereplyto',
+        'allow_opts': 'allowopts',
+        'state_type': 'statetype',
+        'state_policy': 'state-policy',
+        'state_timeout': 'statetimeout',
+        'max_states': 'max',
+        'max_src_nodes': 'max-src-nodes',
+        'max_src_states': 'max-src-states',
+        'max_src_conn': 'max-src-conn',
+        'max_src_conn_rate': 'max-src-conn-rate',
+        'max_src_conn_rates': 'max-src-conn-rates',
+        'adaptive_start': 'adaptivestart',
+        'adaptive_end': 'adaptiveend',
+        'set_prio': 'set-prio',
+        'set_prio_low': 'set-prio-low',
+        'tcp_flags': 'tcpflags1',
+        'tcp_flags_clear': 'tcpflags2',
+        'schedule': 'sched',
     }
     FIELDS_TYPING = {
-        'bool': ['enabled', 'log', 'quick', 'source_invert', 'destination_invert'],
-        'select': ['action', 'direction', 'ip_protocol', 'protocol', 'gateway'],
-        'list': ['interface'],
+        'bool': [
+            'enabled', 'log', 'quick', 'interface_invert', 'source_invert', 'destination_invert', 'disable_replyto',
+            'allow_opts',
+        ],
+        'select': [
+            'action', 'direction', 'ip_protocol', 'protocol', 'gateway', 'replyto', 'state_type', 'state_policy',
+            'overload', 'prio', 'set_prio', 'set_prio_low', 'schedule', 'tos', 'shaper1', 'shaper2',
+        ],
+        'list': ['interface', 'tcp_flags', 'tcp_flags_clear'],
+        'int': ['sequence', 'state_timeout'],
     }
     EXIST_ATTR = 'rule'
     TIMEOUT = 60.0  # urltable etc reload
     INT_VALIDATIONS = {
         'sequence': {'min': 1, 'max': 99999},
+        'state_timeout': {'min': 1},
     }
     API_CMD_REL = 'apply'
 

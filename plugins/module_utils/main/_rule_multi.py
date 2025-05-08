@@ -65,6 +65,10 @@ def process(m: AnsibleModule, p: dict, r: dict) -> None:
             # NOTE: parameter type-casting not done automatically
             if 'interface' in real_cnf and isinstance(real_cnf['interface'], str):
                 real_cnf['interface'] = [real_cnf['interface']]
+            if 'tcp_flags' in real_cnf and isinstance(real_cnf['tcp_flags'], str):
+                real_cnf['tcp_flags'] = [real_cnf['tcp_flags']]
+            if 'tcp_flags_clear' in real_cnf and isinstance(real_cnf['tcp_flags_clear'], str):
+                real_cnf['tcp_flags_clear'] = [real_cnf['tcp_flags_clear']]
 
             valid_rules[rule_key] = real_cnf
 
