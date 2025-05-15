@@ -1,0 +1,141 @@
+---
+
+- name: Testing Access Privilege
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'privilege'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data  | length == 0
+      when: false
+
+    - name: Adding 1 - failing because unknown privilage
+      ansibleguy.opnsense.privilege:
+        privilege: ANSIBLE_TEST_1_1
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Adding Dummy User
+      ansibleguy.opnsense.user:
+        name: '{{ item }}'
+      loop:
+        - ANSIBLE_TEST_1_1
+        - ANSIBLE_TEST_1_2
+
+    - name: Adding Dummy Group
+      ansibleguy.opnsense.group:
+        name: '{{ item }}'
+      loop:
+        - ANSIBLE_TEST_1_1
+        - ANSIBLE_TEST_1_2
+
+    - name: Granting 1
+      ansibleguy.opnsense.privilege:
+        privilege: user-config-readonly
+        user: ANSIBLE_TEST_1_1
+        group: ANSIBLE_TEST_1_1
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Granting 1 - nothing changed
+      ansibleguy.opnsense.privilege:
+        privilege: user-config-readonly
+        user: ANSIBLE_TEST_1_1
+        group: ANSIBLE_TEST_1_1
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        opn2.changed
+
+    - name: Revoking - does not exist
+      ansibleguy.opnsense.privilege:
+        privilege: user-config-readonly
+        user: ANSIBLE_TEST_1_2
+        group: ANSIBLE_TEST_1_2
+        state: absent
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        opn3.changed
+
+    - name: Revoking 1
+      ansibleguy.opnsense.privilege:
+        privilege: user-config-readonly
+        user: ANSIBLE_TEST_1_1
+        group: ANSIBLE_TEST_1_1
+        state: absent
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        not opn4.changed
+
+    - name: Revoking 1 - nothing changed
+      ansibleguy.opnsense.privilege:
+        privilege: user-config-readonly
+        user: ANSIBLE_TEST_1_1
+        group: ANSIBLE_TEST_1_1
+        state: absent
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        opn5.changed
+
+    - name: Granting 2
+      ansibleguy.opnsense.privilege:
+        privilege: user-config-readonly
+        user:
+          - ANSIBLE_TEST_1_1
+          - ANSIBLE_TEST_1_2
+        group:
+          - ANSIBLE_TEST_1_1
+        state: pure
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        not opn6.changed
+
+    - name: Granting 2 - nothing changed
+      ansibleguy.opnsense.privilege:
+        privilege: user-config-readonly
+        user:
+          - ANSIBLE_TEST_1_1
+          - ANSIBLE_TEST_1_2
+        group:
+          - ANSIBLE_TEST_1_1
+        state: pure
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        opn7.changed
+
+    - name: Cleanup Dummy User
+      ansibleguy.opnsense.user:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - ANSIBLE_TEST_1_1
+        - ANSIBLE_TEST_1_2
+      diff: false
+
+    - name: Adding Dummy Group
+      ansibleguy.opnsense.group:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - ANSIBLE_TEST_1_1
+        - ANSIBLE_TEST_1_2
+      diff: false

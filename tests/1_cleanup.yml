@@ -918,3 +918,23 @@
       failed_when:
         - cl_snap2.failed
         - "'Unsupported' not in cl_snap2.msg | default('')"
+
+    - name: Cleanup Users
+      ansibleguy.opnsense.user:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_2_2'
+
+    - name: Cleanup Groups
+      ansibleguy.opnsense.group:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_2_2'

@@ -161,6 +161,10 @@ action_groups:
     - ansibleguy.opnsense.hasync_service
   raw:
     - ansibleguy.opnsense.raw
+  access:
+    - ansibleguy.opnsense.user
+    - ansibleguy.opnsense.group
+    - ansibleguy.opnsense.privilege
   all:
     - metadata:
         extend_group:
@@ -188,6 +192,7 @@ action_groups:
           - ansibleguy.opnsense.postfix
           - ansibleguy.opnsense.hasync
           - ansibleguy.opnsense.raw
+          - ansibleguy.opnsense.access
 
 plugin_routing:
   modules:
