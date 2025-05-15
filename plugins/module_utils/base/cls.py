@@ -56,9 +56,6 @@ class BaseModule(BaseShared):
     def __init__(self, m: AnsibleModule, r: dict, s: Session = None):
         super().__init__(m, r, s)
 
-    def _search_call(self) -> list:
-        return self.b.search()
-
     def _base_check(self, match_fields: list = None):
         self._check_validators()
 

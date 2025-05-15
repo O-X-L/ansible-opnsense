@@ -699,9 +699,6 @@ class Base:
         if hasattr(self.i, '_search_call'):
             return self.i._search_call()
 
-        if hasattr(self.i, 'search_call'):
-            return self.i.search_call()
-
         return self.search(match_fields)
 
     def _api_headers(self) -> dict:
