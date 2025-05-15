@@ -211,6 +211,9 @@ run_test_soft 'hasync_general' 1
 run_test_soft 'hasync_service' 0 # check mode => dependency on hasync_general
 run_test_soft 'snapshot' 1
 run_test_soft 'raw' 1
+run_test_soft 'user' 1
+run_test_soft 'group' 1
+run_test_soft 'privilege' 0 # check mode => dependency on user and group
 
 echo ''
 echo '##############################'

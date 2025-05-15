@@ -1,0 +1,259 @@
+---
+
+- name: Testing Access Group
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'group'
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | selectattr('scope', 'eq', 'user') | length != 0
+
+    - name: Removing - does not exist
+      ansibleguy.opnsense.group:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      register: opn_pre2
+      failed_when: >
+        opn_pre2.failed or
+        opn_pre2.changed
+
+    - name: Removing 1 - failing because of system group
+      ansibleguy.opnsense.group:
+        name: 'admins'
+        state: 'absent'
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Adding 1 - failing because of invalid value
+      ansibleguy.opnsense.group:
+        name: 'TOO_LONG_MAX_32_AAAAAAAAAAAAAAAAA'
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Adding 1
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_1_1
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing 1
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_1_1
+        description: ANSIBLE_TEST_1_1
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Adding 2
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_1_2
+        description: ANSIBLE_TEST_1_2
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Adding 2 - nothing changed
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_1_2
+        description: ANSIBLE_TEST_1_2
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        opn4.changed
+      when: not ansible_check_mode
+
+    - name: Changing 2 - grant privileges
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_1_2
+        description: ANSIBLE_TEST_1_2
+        privilege:
+          - user-config-readonly
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Changing 2 - grant privileges - nothing changed
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_1_2
+        description: ANSIBLE_TEST_1_2
+        privilege:
+          - user-config-readonly
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: not ansible_check_mode
+
+    - name: Changing 2 - nothing changed
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_1_2
+        description: ANSIBLE_TEST_1_2
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        opn7.changed
+      when: not ansible_check_mode
+
+    - name: Changing 2 - revoking privileges
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_1_2
+        description: ANSIBLE_TEST_1_2
+        privilege: []
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        not opn8.changed
+      when: not ansible_check_mode
+
+    - name: Changing 2 - revoking privileges - nothing changed
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_1_2
+        description: ANSIBLE_TEST_1_2
+        privilege: []
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        opn9.changed
+      when: not ansible_check_mode
+
+    - name: Removing 2
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_1_2
+        state: 'absent'
+      register: opn10
+      failed_when: >
+        opn10.failed or
+        not opn10.changed
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn11
+      failed_when: >
+        'data' not in opn11 or
+        opn11.data | selectattr('scope', 'eq', 'user') | length != 1
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.group:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_clean1
+      failed_when: >
+        'data' not in opn_clean1 or
+        opn_clean1.data | selectattr('scope', 'eq', 'user')| length != 0
+      when: not ansible_check_mode
+
+- name: Testing Access Group Membership
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'group'
+
+  tasks:
+    - name: Adding Dummy User
+      ansibleguy.opnsense.user:
+        name: '{{ item }}'
+      loop:
+        - ANSIBLE_TEST_2_1
+        - ANSIBLE_TEST_2_2
+
+    - name: Adding 1
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_2_1
+        member: ANSIBLE_TEST_2_1
+      register: opn12
+      failed_when: >
+        opn12.failed or
+        not opn12.changed
+
+    - name: Changing 1
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_2_1
+        member:
+          - ANSIBLE_TEST_2_1
+          - ANSIBLE_TEST_2_2
+      register: opn13
+      failed_when: >
+        opn13.failed or
+        not opn13.changed
+
+    - name: Changing 1 - nothing changed
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_2_1
+        member:
+          - ANSIBLE_TEST_2_1
+          - ANSIBLE_TEST_2_2
+      register: opn14
+      failed_when: >
+        opn14.failed or
+        opn14.changed
+      when: not ansible_check_mode
+
+    - name: Changing 1
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_2_1
+        member: []
+      register: opn15
+      failed_when: >
+        opn15.failed or
+        not opn15.changed
+      when: not ansible_check_mode
+
+    - name: Changing 1 - nothing changed
+      ansibleguy.opnsense.group:
+        name: ANSIBLE_TEST_2_1
+        member: []
+      register: opn16
+      failed_when: >
+        opn16.failed or
+        opn16.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.group:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_2_1'
+      when: not ansible_check_mode
+
+    - name: Cleanup Dummy User
+      ansibleguy.opnsense.user:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - ANSIBLE_TEST_2_1
+        - ANSIBLE_TEST_2_2
+      diff: false
