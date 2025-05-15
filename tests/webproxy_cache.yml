@@ -44,7 +44,6 @@
         memory_cache_mode: 'always'
         cache_linux_packages: true
         cache_windows_updates: false
-        layer_2: 512
       register: opn2
       failed_when: >
         opn2.failed or
@@ -58,7 +57,6 @@
         memory_cache_mode: 'always'
         cache_linux_packages: true
         cache_windows_updates: false
-        layer_2: 512
       register: opn3
       failed_when: >
         opn3.failed or
