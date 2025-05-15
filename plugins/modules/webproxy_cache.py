@@ -41,13 +41,19 @@ def run_module():
             type='str', required=False, default='/var/squid/cache', aliases=['dir'],
             description='The location for the local cache'
         ),
-        layer_1=dict(
-            type='int', required=False, default=16, aliases=['layer1', 'l1'],
-            description='The number of first-level subdirectories for the local cache'
+        slot_size=dict(
+            type='int', required=False, default=16384,
+            description='Defines the size of a database record used to store cached responses. '
+                        'Value should be a multiple of the OS I/O page size.'
         ),
-        layer_2=dict(
-            type='int', required=False, default=256, aliases=['layer2', 'l2'],
-            description='The number of second-level subdirectories for the local cache'
+        swap_timeout=dict(
+            type='int', required=False, default=0,
+            description='Prevents Squid from reading/writing to disk if the operation exceeds the '
+                        'specified timelimit in milliseconds.'
+        ),
+        max_swap_rate=dict(
+            type='int', required=False, default=0, aliases=['swap_rate'],
+            description='Limits disk access by setting a maximum I/O rate in swaps per second.'
         ),
         size_mb_max=dict(
             type='int', required=False, default=4,

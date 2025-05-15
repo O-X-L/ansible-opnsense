@@ -16,9 +16,8 @@ class Cache(GeneralModule):
     API_CONT = 'settings'
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
-        'memory_mb', 'size_mb', 'directory', 'layer_1', 'layer_2',
-        'size_mb_max', 'memory_kb_max', 'memory_cache_mode',
-        'cache_linux_packages', 'cache_windows_updates',
+        'memory_mb', 'size_mb', 'directory', 'size_mb_max', 'memory_kb_max', 'memory_cache_mode',
+        'cache_linux_packages', 'cache_windows_updates', 'swap_timeout', 'max_swap_rate', 'slot_size',
     ]
     FIELDS_ALL = FIELDS_CHANGE
     FIELDS_TRANSLATE = {
@@ -26,15 +25,13 @@ class Cache(GeneralModule):
         'size_mb': 'size',
         'size_mb_max': 'maximum_object_size',
         'memory_kb_max': 'maximum_object_size_in_memory',
-        'layer_1': 'l1',
-        'layer_2': 'l2',
     }
     FIELDS_TYPING = {
         'bool': ['cache_linux_packages', 'cache_windows_updates'],
         'select': ['memory_cache_mode'],
         'int': [
-            'memory_mb', 'size_mb', 'layer_1', 'layer_2', 'size_mb_max',
-            'memory_kb_max'
+            'memory_mb', 'size_mb', 'size_mb_max', 'memory_kb_max', 'swap_timeout', 'max_swap_rate',
+            'slot_size',
         ],
     }
     INT_VALIDATIONS = {
