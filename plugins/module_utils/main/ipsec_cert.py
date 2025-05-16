@@ -66,8 +66,8 @@ class KeyPair(BaseModule):
         # makes processing easier
         simple = {
             'type': get_selected(key['keyType']),
-            'public_key': key['publicKey'].strip(),
-            'private_key': key['privateKey'].strip(),
+            'public_key': key.get('publicKey', '').strip(),
+            'private_key': key.get('privateKey', '').strip(),
             'name': key['name'],
         }
 
