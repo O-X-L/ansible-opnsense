@@ -111,13 +111,13 @@ class Base:
                             'params': [base_entry[self.field_pk]]
                         })
                     )
+                    if self.raw is None:
+                        self.raw = detail_entry
 
                 data.append({
                     **base_entry,
                     **detail_entry,
                 })
-                if self.raw is None:
-                    self.raw = data[0]
 
             if self.raw is None:
                 self.raw = self._search_path_handling(
