@@ -184,13 +184,14 @@ ansibleguy.opnsense.webproxy_cache
     "memory_mb","integer","false","256","memory, mem","The cache memory size to use or zero to disable completely"
     "size_mb","integer","false","100","size","The storage size for the local cache"
     "directory","string","false","/var/squid/cache","dir","The location for the local cache"
-    "layer_1","integer","false","16","layer1, l1","The number of first-level subdirectories for the local cache"
-    "layer_2","integer","false","256","layer2, l2","The number of second-level subdirectories for the local cache"
     "size_mb_max","integer","false","4","maximum_object_size, max_size","The maximum object size"
     "memory_kb_max","integer","false","512","maximum_object_size_in_memory, max_memory, max_mem","The maximum object size"
     "memory_cache_mode","string","false","default","cache_mode, mode","One of: 'always', 'disk', 'network', 'default'. Controls which objects to keep in the memory cache (cache_mem) always: Keep most recently fetched objects in memory (default) disk: Only disk cache hits are kept in memory, which means an object must first be cached on disk and then hit a second time before cached in memory. network: Only objects fetched from network is kept in memory"
     "cache_linux_packages","boolean","false","false","\-","Enable or disable the caching of packages for linux distributions. This makes sense if you have multiple servers in your network and do not host your own package mirror. This will reduce internet traffic usage but increase disk access"
     "cache_windows_updates","boolean","false","false","\-","Enable or disable the caching of Windows updates. This makes sense if you don't have a WSUS server. If you can setup a WSUS server, this solution should be preferred"
+    "slot_size","integer","false","16384","\-","Defines the size of a database record used to store cached responses. Value should be a multiple of the OS I/O page size"
+    "swap_timeout","integer","false","0","\-","Prevents Squid from reading/writing to disk if the operation exceeds the specified timelimit in milliseconds"
+    "max_swap_rate","integer","false","0","swap_rate","Limits disk access by setting a maximum I/O rate in swaps per second"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.webproxy_parent
@@ -458,13 +459,14 @@ ansibleguy.opnsense.webproxy_cache
             # memory_mb: 256
             # size_mb: 100
             # directory: '/var/squid/cache'
-            # layer_1: 16
-            # layer_2: 256
             # size_mb_max: 4
             # memory_kb_max: 512
             # memory_cache_mode: 'default'
             # cache_linux_packages: false
             # cache_windows_updates: false
+            # slot_size: 16384
+            # swap_timeout: 0
+            # max_swap_rate: 0
             # reload: true
             # debug: false
 
