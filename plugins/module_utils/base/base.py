@@ -111,13 +111,13 @@ class Base:
                             'params': [base_entry[self.field_pk]]
                         })
                     )
+                    if self.raw is None:
+                        self.raw = detail_entry
 
                 data.append({
                     **base_entry,
                     **detail_entry,
                 })
-                if self.raw is None:
-                    self.raw = data[0]
 
             if self.raw is None:
                 self.raw = self._search_path_handling(
@@ -698,9 +698,6 @@ class Base:
     def _call_search(self, match_fields: list = None) -> (list, dict):
         if hasattr(self.i, '_search_call'):
             return self.i._search_call()
-
-        if hasattr(self.i, 'search_call'):
-            return self.i.search_call()
 
         return self.search(match_fields)
 
