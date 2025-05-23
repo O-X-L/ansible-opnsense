@@ -90,12 +90,12 @@ def _multi_callback_build(entry: dict) -> dict:
     return entry
 
 
-def _multi_callback_get_existing(meta_entry: Alias) -> dict:
-    return {'aliases': meta_entry.get_existing()}
+# def _multi_callback_get_existing(meta_entry: Alias) -> dict:
+#     return {'aliases': meta_entry.get_existing()}
 
 
-def _multi_callback_set_existing(entry: Alias, cache: dict) -> None:
-    entry.existing_entries = cache['aliases']
+# def _multi_callback_set_existing(entry: Alias, cache: dict) -> None:
+#     entry.existing_entries = cache['aliases']
 
 
 def _multi_callback_update_existing(entry_cnf: dict, cache: dict) -> dict:
@@ -135,8 +135,8 @@ def run_module():
             obj=Alias,
             entry_args=module_args['multi']['options'],
             callback_build=_multi_callback_build,
-            callback_get_existing=_multi_callback_get_existing,
-            callback_set_existing=_multi_callback_set_existing,
+            # callback_get_existing=_multi_callback_get_existing,
+            # callback_set_existing=_multi_callback_set_existing,
             callback_update_existing=_multi_callback_update_existing,
         )
         # todo: implement calling via module_wrapper

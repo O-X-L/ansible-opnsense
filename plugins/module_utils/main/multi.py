@@ -3,7 +3,7 @@ from typing import Callable
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.common.arg_spec import ModuleArgumentSpecValidator
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import ModuleSoftError, exit_bug
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import ModuleSoftError
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import diff_remove_empty
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
@@ -34,8 +34,12 @@ class MultiModule:
         self.callback_get_existing = callback_get_existing
         self.callback_set_existing = callback_set_existing
         self.callback_update_existing = callback_update_existing
-        if self.cache_existing and (self.callback_get_existing is None or self.callback_set_existing is None):
-            exit_bug('Need to supply callback-functions to get/set existing-cache!')
+        if self.cache_existing:
+            if self.callback_get_existing is None:
+                self.callback_get_existing = self._default_callback_get_existing
+
+            if self.callback_set_existing is None:
+                self.callback_set_existing = self._default_callback_set_existing
 
         if hasattr(self.o, 'FIELD_ID'):
             self.field_key = getattr(self.o, 'FIELD_ID')
@@ -127,7 +131,14 @@ class MultiModule:
 
         return valid_entries
 
-    # pylint: disable=R0915
+    @staticmethod
+    def _default_callback_get_existing(meta_entry: BaseModule) -> dict:
+        return {'main': meta_entry.get_existing()}
+
+    @staticmethod
+    def _default_callback_set_existing(entry: BaseModule, cache: dict):
+        entry.existing_entries = cache['main']
+
     def process(self) -> None:
         _meta_entry = self.o(module=self.m, session=self.s, result={})
         existing_cache = {}
