@@ -99,7 +99,7 @@ def _multi_callback_build(entry: dict) -> dict:
 
 
 def _multi_callback_update_existing(entry_cnf: dict, cache: dict) -> dict:
-    cache['aliases'].append(entry_cnf)
+    cache['main'].append(entry_cnf)
     return cache
 
 
