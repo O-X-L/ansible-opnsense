@@ -173,12 +173,13 @@ class MultiModule:
                 if entry_result['changed']:
                     self.r['changed'] = True
                     entry_result['diff'] = diff_remove_empty(entry_result['diff'])
+                    entry_name = entry.p[self.field_key]
 
                     if 'before' in entry_result['diff']:
-                        self.r['diff']['before'].update(entry_result['diff']['before'])
+                        self.r['diff']['before'][entry_name] = entry_result['diff']['before']
 
                     if 'after' in entry_result['diff']:
-                        self.r['diff']['after'].update(entry_result['diff']['after'])
+                        self.r['diff']['after'][entry_name] = entry_result['diff']['after']
 
             except ModuleSoftError:
                 continue

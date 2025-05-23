@@ -30,8 +30,8 @@
           - name: 'ANSIBLE_TEST_2_12'
           - name: 'ANSIBLE_TEST_2_13'
           - name: 'ANSIBLE_TEST_2_14'
-        state: 'absent'
-        debug: true
+        multi_control:
+          state: 'absent'
       register: opn1
 
     - name: Adding
@@ -177,7 +177,6 @@
             content: ['ANSIBLE_TEST_2_5', 'ANSIBLE_TEST_2_6']
 
         reload: false  # geoip and urltable take LONG time
-
       register: opn7
       failed_when: >
         opn7.failed or
@@ -198,7 +197,8 @@
           - name: 'ANSIBLE_TEST_2_12'
           - name: 'ANSIBLE_TEST_2_13'
           - name: 'ANSIBLE_TEST_2_14'
-        state: 'absent'
+        multi_control:
+          state: 'absent'
       when: not ansible_check_mode
 
     - name: Removing
@@ -215,7 +215,8 @@
           - name: 'ANSIBLE_TEST_2_9'
           - name: 'ANSIBLE_TEST_2_10'
           - name: 'ANSIBLE_TEST_2_11'
-        state: 'absent'
+        multi_control:
+          state: 'absent'
 
     - name: Checking cleanup
       ansibleguy.opnsense.list:
