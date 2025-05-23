@@ -87,6 +87,13 @@ def _build_alias_args(multi: bool) -> dict:
 
 def _multi_callback_build(entry: dict) -> dict:
     entry['content'] = list(map(str, ensure_list(entry['content'])))
+    if 'updatefreq_days' in entry:
+        dec = 1
+        if str(entry['updatefreq_days']).endswith('.0'):
+            dec = None
+
+        entry['updatefreq_days'] = round(entry['updatefreq_days'], dec)
+
     return entry
 
 
