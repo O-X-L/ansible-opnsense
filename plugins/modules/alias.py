@@ -49,7 +49,7 @@ ALIAS_MOD_ARG_ALIASES = {
 }
 
 
-def build_alias_args(multi: bool) -> dict:
+def _build_alias_args(multi: bool) -> dict:
     a = dict(
         name=dict(type='str', required=multi, aliases=ALIAS_MOD_ARG_ALIASES['name']),
         description=dict(
@@ -106,9 +106,9 @@ def _multi_callback_update_existing(entry_cnf: dict, cache: dict) -> dict:
 def run_module():
     module_args = dict(
         **RELOAD_MOD_ARG_DEF_FALSE,  # default-true takes pretty long sometimes (urltables and so on)
-        **build_alias_args(multi=False),
+        **_build_alias_args(multi=False),
         **build_multi_mod_args(
-            entry=build_alias_args(multi=True),
+            entry=_build_alias_args(multi=True),
             aliases=['aliases']
         ),
         # todo: require either name or multi

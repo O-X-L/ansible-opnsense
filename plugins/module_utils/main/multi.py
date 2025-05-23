@@ -3,7 +3,7 @@ from typing import Callable
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.common.arg_spec import ModuleArgumentSpecValidator
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import ModuleSoftError
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import ModuleSoftError, exit_bug
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import diff_remove_empty
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
@@ -34,6 +34,9 @@ class MultiModule:
         self.callback_get_existing = callback_get_existing
         self.callback_set_existing = callback_set_existing
         self.callback_update_existing = callback_update_existing
+        if self.cache_existing and (self.callback_get_existing is None or self.callback_set_existing is None):
+            exit_bug('Need to supply callback-functions to get/set existing-cache!')
+
         if hasattr(self.o, 'FIELD_ID'):
             self.field_key = getattr(self.o, 'FIELD_ID')
 
@@ -56,7 +59,6 @@ class MultiModule:
 
         else:
             error_func = self.m.warn
-
 
         validation = ModuleArgumentSpecValidator(
             self.mod_entry_args,
