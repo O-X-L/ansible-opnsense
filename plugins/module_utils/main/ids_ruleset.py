@@ -31,8 +31,8 @@ class Ruleset(BaseModule):
     EXIST_ATTR = 'ruleset'
     QUERY_MAX_RULES = 1000
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.ruleset = {}
         self.exists = False
         self.existing_rulesets_desc = []

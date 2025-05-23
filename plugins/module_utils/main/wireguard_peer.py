@@ -50,8 +50,8 @@ class Peer(BaseModule):
     EXIST_ATTR = 'peer'
     FIELDS_DIFF_EXCLUDE = []
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.peer = {}
         self.existing_servers = None
         self.existing_peers = None

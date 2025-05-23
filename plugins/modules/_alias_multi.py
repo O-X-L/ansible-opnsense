@@ -14,10 +14,9 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
 try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.utils import profiler
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-        OPN_MOD_ARGS, INFO_MOD_ARG, STATE_MOD_ARG_MULTI, RELOAD_MOD_ARG, FAIL_MOD_ARG_MULTI
+        OPN_MOD_ARGS, RELOAD_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import diff_remove_empty
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.alias_multi import process
-
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
@@ -29,10 +28,7 @@ except MODULE_EXCEPTIONS:
 def run_module():
     module_args = dict(
         aliases=dict(type='dict', required=True),
-        **FAIL_MOD_ARG_MULTI,
-        **STATE_MOD_ARG_MULTI,
         **RELOAD_MOD_ARG,
-        **INFO_MOD_ARG,
         **OPN_MOD_ARGS,
     )
 

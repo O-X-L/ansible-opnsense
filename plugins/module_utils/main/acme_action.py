@@ -64,8 +64,8 @@ class Action(BaseModule):
     }
     EXIST_ATTR = 'action'
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.action = {}
 
     def check(self) -> None:

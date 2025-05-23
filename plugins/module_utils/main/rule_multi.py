@@ -90,8 +90,8 @@ def process(m: AnsibleModule, p: dict, r: dict) -> None:
                 result=rule_result,
                 cnf=rule_config,
                 session=s,
-                fail_verify=p['fail_verification'],
-                fail_proc=p['fail_processing'],
+                fail_verify=p['fail_verify'],
+                fail_proc=p['fail_process'],
             )
             # save on requests
             rule.existing_entries = existing_rules

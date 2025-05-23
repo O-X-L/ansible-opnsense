@@ -6,7 +6,7 @@ OPN_MOD_ARGS = dict(
                     "to use 'ssl_verify=true'"
     ),
     api_port=dict(
-        type=int, required=False, default=443,
+        type='int', required=False, default=443,
         description='Port the target firewall uses for its web-interface'
     ),
     api_key=dict(
@@ -82,10 +82,6 @@ PURGE_MOD_ARGS = dict(
     ),
 )
 
-INFO_MOD_ARG = dict(
-    output_info=dict(type='bool', required=False, default=False, aliases=['info']),
-)
-
 STATE_ONLY_MOD_ARG = dict(
     state=dict(type='str', required=False, choices=['present', 'absent'], default='present'),
 )
@@ -97,11 +93,6 @@ EN_ONLY_MOD_ARG = dict(
 STATE_MOD_ARG = dict(
     **STATE_ONLY_MOD_ARG,
     **EN_ONLY_MOD_ARG,
-)
-
-STATE_MOD_ARG_MULTI = dict(
-    **STATE_ONLY_MOD_ARG,
-    enabled=dict(type='bool', required=False, default=None),  # override only if set
 )
 
 RELOAD_MOD_ARG = dict(
@@ -120,20 +111,53 @@ RELOAD_MOD_ARG_DEF_FALSE = dict(
     )
 )
 
-FAIL_MOD_ARG_MULTI = dict(
-    fail_verification=dict(
-        type='bool', required=False, default=False, aliases=['fail_verify'],
-        description='Fail module if a single entry fails the verification.'
-    ),
-    fail_processing=dict(
-        type='bool', required=False, default=True, aliases=['fail_proc'],
-        description='Fail module if a single entry fails to be processed.'
-    ),
-)
-
 DEBUG_CONFIG = dict(
     path_log='/tmp/ansibleguy.opnsense',
     log_api_calls='api_calls.log',
 )
 
 CONNECTION_TEST_TIMEOUT = 1.5
+
+
+def build_multi_mod_args(entry: dict, aliases: list = None, description: str = None) -> dict:
+    if aliases is None:
+        aliases = []
+
+    aliases.append('many')
+
+    if description is None:
+        description = 'Provide multiple entries to manage'
+
+    opn_args_multi = OPN_MOD_ARGS
+    opn_args_multi['firewall']['required'] = False
+
+    return dict(
+        multi=dict(
+            type='list', required=False, default=[], aliases=aliases,
+            description=description,
+            elements='dict', options={**opn_args_multi, **RELOAD_MOD_ARG_DEF_FALSE, **entry},
+        ),
+        multi_control = dict(
+            type='dict', required=False, default={}, aliases=['multi_ctrl', 'mc'],
+            description=description,
+            options=dict(
+                # NOTE: we keep state and enabled outside overrides for convenience
+                state=dict(type='str', required=False, choices=['present', 'absent'], default=None),
+                enabled=dict(type='bool', required=False, default=None),
+                # overrides for other parameters
+                override=dict(
+                    type='dict', required=False, default={}, description='Parameters to override for all entries',
+                    aliases=['all', 'overrides'],
+                ),
+                fail_verify=dict(
+                    type='bool', required=False, default=False, aliases=['fail_verification'],
+                    description='Fail module if a single entry fails the verification.'
+                ),
+                fail_process=dict(
+                    type='bool', required=False, default=True, aliases=['fail_proc', 'fail_processing'],
+                    description='Fail module if a single entry fails to be processed.'
+                ),
+                output_info=dict(type='bool', required=False, default=False, aliases=['info']),
+            ),
+        ),
+    )

@@ -12,6 +12,10 @@ class ModuleSoftError(Exception):
     pass
 
 
+class ModuleValidationError(ModuleSoftError):
+    pass
+
+
 def exit_bug(msg: str):
     raise AnsibleModuleError(f"THIS MIGHT BE A MODULE-BUG: {msg}")
 

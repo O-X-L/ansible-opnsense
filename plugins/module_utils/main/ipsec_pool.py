@@ -28,8 +28,8 @@ class Pool(BaseModule):
     FIELDS_TYPING = {'bool': ['enabled']}
     EXIST_ATTR = 'pool'
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.pool = {}
 
     def check(self) -> None:

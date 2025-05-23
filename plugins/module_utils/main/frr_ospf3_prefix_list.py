@@ -35,8 +35,8 @@ class Prefix(BaseModule):
     }
     EXIST_ATTR = 'prefix'
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.prefix = {}
 
     def check(self) -> None:

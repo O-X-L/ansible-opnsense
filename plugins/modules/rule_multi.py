@@ -29,7 +29,7 @@ except MODULE_EXCEPTIONS:
 
 
 def run_module():
-    FAIL_MOD_ARG_MULTI['fail_verification']['default'] = True
+    FAIL_MOD_ARG_MULTI['fail_verify']['default'] = True
 
     module_args = dict(
         rules=dict(type='dict', required=True),
