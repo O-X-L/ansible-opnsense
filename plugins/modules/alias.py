@@ -27,51 +27,25 @@ except MODULE_EXCEPTIONS:
 # EXAMPLES = 'https://opnsense.ansibleguy.net/modules/alias.html'
 
 
-ALIAS_DEFAULTS = {
-    'state': 'present',
-    'enabled': True,
-    'description': '',
-    'type': 'host',
-    'content': [],
-    'debug': False,
-    'updatefreq_days': 7.0,
-    'interface': None
-}
-
-ALIAS_MOD_ARG_ALIASES = {
-    'name': ['n'],
-    'content': ['c', 'cont'],
-    'type': ['t'],
-    'description': ['desc'],
-    'state': ['st'],
-    'enabled': ['en'],
-    'interface': ['int', 'if']
-}
-
-
 def _build_alias_args(multi: bool) -> dict:
     a = dict(
-        name=dict(type='str', required=multi, aliases=ALIAS_MOD_ARG_ALIASES['name']),
+        name=dict(type='str', required=multi, aliases=['n']),
         description=dict(
-            type='str', required=False, default=ALIAS_DEFAULTS['description'],
-            aliases=ALIAS_MOD_ARG_ALIASES['description']
+            type='str', required=False, default='', aliases=['desc'],
         ),
         content=dict(
-            type='list', required=False, default=ALIAS_DEFAULTS['content'],
-            aliases=ALIAS_MOD_ARG_ALIASES['content'], elements='str',
+            type='list', required=False, default=[], aliases=['c', 'cont'], elements='str',
         ),
-        type=dict(type='str', required=False, choices=[
+        type=dict(type='str', required=False, default='host', aliases=['t'], choices=[
             'host', 'network', 'port', 'url', 'urltable', 'geoip', 'networkgroup',
             'mac', 'dynipv6host', 'internal', 'external',
-        ], default=ALIAS_DEFAULTS['type'], aliases=ALIAS_MOD_ARG_ALIASES['type']),
+        ]),
         updatefreq_days=dict(
-            type='float', default=ALIAS_DEFAULTS['updatefreq_days'], required=False,
-            description="Update frequency used by type 'urltable' in days - "
-                        "per example '0.5' for 12 hours"
+            type='float', default=7, required=False,
+            description="Update frequency used by type 'urltable' in days - per example '0.5' for 12 hours"
         ),
         interface=dict(
-            type='str', default=ALIAS_DEFAULTS['interface'],
-            aliases=ALIAS_MOD_ARG_ALIASES['interface'], required=False,
+            type='str', default=None, aliases=['int', 'if'], required=False,
             description=' Select the interface for the V6 dynamic IP.',
         ),
         **STATE_MOD_ARG,
