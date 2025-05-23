@@ -454,3 +454,182 @@
       failed_when: >
         'data' not in opn16 or
         opn16.data | length != 0
+
+- name: Testing Rules - Advanced Mode
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    ansibleguy.opnsense.rule:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+      match_fields: ['description']
+
+  tasks:
+    - name: Adding 1 - failing because of invalid value
+      ansibleguy.opnsense.rule:
+        tcp_flags: syn
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+      ignore_errors: true
+
+    - name: Adding Filter
+      ansibleguy.opnsense.rule:
+        protocol: TCP
+        allow_opts: true
+        tcp_flags: syn
+        tcp_flags_clear: ack
+        description: 'ANSIBLE_TEST_4_1'
+
+    - name: Updating Filter - nothing changed
+      ansibleguy.opnsense.rule:
+        protocol: TCP
+        allow_opts: true
+        tcp_flags: syn
+        tcp_flags_clear: ack
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        opn1.changed
+      when: not ansible_check_mode
+
+    - name: Updating Stateful firewall
+      ansibleguy.opnsense.rule:
+        protocol: TCP
+        state_type: sloppy
+        state_policy: floating
+        state_timeout: 42
+        max_src_nodes: 43
+        max_src_states: 44
+        max_src_conn: 45
+        max_src_conn_rate: 46
+        max_src_conn_rates: 47
+        overload: virusprot
+        adaptive_start: 48
+        adaptive_end: 99
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Updating Stateful firewall - nothing changed
+      ansibleguy.opnsense.rule:
+        protocol: TCP
+        state_type: sloppy
+        state_policy: floating
+        state_timeout: 42
+        max_src_nodes: 43
+        max_src_states: 44
+        max_src_conn: 45
+        max_src_conn_rate: 46
+        max_src_conn_rates: 47
+        overload: virusprot
+        adaptive_start: 48
+        adaptive_end: 99
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        opn3.changed
+      when: not ansible_check_mode
+
+    - name: Updating Source Routing firewall
+      ansibleguy.opnsense.rule:
+        gateway: TEST-GW
+        replyto: TEST-GW
+        disable_replyto: true
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        not opn4.changed
+
+    - name: Updating Source Routing - nothing changed
+      ansibleguy.opnsense.rule:
+        gateway: TEST-GW
+        replyto: TEST-GW
+        disable_replyto: true
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        opn5.changed
+      when: not ansible_check_mode
+
+    - name: Updating Internal tagging
+      ansibleguy.opnsense.rule:
+        tagged: ansible
+        tag: ansible
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        not opn6.changed
+
+    - name: Updating Internal tagging - nothing changed
+      ansibleguy.opnsense.rule:
+        tagged: ansible
+        tag: ansible
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        opn7.changed
+      when: not ansible_check_mode
+
+    - name: Updating Priority
+      ansibleguy.opnsense.rule:
+        prio: 1
+        set_prio: 2
+        set_prio_low: 3
+        tos: af42
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        not opn8.changed
+
+    - name: Updating Priority - nothing changed
+      ansibleguy.opnsense.rule:
+        prio: 1
+        set_prio: 2
+        set_prio_low: 3
+        tos: af42
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        opn9.changed
+      when: not ansible_check_mode
+
+    - name: Updating Internal tagging
+      ansibleguy.opnsense.rule:
+        tagged: ansible
+        tag: ansible
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn10
+      failed_when: >
+        opn10.failed or
+        not opn10.changed
+
+    - name: Updating Internal tagging - nothing changed
+      ansibleguy.opnsense.rule:
+        tagged: ansible
+        tag: ansible
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn11
+      failed_when: >
+        opn11.failed or
+        opn11.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.rule:
+        description: "{{ item }}"
+        state: 'absent'
+      diff: false
+      loop:
+        - 'ANSIBLE_TEST_4_1'

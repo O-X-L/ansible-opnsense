@@ -24,6 +24,8 @@
           ANSIBLE_TEST_2_2:
           ANSIBLE_TEST_2_3:
           ANSIBLE_TEST_2_4:
+          ANSIBLE_TEST_2_5:
+          ANSIBLE_TEST_2_6:
         state: 'absent'
       register: opn1
       failed_when: >
@@ -138,6 +140,59 @@
       failed_when: not opn6.failed
       when: not ansible_check_mode
 
+    - name: Adding 3 - Advanced Mode
+      ansibleguy.opnsense.rule_multi:
+        rules:
+          ANSIBLE_TEST_2_5:
+            allow_opts: true
+            tcp_flags: syn
+            tcp_flags_clear: ack
+            protocol: 'TCP'
+          ANSIBLE_TEST_2_6:
+            protocol: TCP
+            state_type: sloppy
+            state_policy: floating
+            state_timeout: 42
+            max_src_nodes: 43
+            max_src_states: 44
+            max_src_conn: 45
+            max_src_conn_rate: 46
+            max_src_conn_rates: 47
+            overload: virusprot
+            adaptive_start: 48
+            adaptive_end: 99
+      register: opn10
+      failed_when: >
+        opn10.failed or
+        not opn10.changed
+
+    - name: Changing 3 - Advanced Mode - not changed
+      ansibleguy.opnsense.rule_multi:
+        rules:
+          ANSIBLE_TEST_2_5:
+            allow_opts: true
+            tcp_flags: syn
+            tcp_flags_clear: ack
+            protocol: 'TCP'
+          ANSIBLE_TEST_2_6:
+            protocol: TCP
+            state_type: sloppy
+            state_policy: floating
+            state_timeout: 42
+            max_src_nodes: 43
+            max_src_states: 44
+            max_src_conn: 45
+            max_src_conn_rate: 46
+            max_src_conn_rates: 47
+            overload: virusprot
+            adaptive_start: 48
+            adaptive_end: 99
+      when: not ansible_check_mode
+      register: opn11
+      failed_when: >
+        opn11.failed or
+        opn11.changed
+
     # noting to validate..
     # - name: Fail on client-side validation
     #   ansibleguy.opnsense.rule_multi:
@@ -166,7 +221,7 @@
       register: opn4
       failed_when: >
         'data' not in opn4 or
-        opn4.data | length != 4
+        opn4.data | length != 6
       when: not ansible_check_mode
 
     - name: Removing
@@ -176,6 +231,8 @@
           ANSIBLE_TEST_2_2:
           ANSIBLE_TEST_2_3:
           ANSIBLE_TEST_2_4:
+          ANSIBLE_TEST_2_5:
+          ANSIBLE_TEST_2_6:
         state: 'absent'
 
     - name: Checking cleanup
