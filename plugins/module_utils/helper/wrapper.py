@@ -10,7 +10,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.utils i
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import diff_remove_empty
 
 
-def single_module_process(instance: BaseModule):
+def _single_module_process(instance: BaseModule):
     instance.check()
     instance.process()
     if 'reload' in instance.m.params and instance.r['changed'] and instance.m.params['reload']:
@@ -55,6 +55,6 @@ def module_multi_wrapper(
 def module_wrapper(instance: BaseModule):
     if instance.m.params['profiling'] or instance.m.params['debug']:
         module_name = inspect_getfile(inspect_stack()[1][0]).rsplit('/', 1)[1].rsplit('.', 1)[0]
-        return profiler(check=single_module_process, module_name=module_name, kwargs={'instance': instance})
+        return profiler(check=_single_module_process, module_name=module_name, kwargs={'instance': instance})
 
-    return single_module_process(instance)
+    return _single_module_process(instance)
