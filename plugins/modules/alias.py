@@ -12,12 +12,13 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import \
+        module_wrapper, is_multi_module_call, module_multi_wrapper
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
         RELOAD_MOD_ARG_DEF_FALSE, build_multi_mod_args, OPN_MOD_ARGS, STATE_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.alias import Alias
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.multi import MultiModule
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import ensure_list
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import builtin_alias
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
@@ -84,6 +85,10 @@ def _multi_callback_update_existing(entry_cnf: dict, cache: dict) -> dict:
     return cache
 
 
+def _multi_callback_purge_exclude(entry_cnf: dict) -> bool:
+    return builtin_alias(entry_cnf['name'])
+
+
 def run_module():
     module_args = dict(
         **RELOAD_MOD_ARG_DEF_FALSE,  # default-true takes pretty long sometimes (urltables and so on)
@@ -108,20 +113,19 @@ def run_module():
         supports_check_mode=True,
     )
 
-    if len(module.params['multi']) > 0:
-        mm = MultiModule(
+    if is_multi_module_call(module):
+        module_multi_wrapper(
             module=module,
             result=result,
-            kind='alias',
             obj=Alias,
-            entry_args=module_args['multi']['options'],
+            kind='alias',
+            module_args=module_args,
             callback_build=_multi_callback_build,
             # callback_get_existing=_multi_callback_get_existing,
             # callback_set_existing=_multi_callback_set_existing,
             callback_update_existing=_multi_callback_update_existing,
+            callback_purge_exclude=_multi_callback_purge_exclude,
         )
-        # todo: implement calling via module_wrapper
-        mm.process()
 
     else:
         module_wrapper(Alias(module=module, result=result))

@@ -58,30 +58,6 @@ BUILTIN_ALIASES = [
 ]
 BUILTIN_INTERFACE_ALIASES_REG = '^__.*?_network$'  # auto-added interface aliases
 
-PURGE_MOD_ARGS = dict(
-    action=dict(
-        type='str', required=False, default='delete', choices=['disable', 'delete'],
-        description='What to do with the matched items'
-    ),
-    filters=dict(
-        type='dict', required=False, default={},
-        description='Field-value pairs to filter on - per example: {param1: test} '
-                    "- to only purge items that have 'param1' set to 'test'"
-    ),
-    filter_invert=dict(
-        type='bool', required=False, default=False,
-        description='If true - it will purge all but the filtered ones'
-    ),
-    filter_partial=dict(
-        type='bool', required=False, default=False,
-        description="If true - the filter will also match if it is just a partial value-match"
-    ),
-    force_all=dict(
-        type='bool', required=False, default=False,
-        description='If set to true and neither items, nor filters are provided - all items will be purged'
-    ),
-)
-
 STATE_ONLY_MOD_ARG = dict(
     state=dict(type='str', required=False, choices=['present', 'absent'], default='present'),
 )
@@ -137,7 +113,12 @@ def build_multi_mod_args(entry: dict, aliases: list = None, description: str = N
             description=description,
             elements='dict', options={**opn_args_multi, **RELOAD_MOD_ARG_DEF_FALSE, **entry},
         ),
-        multi_control = dict(
+        multi_purge=dict(
+            type='list', required=False, default=[], aliases=['purge', 'many_purge'],
+            description='Provide multiple entries to purge (delete or disable)',
+            elements='dict', options={**opn_args_multi, **RELOAD_MOD_ARG_DEF_FALSE, **entry},
+        ),
+        multi_control=dict(
             type='dict', required=False, default={}, aliases=['multi_ctrl', 'mc'],
             description=description,
             options=dict(
@@ -158,6 +139,27 @@ def build_multi_mod_args(entry: dict, aliases: list = None, description: str = N
                     description='Fail module if a single entry fails to be processed.'
                 ),
                 output_info=dict(type='bool', required=False, default=False, aliases=['info']),
+                purge_action=dict(
+                    type='str', required=False, default='delete', choices=['disable', 'delete'],
+                    description='What to do with the matched items'
+                ),
+                purge_filter=dict(
+                    type='dict', required=False, default={}, aliases=['purge_filters'],
+                    description='Field-value pairs to filter on - per example: {param1: test} '
+                                "- to only purge items that have 'param1' set to 'test'"
+                ),
+                purge_filter_invert=dict(
+                    type='bool', required=False, default=False,
+                    description='If true - it will purge all but the filtered ones'
+                ),
+                purge_filter_partial=dict(
+                    type='bool', required=False, default=False,
+                    description="If true - the filter will also match if it is just a partial value-match"
+                ),
+                purge_all=dict(
+                    type='bool', required=False, default=False,
+                    description='If set to true and neither items, nor filters are provided - all items will be purged'
+                ),
             ),
         ),
     )
