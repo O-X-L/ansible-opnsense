@@ -190,34 +190,28 @@ class MultiModule:
 
     # PURGE METHODS
     def _entry_matches_purge_filter(self, entry_cnf: dict) -> bool:
-        to_purge = True
-
         for filter_key, filter_value in self.mc['purge_filter'].items():
             if self.mc['purge_filter_invert']:
                 # purge all except matches
                 if self.mc['purge_filter_partial']:
                     if str(entry_cnf[filter_key]).find(filter_value) != -1:
-                        to_purge = False
-                        break
+                        return False
 
                 else:
                     if entry_cnf[filter_key] == filter_value:
-                        to_purge = False
-                        break
+                        return False
 
             else:
                 # purge only matches
                 if self.mc['purge_filter_partial']:
                     if str(entry_cnf[filter_key]).find(filter_value) == -1:
-                        to_purge = False
-                        break
+                        return False
 
                 else:
                     if entry_cnf[filter_key] != filter_value:
-                        to_purge = False
-                        break
+                        return False
 
-        return to_purge
+        return True
 
     def _entry_in_purge_list(self, entry_cnf: dict) -> bool:
         for purge_entry_cnf in self.p['multi_purge']:
