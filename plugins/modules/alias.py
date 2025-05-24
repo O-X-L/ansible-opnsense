@@ -97,7 +97,6 @@ def run_module():
             entry=_build_alias_args(multi=True),
             aliases=['aliases']
         ),
-        # todo: require either name or multi
     )
 
     result = dict(
@@ -111,6 +110,12 @@ def run_module():
     module = AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
+        mutually_exclusive=[
+            ('name', 'multi'), ('name', 'multi_purge'), ('name', 'multi_control.purge_all')
+        ],
+        required_one_of=[
+            ('name', 'multi', 'multi_purge', 'multi_control.purge_all'),
+        ],
     )
 
     if is_multi_module_call(module):

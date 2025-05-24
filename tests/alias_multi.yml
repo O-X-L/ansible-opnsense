@@ -13,6 +13,11 @@
       target: 'alias'
 
   tasks:
+    - name: Fail required args (1)
+      ansibleguy.opnsense.alias:
+      register: opn8
+      failed_when: not opn8.failed
+
     - name: Removing - do not exist
       ansibleguy.opnsense.alias:
         aliases:

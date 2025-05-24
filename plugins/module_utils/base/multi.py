@@ -89,14 +89,7 @@ class MultiModule:
         else:
             error_func = self.m.warn
 
-        validation = ModuleArgumentSpecValidator(
-            self.mod_entry_args,
-            self.m.mutually_exclusive,
-            self.m.required_together,
-            self.m.required_one_of,
-            self.m.required_if,
-            self.m.required_by,
-         ).validate(parameters=entry)
+        validation = ModuleArgumentSpecValidator(self.mod_entry_args).validate(parameters=entry)
 
         try:
             validation_error = validation.errors[0]

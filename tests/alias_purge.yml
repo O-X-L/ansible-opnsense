@@ -13,6 +13,21 @@
       target: 'alias'
 
   tasks:
+    - name: Fail required args (1)
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_action: 'disable'
+      register: opn12
+      failed_when: not opn12.failed
+
+    - name: Fail required args (2)
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_filter:
+            type: 'port'
+      register: opn13
+      failed_when: not opn13.failed
+
     - name: Adding 1
       ansibleguy.opnsense.alias:
         multi:
