@@ -133,12 +133,38 @@
         not opn7.changed
       when: not ansible_check_mode
 
-    - name: Listing
-      ansibleguy.opnsense.list:
+    - name: Adding 3 with ports
+      ansibleguy.opnsense.interface_vxlan:
+        id: 102
+        local: '192.168.4.1'
+        local_port: 10800
+        remote: '192.168.5.1'
+        remote_port: 10801
+        interface: 'lan'
       register: opn8
       failed_when: >
-        'data' not in opn8 or
-        opn8.data | length != 1
+        opn8.failed or
+        not opn8.changed
+
+    - name: Change 3 ports
+      ansibleguy.opnsense.interface_vxlan:
+        id: 102
+        local: '192.168.4.1'
+        local_port: 10900
+        remote: '192.168.5.1'
+        remote_port: 10901
+        interface: 'lan'
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn10
+      failed_when: >
+        'data' not in opn10 or
+        opn10.data | length != 2
       when: not ansible_check_mode
 
     - name: Cleanup
@@ -148,6 +174,7 @@
       loop:
         - 100
         - 101
+        - 102
       when: not ansible_check_mode
 
     - name: Listing

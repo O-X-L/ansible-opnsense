@@ -97,7 +97,9 @@ ansibleguy.opnsense.interface_vxlan
     "id","integer","true","\-","vxlanid, vni","The unique ID of the VxLAN"
     "interface","string","false for state changes, else true","\-","vxlandev, device, int","Optionally set an interface to bind the VxLAN to. You must provide the network port as shown in 'Interface - Assignments - Interface ID (in brackets)'"
     "local","string","false for state changes, else true","\-","source_address, source_ip, vxlanlocal, source, src","Source IP for the VxLAN tunnel. The source address used in the encapsulating IPv4/IPv6 header. The address should already be assigned to an existing interface. When the interface is configured in unicast mode, the listening socket is bound to this address."
+    "local_port","integer","false","\-","source_port, vxlanlocalport, srcport","Define the port to be used"
     "remote","string","false","\-","remote_address, remote_ip, destination, vxlanremote, dest","Remote IP for the VxLAN tunnel - if unicast is used. The interface can be configured in a unicast, or point-to-point, mode to create a tunnel between two hosts. This is the IP address of the remote end of the tunnel."
+    "remote_port","integer","false","\-","destination_port, vxlanremoteport, destport","Define the port to be used"
     "group","string","false","\-","multicast_group, multicast_address, multicast_ip, vxlangroup","Remote IP for the VxLAN tunnel - if multicast is used. The interface can be configured in a multicast mode to create a virtual network of hosts. This is the IP multicast group address the interface will join."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
