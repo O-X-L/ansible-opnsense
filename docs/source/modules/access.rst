@@ -71,8 +71,8 @@ ansibleguy.opnsense.privilege
     :widths: 15 10 10 10 10 45
 
     "id","string","true","\-","privilege, priv, p","Privilege ID"
-    "user","list","false","\-","u","Users to manage priveleges of"
-    "group","list","false","\-","g","Groups to manage priveleges of"
+    "user","list","false","\-","u","Users to manage privileges of"
+    "group","list","false","\-","g","Groups to manage privileges of"
     "state","string","false","present","\-","State of the privilege. 'present' grants the privilege to this users and groups, 'absent' revokes it and 'pure' ensures only this users and groups have this privilege. One of: 'present', 'absent', 'pure'"
 
 .. include:: ../_include/param_basic.rst
@@ -102,7 +102,9 @@ Examples
           ansibleguy.opnsense.user:
             name: alice
             # expires:
-            # authorized_keys:
+            # authorized_keys: |
+            #   ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIArgYhpejdvJADM3ZWSx7KSA0eBxJ6Y43kWIA5mX95jg alice@host1
+            #   ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDxTK7kBm3sAQMh2T4ZJdXYCBDYdDVwXMwPvSeFdgZko alice@host2
             # shell: /bin/sh
             # password:
             # update_password: always
