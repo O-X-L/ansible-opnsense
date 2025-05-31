@@ -37,7 +37,7 @@ def run_module():
         ),
         authorized_keys=dict(
             type='str', required=False,
-            description='Expiration date',
+            description='SSH authorized keys',
         ),
         shell=dict(
             type='str', required=False, choises=['/bin/csh', '/bin/sh', '/bin/tcsh'],
