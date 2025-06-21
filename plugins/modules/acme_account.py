@@ -78,7 +78,7 @@ def run_module():
         argument_spec=module_args,
         supports_check_mode=True,
         required_if=[
-            ('ca', 'custom', ('custom_ca')),
+            ('ca', 'custom', ('custom_ca',)),
         ],
     )
 
