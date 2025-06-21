@@ -107,12 +107,23 @@
         not opn6.changed
       when: not ansible_check_mode
 
+    - name: Adding 2
+      ansibleguy.opnsense.acme_account:
+        name: 'ANSIBLE_TEST_1_2'
+        ca: custom
+        email: example@example.com
+        custom_ca: 'https://example.com/acme/directory'
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+
     - name: Listing
       ansibleguy.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
-        opn8.data | length != 1
+        opn8.data | length != 2
       when: not ansible_check_mode
 
     - name: Cleanup
@@ -121,6 +132,7 @@
         state: 'absent'
       loop:
         - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
       when: not ansible_check_mode
 
     - name: Listing
