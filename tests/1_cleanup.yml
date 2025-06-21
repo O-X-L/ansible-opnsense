@@ -774,6 +774,7 @@
         state: 'absent'
       loop:
         - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_DUMMY_1_1'
 
     - name: Cleanup ACME Action
