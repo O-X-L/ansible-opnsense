@@ -65,7 +65,7 @@ class SNat(BaseModule):
         self.b.find(match_fields=self.p['match_fields'])
 
         if self.p['state'] == 'present':
-            validate_values(module=self.m, cnf=self.p, error_func=self.m.fail_json)
+            validate_values(module=self.m, cnf=self.p, error_func=self.m.fail_json, kind='nat')
 
         self._base_check()
 
