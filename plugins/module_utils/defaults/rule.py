@@ -110,8 +110,8 @@ RULE_MOD_ARGS = dict(
         choices=['in', 'out']
     ),
     ip_protocol=dict(
-        type='str', required=False, choices=['inet', 'inet6'],
-        default=RULE_DEFAULTS['ip_protocol'], description="IPv4 = 'inet', IPv6 = 'inet6'",
+        type='str', required=False, choices=['inet', 'inet6', 'inet46'],
+        default=RULE_DEFAULTS['ip_protocol'], description="IPv4 = 'inet', IPv6 = 'inet6', 'IPv4+6 = 'inet46'",
         aliases=RULE_MOD_ARG_ALIASES['ip_protocol'],
     ),
     protocol=dict(
