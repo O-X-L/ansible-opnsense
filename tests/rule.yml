@@ -144,7 +144,17 @@
       failed_when: >
         opn21.failed or
         not opn21.changed
-      when: not ansible_check_mode
+
+    - name: Test TCP/UDP inet46
+      ansibleguy.opnsense.rule:
+        destination_port: 69
+        ip_protocol: 'inet46'
+        protocol: 'TCP/UDP'
+        description: 'ANSIBLE_TEST_1_14'
+      register: opn22
+      failed_when: >
+        opn22.failed or
+        not opn22.changed
 
     - name: Cleanup
       ansibleguy.opnsense.rule:
@@ -158,6 +168,7 @@
         - 'ANSIBLE_TEST_1_11'
         - 'ANSIBLE_TEST_1_12'
         - 'ANSIBLE_TEST_1_13'
+        - 'ANSIBLE_TEST_1_14'
 
 - name: Testing Rules - aliases
   hosts: localhost
