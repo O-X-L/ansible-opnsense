@@ -48,7 +48,7 @@ Known errors
 ************
 
 - 'option not in list' => an invalid option was provided for this parameter
-- 'port only allowed for tcp/udp' => any protocol except 'TCP' or 'UDP' provided
+- 'port only allowed for tcp/udp' => any protocol except 'TCP', 'UDP' or 'TCP/UDP' provided
 - 'ConnectionError: Got timeout calling' => you can override the used timeout manually:
 
   Per example:
