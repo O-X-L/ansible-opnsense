@@ -9,11 +9,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 
 class SubnetV4(BaseModule):
     CMDS = {
-        'add': 'addSubnet',
-        'del': 'delSubnet',
-        'set': 'setSubnet',
-        'search': 'searchSubnet',
-        'detail': 'getSubnet',
+        'add': 'add_subnet',
+        'del': 'del_subnet',
+        'set': 'set_subnet',
+        'search': 'search_subnet',
+        'detail': 'get_subnet',
     }
     API_KEY = 'subnet4'
     API_KEY_PATH = 'subnet4'

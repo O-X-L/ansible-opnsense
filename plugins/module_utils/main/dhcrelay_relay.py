@@ -10,11 +10,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class DhcRelayRelay(BaseModule):
     FIELD_ID = 'interface'
     CMDS = {
-        'add': 'addRelay',
-        'del': 'delRelay',
-        'set': 'setRelay',
+        'add': 'add_relay',
+        'del': 'del_relay',
+        'set': 'set_relay',
         'search': 'get',
-        'toggle': 'toggleRelay',
+        'toggle': 'toggle_relay',
     }
     API_KEY_PATH = 'dhcrelay.relays'
     API_KEY_PATH_REQ = 'relay'

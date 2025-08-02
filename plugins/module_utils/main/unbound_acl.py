@@ -10,11 +10,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Acl(BaseModule):
     FIELD_ID = 'name'
     CMDS = {
-        'add': 'addAcl',
-        'del': 'delAcl',
-        'set': 'setAcl',
+        'add': 'add_acl',
+        'del': 'del_acl',
+        'set': 'set_acl',
         'search': 'get',
-        'toggle': 'toggleAcl',
+        'toggle': 'toggle_acl',
     }
     API_KEY_PATH = 'unbound.acls.acl'
     API_MOD = 'unbound'

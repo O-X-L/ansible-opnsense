@@ -11,12 +11,12 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validat
 class Policy(BaseModule):
     FIELD_ID = 'description'
     CMDS = {
-        'add': 'addPolicy',
-        'del': 'delPolicy',
-        'set': 'setPolicy',
-        'search': 'searchPolicy',
-        'detail': 'getPolicy',
-        'toggle': 'togglePolicy',
+        'add': 'add_policy',
+        'del': 'del_policy',
+        'set': 'set_policy',
+        'search': 'search_policy',
+        'detail': 'get_policy',
+        'toggle': 'toggle_policy',
     }
     API_KEY = 'policy'
     API_KEY_PATH = f'policies.{API_KEY}'

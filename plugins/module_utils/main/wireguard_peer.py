@@ -12,12 +12,12 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validat
 class Peer(BaseModule):
     FIELD_ID = 'name'
     CMDS = {
-        'add': 'addClient',
-        'del': 'delClient',
-        'set': 'setClient',
-        'search': 'searchClient',
-        'detail': 'getClient',
-        'toggle': 'toggleClient',
+        'add': 'add_client',
+        'del': 'del_client',
+        'set': 'set_client',
+        'search': 'search_client',
+        'detail': 'get_client',
+        'toggle': 'toggle_client',
     }
     API_KEY_PATH = 'client'
     API_MOD = 'wireguard'

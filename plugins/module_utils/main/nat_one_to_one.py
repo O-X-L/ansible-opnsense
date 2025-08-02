@@ -10,11 +10,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class OneToOne(BaseModule):
     FIELD_ID = 'name'
     CMDS = {
-        'add': 'addRule',
-        'del': 'delRule',
-        'set': 'setRule',
+        'add': 'add_rule',
+        'del': 'del_rule',
+        'set': 'set_rule',
         'search': 'get',
-        'toggle': 'toggleRule',
+        'toggle': 'toggle_rule',
     }
     API_KEY_PATH = 'filter.onetoone.rule'
     API_MOD = 'firewall'

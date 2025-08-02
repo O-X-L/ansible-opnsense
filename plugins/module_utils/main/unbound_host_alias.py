@@ -10,11 +10,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 
 class Alias(BaseModule):
     CMDS = {
-        'add': 'addHostAlias',
-        'del': 'delHostAlias',
-        'set': 'setHostAlias',
+        'add': 'add_host_alias',
+        'del': 'del_host_alias',
+        'set': 'set_host_alias',
         'search': 'get',
-        'toggle': 'toggleHostAlias',
+        'toggle': 'toggle_host_alias',
     }
     API_KEY_PATH = 'unbound.aliases.alias'
     API_MOD = 'unbound'
