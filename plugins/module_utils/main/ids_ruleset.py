@@ -11,9 +11,9 @@ class Ruleset(BaseModule):
     FIELD_PK = 'filename'
     FIELD_ID = 'description'
     CMDS = {
-        'set': 'setRuleset',
-        'search': 'listRulesets',
-        'toggle': 'toggleRuleset',
+        'set': 'set_ruleset',
+        'search': 'list_rulesets',
+        'toggle': 'toggle_ruleset',
     }
     API_KEY_PATH = 'rulesets.ruleset'
     API_MOD = 'ids'

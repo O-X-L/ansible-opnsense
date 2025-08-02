@@ -10,11 +10,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class KeyPair(BaseModule):
     FIELD_ID = 'name'
     CMDS = {
-        'add': 'addItem',
-        'del': 'delItem',
-        'set': 'setItem',
-        'search': 'searchItem',
-        'detail': 'getItem',
+        'add': 'add_item',
+        'del': 'del_item',
+        'set': 'set_item',
+        'search': 'search_item',
+        'detail': 'get_item',
     }
     API_KEY_PATH = 'keyPair'
     API_MOD = 'ipsec'

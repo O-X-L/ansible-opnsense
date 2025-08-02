@@ -11,11 +11,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 
 class Domain(BaseModule):
     CMDS = {
-        'add': 'addDomainOverride',
-        'del': 'delDomainOverride',
-        'set': 'setDomainOverride',
+        'add': 'add_domain_override',
+        'del': 'del_domain_override',
+        'set': 'set_domain_override',
         'search': 'get',
-        'toggle': 'toggleDomainOverride',
+        'toggle': 'toggle_domain_override',
     }
     API_KEY_PATH = 'unbound.domains.domain'
     API_MOD = 'unbound'

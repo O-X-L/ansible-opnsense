@@ -11,11 +11,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 
 class Syslog(BaseModule):
     CMDS = {
-        'add': 'addDestination',
-        'del': 'delDestination',
-        'set': 'setDestination',
+        'add': 'add_destination',
+        'del': 'del_destination',
+        'set': 'set_destination',
         'search': 'get',
-        'toggle': 'toggleDestination',
+        'toggle': 'toggle_destination',
     }
     API_KEY_PATH = 'syslog.destinations.destination'
     API_MOD = 'syslog'

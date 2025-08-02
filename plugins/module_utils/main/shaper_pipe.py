@@ -10,11 +10,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Pipe(BaseModule):
     FIELD_ID = 'description'
     CMDS = {
-        'add': 'addPipe',
-        'del': 'delPipe',
-        'set': 'setPipe',
+        'add': 'add_pipe',
+        'del': 'del_pipe',
+        'set': 'set_pipe',
         'search': 'get',
-        'toggle': 'togglePipe',
+        'toggle': 'toggle_pipe',
     }
     API_KEY_PATH = 'ts.pipes.pipe'
     API_MOD = 'trafficshaper'

@@ -10,11 +10,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Service(BaseModule):
     FIELD_ID = 'name'
     CMDS = {
-        'add': 'addService',
-        'del': 'delService',
-        'set': 'setService',
+        'add': 'add_service',
+        'del': 'del_service',
+        'set': 'set_service',
         'search': 'get',
-        'toggle': 'toggleService',
+        'toggle': 'toggle_service',
     }
     API_KEY_PATH = 'monit.service'
     API_MOD = 'monit'

@@ -9,11 +9,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validat
 
 class Alert(BaseModule):
     CMDS = {
-        'add': 'addAlert',
-        'del': 'delAlert',
-        'set': 'setAlert',
+        'add': 'add_alert',
+        'del': 'del_alert',
+        'set': 'set_alert',
         'search': 'get',
-        'toggle': 'toggleAlert',
+        'toggle': 'toggle_alert',
     }
     API_KEY_PATH = 'monit.alert'
     API_MOD = 'monit'

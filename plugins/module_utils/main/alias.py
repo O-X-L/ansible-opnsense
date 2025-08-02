@@ -14,9 +14,9 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Alias(BaseModule):
     FIELD_ID = 'name'
     CMDS = {
-        'add': 'addItem',
-        'del': 'delItem',
-        'set': 'setItem',
+        'add': 'add_item',
+        'del': 'del_item',
+        'set': 'set_item',
         'search': 'get',
         'toggle': 'toggleItem',
     }

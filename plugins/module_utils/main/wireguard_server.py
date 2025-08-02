@@ -11,12 +11,12 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Server(BaseModule):
     FIELD_ID = 'name'
     CMDS = {
-        'add': 'addServer',
-        'del': 'delServer',
-        'set': 'setServer',
+        'add': 'add_server',
+        'del': 'del_server',
+        'set': 'set_server',
         'search': 'get',
-        'detail': 'getServer',
-        'toggle': 'toggleserver',
+        'detail': 'get_server',
+        'toggle': 'toggle_server',
     }
     API_KEY = 'server'
     API_KEY_PATH = f'server.servers.{API_KEY}'

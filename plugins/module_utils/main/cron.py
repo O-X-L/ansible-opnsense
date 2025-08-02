@@ -10,11 +10,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class CronJob(BaseModule):
     FIELD_ID = 'description'
     CMDS = {
-        'add': 'addJob',
-        'del': 'delJob',
-        'set': 'setJob',
+        'add': 'add_job',
+        'del': 'del_job',
+        'set': 'set_job',
         'search': 'get',
-        'toggle': 'toggleJob',
+        'toggle': 'toggle_job',
     }
     API_KEY_PATH = 'job.jobs.job'
     API_MOD = 'cron'
