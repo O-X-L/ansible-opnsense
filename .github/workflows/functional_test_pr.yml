@@ -43,3 +43,15 @@ jobs:
           fi
         shell: bash
 
+      - name: Test Connection
+        if: ${{ steps.modules_to_test.outputs.module_count != '0' }}
+        run: |
+          https_proxy=${{ secrets.CI_TEST_PROXY }} curl --fail-with-body https://${{ vars.CI_TEST_FIREWALL_1 }} --insecure > /tmp/test.html
+
+          if grep -q 'DNS Rebind attack' < /tmp/test.html
+          then
+            echo 'ERROR: Firewall Hostname ${{ vars.CI_TEST_FIREWALL_1 }} not configured!'
+            exit 1
+          fi
+        shell: bash
+
