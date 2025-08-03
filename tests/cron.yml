@@ -12,6 +12,9 @@
     ansibleguy.opnsense.list:
       target: 'cron'
 
+  environment:
+    https_proxy: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     # NOTE: one exists because of IDS
     - name: Listing
