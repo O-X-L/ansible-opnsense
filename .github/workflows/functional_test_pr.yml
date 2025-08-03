@@ -34,7 +34,7 @@ jobs:
 
           count="$(cat /tmp/changed_modules.txt | wc -l)"
 
-          echo "count=${count}" >> $GITHUB_OUTPUT
+          echo "::set-output name=count::${count}"
           if [[ "$count" == "0" ]]
           then
             echo 'INFO: NO MODULES REQUIRE TESTING!'

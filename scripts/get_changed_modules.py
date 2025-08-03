@@ -64,7 +64,6 @@ def main(file_changes: (Path, str), file_out: (Path, str)):
         if len(modules) == valid_modules:
             break
 
-        print(path, path in PATH_ALL)
         matched = False
         if path in PATH_ALL:
             modules = valid_modules
