@@ -55,10 +55,14 @@ jobs:
           fi
         shell: bash
 
+      - name: Install requirements
+        if: ${{ steps.modules_to_test.outputs.count != 0 }}
+        run: pip install -r requirements_test.txt > /dev/null
+        shell: bash
+
       - name: Running Integration-Tests
         if: ${{ steps.modules_to_test.outputs.count != 0 }}
         run: |
-          pip install -r requirements_test.txt > /dev/null
           echo "${{ secrets.CI_TEST_API_CREDENTIALS }}" > /tmp/api_credentials.txt
           chmod 600 /tmp/api_credentials.txt
           bash scripts/test_pr.sh | tee -a /tmp/test.log
