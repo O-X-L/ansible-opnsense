@@ -12,7 +12,7 @@ export ANSIBLE_INVENTORY_UNPARSED_WARNING=False
 export ANSIBLE_LOCALHOST_WARNING=False
 export ANSIBLE_NO_TARGET_SYSLOG=True
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")/.."
 LOCAL_COLLECTION="$(pwd)"
 VERBOSITY=''
 export SUCCEEDED=''
