@@ -8,11 +8,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Queue(BaseModule):
     FIELD_ID = 'description'
     CMDS = {
-        'add': 'addQueue',
-        'del': 'delQueue',
-        'set': 'setQueue',
+        'add': 'add_queue',
+        'del': 'del_queue',
+        'set': 'set_queue',
         'search': 'get',
-        'toggle': 'toggleQueue',
+        'toggle': 'toggle_queue',
     }
     API_KEY_PATH = 'ts.queues.queue'
     API_MOD = 'trafficshaper'

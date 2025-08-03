@@ -8,12 +8,12 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Rule(BaseModule):
     FIELD_ID = 'description'
     CMDS = {
-        'add': 'addUserRule',
-        'set': 'setUserRule',
-        'del': 'delUserRule',
-        'search': 'searchUserRule',
-        'detail': 'getUserRule',
-        'toggle': 'toggleUserRule',
+        'add': 'add_user_rule',
+        'set': 'set_user_rule',
+        'del': 'del_user_rule',
+        'search': 'search_user_rule',
+        'detail': 'get_user_rule',
+        'toggle': 'toggle_user_rule',
     }
     API_KEY = 'rule'
     API_KEY_PATH = f'userDefinedRules.{API_KEY}'

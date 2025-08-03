@@ -12,11 +12,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Gw(BaseModule):
     FIELD_ID = 'name'
     CMDS = {
-        'add': 'addGateway',
-        'del': 'delGateway',
-        'set': 'setGateway',
+        'add': 'add_gateway',
+        'del': 'del_gateway',
+        'set': 'set_gateway',
         'search': 'get',
-        'toggle': 'toggleGateway',
+        'toggle': 'toggle_gateway',
     }
     API_KEY_PATH = 'gateways.gateway_item'
     API_MOD = 'routing'

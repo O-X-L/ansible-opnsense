@@ -10,9 +10,9 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Lagg(BaseModule):
     FIELD_ID = 'device'
     CMDS = {
-        'add': 'addItem',
-        'del': 'delItem',
-        'set': 'setItem',
+        'add': 'add_item',
+        'del': 'del_item',
+        'set': 'set_item',
         'search': 'get',
     }
     API_KEY_PATH = 'lagg.lagg'

@@ -10,11 +10,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class ReservationV4(BaseModule):
     FIELD_ID = 'ip'
     CMDS = {
-        'add': 'addReservation',
-        'del': 'delReservation',
-        'set': 'setReservation',
-        'search': 'searchReservation',
-        'detail': 'getReservation',
+        'add': 'add_reservation',
+        'del': 'del_reservation',
+        'set': 'set_reservation',
+        'search': 'search_reservation',
+        'detail': 'get_reservation',
     }
     API_KEY_PATH = 'reservation'
     API_MOD = 'kea'

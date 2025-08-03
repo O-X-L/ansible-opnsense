@@ -13,11 +13,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 
 class Host(BaseModule):
     CMDS = {
-        'add': 'addHostOverride',
-        'del': 'delHostOverride',
-        'set': 'setHostOverride',
+        'add': 'add_host_override',
+        'del': 'del_host_override',
+        'set': 'set_host_override',
         'search': 'get',
-        'toggle': 'toggleHostOverride',
+        'toggle': 'toggle_host_override',
     }
     API_KEY = 'host'
     API_KEY_PATH = f'unbound.hosts.{API_KEY}'

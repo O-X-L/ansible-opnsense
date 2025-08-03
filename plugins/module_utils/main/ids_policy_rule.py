@@ -10,12 +10,12 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main im
 class Rule(BaseModule):
     FIELD_ID = 'sid'
     CMDS = {
-        'add': 'addPolicyRule',
-        'del': 'delPolicyRule',
-        'set': 'setPolicyRule',
-        'search': 'searchPolicyRule',
-        'detail': 'getPolicyRule',
-        'toggle': 'togglePolicyRule',
+        'add': 'add_policy_rule',
+        'del': 'del_policy_rule',
+        'set': 'set_policy_rule',
+        'search': 'search_policy_rule',
+        'detail': 'get_policy_rule',
+        'toggle': 'toggle_policy_rule',
     }
     API_KEY_PATH = 'policies.rule'
     API_MOD = 'ids'
