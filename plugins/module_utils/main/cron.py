@@ -14,7 +14,7 @@ class CronJob(BaseModule):
         'del': 'del_job',
         'set': 'set_job',
         'search': 'get',
-        'toggle': 'toggle_job',
+        'toggle': 'toggle_job', # test
     }
     API_KEY_PATH = 'job.jobs.job'
     API_MOD = 'cron'
