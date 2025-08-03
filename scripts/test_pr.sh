@@ -21,7 +21,7 @@ EXIT_CODE=0
 
 set -u
 
-source "$(dirname "$0")/test_prep.sh"  # shared between single/multi test
+source 'scripts/test_prep.sh'  # shared between single/multi test
 
 function run_test_soft() {
   module="$1"
