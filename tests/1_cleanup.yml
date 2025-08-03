@@ -10,7 +10,7 @@
       ssl_verify: false
 
   environment:
-    https_proxy: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
     - name: Cleanup Rules

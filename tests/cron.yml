@@ -13,7 +13,7 @@
       target: 'cron'
 
   environment:
-    HTTP_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
     # NOTE: one exists because of IDS

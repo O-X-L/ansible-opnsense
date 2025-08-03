@@ -38,14 +38,16 @@ class Session:
         if is_ip6(fw, strip_enclosure=False):
             fw = f"[{fw}]"
 
+        ssl_verify = ssl_verification(module=self.m)
         return httpx.Client(
             base_url=f"https://{fw}:{self.m.params['api_port']}/api",
             auth=(api_key, api_secret),
             timeout=httpx.Timeout(timeout=timeout, connect=2.0),
             transport=httpx.HTTPTransport(
-                verify=ssl_verification(module=self.m),
+                verify=ssl_verify,
                 retries=self.m.params['api_retries'],
             ),
+            verify=ssl_verify,
         )
 
     def get(self, cnf: dict) -> dict:
