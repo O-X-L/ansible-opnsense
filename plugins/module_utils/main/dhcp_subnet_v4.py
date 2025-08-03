@@ -79,21 +79,20 @@ class SubnetV4(BaseModule):
                 'v6_only_preferred': opts['v6_only_preferred'],
             }
 
-        else:
-            # search-call :'(
-            return {
-                **simple,
-                'dns': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['dns']}"],
-                'domain_search': entry['option_data.domain_search'],
-                'gateway': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['gateway']}"],
-                'routes': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['routes']}"],
-                'domain': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['domain']}"],
-                'ntp_servers': entry['option_data.ntp_servers'],
-                'time_servers': entry['option_data.time_servers'],
-                'tftp_server': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['tftp_server']}"],
-                'tftp_file': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['tftp_file']}"],
-                'v6_only_preferred': entry['option_data.v6_only_preferred'],
-            }
+        # search-call :'(
+        return {
+            **simple,
+            'dns': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['dns']}"],
+            'domain_search': entry['option_data.domain_search'],
+            'gateway': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['gateway']}"],
+            'routes': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['routes']}"],
+            'domain': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['domain']}"],
+            'ntp_servers': entry['option_data.ntp_servers'],
+            'time_servers': entry['option_data.time_servers'],
+            'tftp_server': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['tftp_server']}"],
+            'tftp_file': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['tftp_file']}"],
+            'v6_only_preferred': entry['option_data.v6_only_preferred'],
+        }
 
     def _build_request(self) -> dict:
         raw_request = self.b.build_request(ignore_fields=self.API_FIELDS_OPTIONS)
