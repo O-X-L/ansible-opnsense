@@ -6,7 +6,7 @@ TEST_FILE_MODULES = f'/tmp/ansible-opnsense-get-changed-modules-modules-{int(tim
 
 def _write_changes(changes: list[str]):
     with open(TEST_FILE_CHANGES, 'w', encoding='utf-8') as f:
-        f.write(' '.join(changes))
+        f.write('\n'.join(changes))
 
 
 def _read_changed_modules() -> list[str]:
@@ -137,6 +137,22 @@ def test_plugins_module_utils_defaults_mapping():
     m = _read_changed_modules()
     assert len(m) == 2
     assert m[0].startswith('openvpn_')
+
+
+def test_plugins_updated_tests():
+    _write_changes([
+        '.github/workflows/functional_test_pr.yml',
+        'tests/openvpn_server.py',
+        'tests/not-a-module.py',
+        'scripts/get_changed_modules.py',
+    ])
+
+    from get_changed_modules import main
+    main(TEST_FILE_CHANGES, TEST_FILE_MODULES)
+
+    m = _read_changed_modules()
+    assert len(m) == 1
+    assert m[0] == 'openvpn_server'
 
 
 def test_cleanup():
