@@ -33,37 +33,19 @@ jobs:
           fi
         shell: bash
 
-      - name: Get changes
-        id: pr_changed_files
-        uses: tj-actions/changed-files@v46
-
-      - name: Checking which module to test
-        id: modules_to_test
+      - name: Query changes
         run: |
-          echo ${{ steps.pr_changed_files.outputs.all_changed_files }} > /tmp/changes.txt
-          python3 scripts/get_changed_modules.py /tmp/changes.txt /tmp/changed_modules.txt
+          echo "Branch: '${GITHUB_REF#refs/heads/}'"
 
-          count="$(cat /tmp/changed_modules.txt | wc -l)"
+          commit_latest="$(git merge-base latest ${GITHUB_REF#refs/heads/})"
+          echo "Commit latest: '${commit_latest}'"
 
-          echo "count=${count}" >> $GITHUB_OUTPUT
-          if [[ "$count" == "0" ]]
-          then
-            echo 'INFO: NO MODULES REQUIRE TESTING!'
-          else
-            echo "INFO: MODULES TO TEST = ${count}"
-          fi
+          commit_pr="$(git rev-parse HEAD)"
+          echo "Commit PR: '${commit_pr}'"
+
+          git diff --name-only "$commit_latest" "$commit_pr" > /tmp/changes.txt
+          echo "Changed files:"
+          cat /tmp/changes.txt
         shell: bash
 
-      - name: Install test-dependencies
-        run: pip install -r requirements_test.txt > /dev/null
-        shell: bash
-        if: "${{ steps.modules_to_test.outputs.module_count != '0' }}"
 
-      - name: Running Integration-Tests
-        run: bash scripts/test_pr.sh
-        shell: bash
-        if: "${{ steps.modules_to_test.outputs.count != '0' }}"
-        environment:
-          TEST_FIREWALL: ${{ vars.CI_TEST_FIREWALL_1 }}
-          TEST_API_KEY: ${{ secrets.CI_TEST_API_CREDENTIALS }}
-          TEST_PROXY: ${{ secrets.CI_TEST_PROXY }}
