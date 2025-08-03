@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# pylint: disable=R0915
+
 from sys import argv
 from sys import exit as sys_exit
 from pathlib import Path
@@ -95,6 +97,7 @@ def main(file_changes: (Path, str), file_out: (Path, str)):
 
     modules = list(set(modules))
     print(f'MODULES THAT REQUIRE TESTING: {len(modules)}/{len(valid_modules)}')
+    modules.sort()
 
     with open(file_out, 'w', encoding='utf-8') as f:
         out = '\n'.join(modules)
