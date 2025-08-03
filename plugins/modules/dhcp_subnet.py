@@ -87,6 +87,11 @@ def run_module():
             description='TFTP Boot filename to request',
         ),
         ipv=dict(type='int', required=False, default=4, choices=[4, 6], aliases=['ip_version']),
+        v6_only_preferred=dict(
+            type='int', required=False, aliases=['v6_preferred'],
+            description='The number of seconds for which the client should disable DHCPv4. '
+                        'The minimum value is 300 seconds.'
+        ),
         match_fields=dict(
             type='list', required=False, elements='str',
             description='Fields that are used to match configured interface with the running config - '
