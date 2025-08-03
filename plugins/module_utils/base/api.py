@@ -39,7 +39,7 @@ class Session:
             fw = f"[{fw}]"
 
         proxy = environ.get('HTTPS_PROXY', None)
-        if not proxy.startswith('http') and not proxy.startswith('sock'):
+        if proxy is not None and not proxy.startswith('http') and not proxy.startswith('sock'):
             proxy = None
 
         ssl_verify = ssl_verification(module=self.m)
