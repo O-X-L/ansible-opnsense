@@ -33,8 +33,7 @@ jobs:
           python3 scripts/get_changed_modules.py /tmp/changes.txt /tmp/changed_modules.txt
 
           count="$(cat /tmp/changed_modules.txt | wc -l)"
-
-          echo "::set-output name=count::${count}"
+          echo "count=${count}" >> $GITHUB_OUTPUT
           if [[ "$count" == "0" ]]
           then
             echo 'INFO: NO MODULES REQUIRE TESTING!'

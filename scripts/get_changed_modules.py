@@ -97,8 +97,11 @@ def main(file_changes: (Path, str), file_out: (Path, str)):
     print(f'MODULES THAT REQUIRE TESTING: {len(modules)}/{len(valid_modules)}')
 
     with open(file_out, 'w', encoding='utf-8') as f:
-        f.write('\n'.join(modules))
+        out = '\n'.join(modules)
+        if len(modules) > 0:
+            out += '\n'
 
+        f.write(out)
 
 
 if __name__ == '__main__':
