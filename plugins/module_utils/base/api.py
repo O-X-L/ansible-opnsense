@@ -38,10 +38,6 @@ class Session:
         if is_ip6(fw, strip_enclosure=False):
             fw = f"[{fw}]"
 
-        proxy = None
-        if 'https_proxy' in environ:
-            proxy = environ['https_proxy']
-
         return httpx.Client(
             base_url=f"https://{fw}:{self.m.params['api_port']}/api",
             auth=(api_key, api_secret),
@@ -50,7 +46,6 @@ class Session:
                 verify=ssl_verification(module=self.m),
                 retries=self.m.params['api_retries'],
             ),
-            proxy=proxy,
         )
 
     def get(self, cnf: dict) -> dict:
