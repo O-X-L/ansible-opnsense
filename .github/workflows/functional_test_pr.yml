@@ -34,5 +34,5 @@ jobs:
       - name: Test Proxy-Connection
         run: |
           sudo apt install curl > /dev/null
-          https_proxy=${{ secrets.CI_TEST_PROXY }} curl -v https://${{ vars.CI_TEST_FIREWALL_1 }} --insecure
+          https_proxy=${{ secrets.CI_TEST_PROXY }} curl https://${{ vars.CI_TEST_FIREWALL_1 }} --insecure
         shell: bash
