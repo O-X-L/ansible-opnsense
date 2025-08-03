@@ -9,6 +9,7 @@ on:
       - 'plugins/**.py'
       - 'tests/**.yml'
       - '.github/workflows/functional_test_pr.yml'
+      - 'scripts/get_changed_modules.py'
 
 jobs:
   test:
