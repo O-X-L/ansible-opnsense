@@ -1,2 +1,5 @@
 docs/build
 *.tar.gz
+.coverage
+.coverage.*
+__pycache__

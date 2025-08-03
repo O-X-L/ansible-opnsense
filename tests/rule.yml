@@ -10,6 +10,9 @@
       ssl_verify: false
       match_fields: ['description']
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Deleting - does not exist
       ansibleguy.opnsense.rule:
@@ -182,6 +185,9 @@
     ansibleguy.opnsense.rule:
       match_fields: ['description']
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Adding alias
       ansibleguy.opnsense.alias:
@@ -242,6 +248,9 @@
 
     ansibleguy.opnsense.rule:
       match_fields: ['description']
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
     - name: Listing rules (none)
@@ -319,6 +328,9 @@
 
     ansibleguy.opnsense.rule:
       match_fields: ['source_net', 'description']
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
     - name: Listing rules - before
@@ -423,6 +435,9 @@
     ansibleguy.opnsense.list:
       target: 'rule'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Creating alias
       ansibleguy.opnsense.alias:
@@ -475,6 +490,9 @@
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
       match_fields: ['description']
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
     - name: Adding 1 - failing because of invalid value

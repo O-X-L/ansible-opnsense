@@ -1,3 +1,4 @@
+from os import environ
 from socket import setdefaulttimeout
 
 import httpx
@@ -37,14 +38,21 @@ class Session:
         if is_ip6(fw, strip_enclosure=False):
             fw = f"[{fw}]"
 
+        proxy = None
+        if 'HTTPS_PROXY' in environ:
+            proxy = environ['HTTPS_PROXY']
+
+        ssl_verify = ssl_verification(module=self.m)
         return httpx.Client(
             base_url=f"https://{fw}:{self.m.params['api_port']}/api",
             auth=(api_key, api_secret),
             timeout=httpx.Timeout(timeout=timeout, connect=2.0),
             transport=httpx.HTTPTransport(
-                verify=ssl_verification(module=self.m),
+                verify=ssl_verify,
                 retries=self.m.params['api_retries'],
+                proxy=proxy,
             ),
+            headers={'User-Agent': 'Ansible'}
         )
 
     def get(self, cnf: dict) -> dict:

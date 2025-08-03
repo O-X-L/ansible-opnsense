@@ -16,6 +16,9 @@
     if_grp: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL_RULE_GRP_IF') | default('lan', true) }}"
     default_grps: ['All OpenVPN interfaces', 'IPsec', 'WireGuard']
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:

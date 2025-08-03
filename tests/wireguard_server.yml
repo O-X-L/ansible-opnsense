@@ -20,6 +20,9 @@
       priv1: '2ESImYf/PhpEqgK2s/5med7CbvyZrUNpsQCaKrpsW0g='
       priv2: 'OIra/s01yynMZcIk1SL+Hk3ucyBdpnT9dd0WUxnW9GI='
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:

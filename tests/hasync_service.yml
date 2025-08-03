@@ -17,6 +17,9 @@
     hasync_username: "{{ lookup('ansible.builtin.env', 'TEST_HASYNC_USERNAME') }}"
     hasync_password: "{{ lookup('ansible.builtin.env', 'TEST_HASYNC_PASSWORD') }}"
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Restart all - failing because of missing peer
       ansibleguy.opnsense.hasync_service:

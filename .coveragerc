@@ -1,0 +1,3 @@
+[report]
+skip_empty = True
+omit = *_test.py
