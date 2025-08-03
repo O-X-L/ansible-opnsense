@@ -58,9 +58,17 @@ jobs:
         if: ${{ steps.modules_to_test.outputs.count != 0 }}
         run: |
           pip install -r requirements_test.txt > /dev/null
-          bash scripts/test_pr.sh
+          echo "${{ secrets.CI_TEST_API_CREDENTIALS }}" > /tmp/api_credentials.txt
+          chmod 600 /tmp/api_credentials.txt
+          bash scripts/test_pr.sh | tee -a /tmp/test.log
         shell: bash
         env:
           TEST_FIREWALL: ${{ vars.CI_TEST_FIREWALL_1 }}
-          TEST_API_KEY: ${{ secrets.CI_TEST_API_CREDENTIALS }}
+          TEST_API_KEY: /tmp/api_credentials.txt
           TEST_PROXY: ${{ secrets.CI_TEST_PROXY }}
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: test-results-pr-${{ github.event.number }}
+          path: /tmp/test.log
+          retention-days: 14
