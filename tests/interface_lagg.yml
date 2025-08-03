@@ -16,6 +16,9 @@
     if_lag: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL_LAGG_IF') | default('vtnet2', true) }}"
     if_lag_ctn: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL_LAGG_CNT') | default('1', true) }}"
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:

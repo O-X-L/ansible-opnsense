@@ -21,6 +21,9 @@
       pub2: '7APwSdbet/8RQo7MyU95KdOPJ8YPD1ZaOh6LHNO5Cgw='
       psk: 'Jvhlj0xw67SF0e1n/xdpzqGskUH0trTAmNhDbpUodRI='
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:
@@ -194,6 +197,9 @@
     test:
       pub1: 'Imk0UJX1clYYXKaDW9OdLE6J2N+X6aJ+/MxSlsDLW04='
       priv1: '2ESImYf/PhpEqgK2s/5med7CbvyZrUNpsQCaKrpsW0g='
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
     - name: Adding dummy instance

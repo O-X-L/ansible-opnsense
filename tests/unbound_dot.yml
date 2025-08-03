@@ -17,6 +17,9 @@
     ansibleguy.opnsense.list:
       target: 'unbound_dot'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing dots
       ansibleguy.opnsense.list:

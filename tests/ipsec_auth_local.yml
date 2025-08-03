@@ -53,6 +53,9 @@
         0Z0gyiFy6GY4g/BMNO7Kw/LqGOMVTl+cwUrpBdGQXMnhb9z/iKa8
         -----END RSA PRIVATE KEY-----
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:

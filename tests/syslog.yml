@@ -17,6 +17,9 @@
     ansibleguy.opnsense.list:
       target: 'syslog'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Removing - does not exist
       ansibleguy.opnsense.syslog:

@@ -12,6 +12,9 @@
     ansibleguy.opnsense.list:
       target: 'frr_bgp_as_path'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:
