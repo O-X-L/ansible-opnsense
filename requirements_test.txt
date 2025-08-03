@@ -1,2 +1,3 @@
 jmespath
 httpx
+ansible-core
