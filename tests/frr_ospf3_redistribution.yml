@@ -12,6 +12,9 @@
     ansibleguy.opnsense.list:
       target: 'frr_ospf3_redistribution'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:
@@ -160,6 +163,9 @@
 
     ansibleguy.opnsense.list:
       target: 'frr_ospf3_redistribution'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
     - name: Listing

@@ -15,6 +15,9 @@
     ansibleguy.opnsense.list:
       target: 'frr_bgp_neighbor'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:
@@ -229,6 +232,9 @@
 
     ansibleguy.opnsense.list:
       target: 'frr_bgp_neighbor'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
     - name: Listing

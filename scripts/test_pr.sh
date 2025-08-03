@@ -64,6 +64,14 @@ echo '        FINISHED TESTS!'
 echo '##############################'
 echo ''
 
+echo ''
+echo '##############################'
+echo '           CLEANUP'
+echo '##############################'
+echo ''
+
+run_test_soft '1_cleanup' 0
+
 echo '##############################'
 echo '           RESULTS:'
 if echo "$USER" | grep -q 'test'
