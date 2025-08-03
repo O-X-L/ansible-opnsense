@@ -70,7 +70,6 @@ jobs:
         env:
           TEST_FIREWALL: ${{ vars.CI_TEST_FIREWALL_1 }}
           TEST_API_KEY: /tmp/api_credentials.txt
-          HTTPS_PROXY: ${{ secrets.CI_TEST_PROXY }}
           TEST_PROXY: ${{ secrets.CI_TEST_PROXY }}
 
       - uses: actions/upload-artifact@v4
