@@ -38,9 +38,9 @@ class Session:
         if is_ip6(fw, strip_enclosure=False):
             fw = f"[{fw}]"
 
-        proxy = None
-        if 'HTTPS_PROXY' in environ:
-            proxy = environ['HTTPS_PROXY']
+        proxy = environ.get('HTTPS_PROXY', None)
+        if not proxy.startswith('http') and not proxy.startswith('sock'):
+            proxy = None
 
         ssl_verify = ssl_verification(module=self.m)
         return httpx.Client(
