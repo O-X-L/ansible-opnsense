@@ -53,8 +53,11 @@ echo ''
 
 run_test_soft '1_dependencies' 0
 
+i=0
 while read m
 do
+  i=$(( i + 1))
+  echo "########## TEST $i ##########"
   run_test_soft "$m" 1
 done < /tmp/changed_modules.txt
 
