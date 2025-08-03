@@ -12,7 +12,6 @@
     ansibleguy.opnsense.list:
       target: 'cron'
 
-
   environment:
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
