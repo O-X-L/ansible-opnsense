@@ -36,9 +36,6 @@ jobs:
       - name: Get changes
         id: changed-files
         uses: tj-actions/changed-files@v46
-        with:
-          files: |
-            plugins/**.py
 
       - name: Checking which module to test
         run: |
