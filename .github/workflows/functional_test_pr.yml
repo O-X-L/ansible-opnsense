@@ -11,8 +11,6 @@ on:
       - '.github/workflows/functional_test_pr.yml'
       - 'scripts/get_changed_modules.py'
 
-  workflow_dispatch:
-
 jobs:
   test:
     runs-on: ubuntu-latest
