@@ -20,6 +20,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.ref }}
+          fetch-depth: 0
 
       - name: Test Connection
         run: |
@@ -35,9 +36,9 @@ jobs:
 
       - name: Query changes
         run: |
-          echo "Branch: '${GITHUB_REF#refs/heads/}'"
+          echo "Branch: '${GITHUB_REF}'"
 
-          commit_latest="$(git merge-base latest ${GITHUB_REF#refs/heads/})"
+          commit_latest="$(git merge-base latest ${GITHUB_REF})"
           echo "Commit latest: '${commit_latest}'"
 
           commit_pr="$(git rev-parse HEAD)"
