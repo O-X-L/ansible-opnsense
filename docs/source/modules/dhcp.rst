@@ -89,6 +89,7 @@ ansibleguy.opnsense.dhcp_subnet
     "tftp_server","string","false","\-","tftp,tftp_srv,tftp_server_name","TFTP server address or fqdn"
     "tftp_file","string","false","\-","tftp_boot_file,boot_file_name","TFTP Boot filename to request"
     "ipv","int","false","4","ip_version","IP version - one of '4', '6'"
+    "v6_only_preferred","boolean","false","false","v6_preferred","If clients should prefer IPv6 over IPv4"
 
 ----
 
@@ -228,6 +229,7 @@ ansibleguy.opnsense.dhcp_subnet
             # tftp_server: ''
             # tftp_file: ''
             # ipv: 4
+            # v6_only_preferred: false
             # match_fields: ['subnet']
 
         - name: Add subnet
