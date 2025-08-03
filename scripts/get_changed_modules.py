@@ -6,7 +6,7 @@ from pathlib import Path
 from os import listdir
 
 PREFIX_ALL = [
-    'plugins/module_utils/base/'
+    # 'plugins/module_utils/base/'
 ]
 PATH_ALL = [
     'plugins/module_utils/helper/api.py',
