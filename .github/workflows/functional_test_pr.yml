@@ -19,8 +19,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref }}
           fetch-depth: 0
+          ref: ${{ format('refs/heads/{0}', github.event.pull_request.head.ref) }}
 
       - name: Test Connection
         run: |
