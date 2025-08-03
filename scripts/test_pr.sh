@@ -7,6 +7,7 @@ echo ''
 DEBUG=false
 TMP_DIR="/tmp/.opnsense_test_$(date +%s)"
 TMP_COL_DIR="${TMP_DIR}/collections"
+FILE_MODULES_TO_TEST='/tmp/changed_modules.txt'
 
 export ANSIBLE_INVENTORY_UNPARSED_WARNING=False
 export ANSIBLE_LOCALHOST_WARNING=False
@@ -53,13 +54,14 @@ echo ''
 
 run_test_soft '1_dependencies' 0
 
+count="$(cat "$FILE_MODULES_TO_TEST" | wc -l)"
 i=0
 while read m
 do
   i=$(( i + 1))
-  echo "########## TEST $i ##########"
+  echo "########## TEST ${i}/${count} ##########"
   run_test_soft "$m" 1
-done < /tmp/changed_modules.txt
+done < "$FILE_MODULES_TO_TEST"
 
 echo ''
 echo '##############################'
