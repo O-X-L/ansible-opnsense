@@ -19,6 +19,7 @@ PATH_ALL = [
 PREFIX_MODULES = [
     'plugins/modules/',
     'plugins/module_utils/main/',
+    'tests/',
 ]
 PATH_MAPPING = {
     'plugins/module_utils/defaults/alias.py': ['alias', 'alias_multi'],
@@ -42,14 +43,21 @@ PATH_MAPPING = {
 
 def main(file_changes: (Path, str), file_out: (Path, str)):
     with open(file_changes, 'r', encoding='utf-8') as f:
-        changes = f.read()
+        raw_changes = f.readlines()
 
-    changes = changes.strip().split(' ')
-    changes = [p.strip() for p in changes if p.endswith('.py')]
-    changes = [p for p in changes if not p.endswith('_test.py')]
+    changes = []
+    for p in raw_changes:
+        p = p.strip()
+        if p.endswith('.py') and (p.endswith('monit_test.py') or not p.endswith('_test.py')):
+            changes.append(p)
 
-    valid_modules = [f.replace('.yml', '') for f in listdir(Path(__file__).parent.parent / 'tests')]
-    valid_modules = [f for f in valid_modules if not f.startswith('1_') and not f == '_tmpl' and not f == 'README.md']
+        elif p.startswith('tests/') and p.endswith('.yml'):
+            changes.append(p)
+
+    valid_modules = []
+    for f in listdir(Path(__file__).parent.parent / 'tests'):
+        if not f.startswith('1_') and not f == '_tmpl' and not f == 'README.md':
+            valid_modules.append(f.replace('.yml', ''))
 
     modules = []
     for path in changes:
@@ -71,7 +79,7 @@ def main(file_changes: (Path, str), file_out: (Path, str)):
         if matched:
             continue
 
-        possible_module = path.rsplit('/', 1)[1].replace('.py', '')
+        possible_module = path.rsplit('/', 1)[1].replace('.py', '').replace('.yml', '')
         for prefix in PREFIX_MODULES:
             if path.startswith(prefix) and possible_module in valid_modules:
                 modules.append(possible_module)
