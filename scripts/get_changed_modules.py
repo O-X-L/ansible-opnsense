@@ -7,6 +7,7 @@ from sys import exit as sys_exit
 from pathlib import Path
 from os import listdir
 
+MAX_MODULES_TO_TEST = 20  # else it will take forever :(
 PREFIX_ALL = [
     'plugins/module_utils/base/'
 ]
@@ -98,6 +99,10 @@ def main(file_changes: (Path, str), file_out: (Path, str)):
     modules = list(set(modules))
     print(f'MODULES THAT REQUIRE TESTING: {len(modules)}/{len(valid_modules)}')
     modules.sort()
+
+    if len(modules) > MAX_MODULES_TO_TEST:
+        print('\033[0;31m' + f'WARNING: TOO MANY MODULES TO TEST! WILL ONLY TEST {MAX_MODULES_TO_TEST}' + '\033[0m')
+        modules = modules[:MAX_MODULES_TO_TEST]
 
     with open(file_out, 'w', encoding='utf-8') as f:
         out = '\n'.join(modules)
