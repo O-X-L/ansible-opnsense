@@ -42,13 +42,12 @@ class Session:
         if proxy is not None and not proxy.startswith('http') and not proxy.startswith('sock'):
             proxy = None
 
-        ssl_verify = ssl_verification(module=self.m)
         return httpx.Client(
             base_url=f"https://{fw}:{self.m.params['api_port']}/api",
             auth=(api_key, api_secret),
             timeout=httpx.Timeout(timeout=timeout, connect=2.0),
             transport=httpx.HTTPTransport(
-                verify=ssl_verify,
+                verify=ssl_verification(module=self.m),
                 retries=self.m.params['api_retries'],
                 proxy=proxy,
             ),

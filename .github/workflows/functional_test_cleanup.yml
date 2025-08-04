@@ -41,3 +41,4 @@ jobs:
           TEST_FIREWALL: ${{ vars.CI_TEST_FIREWALL_1 }}
           TEST_API_KEY: /tmp/api_credentials.txt
           TEST_PROXY: ${{ secrets.CI_TEST_PROXY }}
+          PYTHONUNBUFFERED: 1
