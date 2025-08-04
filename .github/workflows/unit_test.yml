@@ -33,8 +33,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements_unittest.txt > /dev/null
+        run: pip install -r requirements_unittest.txt > /dev/null
         shell: bash
 
       - name: Preparing collection for Unit-Tests
@@ -44,5 +43,9 @@ jobs:
         shell: bash
 
       - name: Running Tests
-        run: python3 -m pytest --cov
+        run: |
+          python3 -m pytest --version
+          python3 -m pytest --cov
         shell: bash
+        env:
+          PYTHONUNBUFFERED: 1
