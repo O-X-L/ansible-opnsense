@@ -70,11 +70,11 @@ def test_plugins_module_utils_base():
         'scripts/get_changed_modules.py',
     ])
 
-    from get_changed_modules import main
+    from get_changed_modules import main, MAX_MODULES_TO_TEST
     main(TEST_FILE_CHANGES, TEST_FILE_MODULES)
 
     m = _read_changed_modules()
-    assert len(m) > 100
+    assert len(m) == MAX_MODULES_TO_TEST
 
 
 def test_plugins_module_utils_helper_all():
@@ -85,11 +85,11 @@ def test_plugins_module_utils_helper_all():
         'scripts/get_changed_modules.py',
     ])
 
-    from get_changed_modules import main
+    from get_changed_modules import main, MAX_MODULES_TO_TEST
     main(TEST_FILE_CHANGES, TEST_FILE_MODULES)
 
     m = _read_changed_modules()
-    assert len(m) > 100
+    assert len(m) == MAX_MODULES_TO_TEST
 
 
 def test_plugins_module_utils_helper_mapping():
@@ -116,11 +116,11 @@ def test_plugins_module_utils_defaults_all():
         'scripts/get_changed_modules.py',
     ])
 
-    from get_changed_modules import main
+    from get_changed_modules import main, MAX_MODULES_TO_TEST
     main(TEST_FILE_CHANGES, TEST_FILE_MODULES)
 
     m = _read_changed_modules()
-    assert len(m) > 100
+    assert len(m) == MAX_MODULES_TO_TEST
 
 
 def test_plugins_module_utils_defaults_mapping():
