@@ -6,7 +6,7 @@
 High Availability
 =================
 
-**STATE**: unstable
+**STATE**: stable
 
 **TESTS**: `ansibleguy.opnsense.hasync_general <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/hasync_general.yml>`_ |
 `ansibleguy.opnsense.hasync_service <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/hasync_service.yml>`_
