@@ -6,7 +6,7 @@
 Postfix
 =======
 
-**STATE**: unstable
+**STATE**: stable
 
 **TESTS**: `postfix_general <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_general.yml>`_ |
 `postfix_ <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_domain.yml>`_ |
