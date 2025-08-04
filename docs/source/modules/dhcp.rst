@@ -6,7 +6,7 @@
 DHCP
 ====
 
-**STATE**: unstable
+**STATE**: stable
 
 **TESTS**: `Reservation <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dhcp_reservation.yml>`_ |
 `ControlAgent <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dhcp_controlagent.yml>`_ |
