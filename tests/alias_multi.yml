@@ -12,6 +12,9 @@
     ansibleguy.opnsense.list:
       target: 'alias'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Removing - do not exist
       ansibleguy.opnsense.alias_multi:

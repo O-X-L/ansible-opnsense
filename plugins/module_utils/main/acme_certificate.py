@@ -21,7 +21,8 @@ class Certificate(BaseModule):
     API_CONT = 'certificates'
     API_CONT_GET = 'settings'
     FIELDS_CHANGE = [
-        'name', 'alt_names', 'account', 'validation', 'restart_actions', 'auto_renewal', 'renew_interval', 'aliasmode'
+        'name', 'alt_names', 'account', 'validation', 'restart_actions', 'auto_renewal', 'renew_interval', 'aliasmode',
+        'key_length', 'ocsp'
     ]
     FIELDS_ALL = [
         'enabled', 'description', 'domainalias', 'challengealias'
@@ -30,13 +31,13 @@ class Certificate(BaseModule):
     FIELDS_TRANSLATE = {
         'alt_names': 'altNames',
         'validation': 'validationMethod',
-        'key_ength': 'keyLength',
+        'key_length': 'keyLength',
         'restart_actions': 'restartActions',
         'auto_renewal': 'autoRenewal',
         'renew_interval': 'renewInterval',
     }
     FIELDS_TYPING = {
-        'bool': ['enabled', 'auto_renewal'],
+        'bool': ['enabled', 'auto_renewal', 'ocsp'],
         'list': ['alt_names', 'restart_actions'],
         'select': ['account', 'validation', 'restart_actions', 'aliasmode'],
         'int': ['renew_interval'],

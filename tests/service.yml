@@ -10,6 +10,9 @@
       ssl_verify: false
       timeout: 60
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Checking syslog status
       ansibleguy.opnsense.service:

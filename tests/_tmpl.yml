@@ -13,6 +13,9 @@
     ansibleguy.opnsense.list:
       target: '_tmpl_obj'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:

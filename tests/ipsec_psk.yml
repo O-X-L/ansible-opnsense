@@ -12,6 +12,9 @@
     ansibleguy.opnsense.list:
       target: 'ipsec_psk'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Cleanup
       ansibleguy.opnsense.ipsec_psk:

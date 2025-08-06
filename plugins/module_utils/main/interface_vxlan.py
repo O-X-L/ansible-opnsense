@@ -10,9 +10,9 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Vxlan(BaseModule):
     FIELD_ID = 'id'
     CMDS = {
-        'add': 'addItem',
-        'del': 'delItem',
-        'set': 'setItem',
+        'add': 'add_item',
+        'del': 'del_item',
+        'set': 'set_item',
         'search': 'get',
     }
     API_KEY_PATH = 'vxlan.vxlan'

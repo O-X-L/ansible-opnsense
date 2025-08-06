@@ -39,8 +39,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          pip install -r requirements_lint.txt > /dev/null
+        run: pip install -r requirements_lint.txt > /dev/null
         shell: bash
 
       - name: Running PyLint
@@ -48,12 +47,16 @@ jobs:
           pylint --version
           pylint --recursive=y .
         shell: bash
+        env:
+          PYTHONUNBUFFERED: 1
 
       - name: Running YamlLint
         run: |
           yamllint --version
           yamllint .
         shell: bash
+        env:
+          PYTHONUNBUFFERED: 1
 
       - name: Preparing collection for AnsibleLint
         run: |
@@ -66,3 +69,5 @@ jobs:
           ansible-lint --version
           ANSIBLE_COLLECTIONS_PATH=/tmp/ansible_lint/collections ansible-lint -c .ansible-lint.yml
         shell: bash
+        env:
+          PYTHONUNBUFFERED: 1

@@ -6,7 +6,7 @@
 DHCRelay - Destinations
 =======================
 
-**STATE**: unstable
+**STATE**: stable
 
 **TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dhcrelay_destination.yml>`_
 

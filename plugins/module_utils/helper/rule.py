@@ -6,7 +6,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.rule 
      RULE_DEFAULTS
 
 
-def validate_values(error_func, module: AnsibleModule, cnf: dict) -> None:
+def validate_values(error_func, module: AnsibleModule, cnf: dict, kind: str = 'filter') -> None:
     # error = "Value '%s' is invalid for the field '%s'!"
 
     # can't validate as aliases are supported
@@ -22,16 +22,17 @@ def validate_values(error_func, module: AnsibleModule, cnf: dict) -> None:
     #             except ValueError:
     #                 error_func(error % (cnf[field], field))
 
-    required_together=[
-        ('max_src_conn_rate', 'max_src_conn_rates', 'overload'),
-        ('adaptive_start', 'adaptive_end'),
-        ('tcp_flags', 'tcp_flags_clear'),
-    ]
-    for opts in required_together:
-        if any((cnf[opts[0]] is None) != (cnf[o] is None) for o in opts[1:]):
-            error_func(f"parameters are required together: {', '.join(opts)}")
-        if any((cnf[opts[0]] == []) != (cnf[o] == []) for o in opts[1:]):
-            error_func(f"parameters are required together: {', '.join(opts)}")
+    if kind == 'filter':
+        required_together=[
+            ('max_src_conn_rate', 'max_src_conn_rates', 'overload'),
+            ('adaptive_start', 'adaptive_end'),
+            ('tcp_flags', 'tcp_flags_clear'),
+        ]
+        for opts in required_together:
+            if any((cnf[opts[0]] is None) != (cnf[o] is None) for o in opts[1:]):
+                error_func(f"parameters are required together: {', '.join(opts)}")
+            if any((cnf[opts[0]] == []) != (cnf[o] == []) for o in opts[1:]):
+                error_func(f"parameters are required together: {', '.join(opts)}")
 
     # some recommendations - maybe the user overlooked something
     if 'action' in cnf and cnf['action'] == 'pass' and cnf['protocol'] in ['TCP', 'UDP', 'TCP/UDP']:

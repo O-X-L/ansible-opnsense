@@ -20,6 +20,9 @@
     ansibleguy.opnsense.list:
       target: 'rule'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Adding 1
       ansibleguy.opnsense.rule_multi:

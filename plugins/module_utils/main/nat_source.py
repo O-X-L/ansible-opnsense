@@ -11,11 +11,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 
 class SNat(BaseModule):
     CMDS = {
-        'add': 'addRule',
-        'del': 'delRule',
-        'set': 'setRule',
+        'add': 'add_rule',
+        'del': 'del_rule',
+        'set': 'set_rule',
         'search': 'get',
-        'toggle': 'toggleRule',
+        'toggle': 'toggle_rule',
     }
     API_KEY_PATH = 'filter.snatrules.rule'
     API_MOD = 'firewall'
@@ -65,7 +65,7 @@ class SNat(BaseModule):
         self.b.find(match_fields=self.p['match_fields'])
 
         if self.p['state'] == 'present':
-            validate_values(module=self.m, cnf=self.p, error_func=self.m.fail_json)
+            validate_values(module=self.m, cnf=self.p, error_func=self.m.fail_json, kind='nat')
 
         self._base_check()
 

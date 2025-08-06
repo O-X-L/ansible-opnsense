@@ -12,6 +12,9 @@
     ansibleguy.opnsense.list:
       target: 'snapshot'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Checking filesystem (only works for ZFS)
       ansibleguy.opnsense.snapshot:

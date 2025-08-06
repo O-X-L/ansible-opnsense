@@ -10,11 +10,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Rule(BaseModule):
     FIELD_ID = 'description'
     CMDS = {
-        'add': 'addrule',
-        'del': 'delrule',
-        'set': 'setrule',
+        'add': 'add_rule',
+        'del': 'del_rule',
+        'set': 'set_rule',
         'search': 'get',
-        'toggle': 'togglerule',
+        'toggle': 'toggle_rule',
     }
     API_KEY_PATH = 'ts.rules.rule'
     API_MOD = 'trafficshaper'

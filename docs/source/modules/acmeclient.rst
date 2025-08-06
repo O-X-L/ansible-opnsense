@@ -6,7 +6,7 @@
 ACME Client
 ===========
 
-**STATE**: unstable
+**STATE**: stable
 
 **TESTS**: `acme_account <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_account.yml>`_ |
 `acme_action <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_action.yml>`_ |

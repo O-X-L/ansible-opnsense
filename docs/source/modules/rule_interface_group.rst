@@ -6,7 +6,7 @@
 Rule Interface Group
 ====================
 
-**STATE**: unstable
+**STATE**: stable
 
 **TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/rule_interface_group.yml>`_
 
