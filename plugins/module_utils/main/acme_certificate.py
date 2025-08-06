@@ -39,7 +39,7 @@ class Certificate(BaseModule):
     FIELDS_TYPING = {
         'bool': ['enabled', 'auto_renewal', 'ocsp'],
         'list': ['alt_names', 'restart_actions'],
-        'select': ['account', 'validation', 'restart_actions', 'aliasmode'],
+        'select': ['account', 'validation', 'restart_actions', 'aliasmode', 'key_length'],
         'int': ['renew_interval'],
     }
     INT_VALIDATIONS = {
