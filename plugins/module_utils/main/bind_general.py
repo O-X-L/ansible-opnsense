@@ -19,7 +19,7 @@ class General(GeneralModule):
     API_CONT = 'general'
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
-        'ipv6', 'response_policy_zones', 'port', 'listen_ipv4', 'listen_ipv6',
+        'ipv6', 'response_policy_zones', 'port', 'listen_ipv4', 'listen_ipv6', 'query_acl',
         'query_source_ipv4', 'query_source_ipv6', 'transfer_source_ipv4', 'transfer_source_ipv6',
         'forwarders', 'filter_aaaa_v4', 'filter_aaaa_v6', 'filter_aaaa_acl', 'log_size',
         'cache_size', 'recursion_acl', 'transfer_acl', 'dnssec_validation', 'hide_hostname',
