@@ -55,6 +55,10 @@ class Alias(BaseModule):
             if not is_unset(self.p['updatefreq_days']):
                 self.p['updatefreq_days'] = float(self.p['updatefreq_days'])
 
+        if self.p["type"] == "host":
+            self.FIELDS_CHANGE = self.FIELDS_CHANGE + ["updatefreq_days"]
+            self.p["updatefreq_days"] = ""
+
         if self.p['type'] == 'dynipv6host':
             if is_unset(self.p['interface']):
                 self.m.fail_json('You need to provide an interface to create a dynipv6host alias!')
