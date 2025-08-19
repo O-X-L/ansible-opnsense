@@ -1,0 +1,119 @@
+---
+
+- name: 'Testing Wazuh Agent'
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'wazuh_agent'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid server address
+      ansibleguy.opnsense.wazuh_agent:
+        server_address: 'invalid..server'
+        reload: false
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Configuring - failing because of invalid port
+      ansibleguy.opnsense.wazuh_agent:
+        server_address: '192.168.1.100'
+        port: 99999
+        reload: false
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Configuring - failing because of invalid debug level
+      ansibleguy.opnsense.wazuh_agent:
+        server_address: '192.168.1.100'
+        debug_level: 5
+        reload: false
+      register: opn_fail3
+      failed_when: not opn_fail3.failed
+
+    - name: Configuring
+      ansibleguy.opnsense.wazuh_agent:
+        server_address: '192.168.1.100'
+        agent_name: 'test-agent'
+        protocol: 'tcp'
+        port: 1514
+        debug_level: 1
+        reload: false
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Configuring - nothing changed
+      ansibleguy.opnsense.wazuh_agent:
+        server_address: '192.168.1.100'
+        agent_name: 'test-agent'
+        protocol: 'tcp'
+        port: 1514
+        debug_level: 1
+        reload: false
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        opn2.changed
+
+    - name: Configuring - changing server
+      ansibleguy.opnsense.wazuh_agent:
+        server_address: '10.0.0.100'
+        agent_name: 'test-agent-2'
+        protocol: 'udp'
+        port: 1515
+        debug_level: 0
+        enabled: false
+        reload: false
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Configuring - with authentication
+      ansibleguy.opnsense.wazuh_agent:
+        server_address: '10.0.0.100'
+        agent_name: 'test-agent-auth'
+        protocol: 'tcp'
+        auth_password: 'test123'
+        auth_port: 1515
+        logcollector_enabled: true
+        remote_commands: true
+        syslog_programs:
+          - 'filterlog'
+          - 'suricata'
+        suricata_eve_log: true
+        rootcheck_enabled: false
+        syscollector_enabled: true
+        syscheck_enabled: false
+        active_response_enabled: true
+        active_response_remote_commands: false
+        active_response_fw_alias_ignore:
+          - 'trusted_hosts'
+        reload: false
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        not opn4.changed
+
+    - name: Cleanup
+      ansibleguy.opnsense.wazuh_agent:
+        server_address: '127.0.0.1'
+        enabled: false
+        reload: false
