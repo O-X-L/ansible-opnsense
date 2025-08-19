@@ -42,7 +42,7 @@ TARGETS = [
     'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre', 'nat_one_to_one', 'nat_source',
     'ipsec_manual_spd', 'hasync_general', 'snapshot', 'frr_bgp_redistribution', 'frr_ospf_redistribution',
     'frr_ospf3_redistribution', 'frr_ospf3_route_map', 'frr_ospf3_prefix_list', 'frr_ospf3_network',
-    'frr_bgp_peer_group',
+    'frr_bgp_peer_group', 'wazuh_agent',
 ]
 
 
@@ -516,6 +516,10 @@ def run_module():
         elif target == 'snapshot':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.snapshot import \
                 Snapshot as Target_Obj
+
+        elif target == 'wazuh_agent':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.wazuh_agent import \
+                WazuhAgent as Target_Obj
 
     except AttributeError:
         module_dependency_error()

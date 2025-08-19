@@ -922,3 +922,12 @@
       failed_when:
         - cl_snap2.failed
         - "'Unsupported' not in cl_snap2.msg | default('')"
+
+    - name: Cleanup Wazuh Agent - disable
+      ansibleguy.opnsense.wazuh_agent:
+        enabled: false
+        server_address: '127.0.0.1'  # placeholder
+      register: cl_wazuh
+      failed_when:
+        - cl_wazuh.failed
+        - "'Unsupported' not in cl_wazuh.msg | default('')"

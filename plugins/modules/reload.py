@@ -51,6 +51,7 @@ def run_module():
                 'openvpn',
                 'dhcrelay',
                 'dhcp', 'kea',
+                'wazuh',
             ],
             description='What part of the running config should be reloaded'
         ),
@@ -166,6 +167,10 @@ def run_module():
         elif target in ['dhcp', 'kea']:
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dhcp_reservation_v4 import \
                 ReservationV4 as Target_Obj
+
+        elif target == 'wazuh':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.wazuh_agent import \
+                WazuhAgent as Target_Obj
 
     except MODULE_EXCEPTIONS:
         module_dependency_error()

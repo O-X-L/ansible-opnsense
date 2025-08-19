@@ -210,6 +210,7 @@ run_test_soft 'postfix_address' 1
 run_test_soft 'hasync_general' 1
 run_test_soft 'hasync_service' 0 # check mode => dependency on hasync_general
 run_test_soft 'snapshot' 1
+run_test_soft 'wazuh_agent' 1
 run_test_soft 'raw' 1
 
 echo ''

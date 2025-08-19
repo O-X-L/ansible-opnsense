@@ -159,6 +159,8 @@ action_groups:
   hasync:
     - ansibleguy.opnsense.hasync_general
     - ansibleguy.opnsense.hasync_service
+  wazuh:
+    - ansibleguy.opnsense.wazuh_agent
   raw:
     - ansibleguy.opnsense.raw
   all:
@@ -187,6 +189,7 @@ action_groups:
           - ansibleguy.opnsense.acme
           - ansibleguy.opnsense.postfix
           - ansibleguy.opnsense.hasync
+          - ansibleguy.opnsense.wazuh
           - ansibleguy.opnsense.raw
 
 plugin_routing:

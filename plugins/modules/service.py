@@ -60,7 +60,7 @@ SERVICES = {
     'dyndns': {}, 'fetchmail': {}, 'freeradius': {}, 'haproxy': {}, 'maltrail': {},
     'netdata': {}, 'netsnmp': {}, 'nrpe': {}, 'nut': {}, 'openconnect': {}, 'proxysso': {},
     'rspamd': {}, 'shadowsocks': {}, 'softether': {}, 'sslh': {}, 'stunnel': {}, 'tayga': {},
-    'telegraf': {}, 'tftp': {}, 'tinc': {}, 'wireguard': {},
+    'telegraf': {}, 'tftp': {}, 'tinc': {}, 'wazuh_agent': {'c': 'wazuhagent'}, 'wireguard': {},
     #   note: these would support more actions:
     'acme_client': {'c': 'acmeclient'},
     'crowdsec': {'a': ['reload', 'status']},
