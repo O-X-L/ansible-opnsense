@@ -1,0 +1,219 @@
+---
+
+- name: Testing HAProxy Backend Servers
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_server'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: List existing servers
+      ansibleguy.opnsense.list:
+      register: existing_entries
+
+    - name: Clean up test servers, resolvers, and frontends (before)
+      ansibleguy.opnsense.haproxy_server:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_SERVER'
+        - 'ANSIBLE_TEST_2_SERVER'
+        - 'ANSIBLE_TEST_3_SERVER'
+        - 'ANSIBLE_TEST_4_SERVER'
+
+    - name: Clean up test resolvers (before)
+      ansibleguy.opnsense.haproxy_resolver:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_RESOLVER_1'
+        - 'ANSIBLE_TEST_RESOLVER_2'
+
+    - name: Clean up test frontends (before)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_UNIX_FRONTEND'
+
+    - name: Create test resolvers for server linking
+      ansibleguy.opnsense.haproxy_resolver:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        nameserver: "{{ item.nameserver }}"
+        enabled: true
+      loop:
+        - { name: 'ANSIBLE_TEST_RESOLVER_1', desc: 'Test resolver 1', nameserver: '8.8.8.8:53' }
+        - { name: 'ANSIBLE_TEST_RESOLVER_2', desc: 'Test resolver 2', nameserver: '1.1.1.1:53' }
+
+    - name: Create test frontend for Unix socket linking
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_UNIX_FRONTEND'
+        description: 'Test Unix socket frontend'
+        bind_address: '/var/run/haproxy.sock'
+        bind_port: 80
+        mode: 'http'
+        enabled: true
+
+    - name: Add server (check)
+      ansibleguy.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_SERVER'
+        description: 'Test server 1'
+        address: '192.168.1.10'
+        port: 80
+        weight: 10
+      check_mode: true
+      register: opn_server1_check
+
+    - name: Add server
+      ansibleguy.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_SERVER'
+        description: 'Test server 1'
+        address: '192.168.1.10'
+        port: 80
+        weight: 10
+      register: opn_server1
+
+    - name: Verify server creation
+      ansibleguy.opnsense.list:
+      register: opn_server1_verify
+
+    - name: Add SSL server
+      ansibleguy.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_2_SERVER'
+        description: 'Test SSL server'
+        address: 'api.example.com'
+        port: 443
+        ssl: true
+        ssl_verify: true
+        weight: 5
+        check_interval: '5s'
+      register: opn_server2
+
+    - name: Add database server
+      ansibleguy.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_3_SERVER'
+        description: 'Test database server'
+        address: '10.0.0.5'
+        port: 5432
+        weight: 1
+        check_interval: '10s'
+        check_down_interval: '3s'
+        source: '10.0.0.100'
+      register: opn_server3
+
+    - name: Add server with name-based resolver linking
+      ansibleguy.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_4_SERVER'
+        description: 'Test server with name-based resolver linking'
+        address: 'dynamic.example.com'
+        port: 8080
+        weight: 10
+        linked_resolver: 'ANSIBLE_TEST_RESOLVER_1'  # Test name-based resolver linking
+      register: opn_server4
+
+    - name: Modify server 1
+      ansibleguy.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_SERVER'
+        description: 'Modified test server 1'
+        address: '192.168.1.10'
+        port: 8080
+        weight: 15
+        check_interval: '3s'
+      register: opn_server1_changed
+
+    - name: Server 1 should not change (2)
+      ansibleguy.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_SERVER'
+        description: 'Modified test server 1'
+        address: '192.168.1.10'
+        port: 8080
+        weight: 15
+        check_interval: '3s'
+      register: opn_server1_changed2
+
+    - name: Update server 4 resolver (test changing resolver link)
+      ansibleguy.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_4_SERVER'
+        linked_resolver: 'ANSIBLE_TEST_RESOLVER_2'  # Change to different resolver
+      register: opn_server4_resolver_changed
+
+    - name: Add Unix socket server with frontend linking
+      ansibleguy.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_5_SERVER'
+        description: 'Test Unix socket server'
+        address: '/var/run/app.sock'
+        port: 80
+        weight: 5
+        unix_socket: 'ANSIBLE_TEST_UNIX_FRONTEND'  # Test name-based frontend linking
+      register: opn_server5
+
+    - name: Remove resolver link from server 4
+      ansibleguy.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_4_SERVER'
+        linked_resolver: ''  # Clear resolver link
+      register: opn_server4_resolver_cleared
+
+    - name: Disable server 3
+      ansibleguy.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_3_SERVER'
+        enabled: false
+      register: opn_server3_disabled
+
+    - name: Clean up test servers (after)
+      ansibleguy.opnsense.haproxy_server:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_SERVER'
+        - 'ANSIBLE_TEST_2_SERVER'
+        - 'ANSIBLE_TEST_3_SERVER'
+        - 'ANSIBLE_TEST_4_SERVER'
+        - 'ANSIBLE_TEST_5_SERVER'
+
+    - name: Clean up test resolvers (after)
+      ansibleguy.opnsense.haproxy_resolver:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_RESOLVER_1'
+        - 'ANSIBLE_TEST_RESOLVER_2'
+
+    - name: Clean up test frontends (after)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_UNIX_FRONTEND'
+
+    - name: Verify cleanup
+      ansibleguy.opnsense.list:
+      register: opn_cleanup_verify
+
+    - name: Show test results
+      ansible.builtin.assert:
+        that:
+          - opn_server1_check is changed
+          - opn_server1 is changed
+          - opn_server2 is changed
+          - opn_server3 is changed
+          - opn_server4 is changed
+          - opn_server1_changed is changed
+          - opn_server1_changed2 is not changed
+          - opn_server4_resolver_changed is changed
+          - opn_server5 is changed
+          - opn_server4_resolver_cleared is changed
+          - opn_server3_disabled is changed
+          - "opn_server1_verify.data | length == (existing_entries.data | length + 1)"
+          - "'ANSIBLE_TEST_1_SERVER' in opn_server1_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_1_SERVER' not in opn_cleanup_verify.data | map(attribute='name')"
+        msg: 'HAProxy server tests failed! Name-based resolver/frontend linking may not be working correctly.'

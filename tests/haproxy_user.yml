@@ -1,0 +1,106 @@
+---
+
+- name: Testing HAProxy User Management
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_user'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: List existing users
+      ansibleguy.opnsense.list:
+      register: existing_entries
+
+    - name: Clean up test users (before)
+      ansibleguy.opnsense.haproxy_user:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_USER'
+        - 'ANSIBLE_TEST_2_USER'
+
+    - name: Add user (check)
+      ansibleguy.opnsense.haproxy_user:
+        name: 'ANSIBLE_TEST_1_USER'
+        description: 'Test user 1'
+        password: 'test_password_123'
+        enabled: true
+      check_mode: true
+      register: opn_user1_check
+
+    - name: Add user
+      ansibleguy.opnsense.haproxy_user:
+        name: 'ANSIBLE_TEST_1_USER'
+        description: 'Test user 1'
+        password: 'test_password_123'
+        enabled: true
+      register: opn_user1
+
+    - name: Verify user creation
+      ansibleguy.opnsense.list:
+      register: opn_user1_verify
+
+    - name: Add admin user
+      ansibleguy.opnsense.haproxy_user:
+        name: 'ANSIBLE_TEST_2_USER'
+        description: 'Test admin user'
+        password: 'admin_password_456'
+        enabled: true
+      register: opn_user2
+
+    - name: Modify user 1 description
+      ansibleguy.opnsense.haproxy_user:
+        name: 'ANSIBLE_TEST_1_USER'
+        description: 'Modified test user 1'
+        password: 'test_password_123'
+        enabled: true
+      register: opn_user1_changed
+
+    - name: User 1 should not change (2)
+      ansibleguy.opnsense.haproxy_user:
+        name: 'ANSIBLE_TEST_1_USER'
+        description: 'Modified test user 1'
+        password: 'test_password_123'
+        enabled: true
+      register: opn_user1_changed2
+
+    - name: Disable user 2
+      ansibleguy.opnsense.haproxy_user:
+        name: 'ANSIBLE_TEST_2_USER'
+        enabled: false
+      register: opn_user2_disabled
+
+    - name: Clean up test users (after)
+      ansibleguy.opnsense.haproxy_user:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_USER'
+        - 'ANSIBLE_TEST_2_USER'
+
+    - name: Verify cleanup
+      ansibleguy.opnsense.list:
+      register: opn_cleanup_verify
+
+    - name: Show test results
+      ansible.builtin.assert:
+        that:
+          - opn_user1_check is changed
+          - opn_user1 is changed
+          - opn_user2 is changed
+          - opn_user1_changed is changed
+          - opn_user1_changed2 is not changed
+          - opn_user2_disabled is changed
+          - "opn_user1_verify.data | length == (existing_entries.data | length + 1)"
+          - "'ANSIBLE_TEST_1_USER' in opn_user1_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_1_USER' not in opn_cleanup_verify.data | map(attribute='name')"
+        msg: 'HAProxy user tests failed!'

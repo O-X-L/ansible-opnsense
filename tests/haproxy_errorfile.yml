@@ -1,0 +1,106 @@
+---
+
+- name: Testing HAProxy Error Files
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_errorfile'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: List existing error files
+      ansibleguy.opnsense.list:
+      register: existing_entries
+
+    - name: Clean up test error files (before)
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_ERROR'
+        - 'ANSIBLE_TEST_2_ERROR'
+
+    - name: Add 503 error file (check)
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: 'ANSIBLE_TEST_1_ERROR'
+        description: 'Test 503 error page'
+        code: '503'
+        content: '<html><body><h1>Service Unavailable</h1></body></html>'
+      check_mode: true
+      register: opn_error1_check
+
+    - name: Add 503 error file
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: 'ANSIBLE_TEST_1_ERROR'
+        description: 'Test 503 error page'
+        code: '503'
+        content: '<html><body><h1>Service Unavailable</h1></body></html>'
+      register: opn_error1
+
+    - name: Verify error file creation
+      ansibleguy.opnsense.list:
+      register: opn_error1_verify
+
+    - name: Add 404 error file
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: 'ANSIBLE_TEST_2_ERROR'
+        description: 'Test 404 error page'
+        code: '404'
+        content: '<html><body><h1>Page Not Found</h1></body></html>'
+      register: opn_error2
+
+    - name: Modify error file 1 content
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: 'ANSIBLE_TEST_1_ERROR'
+        description: 'Modified test 503 error page'
+        code: '503'
+        content: '<html><body><h1>Temporarily Unavailable</h1><p>Please try again later.</p></body></html>'
+      register: opn_error1_changed
+
+    - name: Error file 1 should not change (2)
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: 'ANSIBLE_TEST_1_ERROR'
+        description: 'Modified test 503 error page'
+        code: '503'
+        content: '<html><body><h1>Temporarily Unavailable</h1><p>Please try again later.</p></body></html>'
+      register: opn_error1_changed2
+
+    - name: Disable error file 2
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: 'ANSIBLE_TEST_2_ERROR'
+        enabled: false
+      register: opn_error2_disabled
+
+    - name: Clean up test error files (after)
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_ERROR'
+        - 'ANSIBLE_TEST_2_ERROR'
+
+    - name: Verify cleanup
+      ansibleguy.opnsense.list:
+      register: opn_cleanup_verify
+
+    - name: Show test results
+      ansible.builtin.assert:
+        that:
+          - opn_error1_check is changed
+          - opn_error1 is changed
+          - opn_error2 is changed
+          - opn_error1_changed is changed
+          - opn_error1_changed2 is not changed
+          - opn_error2_disabled is changed
+          - "opn_error1_verify.data | length == (existing_entries.data | length + 1)"
+          - "'ANSIBLE_TEST_1_ERROR' in opn_error1_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_1_ERROR' not in opn_cleanup_verify.data | map(attribute='name')"
+        msg: 'HAProxy error file tests failed!'

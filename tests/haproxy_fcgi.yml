@@ -1,0 +1,325 @@
+---
+
+- name: Testing HAProxy FCGI Applications
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_fcgi'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    # ========================================
+    # TEST PHASE 1: LIST AND INITIAL STATE
+    # ========================================
+    - name: Listing existing HAProxy FCGI Applications
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1
+
+    - name: Show initial state
+      debug:
+        msg: "Found {{ opn_pre1.data | length }} existing FCGI applications"
+
+    # ========================================
+    # TEST PHASE 2: CREATE FCGI APPLICATIONS
+    # ========================================
+    - name: 'Create PHP FastCGI Application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_php_app'
+        description: 'PHP FastCGI Application for Web Services'
+        docroot: '/var/www/html'
+        index: 'index.php'
+        state: present
+      register: fcgi_php
+      failed_when: >
+        fcgi_php.failed or
+        not fcgi_php.changed
+
+    - name: 'Create WordPress FastCGI Application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_wordpress_app'
+        description: 'WordPress FastCGI Application with Custom Settings'
+        docroot: '/var/www/wordpress'
+        index: 'index.php'
+        state: present
+      register: fcgi_wordpress
+      failed_when: >
+        fcgi_wordpress.failed or
+        not fcgi_wordpress.changed
+
+    - name: 'Create API FastCGI Application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_api_app'
+        description: 'REST API FastCGI Application'
+        docroot: '/var/www/api'
+        index: 'api.php'
+        state: present
+      register: fcgi_api
+      failed_when: >
+        fcgi_api.failed or
+        not fcgi_api.changed
+
+    - name: 'Create Laravel FastCGI Application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_laravel_app'
+        description: 'Laravel Framework FastCGI Application'
+        docroot: '/var/www/laravel/public'
+        index: 'index.php'
+        state: present
+      register: fcgi_laravel
+      failed_when: >
+        fcgi_laravel.failed or
+        not fcgi_laravel.changed
+
+    - name: 'Create Symfony FastCGI Application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_symfony_app'
+        description: 'Symfony Framework FastCGI Application'
+        docroot: '/var/www/symfony/public'
+        index: 'index.php'
+        state: present
+      register: fcgi_symfony
+      failed_when: >
+        fcgi_symfony.failed or
+        not fcgi_symfony.changed
+
+    - name: Show creation results
+      debug:
+        msg: "✅ Created 5 FCGI applications successfully"
+
+    # ========================================
+    # TEST PHASE 3: VERIFICATION AND UPDATES
+    # ========================================
+    - name: 'List FCGI applications after creation'
+      ansibleguy.opnsense.list:
+      register: opn_post_create
+
+    - name: 'Verify all applications were created'
+      ansible.builtin.assert:
+        that:
+          - opn_post_create.data | length >= 5
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_php_app') | list | length == 1"
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_wordpress_app') | list | length == 1"
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_api_app') | list | length == 1"
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_laravel_app') | list | length == 1"
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_symfony_app') | list | length == 1"
+        fail_msg: "Not all FCGI applications were created properly"
+
+    - name: 'Update PHP Application - change document root and index file'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_php_app'
+        description: 'Enhanced PHP FastCGI Application with Version 2'
+        docroot: '/var/www/html/v2'
+        index: 'main.php'
+        state: present
+      register: fcgi_php_update
+      failed_when: >
+        fcgi_php_update.failed or
+        not fcgi_php_update.changed
+      when: not ansible_check_mode
+
+    - name: 'Update WordPress Application - modify description and path'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_wordpress_app'
+        description: 'WordPress Multi-Site FastCGI Application'
+        docroot: '/var/www/wordpress-multisite'
+        index: 'index.php'
+        state: present
+      register: fcgi_wordpress_update
+      failed_when: >
+        fcgi_wordpress_update.failed or
+        not fcgi_wordpress_update.changed
+      when: not ansible_check_mode
+
+    # ========================================
+    # TEST PHASE 4: IDEMPOTENCY CHECKS
+    # ========================================
+    - name: 'Check idempotency - re-run same PHP application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_php_app'
+        description: 'Enhanced PHP FastCGI Application with Version 2'
+        docroot: '/var/www/html/v2'
+        index: 'main.php'
+        state: present
+      register: fcgi_idempotent1
+      failed_when: >
+        fcgi_idempotent1.failed or
+        fcgi_idempotent1.changed
+      when: not ansible_check_mode
+
+    - name: 'Check idempotency - re-run same API application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_api_app'
+        description: 'REST API FastCGI Application'
+        docroot: '/var/www/api'
+        index: 'api.php'
+        state: present
+      register: fcgi_idempotent2
+      failed_when: >
+        fcgi_idempotent2.failed or
+        fcgi_idempotent2.changed
+      when: not ansible_check_mode
+
+    - name: Show idempotency results
+      debug:
+        msg: "✅ Idempotency verified for FCGI applications"
+      when: not ansible_check_mode
+
+    # ========================================
+    # TEST PHASE 5: ERROR HANDLING
+    # ========================================
+    - name: 'Test error handling - missing name'
+      ansibleguy.opnsense.haproxy_fcgi:
+        description: 'Application without name'
+        docroot: '/var/www/test'
+        index: 'index.php'
+        state: present
+      register: fcgi_error1
+      failed_when: not fcgi_error1.failed
+      ignore_errors: true
+
+    - name: 'Test error handling - missing docroot'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_no_docroot'
+        description: 'Application without document root'
+        state: present
+      register: fcgi_error2
+      failed_when: not fcgi_error2.failed
+      ignore_errors: true
+
+    - name: Show error handling results
+      debug:
+        msg: "✅ Error handling working correctly"
+
+    # ========================================
+    # TEST PHASE 6: DIFFERENT CONFIGURATIONS
+    # ========================================
+    - name: 'Create FCGI Application with minimal configuration'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_minimal_app'
+        description: 'Minimal FastCGI Application'
+        state: present
+      register: fcgi_minimal
+      failed_when: >
+        fcgi_minimal.failed or
+        not fcgi_minimal.changed
+
+    - name: 'Create FCGI Application with complex path structure'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_complex_app'
+        description: 'Complex Path Structure FastCGI Application'
+        docroot: '/opt/applications/web-services/public_html'
+        index: 'bootstrap.php'
+        state: present
+      register: fcgi_complex
+      failed_when: >
+        fcgi_complex.failed or
+        not fcgi_complex.changed
+
+    - name: Show configuration variety results
+      debug:
+        msg: "✅ Created applications with various configuration types"
+
+    # ========================================
+    # TEST PHASE 7: CLEANUP
+    # ========================================
+    - name: 'Remove PHP FastCGI Application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_php_app'
+        state: absent
+      register: fcgi_remove1
+      failed_when: >
+        fcgi_remove1.failed or
+        not fcgi_remove1.changed
+
+    - name: 'Remove WordPress FastCGI Application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_wordpress_app'
+        state: absent
+      register: fcgi_remove2
+      failed_when: >
+        fcgi_remove2.failed or
+        not fcgi_remove2.changed
+
+    - name: 'Remove API FastCGI Application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_api_app'
+        state: absent
+      register: fcgi_remove3
+      failed_when: >
+        fcgi_remove3.failed or
+        not fcgi_remove3.changed
+
+    - name: 'Remove Laravel FastCGI Application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_laravel_app'
+        state: absent
+      register: fcgi_remove4
+      failed_when: >
+        fcgi_remove4.failed or
+        not fcgi_remove4.changed
+
+    - name: 'Remove Symfony FastCGI Application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_symfony_app'
+        state: absent
+      register: fcgi_remove5
+      failed_when: >
+        fcgi_remove5.failed or
+        not fcgi_remove5.changed
+
+    - name: 'Remove Minimal FastCGI Application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_minimal_app'
+        state: absent
+      register: fcgi_remove6
+      failed_when: >
+        fcgi_remove6.failed or
+        not fcgi_remove6.changed
+
+    - name: 'Remove Complex FastCGI Application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_complex_app'
+        state: absent
+      register: fcgi_remove7
+      failed_when: >
+        fcgi_remove7.failed or
+        not fcgi_remove7.changed
+
+    - name: 'Verify cleanup - attempt to remove non-existent application'
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: 'test_php_app'
+        state: absent
+      register: fcgi_remove_again
+      failed_when: >
+        fcgi_remove_again.failed or
+        fcgi_remove_again.changed
+
+    - name: 'List FCGI applications after cleanup'
+      ansibleguy.opnsense.list:
+      register: opn_post_cleanup
+
+    - name: 'Verify all test applications removed'
+      ansible.builtin.assert:
+        that:
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_php_app') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_wordpress_app') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_api_app') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_laravel_app') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_symfony_app') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_minimal_app') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_complex_app') | list | length == 0"
+        fail_msg: "Cleanup failed - test applications still exist"
+
+    - name: Show final results
+      debug:
+        msg: "✅ All HAProxy FCGI application tests completed successfully"

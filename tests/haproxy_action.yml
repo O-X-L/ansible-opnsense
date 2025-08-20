@@ -1,0 +1,312 @@
+---
+
+- name: Testing HAProxy Actions with Name-Based Linking
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_action'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: List existing actions
+      ansibleguy.opnsense.list:
+      register: existing_entries
+
+    # ===== CLEANUP BEFORE TESTS =====
+    - name: Clean up test actions (before)
+      ansibleguy.opnsense.haproxy_action:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_ACTION_USE_BACKEND'
+        - 'ANSIBLE_TEST_ACTION_USE_SERVER'
+        - 'ANSIBLE_TEST_ACTION_LINKED_ACLS'
+        - 'ANSIBLE_TEST_ACTION_MAP_BACKEND'
+        - 'ANSIBLE_TEST_ACTION_COMPLEX'
+        - 'ANSIBLE_TEST_ACTION_BASIC'
+
+    - name: Clean up test ACLs (before)
+      ansibleguy.opnsense.haproxy_acl:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_ACL_HOST'
+        - 'ANSIBLE_TEST_ACL_PATH'
+        - 'ANSIBLE_TEST_ACL_IP'
+
+    - name: Clean up test backends (before)
+      ansibleguy.opnsense.haproxy_backend:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_BACKEND_WEB'
+        - 'ANSIBLE_TEST_BACKEND_API' 
+        - 'ANSIBLE_TEST_BACKEND_DEFAULT'
+
+    - name: Clean up test servers (before)
+      ansibleguy.opnsense.haproxy_server:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_SERVER_WEB1'
+        - 'ANSIBLE_TEST_SERVER_WEB2'
+        - 'ANSIBLE_TEST_SERVER_API1'
+
+    # ===== CREATE PREREQUISITE RESOURCES =====
+    - name: Create test ACLs for linking
+      ansibleguy.opnsense.haproxy_acl:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        expression: "{{ item.expression }}"
+        value: "{{ item.value }}"
+        enabled: true
+      loop:
+        - { name: 'ANSIBLE_TEST_ACL_HOST', desc: 'Test host ACL for actions', expression: 'hdr', value: 'api.example.com' }
+        - { name: 'ANSIBLE_TEST_ACL_PATH', desc: 'Test path ACL for actions', expression: 'path_beg', value: '/admin' }
+        - { name: 'ANSIBLE_TEST_ACL_IP', desc: 'Test IP ACL for actions', expression: 'src', value: '192.168.1.0/24' }
+
+    - name: Create test backends for linking
+      ansibleguy.opnsense.haproxy_backend:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        mode: "{{ item.mode }}"
+        enabled: true
+      loop:
+        - { name: 'ANSIBLE_TEST_BACKEND_WEB', desc: 'Test web backend for actions', mode: 'http' }
+        - { name: 'ANSIBLE_TEST_BACKEND_API', desc: 'Test API backend for actions', mode: 'http' }
+        - { name: 'ANSIBLE_TEST_BACKEND_DEFAULT', desc: 'Test default backend for actions', mode: 'http' }
+
+    - name: Create test servers for linking
+      ansibleguy.opnsense.haproxy_server:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        address: "{{ item.address }}"
+        port: "{{ item.port }}"
+        enabled: true
+      loop:
+        - { name: 'ANSIBLE_TEST_SERVER_WEB1', desc: 'Test web server 1 for actions', address: '192.168.1.10', port: '80' }
+        - { name: 'ANSIBLE_TEST_SERVER_WEB2', desc: 'Test web server 2 for actions', address: '192.168.1.11', port: '80' }
+        - { name: 'ANSIBLE_TEST_SERVER_API1', desc: 'Test API server 1 for actions', address: '192.168.1.20', port: '8080' }
+
+    # ===== TEST NAME-BASED LINKING FUNCTIONALITY =====
+
+    # Test 1: Create action with use_backend linking
+    - name: Add action with use_backend name-based linking (check)
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_USE_BACKEND'
+        description: 'Test action with use_backend linking'
+        test_type: 'if'
+        action_type: 'use_backend'
+        use_backend: 'ANSIBLE_TEST_BACKEND_WEB'  # Test name-based backend linking
+      check_mode: true
+      register: action_use_backend_check
+
+    - name: Add action with use_backend name-based linking
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_USE_BACKEND'
+        description: 'Test action with use_backend linking'
+        test_type: 'if'
+        action_type: 'use_backend'
+        use_backend: 'ANSIBLE_TEST_BACKEND_WEB'  # Test name-based backend linking
+      register: action_use_backend
+
+    # Test 2: Create action with use_server linking
+    - name: Add action with use_server name-based linking
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_USE_SERVER'
+        description: 'Test action with use_server linking'
+        test_type: 'if'
+        action_type: 'use_server'
+        use_server: ['ANSIBLE_TEST_SERVER_WEB1', 'ANSIBLE_TEST_SERVER_WEB2']  # Test name-based server linking
+      register: action_use_server
+
+    # Test 3: Create action with linked_acls
+    - name: Add action with linked_acls name-based linking
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_LINKED_ACLS'
+        description: 'Test action with linked ACLs'
+        test_type: 'if'
+        action_type: 'http-request_allow'
+        linked_acls: ['ANSIBLE_TEST_ACL_HOST', 'ANSIBLE_TEST_ACL_PATH']  # Test name-based ACL linking
+      register: action_linked_acls
+
+    # Test 4: Create action with map_use_backend_default
+    - name: Add action with map_use_backend_default name-based linking
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_MAP_BACKEND'
+        description: 'Test action with map backend default'
+        test_type: 'if'
+        action_type: 'map_use_backend'
+        map_use_backend_default: 'ANSIBLE_TEST_BACKEND_DEFAULT'  # Test name-based default backend linking
+      register: action_map_backend
+
+    # Test 5: Create complex action with multiple linkings
+    - name: Add complex action with multiple name-based linkings
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_COMPLEX'
+        description: 'Test action with multiple linkings'
+        test_type: 'if'
+        action_type: 'use_backend'
+        linked_acls: ['ANSIBLE_TEST_ACL_HOST', 'ANSIBLE_TEST_ACL_IP']  # Multiple ACLs
+        use_backend: 'ANSIBLE_TEST_BACKEND_API'  # Backend linking
+      register: action_complex
+
+    # Test 6: Basic action without linkings for comparison
+    - name: Add basic action without linkings
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_BASIC'
+        description: 'Basic test action without linkings'
+        test_type: 'unless'
+        action_type: 'http-request_deny'
+      register: action_basic
+
+    # ===== TEST UPDATING LINKAGES =====
+
+    # Test 7: Update use_backend action to use different backend
+    - name: Update use_backend action with different backend
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_USE_BACKEND'
+        use_backend: 'ANSIBLE_TEST_BACKEND_API'  # Change from WEB to API backend
+      register: action_use_backend_updated
+
+    # Test 8: Update use_server action - add/remove servers
+    - name: Update use_server action with different servers
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_USE_SERVER'
+        use_server: ['ANSIBLE_TEST_SERVER_WEB2', 'ANSIBLE_TEST_SERVER_API1']  # Remove WEB1, add API1
+      register: action_use_server_updated
+
+    # Test 9: Update linked_acls - add and remove ACLs
+    - name: Update linked_acls action with different ACLs
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_LINKED_ACLS'
+        linked_acls: ['ANSIBLE_TEST_ACL_PATH', 'ANSIBLE_TEST_ACL_IP']  # Remove HOST, add IP
+      register: action_linked_acls_updated
+
+    # Test 10: Update map_use_backend_default
+    - name: Update map_use_backend_default with different backend
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_MAP_BACKEND'
+        map_use_backend_default: 'ANSIBLE_TEST_BACKEND_WEB'  # Change from DEFAULT to WEB
+      register: action_map_backend_updated
+
+    # ===== TEST IDEMPOTENCY =====
+
+    # Test 11: Verify idempotency - re-run same configuration
+    - name: Test idempotency for use_backend action
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_USE_BACKEND'
+        description: 'Test action with use_backend linking'
+        test_type: 'if'
+        action_type: 'use_backend'
+        use_backend: 'ANSIBLE_TEST_BACKEND_API'  # Same as last update
+      register: action_use_backend_idempotent
+
+    - name: Test idempotency for complex action
+      ansibleguy.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_ACTION_COMPLEX'
+        description: 'Test action with multiple linkings'
+        test_type: 'if'
+        action_type: 'use_backend'
+        linked_acls: ['ANSIBLE_TEST_ACL_HOST', 'ANSIBLE_TEST_ACL_IP']
+        use_backend: 'ANSIBLE_TEST_BACKEND_API'
+      register: action_complex_idempotent
+
+    # ===== VERIFY CREATION =====
+    - name: Verify action creation
+      ansibleguy.opnsense.list:
+      register: actions_verify
+
+    # ===== CLEANUP AFTER TESTS =====
+    - name: Clean up test actions (after)
+      ansibleguy.opnsense.haproxy_action:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_ACTION_USE_BACKEND'
+        - 'ANSIBLE_TEST_ACTION_USE_SERVER'
+        - 'ANSIBLE_TEST_ACTION_LINKED_ACLS'
+        - 'ANSIBLE_TEST_ACTION_MAP_BACKEND'
+        - 'ANSIBLE_TEST_ACTION_COMPLEX'
+        - 'ANSIBLE_TEST_ACTION_BASIC'
+
+    - name: Clean up test ACLs (after)
+      ansibleguy.opnsense.haproxy_acl:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_ACL_HOST'
+        - 'ANSIBLE_TEST_ACL_PATH'
+        - 'ANSIBLE_TEST_ACL_IP'
+
+    - name: Clean up test backends (after)
+      ansibleguy.opnsense.haproxy_backend:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_BACKEND_WEB'
+        - 'ANSIBLE_TEST_BACKEND_API'
+        - 'ANSIBLE_TEST_BACKEND_DEFAULT'
+
+    - name: Clean up test servers (after)
+      ansibleguy.opnsense.haproxy_server:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_SERVER_WEB1'
+        - 'ANSIBLE_TEST_SERVER_WEB2'
+        - 'ANSIBLE_TEST_SERVER_API1'
+
+    # ===== VERIFY CLEANUP =====
+    - name: Verify cleanup
+      ansibleguy.opnsense.list:
+      register: cleanup_verify
+
+    # ===== ASSERTIONS =====
+    - name: Show test results
+      ansible.builtin.assert:
+        that:
+          # Check mode and basic creation tests
+          - action_use_backend_check is changed
+          - action_use_backend is changed
+          - action_use_server is changed
+          - action_linked_acls is changed
+          - action_map_backend is changed
+          - action_complex is changed
+          - action_basic is changed
+          
+          # Update tests - should detect changes
+          - action_use_backend_updated is changed
+          - action_use_server_updated is changed
+          - action_linked_acls_updated is changed
+          - action_map_backend_updated is changed
+          
+          # Idempotency tests - should not detect changes
+          - action_use_backend_idempotent is not changed
+          - action_complex_idempotent is not changed
+          
+          # Verify action was created
+          - "actions_verify.data | length == (existing_entries.data | length + 6)"
+          - "'ANSIBLE_TEST_ACTION_USE_BACKEND' in actions_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_ACTION_USE_SERVER' in actions_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_ACTION_LINKED_ACLS' in actions_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_ACTION_MAP_BACKEND' in actions_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_ACTION_COMPLEX' in actions_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_ACTION_BASIC' in actions_verify.data | map(attribute='name')"
+          
+          # Verify cleanup worked
+          - "'ANSIBLE_TEST_ACTION_USE_BACKEND' not in cleanup_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_ACTION_USE_SERVER' not in cleanup_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_ACTION_LINKED_ACLS' not in cleanup_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_ACTION_MAP_BACKEND' not in cleanup_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_ACTION_COMPLEX' not in cleanup_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_ACTION_BASIC' not in cleanup_verify.data | map(attribute='name')"
+        msg: 'HAProxy action tests failed! Name-based linking may not be working correctly.'

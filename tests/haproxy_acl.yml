@@ -1,0 +1,192 @@
+---
+
+- name: Testing HAProxy ACLs
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_acl'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+  - name: List existing ACLs
+    ansibleguy.opnsense.list:
+    register: existing_entries
+
+  - name: Clean up test ACLs, groups, and users (before)
+    ansibleguy.opnsense.haproxy_acl:
+      name: "{{ item }}"
+      state: 'absent'
+    loop:
+    - 'ANSIBLE_TEST_1_ACL'
+    - 'ANSIBLE_TEST_2_ACL'
+    - 'ANSIBLE_TEST_3_ACL'
+    - 'ANSIBLE_TEST_AUTH_ACL'
+
+  - name: Clean up test groups (before)
+    ansibleguy.opnsense.haproxy_group:
+      name: "{{ item }}"
+      state: 'absent'
+    loop:
+    - 'ANSIBLE_TEST_ACL_GROUP_1'
+    - 'ANSIBLE_TEST_ACL_GROUP_2'
+
+  - name: Clean up test users (before)
+    ansibleguy.opnsense.haproxy_user:
+      name: "{{ item }}"
+      state: 'absent'
+    loop:
+    - 'ANSIBLE_TEST_ACL_USER_1'
+    - 'ANSIBLE_TEST_ACL_USER_2'
+
+  - name: Create test users for ACL testing
+    ansibleguy.opnsense.haproxy_user:
+      name: "{{ item.name }}"
+      description: "{{ item.desc }}"
+      password: "{{ item.password }}"
+      enabled: true
+    loop:
+    - { name: 'ANSIBLE_TEST_ACL_USER_1', desc: 'ACL test user 1', password: 'aclpass1' }
+    - { name: 'ANSIBLE_TEST_ACL_USER_2', desc: 'ACL test user 2', password: 'aclpass2' }
+
+  - name: Create test groups for ACL testing
+    ansibleguy.opnsense.haproxy_group:
+      name: "{{ item.name }}"
+      description: "{{ item.desc }}"
+      enabled: true
+      add_userlist: true
+      members: "{{ item.members }}"
+    loop:
+    - { name: 'ANSIBLE_TEST_ACL_GROUP_1', desc: 'ACL test group 1', members: ['ANSIBLE_TEST_ACL_USER_1'] }
+    - { name: 'ANSIBLE_TEST_ACL_GROUP_2', desc: 'ACL test group 2', members: ['ANSIBLE_TEST_ACL_USER_2'] }
+
+  - name: Add host ACL (check)
+    ansibleguy.opnsense.haproxy_acl:
+      name: 'ANSIBLE_TEST_1_ACL'
+      description: 'Test host ACL'
+      expression: 'hdr'
+      value: 'api.example.com'
+    check_mode: true
+    register: opn_acl1_check
+
+  - name: Add host ACL
+    ansibleguy.opnsense.haproxy_acl:
+      name: 'ANSIBLE_TEST_1_ACL'
+      description: 'Test host ACL'
+      expression: 'hdr'
+      value: 'api.example.com'
+    register: opn_acl1
+
+  - name: Verify ACL creation
+    ansibleguy.opnsense.list:
+    register: opn_acl1_verify
+
+  - name: Add path ACL
+    ansibleguy.opnsense.haproxy_acl:
+      name: 'ANSIBLE_TEST_2_ACL'
+      description: 'Test path ACL'
+      expression: 'path_beg'
+      value: '/admin'
+      negate: false
+      case_sensitive: true
+    register: opn_acl2
+
+  - name: Add source IP ACL
+    ansibleguy.opnsense.haproxy_acl:
+      name: 'ANSIBLE_TEST_3_ACL'
+      description: 'Test source IP ACL'
+      expression: 'src'
+      value: '192.168.1.0/24'
+    register: opn_acl3
+
+  - name: Modify ACL 1
+    ansibleguy.opnsense.haproxy_acl:
+      name: 'ANSIBLE_TEST_1_ACL'
+      description: 'Modified test host ACL'
+      expression: 'hdr_beg'
+      value: 'api.'
+    register: opn_acl1_changed
+
+  - name: ACL 1 should not change (2)
+    ansibleguy.opnsense.haproxy_acl:
+      name: 'ANSIBLE_TEST_1_ACL'
+      description: 'Modified test host ACL'
+      expression: 'hdr_beg'
+      value: 'api.'
+    register: opn_acl1_changed2
+
+  - name: Add HTTP auth ACL with name-based user and group linking
+    ansibleguy.opnsense.haproxy_acl:
+      name: 'ANSIBLE_TEST_AUTH_ACL'
+      description: 'Test HTTP auth ACL with name-based linking'
+      expression: 'http_auth'
+      allowedUsers: ['ANSIBLE_TEST_ACL_USER_1']  # Test name-based user linking
+      allowedGroups: ['ANSIBLE_TEST_ACL_GROUP_1', 'ANSIBLE_TEST_ACL_GROUP_2']  # Test name-based group linking
+    register: opn_acl_auth
+
+  - name: Update auth ACL users and groups
+    ansibleguy.opnsense.haproxy_acl:
+      name: 'ANSIBLE_TEST_AUTH_ACL'
+      allowedUsers: ['ANSIBLE_TEST_ACL_USER_1', 'ANSIBLE_TEST_ACL_USER_2']  # Add second user
+      allowedGroups: ['ANSIBLE_TEST_ACL_GROUP_2']  # Remove first group
+    register: opn_acl_auth_changed
+
+  - name: Disable ACL 3
+    ansibleguy.opnsense.haproxy_acl:
+      name: 'ANSIBLE_TEST_3_ACL'
+      enabled: false
+    register: opn_acl3_disabled
+
+  - name: Clean up test ACLs (after)
+    ansibleguy.opnsense.haproxy_acl:
+      name: "{{ item }}"
+      state: 'absent'
+    loop:
+    - 'ANSIBLE_TEST_1_ACL'
+    - 'ANSIBLE_TEST_2_ACL'
+    - 'ANSIBLE_TEST_3_ACL'
+    - 'ANSIBLE_TEST_AUTH_ACL'
+
+  - name: Clean up test groups (after)
+    ansibleguy.opnsense.haproxy_group:
+      name: "{{ item }}"
+      state: 'absent'
+    loop:
+    - 'ANSIBLE_TEST_ACL_GROUP_1'
+    - 'ANSIBLE_TEST_ACL_GROUP_2'
+
+  - name: Clean up test users (after)
+    ansibleguy.opnsense.haproxy_user:
+      name: "{{ item }}"
+      state: 'absent'
+    loop:
+    - 'ANSIBLE_TEST_ACL_USER_1'
+    - 'ANSIBLE_TEST_ACL_USER_2'
+
+  - name: Verify cleanup
+    ansibleguy.opnsense.list:
+    register: opn_cleanup_verify
+
+  - name: Show test results
+    ansible.builtin.assert:
+      that:
+      - opn_acl1_check is changed
+      - opn_acl1 is changed
+      - opn_acl2 is changed
+      - opn_acl3 is changed
+      - opn_acl1_changed is changed
+      - opn_acl1_changed2 is not changed
+      - opn_acl_auth is changed
+      - opn_acl_auth_changed is changed
+      - opn_acl3_disabled is changed
+      - "opn_acl1_verify.data | length == (existing_entries.data | length + 1)"
+      - "'ANSIBLE_TEST_1_ACL' in opn_acl1_verify.data | map(attribute='name')"
+      - "'ANSIBLE_TEST_1_ACL' not in opn_cleanup_verify.data | map(attribute='name')"
+      msg: 'HAProxy ACL tests failed! Name-based user/group linking may not be working correctly.'

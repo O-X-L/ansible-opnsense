@@ -1,0 +1,47 @@
+---
+
+- name: Testing HAProxy Service Management
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Check HAProxy service status
+      ansibleguy.opnsense.haproxy_service:
+        action: status
+      register: opn_status1
+      failed_when: opn_status1.failed
+
+    - name: Test HAProxy configuration
+      ansibleguy.opnsense.haproxy_service:
+        action: configtest
+      register: opn_configtest1
+      failed_when: opn_configtest1.failed
+
+    - name: Stop HAProxy service
+      ansibleguy.opnsense.haproxy_service:
+        action: stop
+      register: opn_stop1
+      failed_when: opn_stop1.failed
+      when: not ansible_check_mode
+
+    - name: Start HAProxy service
+      ansibleguy.opnsense.haproxy_service:
+        action: start
+      register: opn_start1
+      failed_when: opn_start1.failed
+      when: not ansible_check_mode
+
+    - name: Reload HAProxy configuration
+      ansibleguy.opnsense.haproxy_service:
+        action: reload
+      register: opn_reload1
+      failed_when: opn_reload1.failed
+      when: not ansible_check_mode

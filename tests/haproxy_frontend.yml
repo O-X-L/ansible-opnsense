@@ -1,0 +1,437 @@
+---
+
+- name: Testing HAProxy Frontend Configuration with Name-Based Linking
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_frontend'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: List existing frontends
+      ansibleguy.opnsense.list:
+      register: existing_entries
+
+    # === PREREQUISITE CLEANUP (BEFORE) ===
+    - name: Clean up test frontends (before)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_FRONTEND'
+        - 'ANSIBLE_TEST_2_FRONTEND'
+        - 'ANSIBLE_TEST_3_FRONTEND'
+        - 'ANSIBLE_TEST_LINKING_FRONTEND'
+        - 'ANSIBLE_TEST_UPDATE_FRONTEND'
+
+    - name: Clean up test backends (before)
+      ansibleguy.opnsense.haproxy_backend:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_BACKEND_1'
+        - 'ANSIBLE_TEST_BACKEND_2'
+
+    - name: Clean up test servers (before)
+      ansibleguy.opnsense.haproxy_server:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_SERVER_1'
+        - 'ANSIBLE_TEST_SERVER_2'
+
+    - name: Clean up test actions (before)
+      ansibleguy.opnsense.haproxy_action:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_ACTION_1'
+        - 'ANSIBLE_TEST_ACTION_2'
+        - 'ANSIBLE_TEST_ACTION_3'
+
+    - name: Clean up test errorfiles (before)
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_ERROR_1'
+        - 'ANSIBLE_TEST_ERROR_2'
+
+    - name: Clean up test groups (before)
+      ansibleguy.opnsense.haproxy_group:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_GROUP_1'
+        - 'ANSIBLE_TEST_GROUP_2'
+
+    - name: Clean up test users (before)
+      ansibleguy.opnsense.haproxy_user:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_USER_1'
+        - 'ANSIBLE_TEST_USER_2'
+        - 'ANSIBLE_TEST_USER_3'
+
+    # === CREATE PREREQUISITE RESOURCES ===
+    - name: Create test servers for backends
+      ansibleguy.opnsense.haproxy_server:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        address: "{{ item.address }}"
+        port: "{{ item.port }}"
+        enabled: true
+      loop:
+        - { name: 'ANSIBLE_TEST_SERVER_1', desc: 'Test server 1', address: '192.168.1.10', port: 80 }
+        - { name: 'ANSIBLE_TEST_SERVER_2', desc: 'Test server 2', address: '192.168.1.11', port: 80 }
+
+    - name: Create test backends
+      ansibleguy.opnsense.haproxy_backend:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        mode: 'http'
+        enabled: true
+        linked_servers: "{{ item.servers }}"
+      loop:
+        - { name: 'ANSIBLE_TEST_BACKEND_1', desc: 'Test backend 1', servers: ['ANSIBLE_TEST_SERVER_1'] }
+        - { name: 'ANSIBLE_TEST_BACKEND_2', desc: 'Test backend 2', servers: ['ANSIBLE_TEST_SERVER_2'] }
+
+    - name: Create test actions
+      ansibleguy.opnsense.haproxy_action:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        test_type: 'if'
+        action_type: "{{ item.action_type }}"
+        enabled: true
+      loop:
+        - { name: 'ANSIBLE_TEST_ACTION_1', desc: 'Test action 1', action_type: 'http-request_allow' }
+        - { name: 'ANSIBLE_TEST_ACTION_2', desc: 'Test action 2', action_type: 'http-request_deny' }
+        - { name: 'ANSIBLE_TEST_ACTION_3', desc: 'Test action 3', action_type: 'http-response_set-header' }
+
+    - name: Create test errorfiles
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        code: "{{ item.code }}"
+        content: "{{ item.content }}"
+        enabled: true
+      loop:
+        - { name: 'ANSIBLE_TEST_ERROR_1', desc: 'Test 503 error', code: '503', content: '<html><body><h1>Service Unavailable</h1></body></html>' }
+        - { name: 'ANSIBLE_TEST_ERROR_2', desc: 'Test 404 error', code: '404', content: '<html><body><h1>Not Found</h1></body></html>' }
+
+    - name: Create test users
+      ansibleguy.opnsense.haproxy_user:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        password: "{{ item.password }}"
+        enabled: true
+      loop:
+        - { name: 'ANSIBLE_TEST_USER_1', desc: 'Test user 1', password: 'pass1' }
+        - { name: 'ANSIBLE_TEST_USER_2', desc: 'Test user 2', password: 'pass2' }
+        - { name: 'ANSIBLE_TEST_USER_3', desc: 'Test user 3', password: 'pass3' }
+
+    - name: Create test groups
+      ansibleguy.opnsense.haproxy_group:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        enabled: true
+        add_userlist: true
+        members: "{{ item.members }}"
+      loop:
+        - { name: 'ANSIBLE_TEST_GROUP_1', desc: 'Test group 1', members: ['ANSIBLE_TEST_USER_1', 'ANSIBLE_TEST_USER_2'] }
+        - { name: 'ANSIBLE_TEST_GROUP_2', desc: 'Test group 2', members: ['ANSIBLE_TEST_USER_3'] }
+
+    # === BASIC FRONTEND TESTS (EXISTING) ===
+
+    - name: Add frontend (check)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_FRONTEND'
+        description: 'Test frontend 1'
+        bind_address: '127.0.0.1'
+        bind_port: 8080
+        mode: 'http'
+      check_mode: true
+      register: opn_frontend1_check
+
+    - name: Add frontend
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_FRONTEND'
+        description: 'Test frontend 1'
+        bind_address: '127.0.0.1'
+        bind_port: 8080
+        mode: 'http'
+      register: opn_frontend1
+
+    - name: Verify frontend creation
+      ansibleguy.opnsense.list:
+      register: opn_frontend1_verify
+
+    - name: Add frontend 2
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_2_FRONTEND'
+        description: 'Test frontend 2'
+        bind_address: '0.0.0.0'
+        bind_port: 443
+        ssl_enabled: true
+        mode: 'http'
+        max_connections: 1000
+      register: opn_frontend2
+
+    - name: Add frontend 3 (TCP)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_3_FRONTEND'
+        description: 'Test TCP frontend'
+        bind_address: '10.0.0.1'
+        bind_port: 5432
+        mode: 'tcp'
+        log_enabled: true
+      register: opn_frontend3
+
+    - name: Modify frontend 1
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_FRONTEND'
+        description: 'Modified test frontend 1'
+        bind_address: '127.0.0.1'
+        bind_port: 8080
+        mode: 'http'
+        max_connections: 500
+        log_enabled: true
+      register: opn_frontend1_changed
+
+    - name: Frontend 1 should not change (2)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_FRONTEND'
+        description: 'Modified test frontend 1'
+        bind_address: '127.0.0.1'
+        bind_port: 8080
+        mode: 'http'
+        max_connections: 500
+        log_enabled: true
+      register: opn_frontend1_changed2
+
+    - name: Disable frontend 3
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_3_FRONTEND'
+        enabled: false
+      register: opn_frontend3_disabled
+
+    # === NAME-BASED LINKING TESTS ===
+    - name: Create frontend with name-based linking (check)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_LINKING_FRONTEND'
+        description: 'Test frontend with name-based linking'
+        bind_address: '127.0.0.1'
+        bind_port: 9090
+        mode: 'http'
+        default_backend: 'ANSIBLE_TEST_BACKEND_1'
+        linked_actions: ['ANSIBLE_TEST_ACTION_1', 'ANSIBLE_TEST_ACTION_2']
+        linked_errorfiles: ['ANSIBLE_TEST_ERROR_1']
+        basic_auth_users: ['ANSIBLE_TEST_USER_1', 'ANSIBLE_TEST_USER_2']
+        basic_auth_groups: ['ANSIBLE_TEST_GROUP_1']
+      check_mode: true
+      register: opn_frontend_linking_check
+
+    - name: Create frontend with name-based linking
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_LINKING_FRONTEND'
+        description: 'Test frontend with name-based linking'
+        bind_address: '127.0.0.1'
+        bind_port: 9090
+        mode: 'http'
+        default_backend: 'ANSIBLE_TEST_BACKEND_1'
+        linked_actions: ['ANSIBLE_TEST_ACTION_1', 'ANSIBLE_TEST_ACTION_2']
+        linked_errorfiles: ['ANSIBLE_TEST_ERROR_1']
+        basic_auth_users: ['ANSIBLE_TEST_USER_1', 'ANSIBLE_TEST_USER_2']
+        basic_auth_groups: ['ANSIBLE_TEST_GROUP_1']
+      register: opn_frontend_linking
+
+    - name: Verify frontend with linking creation
+      ansibleguy.opnsense.list:
+      register: opn_frontend_linking_verify
+
+    - name: Frontend with linking should not change (idempotent)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_LINKING_FRONTEND'
+        description: 'Test frontend with name-based linking'
+        bind_address: '127.0.0.1'
+        bind_port: 9090
+        mode: 'http'
+        default_backend: 'ANSIBLE_TEST_BACKEND_1'
+        linked_actions: ['ANSIBLE_TEST_ACTION_1', 'ANSIBLE_TEST_ACTION_2']
+        linked_errorfiles: ['ANSIBLE_TEST_ERROR_1']
+        basic_auth_users: ['ANSIBLE_TEST_USER_1', 'ANSIBLE_TEST_USER_2']
+        basic_auth_groups: ['ANSIBLE_TEST_GROUP_1']
+      register: opn_frontend_linking_unchanged
+
+    # === LINK UPDATE TESTS ===
+    - name: Create frontend for link update testing
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_UPDATE_FRONTEND'
+        description: 'Test frontend for link updates'
+        bind_address: '127.0.0.1'
+        bind_port: 9191
+        mode: 'http'
+        default_backend: 'ANSIBLE_TEST_BACKEND_1'
+        linked_actions: ['ANSIBLE_TEST_ACTION_1']
+        linked_errorfiles: ['ANSIBLE_TEST_ERROR_1']
+        basic_auth_users: ['ANSIBLE_TEST_USER_1']
+        basic_auth_groups: ['ANSIBLE_TEST_GROUP_1']
+      register: opn_frontend_update_create
+
+    - name: Update default backend
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_UPDATE_FRONTEND'
+        default_backend: 'ANSIBLE_TEST_BACKEND_2'
+      register: opn_frontend_backend_update
+
+    - name: Update linked actions (add one, keep one)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_UPDATE_FRONTEND'
+        linked_actions: ['ANSIBLE_TEST_ACTION_1', 'ANSIBLE_TEST_ACTION_3']
+      register: opn_frontend_actions_update
+
+    - name: Update linked errorfiles (replace with different one)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_UPDATE_FRONTEND'
+        linked_errorfiles: ['ANSIBLE_TEST_ERROR_2']
+      register: opn_frontend_errorfiles_update
+
+    - name: Update basic auth users (add one, remove one)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_UPDATE_FRONTEND'
+        basic_auth_users: ['ANSIBLE_TEST_USER_2', 'ANSIBLE_TEST_USER_3']
+      register: opn_frontend_users_update
+
+    - name: Update basic auth groups (change to different group)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_UPDATE_FRONTEND'
+        basic_auth_groups: ['ANSIBLE_TEST_GROUP_2']
+      register: opn_frontend_groups_update
+
+    - name: Clear all links (test removing links)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_UPDATE_FRONTEND'
+        default_backend: ''
+        linked_actions: []
+        linked_errorfiles: []
+        basic_auth_users: []
+        basic_auth_groups: []
+      register: opn_frontend_clear_links
+
+    - name: Re-add all links with different values
+      ansibleguy.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_UPDATE_FRONTEND'
+        default_backend: 'ANSIBLE_TEST_BACKEND_1'
+        linked_actions: ['ANSIBLE_TEST_ACTION_2', 'ANSIBLE_TEST_ACTION_3']
+        linked_errorfiles: ['ANSIBLE_TEST_ERROR_1', 'ANSIBLE_TEST_ERROR_2']
+        basic_auth_users: ['ANSIBLE_TEST_USER_1', 'ANSIBLE_TEST_USER_3']
+        basic_auth_groups: ['ANSIBLE_TEST_GROUP_1', 'ANSIBLE_TEST_GROUP_2']
+      register: opn_frontend_readd_links
+
+    # === CLEANUP ALL TEST RESOURCES ===
+    - name: Clean up test frontends (after)
+      ansibleguy.opnsense.haproxy_frontend:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_FRONTEND'
+        - 'ANSIBLE_TEST_2_FRONTEND'
+        - 'ANSIBLE_TEST_3_FRONTEND'
+        - 'ANSIBLE_TEST_LINKING_FRONTEND'
+        - 'ANSIBLE_TEST_UPDATE_FRONTEND'
+
+    - name: Clean up test backends (after)
+      ansibleguy.opnsense.haproxy_backend:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_BACKEND_1'
+        - 'ANSIBLE_TEST_BACKEND_2'
+
+    - name: Clean up test servers (after)
+      ansibleguy.opnsense.haproxy_server:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_SERVER_1'
+        - 'ANSIBLE_TEST_SERVER_2'
+
+    - name: Clean up test actions (after)
+      ansibleguy.opnsense.haproxy_action:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_ACTION_1'
+        - 'ANSIBLE_TEST_ACTION_2'
+        - 'ANSIBLE_TEST_ACTION_3'
+
+    - name: Clean up test errorfiles (after)
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_ERROR_1'
+        - 'ANSIBLE_TEST_ERROR_2'
+
+    - name: Clean up test groups (after)
+      ansibleguy.opnsense.haproxy_group:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_GROUP_1'
+        - 'ANSIBLE_TEST_GROUP_2'
+
+    - name: Clean up test users (after)
+      ansibleguy.opnsense.haproxy_user:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_USER_1'
+        - 'ANSIBLE_TEST_USER_2'
+        - 'ANSIBLE_TEST_USER_3'
+
+    - name: Verify cleanup
+      ansibleguy.opnsense.list:
+      register: opn_cleanup_verify
+
+    - name: Show test results
+      ansible.builtin.assert:
+        that:
+          # Basic frontend tests
+          - opn_frontend1_check is changed
+          - opn_frontend1 is changed
+          - opn_frontend2 is changed
+          - opn_frontend3 is changed
+          - opn_frontend1_changed is changed
+          - opn_frontend1_changed2 is not changed
+          - opn_frontend3_disabled is changed
+          # Name-based linking tests
+          - opn_frontend_linking_check is changed
+          - opn_frontend_linking is changed
+          - opn_frontend_linking_unchanged is not changed
+          # Link update tests
+          - opn_frontend_update_create is changed
+          - opn_frontend_backend_update is changed
+          - opn_frontend_actions_update is changed
+          - opn_frontend_errorfiles_update is changed
+          - opn_frontend_users_update is changed
+          - opn_frontend_groups_update is changed
+          - opn_frontend_clear_links is changed
+          - opn_frontend_readd_links is changed
+          # Data verification
+          - "opn_frontend1_verify.data | length == (existing_entries.data | length + 1)"
+          - "'ANSIBLE_TEST_1_FRONTEND' in opn_frontend1_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_LINKING_FRONTEND' in opn_frontend_linking_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_1_FRONTEND' not in opn_cleanup_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_LINKING_FRONTEND' not in opn_cleanup_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_UPDATE_FRONTEND' not in opn_cleanup_verify.data | map(attribute='name')"
+        msg: 'HAProxy frontend tests failed! Name-based linking may not be working correctly.'

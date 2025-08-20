@@ -159,6 +159,27 @@ action_groups:
   hasync:
     - ansibleguy.opnsense.hasync_general
     - ansibleguy.opnsense.hasync_service
+  haproxy:
+    - ansibleguy.opnsense.haproxy_general
+    - ansibleguy.opnsense.haproxy_backend
+    - ansibleguy.opnsense.haproxy_server
+    - ansibleguy.opnsense.haproxy_frontend
+    - ansibleguy.opnsense.haproxy_service
+    - ansibleguy.opnsense.haproxy_statistics
+    - ansibleguy.opnsense.haproxy_maintenance
+    - ansibleguy.opnsense.haproxy_exporter
+    - ansibleguy.opnsense.haproxy_acl
+    - ansibleguy.opnsense.haproxy_user
+    - ansibleguy.opnsense.haproxy_group
+    - ansibleguy.opnsense.haproxy_errorfile
+    - ansibleguy.opnsense.haproxy_healthcheck
+    - ansibleguy.opnsense.haproxy_mapfile
+    - ansibleguy.opnsense.haproxy_resolver
+    - ansibleguy.opnsense.haproxy_mailer
+    - ansibleguy.opnsense.haproxy_action
+    - ansibleguy.opnsense.haproxy_lua
+    - ansibleguy.opnsense.haproxy_fcgi
+    - ansibleguy.opnsense.haproxy_cpu
   raw:
     - ansibleguy.opnsense.raw
   all:
@@ -187,6 +208,7 @@ action_groups:
           - ansibleguy.opnsense.acme
           - ansibleguy.opnsense.postfix
           - ansibleguy.opnsense.hasync
+          - ansibleguy.opnsense.haproxy
           - ansibleguy.opnsense.raw
 
 plugin_routing:

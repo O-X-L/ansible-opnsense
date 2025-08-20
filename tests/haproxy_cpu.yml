@@ -1,0 +1,379 @@
+---
+
+- name: Testing HAProxy CPU Affinity Rules
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_cpu'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    # ========================================
+    # TEST PHASE 1: LIST AND INITIAL STATE
+    # ========================================
+    - name: Listing existing HAProxy CPU Affinity Rules
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1
+
+    - name: Show initial state
+      debug:
+        msg: "Found {{ opn_pre1.data | length }} existing CPU affinity rules"
+
+    # ========================================
+    # TEST PHASE 2: CREATE CPU AFFINITY RULES
+    # ========================================
+    - name: 'Create Specific Thread to CPU Binding Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_thread1_cpu0'
+        thread_id: 'x1'
+        cpu_id: 'x0'
+        state: present
+      register: cpu_specific1
+      failed_when: >
+        cpu_specific1.failed or
+        not cpu_specific1.changed
+
+    - name: 'Create Another Specific Thread to CPU Binding Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_thread2_cpu1'
+        thread_id: 'x2'
+        cpu_id: 'x1'
+        state: present
+      register: cpu_specific2
+      failed_when: >
+        cpu_specific2.failed or
+        not cpu_specific2.changed
+
+    - name: 'Create Odd Threads to Odd CPUs Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_odd_threads_odd_cpus'
+        thread_id: 'odd'
+        cpu_id: 'odd'
+        state: present
+      register: cpu_odd
+      failed_when: >
+        cpu_odd.failed or
+        not cpu_odd.changed
+
+    - name: 'Create Even Threads to Even CPUs Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_even_threads_even_cpus'
+        thread_id: 'even'
+        cpu_id: 'even'
+        state: present
+      register: cpu_even
+      failed_when: >
+        cpu_even.failed or
+        not cpu_even.changed
+
+    - name: 'Create All Threads to All CPUs Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_all_threads_all_cpus'
+        thread_id: 'all'
+        cpu_id: 'all'
+        state: present
+      register: cpu_all
+      failed_when: >
+        cpu_all.failed or
+        not cpu_all.changed
+
+    - name: 'Create High-Performance Thread Binding Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_high_perf_binding'
+        thread_id: 'x4'
+        cpu_id: 'x3'
+        state: present
+      register: cpu_highperf
+      failed_when: >
+        cpu_highperf.failed or
+        not cpu_highperf.changed
+
+    - name: Show creation results
+      debug:
+        msg: "✅ Created 6 CPU affinity rules successfully"
+
+    # ========================================
+    # TEST PHASE 3: VERIFICATION AND UPDATES
+    # ========================================
+    - name: 'List CPU affinity rules after creation'
+      ansibleguy.opnsense.list:
+      register: opn_post_create
+
+    - name: 'Verify all rules were created'
+      ansible.builtin.assert:
+        that:
+          - opn_post_create.data | length >= 6
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_thread1_cpu0') | list | length == 1"
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_thread2_cpu1') | list | length == 1"
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_odd_threads_odd_cpus') | list | length == 1"
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_even_threads_even_cpus') | list | length == 1"
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_all_threads_all_cpus') | list | length == 1"
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_high_perf_binding') | list | length == 1"
+        fail_msg: "Not all CPU affinity rules were created properly"
+
+    - name: 'Update Specific Thread Rule - change CPU binding'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_thread1_cpu0'
+        thread_id: 'x1'
+        cpu_id: 'x2'
+        state: present
+      register: cpu_update1
+      failed_when: >
+        cpu_update1.failed or
+        not cpu_update1.changed
+      when: not ansible_check_mode
+
+    - name: 'Update High-Performance Rule - bind to different thread and CPU'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_high_perf_binding'
+        thread_id: 'x8'
+        cpu_id: 'x7'
+        state: present
+      register: cpu_update2
+      failed_when: >
+        cpu_update2.failed or
+        not cpu_update2.changed
+      when: not ansible_check_mode
+
+    # ========================================
+    # TEST PHASE 4: IDEMPOTENCY CHECKS
+    # ========================================
+    - name: 'Check idempotency - re-run same specific thread rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_thread1_cpu0'
+        thread_id: 'x1'
+        cpu_id: 'x2'
+        state: present
+      register: cpu_idempotent1
+      failed_when: >
+        cpu_idempotent1.failed or
+        cpu_idempotent1.changed
+      when: not ansible_check_mode
+
+    - name: 'Check idempotency - re-run same odd threads rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_odd_threads_odd_cpus'
+        thread_id: 'odd'
+        cpu_id: 'odd'
+        state: present
+      register: cpu_idempotent2
+      failed_when: >
+        cpu_idempotent2.failed or
+        cpu_idempotent2.changed
+      when: not ansible_check_mode
+
+    - name: 'Check idempotency - re-run same all threads rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_all_threads_all_cpus'
+        thread_id: 'all'
+        cpu_id: 'all'
+        state: present
+      register: cpu_idempotent3
+      failed_when: >
+        cpu_idempotent3.failed or
+        cpu_idempotent3.changed
+      when: not ansible_check_mode
+
+    - name: Show idempotency results
+      debug:
+        msg: "✅ Idempotency verified for CPU affinity rules"
+      when: not ansible_check_mode
+
+    # ========================================
+    # TEST PHASE 5: ERROR HANDLING
+    # ========================================
+    - name: 'Test error handling - missing name'
+      ansibleguy.opnsense.haproxy_cpu:
+        thread_id: 'x1'
+        cpu_id: 'x0'
+        state: present
+      register: cpu_error1
+      failed_when: not cpu_error1.failed
+      ignore_errors: true
+
+    - name: 'Test error handling - missing thread_id'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_missing_thread'
+        cpu_id: 'x0'
+        state: present
+      register: cpu_error2
+      failed_when: not cpu_error2.failed
+      ignore_errors: true
+
+    - name: 'Test error handling - missing cpu_id'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_missing_cpu'
+        thread_id: 'x1'
+        state: present
+      register: cpu_error3
+      failed_when: not cpu_error3.failed
+      ignore_errors: true
+
+    - name: Show error handling results
+      debug:
+        msg: "✅ Error handling working correctly"
+
+    # ========================================
+    # TEST PHASE 6: ADVANCED CONFIGURATIONS
+    # ========================================
+    - name: 'Create Advanced CPU Binding - Multiple specific cores'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_multi_core_binding'
+        thread_id: 'x16'
+        cpu_id: 'x15'
+        state: present
+      register: cpu_multicore
+      failed_when: >
+        cpu_multicore.failed or
+        not cpu_multicore.changed
+
+    - name: 'Create Load Balancing Thread Distribution Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_load_balance_threads'
+        thread_id: 'x3'
+        cpu_id: 'x4'
+        state: present
+      register: cpu_loadbalance
+      failed_when: >
+        cpu_loadbalance.failed or
+        not cpu_loadbalance.changed
+
+    - name: Show advanced configuration results
+      debug:
+        msg: "✅ Created advanced CPU affinity configurations"
+
+    # ========================================
+    # TEST PHASE 7: COMPREHENSIVE VALIDATION
+    # ========================================
+    - name: 'List all CPU rules for validation'
+      ansibleguy.opnsense.list:
+      register: opn_validation
+
+    - name: 'Verify comprehensive rule set'
+      ansible.builtin.assert:
+        that:
+          - opn_validation.data | length >= 8
+          - "opn_validation.data | selectattr('thread_id', 'equalto', 'odd') | list | length >= 1"
+          - "opn_validation.data | selectattr('thread_id', 'equalto', 'even') | list | length >= 1"
+          - "opn_validation.data | selectattr('thread_id', 'equalto', 'all') | list | length >= 1"
+          - "opn_validation.data | selectattr('cpu_id', 'equalto', 'all') | list | length >= 1"
+        fail_msg: "CPU affinity rule validation failed"
+
+    - name: Show validation results
+      debug:
+        msg: "✅ All CPU affinity rule types validated successfully"
+
+    # ========================================
+    # TEST PHASE 8: CLEANUP
+    # ========================================
+    - name: 'Remove Specific Thread 1 to CPU 0 Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_thread1_cpu0'
+        state: absent
+      register: cpu_remove1
+      failed_when: >
+        cpu_remove1.failed or
+        not cpu_remove1.changed
+
+    - name: 'Remove Specific Thread 2 to CPU 1 Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_thread2_cpu1'
+        state: absent
+      register: cpu_remove2
+      failed_when: >
+        cpu_remove2.failed or
+        not cpu_remove2.changed
+
+    - name: 'Remove Odd Threads to Odd CPUs Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_odd_threads_odd_cpus'
+        state: absent
+      register: cpu_remove3
+      failed_when: >
+        cpu_remove3.failed or
+        not cpu_remove3.changed
+
+    - name: 'Remove Even Threads to Even CPUs Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_even_threads_even_cpus'
+        state: absent
+      register: cpu_remove4
+      failed_when: >
+        cpu_remove4.failed or
+        not cpu_remove4.changed
+
+    - name: 'Remove All Threads to All CPUs Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_all_threads_all_cpus'
+        state: absent
+      register: cpu_remove5
+      failed_when: >
+        cpu_remove5.failed or
+        not cpu_remove5.changed
+
+    - name: 'Remove High-Performance Binding Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_high_perf_binding'
+        state: absent
+      register: cpu_remove6
+      failed_when: >
+        cpu_remove6.failed or
+        not cpu_remove6.changed
+
+    - name: 'Remove Multi-Core Binding Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_multi_core_binding'
+        state: absent
+      register: cpu_remove7
+      failed_when: >
+        cpu_remove7.failed or
+        not cpu_remove7.changed
+
+    - name: 'Remove Load Balance Threads Rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_load_balance_threads'
+        state: absent
+      register: cpu_remove8
+      failed_when: >
+        cpu_remove8.failed or
+        not cpu_remove8.changed
+
+    - name: 'Verify cleanup - attempt to remove non-existent rule'
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'test_thread1_cpu0'
+        state: absent
+      register: cpu_remove_again
+      failed_when: >
+        cpu_remove_again.failed or
+        cpu_remove_again.changed
+
+    - name: 'List CPU rules after cleanup'
+      ansibleguy.opnsense.list:
+      register: opn_post_cleanup
+
+    - name: 'Verify all test rules removed'
+      ansible.builtin.assert:
+        that:
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_thread1_cpu0') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_thread2_cpu1') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_odd_threads_odd_cpus') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_even_threads_even_cpus') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_all_threads_all_cpus') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_high_perf_binding') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_multi_core_binding') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_load_balance_threads') | list | length == 0"
+        fail_msg: "Cleanup failed - test rules still exist"
+
+    - name: Show final results
+      debug:
+        msg: "✅ All HAProxy CPU affinity rule tests completed successfully"

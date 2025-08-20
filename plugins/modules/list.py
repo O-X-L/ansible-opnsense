@@ -40,6 +40,10 @@ TARGETS = [
     'acme_validation', 'acme_action', 'acme_certificate', 'postfix_general', 'postfix_domain', 'postfix_recipient',
     'postfix_recipientbcc', 'postfix_sender', 'postfix_senderbcc', 'postfix_sendercanonical', 'postfix_headercheck',
     'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre', 'nat_one_to_one', 'nat_source',
+    'haproxy_general', 'haproxy_backend', 'haproxy_server', 'haproxy_frontend', 'haproxy_service', 'haproxy_statistics',
+    'haproxy_maintenance', 'haproxy_exporter', 'haproxy_acl', 'haproxy_user', 'haproxy_group', 'haproxy_errorfile',
+    'haproxy_healthcheck', 'haproxy_mapfile', 'haproxy_resolver', 'haproxy_mailer', 'haproxy_action', 'haproxy_lua',
+    'haproxy_fcgi', 'haproxy_cpu',
     'ipsec_manual_spd', 'hasync_general', 'snapshot', 'frr_bgp_redistribution', 'frr_ospf_redistribution',
     'frr_ospf3_redistribution', 'frr_ospf3_route_map', 'frr_ospf3_prefix_list', 'frr_ospf3_network',
     'frr_bgp_peer_group',
@@ -508,6 +512,86 @@ def run_module():
         elif target == 'postfix_address':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.postfix_address import \
                 Address as Target_Obj
+
+        elif target == 'haproxy_general':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general import \
+                HaproxyGeneral as Target_Obj
+
+        elif target == 'haproxy_backend':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_backend import \
+                HaproxyBackend as Target_Obj
+
+        elif target == 'haproxy_server':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_server import \
+                HaproxyServer as Target_Obj
+
+        elif target == 'haproxy_frontend':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_frontend import \
+                HaproxyFrontend as Target_Obj
+
+        elif target == 'haproxy_service':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_service import \
+                HaproxyService as Target_Obj
+
+        elif target == 'haproxy_statistics':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_statistics import \
+                HaproxyStatistics as Target_Obj
+
+        elif target == 'haproxy_maintenance':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_maintenance import \
+                HaproxyMaintenance as Target_Obj
+
+        elif target == 'haproxy_exporter':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_exporter import \
+                HaproxyExporter as Target_Obj
+
+        elif target == 'haproxy_acl':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_acl import \
+                HaproxyAcl as Target_Obj
+
+        elif target == 'haproxy_user':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_user import \
+                HaproxyUser as Target_Obj
+
+        elif target == 'haproxy_group':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_group import \
+                HaproxyGroup as Target_Obj
+
+        elif target == 'haproxy_errorfile':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_errorfile import \
+                HaproxyErrorfile as Target_Obj
+
+        elif target == 'haproxy_healthcheck':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_healthcheck import \
+                HaproxyHealthcheck as Target_Obj
+
+        elif target == 'haproxy_mapfile':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_mapfile import \
+                HaproxyMapfile as Target_Obj
+
+        elif target == 'haproxy_resolver':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_resolver import \
+                HaproxyResolver as Target_Obj
+
+        elif target == 'haproxy_mailer':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_mailer import \
+                HaproxyMailer as Target_Obj
+
+        elif target == 'haproxy_action':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_action import \
+                HaproxyAction as Target_Obj
+
+        elif target == 'haproxy_lua':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_lua import \
+                HaproxyLua as Target_Obj
+
+        elif target == 'haproxy_fcgi':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_fcgi import \
+                HaproxyFcgi as Target_Obj
+
+        elif target == 'haproxy_cpu':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_cpu import \
+                HaproxyCpu as Target_Obj
 
         elif target == 'hasync_general':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.hasync_general import \

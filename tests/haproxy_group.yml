@@ -1,0 +1,163 @@
+---
+
+- name: Testing HAProxy User Groups
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_group'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: List existing groups
+      ansibleguy.opnsense.list:
+      register: existing_entries
+
+    - name: Clean up test groups and users (before)
+      ansibleguy.opnsense.haproxy_group:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_GROUP'
+        - 'ANSIBLE_TEST_2_GROUP'
+        - 'ANSIBLE_TEST_3_GROUP'
+
+    - name: Clean up test users (before)
+      ansibleguy.opnsense.haproxy_user:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_USER_1'
+        - 'ANSIBLE_TEST_USER_2'
+        - 'ANSIBLE_TEST_USER_3'
+
+    - name: Create test users for group membership testing
+      ansibleguy.opnsense.haproxy_user:
+        name: "{{ item.name }}"
+        description: "{{ item.desc }}"
+        password: "{{ item.password }}"
+        enabled: true
+      loop:
+        - { name: 'ANSIBLE_TEST_USER_1', desc: 'Test user 1', password: 'pass1' }
+        - { name: 'ANSIBLE_TEST_USER_2', desc: 'Test user 2', password: 'pass2' }
+        - { name: 'ANSIBLE_TEST_USER_3', desc: 'Test user 3', password: 'pass3' }
+
+    - name: Add group (check)
+      ansibleguy.opnsense.haproxy_group:
+        name: 'ANSIBLE_TEST_1_GROUP'
+        description: 'Test group 1'
+        add_userlist: false
+        enabled: true
+      check_mode: true
+      register: opn_group1_check
+
+    - name: Add group
+      ansibleguy.opnsense.haproxy_group:
+        name: 'ANSIBLE_TEST_1_GROUP'
+        description: 'Test group 1'
+        add_userlist: false
+        enabled: true
+      register: opn_group1
+
+    - name: Verify group creation
+      ansibleguy.opnsense.list:
+      register: opn_group1_verify
+
+    - name: Add admin group with userlist and name-based user linking
+      ansibleguy.opnsense.haproxy_group:
+        name: 'ANSIBLE_TEST_2_GROUP'
+        description: 'Test admin group'
+        add_userlist: true
+        enabled: true
+        members: ['ANSIBLE_TEST_USER_1', 'ANSIBLE_TEST_USER_2']  # Test name-based linking
+      register: opn_group2
+
+    - name: Modify group 1 description
+      ansibleguy.opnsense.haproxy_group:
+        name: 'ANSIBLE_TEST_1_GROUP'
+        description: 'Modified test group 1'
+        add_userlist: false
+        enabled: true
+      register: opn_group1_changed
+
+    - name: Group 1 should not change (2)
+      ansibleguy.opnsense.haproxy_group:
+        name: 'ANSIBLE_TEST_1_GROUP'
+        description: 'Modified test group 1'
+        add_userlist: false
+        enabled: true
+      register: opn_group1_changed2
+
+    - name: Enable userlist for group 1 and add members
+      ansibleguy.opnsense.haproxy_group:
+        name: 'ANSIBLE_TEST_1_GROUP'
+        add_userlist: true
+        members: ['ANSIBLE_TEST_USER_3']  # Test adding members to existing group
+      register: opn_group1_userlist
+
+    - name: Create group with all users for comprehensive testing
+      ansibleguy.opnsense.haproxy_group:
+        name: 'ANSIBLE_TEST_3_GROUP'
+        description: 'Test group with all users'
+        add_userlist: true
+        enabled: true
+        members: ['ANSIBLE_TEST_USER_1', 'ANSIBLE_TEST_USER_2', 'ANSIBLE_TEST_USER_3']
+      register: opn_group3
+
+    - name: Update group 2 membership (add one, remove one)
+      ansibleguy.opnsense.haproxy_group:
+        name: 'ANSIBLE_TEST_2_GROUP'
+        members: ['ANSIBLE_TEST_USER_2', 'ANSIBLE_TEST_USER_3']  # Changed membership
+      register: opn_group2_members_changed
+
+    - name: Disable group 2
+      ansibleguy.opnsense.haproxy_group:
+        name: 'ANSIBLE_TEST_2_GROUP'
+        enabled: false
+      register: opn_group2_disabled
+
+    - name: Clean up test groups (after)
+      ansibleguy.opnsense.haproxy_group:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_GROUP'
+        - 'ANSIBLE_TEST_2_GROUP'
+        - 'ANSIBLE_TEST_3_GROUP'
+
+    - name: Clean up test users (after)
+      ansibleguy.opnsense.haproxy_user:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_USER_1'
+        - 'ANSIBLE_TEST_USER_2'
+        - 'ANSIBLE_TEST_USER_3'
+
+    - name: Verify cleanup
+      ansibleguy.opnsense.list:
+      register: opn_cleanup_verify
+
+    - name: Show test results
+      ansible.builtin.assert:
+        that:
+          - opn_group1_check is changed
+          - opn_group1 is changed
+          - opn_group2 is changed
+          - opn_group1_changed is changed
+          - opn_group1_changed2 is not changed
+          - opn_group1_userlist is changed
+          - opn_group3 is changed
+          - opn_group2_members_changed is changed
+          - opn_group2_disabled is changed
+          - "opn_group1_verify.data | length == (existing_entries.data | length + 1)"
+          - "'ANSIBLE_TEST_1_GROUP' in opn_group1_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_1_GROUP' not in opn_cleanup_verify.data | map(attribute='name')"
+        msg: 'HAProxy group tests failed! Name-based user linking may not be working correctly.'

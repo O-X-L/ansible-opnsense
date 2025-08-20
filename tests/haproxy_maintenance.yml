@@ -1,0 +1,68 @@
+---
+
+- name: Testing HAProxy Maintenance Operations
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Get HAProxy maintenance information
+      ansibleguy.opnsense.haproxy_maintenance:
+        action: 'get'
+      register: opn_maintenance_info
+
+    - name: Search for servers
+      ansibleguy.opnsense.haproxy_maintenance:
+        action: 'search_server'
+      register: opn_search_servers
+
+    - name: Display maintenance info
+      ansible.builtin.debug:
+        var: opn_maintenance_info.result
+
+    - name: Display found servers
+      ansible.builtin.debug:
+        var: opn_search_servers.result
+
+    - name: Check certificate differences
+      ansibleguy.opnsense.haproxy_maintenance:
+        action: 'cert_diff'
+      register: opn_cert_diff
+
+    - name: Search for certificate differences
+      ansibleguy.opnsense.haproxy_maintenance:
+        action: 'search_certificate_diff'
+      register: opn_search_cert_diff
+
+    - name: Sync certificates
+      ansibleguy.opnsense.haproxy_maintenance:
+        action: 'cert_sync'
+      register: opn_cert_sync
+
+    - name: Fetch cron integration data
+      ansibleguy.opnsense.haproxy_maintenance:
+        action: 'fetch_cron_integration'
+      register: opn_cron_integration
+
+    # Note: Server state/weight tests would require actual servers to be configured
+    # These are basic functionality tests for the maintenance module
+
+    - name: Show test results
+      ansible.builtin.assert:
+        that:
+          - opn_maintenance_info is not changed
+          - opn_search_servers is not changed
+          - opn_cert_diff is not changed
+          - opn_search_cert_diff is not changed
+          - opn_cert_sync is not failed
+          - opn_cron_integration is not changed
+          - opn_maintenance_info.result is defined
+          - opn_search_servers.result is defined
+        msg: 'HAProxy maintenance tests failed!'

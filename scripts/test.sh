@@ -209,6 +209,26 @@ run_test_soft 'postfix_headercheck' 1
 run_test_soft 'postfix_address' 1
 run_test_soft 'hasync_general' 1
 run_test_soft 'hasync_service' 0 # check mode => dependency on hasync_general
+run_test_soft 'haproxy_general' 1
+run_test_soft 'haproxy_service' 1
+run_test_soft 'haproxy_backend' 1
+run_test_soft 'haproxy_frontend' 1
+run_test_soft 'haproxy_server' 1
+run_test_soft 'haproxy_statistics' 1
+run_test_soft 'haproxy_maintenance' 1
+run_test_soft 'haproxy_exporter' 1
+run_test_soft 'haproxy_acl' 1
+run_test_soft 'haproxy_user' 1
+run_test_soft 'haproxy_group' 1
+run_test_soft 'haproxy_errorfile' 1
+run_test_soft 'haproxy_healthcheck' 1
+run_test_soft 'haproxy_mapfile' 1
+run_test_soft 'haproxy_resolver' 1
+run_test_soft 'haproxy_mailer' 1
+run_test_soft 'haproxy_action' 1
+run_test_soft 'haproxy_lua' 1
+run_test_soft 'haproxy_fcgi' 1
+run_test_soft 'haproxy_cpu' 1
 run_test_soft 'snapshot' 1
 run_test_soft 'raw' 1
 

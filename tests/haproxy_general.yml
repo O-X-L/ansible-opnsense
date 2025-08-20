@@ -1,0 +1,79 @@
+---
+
+- name: Testing HAProxy General Configuration
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_general'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing HAProxy General config
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1
+
+    - name: Configure HAProxy General - Enable with basic settings
+      ansibleguy.opnsense.haproxy_general:
+        enabled: true
+        graceful_stop: true
+        hard_stop_after: '60s'
+        seamless_reload: true
+        show_intro: false
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Configure HAProxy General - No change expected
+      ansibleguy.opnsense.haproxy_general:
+        enabled: true
+        graceful_stop: true
+        hard_stop_after: '60s'
+        seamless_reload: true
+        show_intro: false
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        opn2.changed
+      when: not ansible_check_mode
+
+    - name: Configure HAProxy General - Modify settings
+      ansibleguy.opnsense.haproxy_general:
+        enabled: true
+        graceful_stop: false
+        hard_stop_after: '120s'
+        seamless_reload: false
+        show_intro: true
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+      when: not ansible_check_mode
+
+    - name: Disable HAProxy
+      ansibleguy.opnsense.haproxy_general:
+        enabled: false
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        not opn4.changed
+      when: not ansible_check_mode
+
+    - name: Disable HAProxy - No change expected
+      ansibleguy.opnsense.haproxy_general:
+        enabled: false
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        opn5.changed
+      when: not ansible_check_mode

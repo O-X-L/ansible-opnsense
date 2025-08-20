@@ -1,0 +1,114 @@
+---
+
+- name: Testing HAProxy Map Files
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_mapfile'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: List existing map files
+      ansibleguy.opnsense.list:
+      register: existing_entries
+
+    - name: Clean up test map files (before)
+      ansibleguy.opnsense.haproxy_mapfile:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_MAP'
+        - 'ANSIBLE_TEST_2_MAP'
+
+    - name: Add host mapping file (check)
+      ansibleguy.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_MAP'
+        description: 'Test host mappings'
+        content: |
+          api.example.com api_backend
+          web.example.com web_backend
+      check_mode: true
+      register: opn_map1_check
+
+    - name: Add host mapping file
+      ansibleguy.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_MAP'
+        description: 'Test host mappings'
+        content: |
+          api.example.com api_backend
+          web.example.com web_backend
+      register: opn_map1
+
+    - name: Verify map file creation
+      ansibleguy.opnsense.list:
+      register: opn_map1_verify
+
+    - name: Add path mapping file
+      ansibleguy.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_2_MAP'
+        description: 'Test path mappings'
+        content: |
+          /api/ api_backend
+          /admin/ admin_backend
+          /static/ static_backend
+      register: opn_map2
+
+    - name: Modify map file 1 content
+      ansibleguy.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_MAP'
+        description: 'Modified test host mappings'
+        content: |
+          api.example.com api_backend
+          web.example.com web_backend
+          admin.example.com admin_backend
+      register: opn_map1_changed
+
+    - name: Map file 1 should not change (2)
+      ansibleguy.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_MAP'
+        description: 'Modified test host mappings'
+        content: |
+          api.example.com api_backend
+          web.example.com web_backend
+          admin.example.com admin_backend
+      register: opn_map1_changed2
+
+    - name: Disable map file 2
+      ansibleguy.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_2_MAP'
+        enabled: false
+      register: opn_map2_disabled
+
+    - name: Clean up test map files (after)
+      ansibleguy.opnsense.haproxy_mapfile:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_MAP'
+        - 'ANSIBLE_TEST_2_MAP'
+
+    - name: Verify cleanup
+      ansibleguy.opnsense.list:
+      register: opn_cleanup_verify
+
+    - name: Show test results
+      ansible.builtin.assert:
+        that:
+          - opn_map1_check is changed
+          - opn_map1 is changed
+          - opn_map2 is changed
+          - opn_map1_changed is changed
+          - opn_map1_changed2 is not changed
+          - opn_map2_disabled is changed
+          - "opn_map1_verify.data | length == (existing_entries.data | length + 1)"
+          - "'ANSIBLE_TEST_1_MAP' in opn_map1_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_1_MAP' not in opn_cleanup_verify.data | map(attribute='name')"
+        msg: 'HAProxy map file tests failed!'

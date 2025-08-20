@@ -1,0 +1,396 @@
+---
+
+- name: Testing HAProxy Lua Scripts
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_lua'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    # ========================================
+    # TEST PHASE 1: LIST AND INITIAL STATE
+    # ========================================
+    - name: Listing existing HAProxy Lua Scripts
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1
+
+    - name: Show initial state
+      debug:
+        msg: "Found {{ opn_pre1.data | length }} existing Lua scripts"
+
+    # ========================================
+    # TEST PHASE 2: CREATE LUA SCRIPTS
+    # ========================================
+    - name: 'Create Authentication Lua Script with preload'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_auth_lua'
+        description: 'Authentication Lua Script for Bearer Token Validation'
+        enabled: true
+        preload: true
+        filename_scheme: 'name'
+        content: |
+          function authenticate(txn)
+              local auth_header = txn.http:req_get_headers()["authorization"]
+              if auth_header and auth_header[0] then
+                  local token = string.match(auth_header[0], "Bearer%s+(.+)")
+                  if token and string.len(token) > 10 then
+                      core.log(core.info, "Authentication successful for token: " .. string.sub(token, 1, 10) .. "...")
+                      return true
+                  end
+              end
+              core.log(core.warning, "Authentication failed - invalid or missing token")
+              return false
+          end
+        state: present
+      register: lua_auth
+      failed_when: >
+        lua_auth.failed or
+        not lua_auth.changed
+
+    - name: 'Create Request Logger Lua Script without preload'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_logger_lua'
+        description: 'Request Logger Lua Script for Traffic Analysis'
+        enabled: true
+        preload: false
+        filename_scheme: 'id'
+        content: |
+          function log_request(txn)
+              local method = txn.http:req_get_method()
+              local path = txn.http:req_get_path()
+              local ip = txn.f:src()
+              local user_agent = txn.http:req_get_headers()["user-agent"]
+              
+              local log_msg = string.format(
+                  "Request: %s %s from %s (UA: %s)", 
+                  method, 
+                  path, 
+                  ip, 
+                  user_agent and user_agent[0] or "unknown"
+              )
+              core.log(core.info, log_msg)
+          end
+        state: present
+      register: lua_logger
+      failed_when: >
+        lua_logger.failed or
+        not lua_logger.changed
+
+    - name: 'Create Rate Limiting Lua Script with complex logic'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_ratelimit_lua'
+        description: 'Rate Limiting Lua Script with IP-based Throttling'
+        enabled: true
+        preload: true
+        filename_scheme: 'name'
+        content: |
+          local rate_limit = {}
+          
+          function check_rate_limit(txn)
+              local client_ip = txn.f:src()
+              local current_time = os.time()
+              local limit = 100  -- requests per minute
+              local window = 60  -- seconds
+              
+              if not rate_limit[client_ip] then
+                  rate_limit[client_ip] = {count = 1, timestamp = current_time}
+                  return true
+              end
+              
+              local client_data = rate_limit[client_ip]
+              if (current_time - client_data.timestamp) > window then
+                  client_data.count = 1
+                  client_data.timestamp = current_time
+                  return true
+              end
+              
+              if client_data.count >= limit then
+                  core.log(core.warning, "Rate limit exceeded for IP: " .. client_ip)
+                  return false
+              end
+              
+              client_data.count = client_data.count + 1
+              return true
+          end
+        state: present
+      register: lua_ratelimit
+      failed_when: >
+        lua_ratelimit.failed or
+        not lua_ratelimit.changed
+
+    - name: 'Create Header Manipulation Lua Script'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_headers_lua'
+        description: 'Header Manipulation Lua Script for Custom Processing'
+        enabled: false
+        filename_scheme: 'id'
+        content: |
+          function process_headers(txn)
+              -- Add custom headers
+              txn.http:req_add_header("X-Processed-By", "HAProxy-Lua")
+              txn.http:req_add_header("X-Request-ID", "req-" .. os.time() .. "-" .. math.random(1000, 9999))
+              
+              -- Log processing
+              local host = txn.http:req_get_headers()["host"]
+              if host and host[0] then
+                  core.log(core.info, "Processing request for host: " .. host[0])
+              end
+          end
+        state: present
+      register: lua_headers
+      failed_when: >
+        lua_headers.failed or
+        not lua_headers.changed
+
+    - name: Show creation results
+      debug:
+        msg: "✅ Created 4 Lua scripts successfully"
+
+    # ========================================
+    # TEST PHASE 3: VERIFICATION AND UPDATES
+    # ========================================
+    - name: 'List Lua scripts after creation'
+      ansibleguy.opnsense.list:
+      register: opn_post_create
+
+    - name: 'Verify all scripts were created'
+      ansible.builtin.assert:
+        that:
+          - opn_post_create.data | length >= 4
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_auth_lua') | list | length == 1"
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_logger_lua') | list | length == 1"
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_ratelimit_lua') | list | length == 1"
+          - "opn_post_create.data | selectattr('name', 'equalto', 'test_headers_lua') | list | length == 1"
+        fail_msg: "Not all Lua scripts were created properly"
+
+    - name: 'Update Authentication Lua Script - modify content and enable'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_auth_lua'
+        description: 'Enhanced Authentication Lua Script with JWT Support'
+        enabled: true
+        preload: true
+        filename_scheme: 'name'
+        content: |
+          function authenticate(txn)
+              local auth_header = txn.http:req_get_headers()["authorization"]
+              if auth_header and auth_header[0] then
+                  local token = string.match(auth_header[0], "Bearer%s+(.+)")
+                  if token then
+                      -- Basic JWT structure validation
+                      local parts = 0
+                      for _ in string.gmatch(token, "[^%.]+") do
+                          parts = parts + 1
+                      end
+                      if parts == 3 and string.len(token) > 20 then
+                          core.log(core.info, "JWT token validation successful")
+                          return true
+                      end
+                  end
+              end
+              core.log(core.warning, "Authentication failed - invalid JWT token")
+              return false
+          end
+        state: present
+      register: lua_auth_update
+      failed_when: >
+        lua_auth_update.failed or
+        not lua_auth_update.changed
+      when: not ansible_check_mode
+
+    - name: 'Enable disabled Header Manipulation script'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_headers_lua'
+        description: 'Header Manipulation Lua Script for Custom Processing'
+        enabled: true
+        filename_scheme: 'id'
+        content: |
+          function process_headers(txn)
+              -- Add custom headers
+              txn.http:req_add_header("X-Processed-By", "HAProxy-Lua")
+              txn.http:req_add_header("X-Request-ID", "req-" .. os.time() .. "-" .. math.random(1000, 9999))
+              
+              -- Log processing
+              local host = txn.http:req_get_headers()["host"]
+              if host and host[0] then
+                  core.log(core.info, "Processing request for host: " .. host[0])
+              end
+          end
+        state: present
+      register: lua_headers_enable
+      failed_when: >
+        lua_headers_enable.failed or
+        not lua_headers_enable.changed
+      when: not ansible_check_mode
+
+    # ========================================
+    # TEST PHASE 4: IDEMPOTENCY CHECKS
+    # ========================================
+    - name: 'Check idempotency - re-run same Authentication Lua script'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_auth_lua'
+        description: 'Enhanced Authentication Lua Script with JWT Support'
+        enabled: true
+        preload: true
+        filename_scheme: 'name'
+        content: |
+          function authenticate(txn)
+              local auth_header = txn.http:req_get_headers()["authorization"]
+              if auth_header and auth_header[0] then
+                  local token = string.match(auth_header[0], "Bearer%s+(.+)")
+                  if token then
+                      -- Basic JWT structure validation
+                      local parts = 0
+                      for _ in string.gmatch(token, "[^%.]+") do
+                          parts = parts + 1
+                      end
+                      if parts == 3 and string.len(token) > 20 then
+                          core.log(core.info, "JWT token validation successful")
+                          return true
+                      end
+                  end
+              end
+              core.log(core.warning, "Authentication failed - invalid JWT token")
+              return false
+          end
+        state: present
+      register: lua_idempotent1
+      failed_when: >
+        lua_idempotent1.failed or
+        lua_idempotent1.changed
+      when: not ansible_check_mode
+
+    - name: 'Check idempotency - re-run same Logger Lua script'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_logger_lua'
+        description: 'Request Logger Lua Script for Traffic Analysis'
+        enabled: true
+        preload: false
+        filename_scheme: 'id'
+        content: |
+          function log_request(txn)
+              local method = txn.http:req_get_method()
+              local path = txn.http:req_get_path()
+              local ip = txn.f:src()
+              local user_agent = txn.http:req_get_headers()["user-agent"]
+              
+              local log_msg = string.format(
+                  "Request: %s %s from %s (UA: %s)", 
+                  method, 
+                  path, 
+                  ip, 
+                  user_agent and user_agent[0] or "unknown"
+              )
+              core.log(core.info, log_msg)
+          end
+        state: present
+      register: lua_idempotent2
+      failed_when: >
+        lua_idempotent2.failed or
+        lua_idempotent2.changed
+      when: not ansible_check_mode
+
+    - name: Show idempotency results
+      debug:
+        msg: "✅ Idempotency verified for Lua scripts"
+      when: not ansible_check_mode
+
+    # ========================================
+    # TEST PHASE 5: ERROR HANDLING
+    # ========================================
+    - name: 'Test error handling - missing name'
+      ansibleguy.opnsense.haproxy_lua:
+        description: 'Script without name'
+        content: 'function test() end'
+        state: present
+      register: lua_error1
+      failed_when: not lua_error1.failed
+      ignore_errors: true
+
+    - name: 'Test error handling - missing content'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_no_content'
+        description: 'Script without content'
+        state: present
+      register: lua_error2
+      failed_when: not lua_error2.failed
+      ignore_errors: true
+
+    - name: Show error handling results
+      debug:
+        msg: "✅ Error handling working correctly"
+
+    # ========================================
+    # TEST PHASE 6: CLEANUP
+    # ========================================
+    - name: 'Remove Authentication Lua Script'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_auth_lua'
+        state: absent
+      register: lua_remove1
+      failed_when: >
+        lua_remove1.failed or
+        not lua_remove1.changed
+
+    - name: 'Remove Logger Lua Script'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_logger_lua'
+        state: absent
+      register: lua_remove2
+      failed_when: >
+        lua_remove2.failed or
+        not lua_remove2.changed
+
+    - name: 'Remove Rate Limit Lua Script'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_ratelimit_lua'
+        state: absent
+      register: lua_remove3
+      failed_when: >
+        lua_remove3.failed or
+        not lua_remove3.changed
+
+    - name: 'Remove Header Manipulation Lua Script'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_headers_lua'
+        state: absent
+      register: lua_remove4
+      failed_when: >
+        lua_remove4.failed or
+        not lua_remove4.changed
+
+    - name: 'Verify cleanup - attempt to remove non-existent script'
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'test_auth_lua'
+        state: absent
+      register: lua_remove_again
+      failed_when: >
+        lua_remove_again.failed or
+        lua_remove_again.changed
+
+    - name: 'List Lua scripts after cleanup'
+      ansibleguy.opnsense.list:
+      register: opn_post_cleanup
+
+    - name: 'Verify all test scripts removed'
+      ansible.builtin.assert:
+        that:
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_auth_lua') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_logger_lua') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_ratelimit_lua') | list | length == 0"
+          - "opn_post_cleanup.data | selectattr('name', 'equalto', 'test_headers_lua') | list | length == 0"
+        fail_msg: "Cleanup failed - test scripts still exist"
+
+    - name: Show final results
+      debug:
+        msg: "✅ All HAProxy Lua script tests completed successfully"

@@ -1,0 +1,119 @@
+---
+
+- name: Testing HAProxy Email Notifications
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_mailer'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: List existing mailers
+      ansibleguy.opnsense.list:
+      register: existing_entries
+
+    - name: Clean up test mailers (before)
+      ansibleguy.opnsense.haproxy_mailer:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_MAILER'
+        - 'ANSIBLE_TEST_2_MAILER'
+
+    - name: Add alert mailer (check)
+      ansibleguy.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_MAILER'
+        description: 'Test alert mailer'
+        mailservers:
+          - 'mail.example.com:25'
+        sender: 'haproxy@example.com'
+        recipient: 'admin@example.com'
+      check_mode: true
+      register: opn_mailer1_check
+
+    - name: Add alert mailer
+      ansibleguy.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_MAILER'
+        description: 'Test alert mailer'
+        mailservers:
+          - 'mail.example.com:25'
+        sender: 'haproxy@example.com'
+        recipient: 'admin@example.com'
+      register: opn_mailer1
+
+    - name: Verify mailer creation
+      ansibleguy.opnsense.list:
+      register: opn_mailer1_verify
+
+    - name: Add ops mailer with multiple servers
+      ansibleguy.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_2_MAILER'
+        description: 'Test ops mailer'
+        mailservers:
+          - 'smtp.example.com:587'
+          - 'backup-smtp.example.com:587'
+        sender: 'alerts@example.com'
+        recipient: 'ops@example.com'
+      register: opn_mailer2
+
+    - name: Modify mailer 1 recipient
+      ansibleguy.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_MAILER'
+        description: 'Modified test alert mailer'
+        mailservers:
+          - 'mail.example.com:25'
+          - 'backup-mail.example.com:25'
+        sender: 'haproxy@example.com'
+        recipient: 'newadmin@example.com'
+      register: opn_mailer1_changed
+
+    - name: Mailer 1 should not change (2)
+      ansibleguy.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_MAILER'
+        description: 'Modified test alert mailer'
+        mailservers:
+          - 'mail.example.com:25'
+          - 'backup-mail.example.com:25'
+        sender: 'haproxy@example.com'
+        recipient: 'newadmin@example.com'
+      register: opn_mailer1_changed2
+
+    - name: Disable mailer 2
+      ansibleguy.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_2_MAILER'
+        enabled: false
+      register: opn_mailer2_disabled
+
+    - name: Clean up test mailers (after)
+      ansibleguy.opnsense.haproxy_mailer:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_MAILER'
+        - 'ANSIBLE_TEST_2_MAILER'
+
+    - name: Verify cleanup
+      ansibleguy.opnsense.list:
+      register: opn_cleanup_verify
+
+    - name: Show test results
+      ansible.builtin.assert:
+        that:
+          - opn_mailer1_check is changed
+          - opn_mailer1 is changed
+          - opn_mailer2 is changed
+          - opn_mailer1_changed is changed
+          - opn_mailer1_changed2 is not changed
+          - opn_mailer2_disabled is changed
+          - "opn_mailer1_verify.data | length == (existing_entries.data | length + 1)"
+          - "'ANSIBLE_TEST_1_MAILER' in opn_mailer1_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_1_MAILER' not in opn_cleanup_verify.data | map(attribute='name')"
+        msg: 'HAProxy mailer tests failed!'

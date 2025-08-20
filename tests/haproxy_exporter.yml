@@ -1,0 +1,53 @@
+---
+
+- name: Testing HAProxy Configuration Export
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Export HAProxy configuration
+      ansibleguy.opnsense.haproxy_exporter:
+        export_type: 'config'
+      register: opn_config_export
+
+    - name: Export HAProxy configuration diff
+      ansibleguy.opnsense.haproxy_exporter:
+        export_type: 'diff'
+      register: opn_diff_export
+
+    - name: Download HAProxy data
+      ansibleguy.opnsense.haproxy_exporter:
+        export_type: 'download'
+        download_type: 'config'
+      register: opn_download_export
+
+    - name: Display configuration export
+      ansible.builtin.debug:
+        var: opn_config_export.result
+
+    - name: Display diff export
+      ansible.builtin.debug:
+        var: opn_diff_export.result
+
+    - name: Display download export
+      ansible.builtin.debug:
+        var: opn_download_export.result
+
+    - name: Show test results
+      ansible.builtin.assert:
+        that:
+          - opn_config_export is not changed
+          - opn_diff_export is not changed
+          - opn_download_export is not changed
+          - opn_config_export.result is defined
+          - opn_diff_export.result is defined
+          - opn_download_export.result is defined
+        msg: 'HAProxy exporter tests failed!'

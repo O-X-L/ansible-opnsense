@@ -1,0 +1,125 @@
+---
+
+- name: Testing HAProxy DNS Resolvers
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_resolver'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: List existing resolvers
+      ansibleguy.opnsense.list:
+      register: existing_entries
+
+    - name: Clean up test resolvers (before)
+      ansibleguy.opnsense.haproxy_resolver:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_RESOLVER'
+        - 'ANSIBLE_TEST_2_RESOLVER'
+
+    - name: Add custom DNS resolver (check)
+      ansibleguy.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_RESOLVER'
+        description: 'Test custom DNS resolver'
+        nameservers:
+          - '8.8.8.8:53'
+          - '8.8.4.4:53'
+        parse_resolv_conf: false
+        resolve_retries: 3
+        timeout_resolve: '2s'
+      check_mode: true
+      register: opn_resolver1_check
+
+    - name: Add custom DNS resolver
+      ansibleguy.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_RESOLVER'
+        description: 'Test custom DNS resolver'
+        nameservers:
+          - '8.8.8.8:53'
+          - '8.8.4.4:53'
+        parse_resolv_conf: false
+        resolve_retries: 3
+        timeout_resolve: '2s'
+      register: opn_resolver1
+
+    - name: Verify resolver creation
+      ansibleguy.opnsense.list:
+      register: opn_resolver1_verify
+
+    - name: Add system resolver
+      ansibleguy.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_2_RESOLVER'
+        description: 'Test system resolver'
+        parse_resolv_conf: true
+        resolve_retries: 5
+        timeout_resolve: '1s'
+      register: opn_resolver2
+
+    - name: Modify resolver 1 timeout
+      ansibleguy.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_RESOLVER'
+        description: 'Modified test custom DNS resolver'
+        nameservers:
+          - '8.8.8.8:53'
+          - '8.8.4.4:53'
+          - '1.1.1.1:53'
+        parse_resolv_conf: false
+        resolve_retries: 5
+        timeout_resolve: '3s'
+      register: opn_resolver1_changed
+
+    - name: Resolver 1 should not change (2)
+      ansibleguy.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_RESOLVER'
+        description: 'Modified test custom DNS resolver'
+        nameservers:
+          - '8.8.8.8:53'
+          - '8.8.4.4:53'
+          - '1.1.1.1:53'
+        parse_resolv_conf: false
+        resolve_retries: 5
+        timeout_resolve: '3s'
+      register: opn_resolver1_changed2
+
+    - name: Disable resolver 2
+      ansibleguy.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_2_RESOLVER'
+        enabled: false
+      register: opn_resolver2_disabled
+
+    - name: Clean up test resolvers (after)
+      ansibleguy.opnsense.haproxy_resolver:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_RESOLVER'
+        - 'ANSIBLE_TEST_2_RESOLVER'
+
+    - name: Verify cleanup
+      ansibleguy.opnsense.list:
+      register: opn_cleanup_verify
+
+    - name: Show test results
+      ansible.builtin.assert:
+        that:
+          - opn_resolver1_check is changed
+          - opn_resolver1 is changed
+          - opn_resolver2 is changed
+          - opn_resolver1_changed is changed
+          - opn_resolver1_changed2 is not changed
+          - opn_resolver2_disabled is changed
+          - "opn_resolver1_verify.data | length == (existing_entries.data | length + 1)"
+          - "'ANSIBLE_TEST_1_RESOLVER' in opn_resolver1_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_1_RESOLVER' not in opn_cleanup_verify.data | map(attribute='name')"
+        msg: 'HAProxy resolver tests failed!'

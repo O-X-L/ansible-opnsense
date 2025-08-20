@@ -51,6 +51,7 @@ def run_module():
                 'openvpn',
                 'dhcrelay',
                 'dhcp', 'kea',
+                'haproxy',
             ],
             description='What part of the running config should be reloaded'
         ),

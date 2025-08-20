@@ -1,0 +1,124 @@
+---
+
+- name: Testing HAProxy Health Checks
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_healthcheck'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: List existing health checks
+      ansibleguy.opnsense.list:
+      register: existing_entries
+
+    - name: Clean up test health checks (before)
+      ansibleguy.opnsense.haproxy_healthcheck:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_HEALTH'
+        - 'ANSIBLE_TEST_2_HEALTH'
+        - 'ANSIBLE_TEST_3_HEALTH'
+
+    - name: Add HTTP health check (check)
+      ansibleguy.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_HEALTH'
+        description: 'Test HTTP health check'
+        type: 'http'
+        interval: '5s'
+        ssl: 'nopref'
+      check_mode: true
+      register: opn_health1_check
+
+    - name: Add HTTP health check
+      ansibleguy.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_HEALTH'
+        description: 'Test HTTP health check'
+        type: 'http'
+        interval: '5s'
+        ssl: 'nopref'
+      register: opn_health1
+
+    - name: Verify health check creation
+      ansibleguy.opnsense.list:
+      register: opn_health1_verify
+
+    - name: Add SSL health check with SNI
+      ansibleguy.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_2_HEALTH'
+        description: 'Test SSL health check'
+        type: 'http'
+        interval: '10s'
+        ssl: 'sslsni'
+        ssl_sni: 'api.example.com'
+      register: opn_health2
+
+    - name: Add MySQL health check
+      ansibleguy.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_3_HEALTH'
+        description: 'Test MySQL health check'
+        type: 'mysql'
+        interval: '30s'
+        ssl: 'nossl'
+      register: opn_health3
+
+    - name: Modify health check 1 interval
+      ansibleguy.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_HEALTH'
+        description: 'Modified test HTTP health check'
+        type: 'http'
+        interval: '3s'
+        ssl: 'nopref'
+      register: opn_health1_changed
+
+    - name: Health check 1 should not change (2)
+      ansibleguy.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_HEALTH'
+        description: 'Modified test HTTP health check'
+        type: 'http'
+        interval: '3s'
+        ssl: 'nopref'
+      register: opn_health1_changed2
+
+    - name: Disable health check 3
+      ansibleguy.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_3_HEALTH'
+        enabled: false
+      register: opn_health3_disabled
+
+    - name: Clean up test health checks (after)
+      ansibleguy.opnsense.haproxy_healthcheck:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_HEALTH'
+        - 'ANSIBLE_TEST_2_HEALTH'
+        - 'ANSIBLE_TEST_3_HEALTH'
+
+    - name: Verify cleanup
+      ansibleguy.opnsense.list:
+      register: opn_cleanup_verify
+
+    - name: Show test results
+      ansible.builtin.assert:
+        that:
+          - opn_health1_check is changed
+          - opn_health1 is changed
+          - opn_health2 is changed
+          - opn_health3 is changed
+          - opn_health1_changed is changed
+          - opn_health1_changed2 is not changed
+          - opn_health3_disabled is changed
+          - "opn_health1_verify.data | length == (existing_entries.data | length + 1)"
+          - "'ANSIBLE_TEST_1_HEALTH' in opn_health1_verify.data | map(attribute='name')"
+          - "'ANSIBLE_TEST_1_HEALTH' not in opn_cleanup_verify.data | map(attribute='name')"
+        msg: 'HAProxy health check tests failed!'

@@ -922,3 +922,163 @@
       failed_when:
         - cl_snap2.failed
         - "'Unsupported' not in cl_snap2.msg | default('')"
+
+    - name: Cleanup HAProxy backends
+      ansibleguy.opnsense.haproxy_backend:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_BACKEND_1'
+        - 'ANSIBLE_TEST_BACKEND_2'
+
+    - name: Cleanup HAProxy servers
+      ansibleguy.opnsense.haproxy_server:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_SERVER_1'
+        - 'ANSIBLE_TEST_SERVER_2'
+
+    - name: Cleanup HAProxy frontends
+      ansibleguy.opnsense.haproxy_frontend:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_FRONTEND_1'
+        - 'ANSIBLE_TEST_FRONTEND_2'
+
+    - name: Cleanup HAProxy actions
+      ansibleguy.opnsense.haproxy_action:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'test_use_backend'
+        - 'test_http_allow'
+        - 'test_http_deny'
+        - 'test_custom'
+
+    - name: Cleanup HAProxy Lua scripts
+      ansibleguy.opnsense.haproxy_lua:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'test_auth_lua'
+        - 'test_logger_lua'
+        - 'test_custom_lua'
+
+    - name: Cleanup HAProxy FCGI apps
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'test_php_app'
+        - 'test_wordpress'
+        - 'test_custom_app'
+
+    - name: Cleanup HAProxy CPU affinity rules
+      ansibleguy.opnsense.haproxy_cpu:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'test_thread1_cpu0'
+        - 'test_odd_threads'
+        - 'test_even_threads'
+        - 'test_all_threads'
+
+    - name: Cleanup HAProxy ACLs
+      ansibleguy.opnsense.haproxy_acl:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_ACL'
+        - 'ANSIBLE_TEST_2_ACL'
+        - 'ANSIBLE_TEST_3_ACL'
+        - 'ANSIBLE_TEST_AUTH_ACL'
+        - 'ANSIBLE_TEST_ACL_GROUP_1'
+        - 'ANSIBLE_TEST_ACL_GROUP_2'
+        - 'ANSIBLE_TEST_ACL_USER_1'
+        - 'ANSIBLE_TEST_ACL_USER_2'
+
+    - name: Cleanup HAProxy users
+      ansibleguy.opnsense.haproxy_user:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_USER'
+        - 'ANSIBLE_TEST_2_USER'
+        - 'ANSIBLE_TEST_USER_1'
+        - 'ANSIBLE_TEST_USER_2'
+        - 'ANSIBLE_TEST_USER_3'
+        - 'ANSIBLE_TEST_ACL_USER_1'
+        - 'ANSIBLE_TEST_ACL_USER_2'
+
+    - name: Cleanup HAProxy groups
+      ansibleguy.opnsense.haproxy_group:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_GROUP'
+        - 'ANSIBLE_TEST_2_GROUP'
+        - 'ANSIBLE_TEST_3_GROUP'
+        - 'ANSIBLE_TEST_ACL_GROUP_1'
+        - 'ANSIBLE_TEST_ACL_GROUP_2'
+
+    - name: Cleanup HAProxy errorfiles
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_ERROR_1'
+        - 'ANSIBLE_TEST_ERROR_2'
+        - 'test_400_error'
+        - 'test_403_error'
+        - 'fe_error_1'
+        - 'fe_error_2'
+
+    - name: Cleanup HAProxy healthchecks
+      ansibleguy.opnsense.haproxy_healthcheck:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_HEALTHCHECK_1'
+        - 'ANSIBLE_TEST_HEALTHCHECK_2'
+
+    - name: Cleanup HAProxy mapfiles
+      ansibleguy.opnsense.haproxy_mapfile:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_MAPFILE_1'
+        - 'ANSIBLE_TEST_MAPFILE_2'
+
+    - name: Cleanup HAProxy resolvers
+      ansibleguy.opnsense.haproxy_resolver:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_RESOLVER_1'
+        - 'ANSIBLE_TEST_RESOLVER_2'
+
+    - name: Cleanup HAProxy mailers
+      ansibleguy.opnsense.haproxy_mailer:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_MAILER_1'
+        - 'ANSIBLE_TEST_MAILER_2'
+
+    - name: Cleanup HAProxy statistics
+      ansibleguy.opnsense.haproxy_statistics:
+        enabled: false
+
+    - name: Cleanup HAProxy maintenance mode
+      ansibleguy.opnsense.haproxy_maintenance:
+        enabled: false
+
+    - name: Cleanup HAProxy exporter
+      ansibleguy.opnsense.haproxy_exporter:
+        enabled: false
+
+    - name: Reset HAProxy general settings
+      ansibleguy.opnsense.haproxy_general:
+        enabled: false
