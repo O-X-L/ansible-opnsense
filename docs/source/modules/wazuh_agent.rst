@@ -10,6 +10,15 @@ Wazuh Agent Settings
 
 **Tests:** `wazuh_agent.yml <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/wazuh_agent.yml>`_
 
+
+Contribution
+############
+
+This module was contributed by **MaximeWewer** (@MaximeWewer).
+
+If you encounter any issues or have suggestions for improvements, please feel free to contribute to the project.
+
+
 Function
 ########
 
