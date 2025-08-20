@@ -14,10 +14,6 @@ HAProxy - CPU Affinity
 
 **TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/haproxy_cpu.yml>`_
 
-**API Docs**: `Core - HAProxy <https://docs.opnsense.org/development/api/core/haproxy.html>`_
-
-**Service Docs**: `HAProxy <https://docs.opnsense.org/manual/how-tos/haproxy.html>`_
-
 
 Contribution
 ************

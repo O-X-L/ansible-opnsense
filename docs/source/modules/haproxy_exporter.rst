@@ -14,10 +14,6 @@ HAProxy Exporter
 
 **TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/haproxy_exporter.yml>`_
 
-**API Docs**: `HAProxy <https://docs.opnsense.org/development/api/plugins/haproxy.html>`_
-
-**Service Docs**: `HAProxy <https://docs.opnsense.org/manual/how-tos/haproxy.html>`_
-
 
 Contribution
 ************
