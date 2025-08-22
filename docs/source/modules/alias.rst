@@ -45,9 +45,10 @@ Definition
     "name","string","true","\-","n","Unique name of the alias"
     "description","string","false","\-","desc","Description for the alias"
     "content","list","false for state changes, else true","\-","cont, c","Values the alias should hold"
-    "type","string","false","'host'","t","Type of value the alias should hold. One of: 'host', 'network', 'port', 'url', 'urltable', 'geoip', 'networkgroup', 'mac', 'dynipv6host', 'internal', 'external'"
-    "updatefreq_days","float","false","7.0 if type=urltable","\-","Needed only for the alias-type 'urltable'. Interval to update its content. Per example: 0.5 for every 12 hours"
+    "type","string","false","'host'","t","Type of value the alias should hold. One of: 'host', 'network', 'port', 'url', 'urltable', 'urljson', 'geoip', 'networkgroup', 'mac', 'dynipv6host', 'internal', 'external'"
+    "updatefreq_days","float","false","7.0 if type=urltable","\-","Needed only for the alias-type 'urltable' or 'urljson'. Interval to update its content. Per example: 0.5 for every 12 hours"
     "interface","string","false","\-","int, if","Needed only for the alias-type 'dynipv6host'. Select the interface for the V6 dynamic IP"
+    "path_expression","string","false","\-","pr, jq","Needed only for the alias-type 'urljson'. Simplified expression to select a field inside a container, a dot is used as field separator (e.g. container.fieldname). Expressions using the jq language are also supported."
     "reload","boolean","false","false","\-", .. include:: ../_include/param_reload.rst
 
 .. include:: ../_include/param_basic.rst
@@ -80,8 +81,9 @@ Examples
             content: '1.1.1.1'
             state: 'present'
             # type: 'host'  # default
-            # updatefreq_days: 3  # used only for type 'urltable'
+            # updatefreq_days: 3  # used only for type 'urltable' and 'urljson'
             # interface: lan # used only for the type 'dynipv6host'
+            # path_expression: # used only for type 'urljson'
             # ssl_ca_file: '/etc/ssl/certs/custom/ca.crt'
             # ssl_verify: False
             # api_key: !vault ...  # alternative to 'api_credential_file'
@@ -130,13 +132,19 @@ Examples
             updatefreq_days: 2.6
             content: 'https://www.spamhaus.org/drop/drop.txt'
 
-        - name: Adding dns-names
+        - name: Adding url-json
           ansibleguy.opnsense.alias:
             name: 'ANSIBLE_TEST5'
+            type: 'urltable'
+            updatefreq_days: 2.6
+            content: 'https://www.spamhaus.org/drop/drop.txt'
+
+        - name: Adding dns-names
+          ansibleguy.opnsense.alias:
+            name: 'ANSIBLE_TEST6'
             content:
-              - 'acme-v02.api.letsencrypt.org'
-              - 'staging-v02.api.letsencrypt.org'
-              - 'r3.o.lencr.org'
+              - 'https://api.github.com/meta'
+            path_expression: '.web + .api + .git | .[]'
 
         - name: Adding network
           ansibleguy.opnsense.alias:

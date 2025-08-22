@@ -9,7 +9,8 @@ ALIAS_DEFAULTS = {
     'content': [],
     'debug': False,
     'updatefreq_days': '',
-    'interface': None
+    'interface': None,
+    'path_expression': '',
 }
 
 ALIAS_MOD_ARG_ALIASES = {
@@ -19,7 +20,8 @@ ALIAS_MOD_ARG_ALIASES = {
     'description': ['desc'],
     'state': ['st'],
     'enabled': ['en'],
-    'interface': ['int', 'if']
+    'interface': ['int', 'if'],
+    'path_expression': ['pe', 'jq'],
 }
 
 ALIAS_MOD_ARGS = dict(
@@ -45,6 +47,12 @@ ALIAS_MOD_ARGS = dict(
         type='str', default=ALIAS_DEFAULTS['interface'],
         aliases=ALIAS_MOD_ARG_ALIASES['interface'], required=False,
         description=' Select the interface for the V6 dynamic IP.',
+    ),
+    path_expression=dict(
+        type='str', default=ALIAS_DEFAULTS['path_expression'],
+        aliases=ALIAS_MOD_ARG_ALIASES['path_expression'], required=False,
+        description='Simplified expression to select a field inside a container, a dot is used as field separator. '
+                    'Expressions using the jq language are also supported.',
     ),
     **STATE_MOD_ARG,
     **OPN_MOD_ARGS,
