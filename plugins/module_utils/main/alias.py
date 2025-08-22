@@ -26,7 +26,7 @@ class Alias(BaseModule):
     FIELDS_CHANGE = ['content', 'description']
     FIELDS_ALL = ['name', 'type', 'enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
-    FIELDS_ALL.extend(['updatefreq_days', 'interface'])
+    FIELDS_ALL.extend(['updatefreq_days', 'interface', 'path_expression'])
     FIELDS_TRANSLATE = {
         'updatefreq_days': 'updatefreq',
     }
@@ -57,6 +57,11 @@ class Alias(BaseModule):
 
             else:
                 self.p['updatefreq_days'] = self.DEFAULT_UPDATEFREQ_DAYS_URLTABLE
+
+        if self.p['type'] == 'urljson':
+            self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['updatefreq_days', 'path_expression']
+            if not is_unset(self.p['updatefreq_days']):
+                self.p['updatefreq_days'] = float(self.p['updatefreq_days'])
 
         if self.p['type'] == 'dynipv6host':
             if is_unset(self.p['interface']):
@@ -96,7 +101,7 @@ class Alias(BaseModule):
             **simple,
         }
 
-        if simple['type'] == 'urltable':
+        if simple['type'] in ['urltable', 'urljson']:
             try:
                 simple['updatefreq_days'] = round(float(alias['updatefreq']), 1)
 
