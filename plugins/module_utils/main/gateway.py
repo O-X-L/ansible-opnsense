@@ -4,6 +4,7 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
     is_ip6
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
@@ -67,11 +68,12 @@ class Gw(BaseModule):
 
     def check(self) -> None:
         if self.p['state'] == 'present':
-            try:
-                ip_address(self.p['gateway'])
+            if not is_unset(self.p['gateway']):
+                try:
+                    ip_address(self.p['gateway'])
 
-            except ValueError:
-                self.m.fail_json(f"Value '{self.p['gateway']}' is not a valid gateway!")
+                except ValueError:
+                    self.m.fail_json(f"Value '{self.p['gateway']}' is not a valid gateway!")
 
             if self.p['monitor']:
                 try:
@@ -86,10 +88,11 @@ class Gw(BaseModule):
             if not self.p['gateway']:
                 self.m.fail_json('You need to provide a value for the gateway!')
 
-            if is_ip6(self.p['gateway']):
-                self.p['ip_protocol'] = 'inet6'
+            if is_unset(self.p['ip_protocol']):
+                if is_ip6(self.p['gateway']):
+                    self.p['ip_protocol'] = 'inet6'
 
-            else:
-                self.p['ip_protocol'] = 'inet'
+                else:
+                    self.p['ip_protocol'] = 'inet'
 
         self._base_check()

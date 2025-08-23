@@ -35,6 +35,10 @@ def run_module():
             type='str', required=False, aliases=['int', 'if'],
             description='Interface for Gateway'
         ),
+        ip_protocol=dict(
+            type='str', required=False, choices=['inet', 'inet6'],
+            description='The Internet Protocol this gateway uses.',
+        ),
         gateway=dict(
             type='str', required=False, aliases=['gw', 'ip'],
             description='Gateway IP'
@@ -140,6 +144,9 @@ def run_module():
     module = AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
+        required_if=[
+            ('state', 'present', ('gateway', 'ip_protocol'), True),
+        ],
     )
 
     module_wrapper(Gw(module=module, result=result))
