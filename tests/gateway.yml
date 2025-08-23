@@ -34,6 +34,14 @@
         opn3.failed or
         opn3.changed
 
+    - name: Adding 1 - failing because of invalid gateway
+      ansibleguy.opnsense.gateway:
+        name: 'ANSIBLE_TEST_1'
+        interface: 'lan'
+        gateway: 999.999.999.999
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
     - name: Adding 1
       ansibleguy.opnsense.gateway:
         name: 'ANSIBLE_TEST_1'
