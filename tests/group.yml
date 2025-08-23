@@ -63,6 +63,7 @@
       ansibleguy.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
+        source_net: 127.0.0.1/24
       register: opn3
       failed_when: >
         opn3.failed or
@@ -72,6 +73,7 @@
       ansibleguy.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
+        source_net: 127.0.0.1/24
       register: opn4
       failed_when: >
         opn4.failed or
@@ -82,6 +84,7 @@
       ansibleguy.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
+        source_net: 127.0.0.1/24
         privilege:
           - user-config-readonly
       register: opn5
@@ -94,6 +97,7 @@
       ansibleguy.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
+        source_net: 127.0.0.1/24
         privilege:
           - user-config-readonly
       register: opn6
@@ -106,6 +110,7 @@
       ansibleguy.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
+        source_net: 127.0.0.1/24
       register: opn7
       failed_when: >
         opn7.failed or
@@ -116,6 +121,7 @@
       ansibleguy.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
+        source_net: 127.0.0.1/24
         privilege: []
       register: opn8
       failed_when: >
@@ -127,6 +133,7 @@
       ansibleguy.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
+        source_net: 127.0.0.1/24
         privilege: []
       register: opn9
       failed_when: >

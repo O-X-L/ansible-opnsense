@@ -38,6 +38,10 @@ def run_module():
         privilege=dict(
             type='list', required=False, aliases=['priv', 'p'], elements='str',
         ),
+        source_net=dict(
+            type='list', required=False, aliases=['source', 'src', 's'], elements='str', default=[],
+            description='List of networks which constraint the membership of this group to their location.',
+        ),
         **STATE_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,
     )

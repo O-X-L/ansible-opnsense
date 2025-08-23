@@ -19,14 +19,13 @@ class Group(BaseModule):
     API_KEY_PATH = 'group'
     API_MOD = 'auth'
     API_CONT = 'group'
-    FIELDS_CHANGE = [
-        'description'
-    ]
+    FIELDS_CHANGE = ['description', 'source_net']
     FIELDS_TYPING = {
-        'list': ['privilege', 'member'],
+        'list': ['privilege', 'member', 'source_net'],
     }
     FIELDS_TRANSLATE = {
         'privilege': 'priv',
+        'source_net': 'source_networks',
     }
     FIELDS_ALL = ['name', 'privilege', 'member']
     FIELDS_ALL.extend(FIELDS_CHANGE)
