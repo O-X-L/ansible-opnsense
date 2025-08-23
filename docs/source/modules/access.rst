@@ -26,7 +26,7 @@ Thanks to `@jiuka <https://github.com/jiuka>`_ for developing this module!
 
 .. warning::
 
-    This feature is only available in OPNSense version >= 25.1
+    This feature is only compatible with OPNSense version >= 25.7
 
 Definition
 **********
@@ -62,6 +62,7 @@ ansibleguy.opnsense.group
     "description","string","false","\-","desc","Group description for your reference"
     "member","list","false","\-","m","List of group members."
     "privilege","list","false","\-","priv, p","List of granted privileges."
+    "source_net","list","false"."\-","source, src, s","List of networks which constraint the membership of this group to their location."
 
 
 ansibleguy.opnsense.privilege
@@ -126,6 +127,7 @@ Examples
             # member:
             # privilege:
             # state: 'absent'
+            # source_net:
             # debug: false
 
         - name: Example Privilege
