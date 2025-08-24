@@ -4,16 +4,19 @@ name: Functional-Tests Execution for PRs
 
 on:
   pull_request:
+    types: [opened, synchronize]
     paths:
       - 'plugins/**.py'
       - 'tests/**.yml'
       - '.github/workflows/functional_test_pr.yml'
       - 'scripts/get_changed_modules.py'
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 45
+    environment: latest
 
     steps:
       - name: Checkout
