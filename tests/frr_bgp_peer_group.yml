@@ -16,15 +16,6 @@
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
-    - name: Cleanup
-      ansibleguy.opnsense.frr_bgp_peer_group:
-        name: "{{ item }}"
-        state: 'absent'
-      loop:
-        - 'ANSIBLE_TEST_1_1'
-        - 'ANSIBLE_TEST_1_2'
-      when: not ansible_check_mode
-
     - name: Listing
       ansibleguy.opnsense.list:
       register: opn_pre1
