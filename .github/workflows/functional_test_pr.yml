@@ -16,7 +16,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    environment: latest
+    environment: pr-test
 
     steps:
       - name: Checkout
