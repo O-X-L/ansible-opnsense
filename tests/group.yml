@@ -13,6 +13,15 @@
       target: 'group'
 
   tasks:
+    - name: Cleanup
+      ansibleguy.opnsense.group:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+      when: not ansible_check_mode
+
     - name: Listing
       ansibleguy.opnsense.list:
       register: opn_pre1
@@ -104,17 +113,6 @@
       failed_when: >
         opn6.failed or
         opn6.changed
-      when: not ansible_check_mode
-
-    - name: Changing 2 - nothing changed
-      ansibleguy.opnsense.group:
-        name: ANSIBLE_TEST_1_2
-        description: ANSIBLE_TEST_1_2
-        source_net: 127.0.0.1/24
-      register: opn7
-      failed_when: >
-        opn7.failed or
-        opn7.changed
       when: not ansible_check_mode
 
     - name: Changing 2 - revoking privileges

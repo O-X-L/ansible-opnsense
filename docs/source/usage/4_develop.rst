@@ -112,6 +112,9 @@ There are some required attributes:
             # select with multiple-choice
             'list': ['as_path_list', 'prefix_list', 'community_list'],
 
+            # select with multiple-choice but get the 'pretty-value'
+            'list_value': ['member'],
+
             # select with single-choice
             'select': ['action'],
 

@@ -116,7 +116,7 @@ def get_selected(data: dict) -> (str, None):
     return data
 
 
-def get_selected_value(data: dict) -> (str, None):
+def get_selected_value(data: (dict, list)) -> (str, None):
     if isinstance(data, dict):
         for values in data.values():
             if is_true(values['selected']) and 'value' in values:
@@ -152,10 +152,38 @@ def get_selected_opt_list_idx(data: list) -> int:
 
     return 0
 
-def get_selected_list(data: dict, remove_empty: bool = False) -> list:
-    if isinstance(data, list):
+
+def get_selected_multi(data: (dict, list), get_value: bool = False) -> list:
+    if isinstance(data, list) and len(data) > 0 and not isinstance(data[0], dict):
         # if function is re-applied
         return data
+
+    selected_values = []
+    if isinstance(data, dict):
+        for key, values in data.items():
+            if is_true(values['selected']):
+                if not get_value:
+                    selected_values.append(key)
+
+                if get_value and 'value' in values:
+                    selected_values.append(values['value'])
+
+    if isinstance(data, list):
+        for values in data:
+            if is_true(values['selected']) and 'value' in values:
+                selected_values.append(values['value'])
+
+    return selected_values
+
+
+def get_selected_list(data: dict, remove_empty: bool = False, get_value: bool = False) -> list:
+    if isinstance(data, list):
+        if len(data) == 0:
+            return []
+
+        if not isinstance(data[0], dict):
+            # if function is re-applied
+            return data
 
     if isinstance(data, str):
         if data.strip() == '':
@@ -163,18 +191,14 @@ def get_selected_list(data: dict, remove_empty: bool = False) -> list:
 
         return data.split(',')
 
-    selected = []
-    if len(data) > 0:
-        try:
-            for key, values in data.items():
-                if remove_empty and key in [None, '', ' ']:
-                    continue
+    selected = get_selected_multi(data=data, get_value=get_value)
+    if remove_empty:
+        for key in [None, '', ' ']:
+            if key in selected:
+                selected.remove(key)
 
-                if is_true(values['selected']):
-                    selected.append(key)
-
-        except AttributeError:
-            exit_bug(f"Got data entry that is not a dictionary => '{data}'")
+    if 'System: Deny config write' in selected:
+        raise exit_bug(f"TEST: {data}")
 
     selected.sort()
     return selected
@@ -306,7 +330,10 @@ def simplify_translate(
                     simple[f] = format_int(simple[f])
 
                 elif t == 'list':
-                    simple[f] = get_selected_list(data=simple[f], remove_empty=True)
+                    simple[f] = get_selected_list(data=simple[f], remove_empty=True, get_value=False)
+
+                elif t == 'list_value':
+                    simple[f] = get_selected_list(data=simple[f], remove_empty=True, get_value=True)
 
                 elif t == 'select':
                     simple[f] = get_selected(simple[f])
