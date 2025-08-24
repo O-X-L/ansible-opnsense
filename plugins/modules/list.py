@@ -42,7 +42,7 @@ TARGETS = [
     'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre', 'nat_one_to_one', 'nat_source',
     'ipsec_manual_spd', 'hasync_general', 'snapshot', 'frr_bgp_redistribution', 'frr_ospf_redistribution',
     'frr_ospf3_redistribution', 'frr_ospf3_route_map', 'frr_ospf3_prefix_list', 'frr_ospf3_network',
-    'frr_bgp_peer_group',
+    'frr_bgp_peer_group', 'user', 'group', 'privilege',
 ]
 
 
@@ -516,6 +516,18 @@ def run_module():
         elif target == 'snapshot':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.snapshot import \
                 Snapshot as Target_Obj
+
+        elif target == 'user':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.user import \
+                User as Target_Obj
+
+        elif target == 'group':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.group import \
+                Group as Target_Obj
+
+        elif target == 'privilege':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.privilege import \
+                Privilege as Target_Obj
 
     except AttributeError:
         module_dependency_error()
