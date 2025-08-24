@@ -68,6 +68,10 @@ def run_module():
             type='str', required=False, aliases=['map_out', 'rm_out'],
             description='Route-map to apply to routes advertised to this neighbor.',
         ),
+        listen_ranges=dict(
+            type='list', elements='str', required=False, aliases=['ranges'], default=[],
+            description='One or multiple valid IP networks in CIDR notation.',
+        ),
         **STATE_MOD_ARG,
         **RELOAD_MOD_ARG,
         **OPN_MOD_ARGS,
