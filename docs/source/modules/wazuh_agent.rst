@@ -2,35 +2,49 @@
 
 .. include:: ../_include/head.rst
 
-====================
-Wazuh Agent Settings
-====================
+===========
+Wazuh Agent
+===========
 
-**State:** stable
+**State:** Unstable
 
 **Tests:** `wazuh_agent.yml <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/wazuh_agent.yml>`_
 
+**API Docs**: `Plugins - Wazuh Agent <https://docs.opnsense.org/development/api/plugins/wazuhagent.html>`_
+
+**Service Docs**: `OPNsense Wazuh Agent <https://docs.opnsense.org/manual/wazuh-agent.html>`_
+
 
 Contribution
-############
+************
 
-This module was contributed by **MaximeWewer** (@MaximeWewer).
+Thanks to `@MaximeWewer <https://github.com/MaximeWewer>`_ for developing this module!
 
 If you encounter any issues or have suggestions for improvements, please feel free to contribute to the project.
 
+----
+
+Prerequisites
+*************
+
+You need to install the postfix plugin:
+
+```
+os-wazuh-agent
+```
+
+You can also install it using the :ref:`ansibleguy.opnsense.package <modules_package>` module.
+
+----
 
 Function
-########
+********
 
 This module allows you to configure the Wazuh agent on your OPNSense firewall.
 
 Wazuh is a comprehensive security platform that provides unified XDR and SIEM protection for endpoints and cloud workloads.
 
 The agent collects security-relevant data and sends it to the Wazuh server for analysis.
-
-.. include:: ../_include/param_basic.rst
-
-.. include:: ../_include/param_reload.rst
 
 Parameters
 ##########
@@ -58,10 +72,14 @@ Parameters
    "active_response_remote_commands","boolean","false","true","","Allow active response remote commands"
    "active_response_fw_alias_ignore","list","false","","","List of firewall aliases to ignore in active response"
 
-.. include:: ../_include/unbound_mass.rst
+.. include:: ../_include/param_basic.rst
 
-Info
-####
+.. include:: ../_include/param_reload.rst
+
+----
+
+Usage
+*****
 
 This module configures general Wazuh agent settings.
 
@@ -71,51 +89,85 @@ After configuration changes, the agent service will be reloaded automatically.
 
    Make sure to properly configure your Wazuh server before enabling the agent.
 
+----
+
 Examples
-########
+********
 
 .. code-block:: yaml
 
-    - name: Configure basic Wazuh agent
-      ansibleguy.opnsense.wazuh_agent:
-        server_address: '192.168.1.100'
-        agent_name: 'opnsense-fw'
+    - hosts: localhost
+      gather_facts: false
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
 
-    - name: Configure Wazuh agent with authentication
-      ansibleguy.opnsense.wazuh_agent:
-        server_address: 'wazuh.example.com'
-        agent_name: 'firewall-01'
-        protocol: 'tcp'
-        port: 1514
-        auth_password: 'your-auth-password'
-        auth_port: 1515
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.wazuh_agent:
+            server_address: '192.168.1.100'
+            # agent_name: ''
+            # protocol: 'tcp'
+            # port: 1514
+            # debug_level: 0
+            # auth_password: ''
+            # auth_port: 1515
+            # logcollector_enabled: true
+            # remote_commands: true
+            # syslog_programs: []
+            # suricata_eve_log: true
+            # rootcheck_enabled: true
+            # syscollector_enabled: true
+            # syscheck_enabled: true
+            # active_response_enabled: true
+            # active_response_remote_commands: true
+            # active_response_fw_alias_ignore: []
+            # reload: true
+            # enabled: true
 
-    - name: Configure Wazuh agent with custom logging
-      ansibleguy.opnsense.wazuh_agent:
-        server_address: '10.0.0.100'
-        logcollector_enabled: true
-        remote_commands: true
-        syslog_programs:
-          - 'filterlog'
-          - 'suricata'
-          - 'unbound'
-        suricata_eve_log: true
+        - name: Configure basic Wazuh agent
+          ansibleguy.opnsense.wazuh_agent:
+            server_address: '192.168.1.100'
+            agent_name: 'opnsense-fw'
 
-    - name: Disable Wazuh agent modules selectively
-      ansibleguy.opnsense.wazuh_agent:
-        server_address: '192.168.1.100'
-        rootcheck_enabled: false
-        syscheck_enabled: false
-        active_response_enabled: false
+        - name: Configure Wazuh agent with authentication
+          ansibleguy.opnsense.wazuh_agent:
+            server_address: 'wazuh.example.com'
+            agent_name: 'firewall-01'
+            protocol: 'tcp'
+            port: 1514
+            auth_password: 'your-auth-password'
+            auth_port: 1515
 
-    - name: Configure with debug output
-      ansibleguy.opnsense.wazuh_agent:
-        server_address: '192.168.1.100'
-        debug_level: 2
-        debug: true
+        - name: Configure Wazuh agent with custom logging
+          ansibleguy.opnsense.wazuh_agent:
+            server_address: '10.0.0.100'
+            logcollector_enabled: true
+            remote_commands: true
+            syslog_programs:
+              - 'filterlog'
+              - 'suricata'
+              - 'unbound'
+            suricata_eve_log: true
+
+        - name: Disable Wazuh agent modules selectively
+          ansibleguy.opnsense.wazuh_agent:
+            server_address: '192.168.1.100'
+            rootcheck_enabled: false
+            syscheck_enabled: false
+            active_response_enabled: false
+
+        - name: Configure with debug output
+          ansibleguy.opnsense.wazuh_agent:
+            server_address: '192.168.1.100'
+            debug_level: 2
+            debug: true
+
+----
 
 Troubleshooting
-###############
+***************
 
 Make sure your Wazuh server is reachable from the OPNSense firewall and that the specified ports are open in your firewall rules.
 
