@@ -19,15 +19,16 @@ class Group(BaseModule):
     API_KEY_PATH = 'group'
     API_MOD = 'auth'
     API_CONT = 'group'
-    FIELDS_CHANGE = ['description', 'source_net']
+    FIELDS_CHANGE = ['description', 'source_net', 'privilege', 'member']
     FIELDS_TYPING = {
-        'list': ['privilege', 'member', 'source_net'],
+        'list': ['privilege', 'source_net'],
+        'list_value': ['member'],
     }
     FIELDS_TRANSLATE = {
         'privilege': 'priv',
         'source_net': 'source_networks',
     }
-    FIELDS_ALL = ['name', 'privilege', 'member']
+    FIELDS_ALL = ['name']
     FIELDS_ALL.extend(FIELDS_CHANGE)
     EXIST_ATTR = 'group'
     STR_VALIDATIONS = {
@@ -38,19 +39,20 @@ class Group(BaseModule):
         BaseModule.__init__(self=self, m=module, r=result, s=session)
         self.group = {}
 
-    def check(self) -> None:
-        self._base_check()
-
-        if not is_unset(self.p['member']) or self.p['member'] == []:
-            self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['member']
-            self.p['member'] = [
-                get_key_by_value_from_selection(self.b.raw['member'], m)
-                for m in self.p['member']
-            ]
-        if not is_unset(self.p['privilege']) or self.p['privilege'] == []:
-            self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['privilege']
-
     def delete(self) -> None:
         if self.group['scope'] == 'system':
             self.m.fail_json(f"Not allowed to delete system group {self.group['name']}")
+
         self.b.delete()
+
+    def _build_request(self) -> dict:
+        raw_request = self.b.build_request()
+
+        if not is_unset(self.p['member']):
+            # translate user-names to user-id's
+            raw_request[self.API_KEY_PATH]['member'] = self.b.RESP_JOIN_CHAR.join([
+                get_key_by_value_from_selection(self.b.raw['member'], m)
+                for m in self.p['member']
+            ])
+
+        return raw_request

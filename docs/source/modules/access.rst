@@ -33,6 +33,7 @@ Definition
 
 ansibleguy.opnsense.user
 ===================================
+
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
     :widths: 15 10 10 10 10 45
@@ -54,6 +55,7 @@ ansibleguy.opnsense.user
 
 ansibleguy.opnsense.group
 =========================
+
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
     :widths: 15 10 10 10 10 45
@@ -67,6 +69,7 @@ ansibleguy.opnsense.group
 
 ansibleguy.opnsense.privilege
 =============================
+
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
     :widths: 15 10 10 10 10 45
@@ -78,6 +81,8 @@ ansibleguy.opnsense.privilege
 
 .. include:: ../_include/param_basic.rst
 
+----
+
 Usage
 *****
 
@@ -85,6 +90,7 @@ This module is used to manage users and groups, assign users to groups and grant
 
  * The ``membership``/``member`` and ``privilege`` parameters on the ``user`` and ``group`` module are only checked/updated if the parameter is present.
 
+----
 
 Examples
 ********

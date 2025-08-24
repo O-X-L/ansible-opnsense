@@ -34,9 +34,11 @@ def run_module():
         description=dict(type='str', required=False, aliases=['desc']),
         member=dict(
             type='list', required=False, aliases=['m'], elements='str',
+            default=[],
         ),
         privilege=dict(
             type='list', required=False, aliases=['priv', 'p'], elements='str',
+            default=[],
         ),
         source_net=dict(
             type='list', required=False, aliases=['source', 'src', 's'], elements='str', default=[],
