@@ -22,7 +22,7 @@ class PeerGroup(BaseModule):
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
         'as_mode', 'as_number', 'source_int', 'next_hop_self', 'send_default_route',
-        'prefix_list_in', 'prefix_list_out', 'route_map_in', 'route_map_out',
+        'prefix_list_in', 'prefix_list_out', 'route_map_in', 'route_map_out', 'listen_ranges',
     ]
     FIELDS_ALL = ['enabled', 'name']
     FIELDS_ALL.extend(FIELDS_CHANGE)
@@ -36,6 +36,7 @@ class PeerGroup(BaseModule):
         'prefix_list_out': 'linkedPrefixlistOut',
         'route_map_in': 'linkedRoutemapIn',
         'route_map_out': 'linkedRoutemapOut',
+        'listen_ranges': 'listenranges',
     }
     FIELDS_TYPING = {
         'bool': [
@@ -45,6 +46,7 @@ class PeerGroup(BaseModule):
             'as_mode', 'source_int', 'prefix_list_in', 'prefix_list_out',
             'route_map_in', 'route_map_out',
         ],
+        'list': ['listen_ranges'],
     }
     INT_VALIDATIONS = {
         'as_number': {'min': 1, 'max': 4294967295},
