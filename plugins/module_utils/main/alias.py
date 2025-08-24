@@ -39,6 +39,8 @@ class Alias(BaseModule):
     TIMEOUT = 20.0
     MAX_ALIAS_LEN = 32
 
+    DEFAULT_UPDATEFREQ_DAYS_URLTABLE = 7.0  # see: https://github.com/O-X-L/ansible-opnsense/pull/270
+
     def __init__(
             self, module: AnsibleModule, result: dict, cnf: dict = None,
             session: Session = None, fail: dict = None,
@@ -52,6 +54,9 @@ class Alias(BaseModule):
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['updatefreq_days']
             if not is_unset(self.p['updatefreq_days']):
                 self.p['updatefreq_days'] = float(self.p['updatefreq_days'])
+
+            else:
+                self.p['updatefreq_days'] = self.DEFAULT_UPDATEFREQ_DAYS_URLTABLE
 
         if self.p['type'] == 'dynipv6host':
             if is_unset(self.p['interface']):
