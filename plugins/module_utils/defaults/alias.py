@@ -8,7 +8,7 @@ ALIAS_DEFAULTS = {
     'type': 'host',
     'content': [],
     'debug': False,
-    'updatefreq_days': 7.0,
+    'updatefreq_days': '',
     'interface': None
 }
 
@@ -37,7 +37,7 @@ ALIAS_MOD_ARGS = dict(
         'mac', 'dynipv6host', 'internal', 'external',
     ], default=ALIAS_DEFAULTS['type'], aliases=ALIAS_MOD_ARG_ALIASES['type']),
     updatefreq_days=dict(
-        type='float', default=ALIAS_DEFAULTS['updatefreq_days'], required=False,
+        type='str', default=ALIAS_DEFAULTS['updatefreq_days'], required=False,
         description="Update frequency used by type 'urltable' in days - "
                     "per example '0.5' for 12 hours"
     ),
