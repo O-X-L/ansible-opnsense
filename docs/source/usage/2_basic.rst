@@ -164,3 +164,23 @@ These modules support check-mode and can show you the difference between existin
 
     # run in check-mode (no changes are made)
     ansible-playbook opnsense.yml --check
+
+----
+
+Forward Proxies
+===============
+
+The module's HTTP-Traffic can be forwarded over a forward-proxy like Squid by specifying the :code:`HTTPS_PROXY` environmental variable!
+
+.. code-block:: yaml
+
+    - name: Example Playbook
+      hosts: localhost
+      gather_facts: no
+      environment:
+        HTTPS_PROXY: 'http://user:password@squid.template.ansibleguy.net:3128'
+
+        # to inherit it from the ansible-controller environment:
+        # HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'HTTPS_PROXY') | default('') }}"
+
+      ...
