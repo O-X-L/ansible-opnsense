@@ -1,5 +1,5 @@
 try:
-    from ansible.errors import AnsibleModuleError
+    from ansible.module_utils.common.errors import AnsibleModuleError
 
 except ModuleNotFoundError:
     class AnsibleModuleError(Exception):
