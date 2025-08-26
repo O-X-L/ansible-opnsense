@@ -62,10 +62,6 @@ def run_module():
         ),
         
         # Log collector settings
-        logcollector_enabled=dict(
-            type='bool', required=False, default=True,
-            description='Enable log collector module'
-        ),
         remote_commands=dict(
             type='bool', required=False, default=True,
             description='Allow remote commands execution'

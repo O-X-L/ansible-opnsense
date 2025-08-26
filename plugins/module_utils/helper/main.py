@@ -285,7 +285,19 @@ def simplify_translate(
     try:
         # translate api-fields to ansible-fields
         for k, v in translate.items():
-            if v in existing:
+            if '.' in v:
+                # Support for nested paths (e.g., 'general.enabled')
+                path_parts = v.split('.')
+                value = existing
+                for part in path_parts:
+                    if isinstance(value, dict) and part in value:
+                        value = value[part]
+                    else:
+                        value = None
+                        break
+                if value is not None:
+                    simple[k] = value
+            elif v in existing:
                 simple[k] = existing[v]
 
         translate_fields = translate.values()
@@ -367,3 +379,49 @@ def sanitize_module_args(args: dict) -> dict:
     args.pop('api_key', None)
     args.pop('api_secret', None)
     return args
+
+
+def flatten_dict(nested: dict, parent_key: str = '', sep: str = '.') -> dict:
+    """
+    Flatten a nested dictionary structure into a flat dictionary with dot-notation keys.
+    
+    Args:
+        nested: The nested dictionary to flatten
+        parent_key: The parent key prefix (used for recursion)
+        sep: The separator to use between keys (default: '.')
+    
+    Returns:
+        A flat dictionary with dot-notation keys
+    """
+    items = []
+    for k, v in nested.items():
+        new_key = f"{parent_key}{sep}{k}" if parent_key else k
+        if isinstance(v, dict) and 'selected' not in v and not any(key in ['value'] for key in v.keys() if isinstance(v.get(key), str)):
+            # Only recurse if it's a nested structure, not a selection dict
+            items.extend(flatten_dict(v, new_key, sep).items())
+        else:
+            items.append((new_key, v))
+    return dict(items)
+
+
+def unflatten_dict(flat_dict: dict, sep: str = '.') -> dict:
+    """
+    Reconstruct a nested dictionary structure from a flat dictionary with dot-notation keys.
+    
+    Args:
+        flat_dict: The flat dictionary with dot-notation keys
+        sep: The separator used in the keys (default: '.')
+    
+    Returns:
+        A nested dictionary structure
+    """
+    nested = {}
+    for key, value in flat_dict.items():
+        parts = key.split(sep)
+        current = nested
+        for part in parts[:-1]:
+            if part not in current:
+                current[part] = {}
+            current = current[part]
+        current[parts[-1]] = value
+    return nested

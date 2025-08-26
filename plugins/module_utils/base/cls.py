@@ -5,6 +5,9 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api impor
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.base import Base
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
     validate_int_fields, validate_str_fields
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
+    flatten_dict, unflatten_dict, is_true, get_selected, get_selected_list, \
+    get_selected_opt_list, get_selected_opt_list_idx
 
 
 class BaseShared:
@@ -132,3 +135,80 @@ class GeneralModule(BaseShared):
         self.r['diff']['after'] = self.b.build_diff({
             k: v for k, v in self.p.items() if k in self.settings
         })
+
+
+class NestedModule(GeneralModule):
+    """
+    Module class for APIs with nested structure (e.g., agent.general.enabled).
+    Extends GeneralModule to handle complex nested API responses and requests.
+    """
+    EXIST_ATTR = 'settings'
+
+    def _search_call(self) -> dict:
+        """Override to flatten nested API responses for processing"""
+        nested_data = self.b.search()
+        flattened = flatten_dict(nested_data)
+        
+        # Use custom simplify for nested structures
+        translate_rcv = getattr(self, 'FIELDS_TRANSLATE_RCV', {})
+        if translate_rcv:
+            # Custom translation using reverse mapping
+            simple = {}
+            for api_key, value in flattened.items():
+                if api_key in translate_rcv:
+                    ansible_key = translate_rcv[api_key]
+                    simple[ansible_key] = value
+                else:
+                    simple[api_key] = value
+            
+            # Apply typing and other standard processing
+            simple = self._apply_typing(simple)
+        else:
+            simple = self.b.simplify_existing(flattened)
+        
+        # Ensure all FIELDS_CHANGE exist with default values
+        if hasattr(self, 'FIELDS_CHANGE'):
+            for field in self.FIELDS_CHANGE:
+                if field not in simple:
+                    simple[field] = None
+        
+        return simple
+    
+    def _apply_typing(self, simple: dict) -> dict:
+        """Apply FIELDS_TYPING processing to the simple dict"""
+        
+        if hasattr(self, 'FIELDS_TYPING'):
+            typing = self.FIELDS_TYPING
+            for t, fields in typing.items():
+                for f in fields:
+                    if f not in simple:
+                        continue
+                        
+                    if t == 'bool':
+                        simple[f] = is_true(simple[f])
+                    elif t == 'int':
+                        try:
+                            simple[f] = int(simple[f]) if simple[f] != '' else 0
+                        except (ValueError, TypeError):
+                            pass
+                    elif t == 'list':
+                        simple[f] = get_selected_list(data=simple[f], remove_empty=True)
+                    elif t == 'select':
+                        simple[f] = get_selected(simple[f])
+                    elif t == 'select_opt_list':
+                        simple[f] = get_selected_opt_list(simple[f])
+                    elif t == 'select_opt_list_idx':
+                        simple[f] = get_selected_opt_list_idx(simple[f])
+        
+        return simple
+
+    def _build_request(self) -> dict:
+        """Override to unflatten request data for nested API structure"""
+        flat_request = self.b.build_request()
+        
+        # Unflatten all dict values
+        for key, value in flat_request.items():
+            if isinstance(value, dict):
+                flat_request[key] = unflatten_dict(value)
+        
+        return flat_request

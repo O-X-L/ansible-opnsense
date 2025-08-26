@@ -135,7 +135,9 @@ There are some required attributes:
 
     Fields that are parsed from API-responses and added to outbound API-calls.
 
-    If the API-response has fields/values inside a nested-dict - you currently have to handle them manually. In that case do not add the nested-field inside this config-attribute. To handle them manually add the :code:`_search_call` and :code:`_build_request` methods. Per example see: `webproxy_general <https://github.com/O-X-L/ansible_opnsense/blob/latest/plugins/module_utils/main/webproxy_general.py>`_.
+    If the API-response has fields/values inside a nested-dict, consider using the :code:`NestedModule` class which handles this automatically. See the :ref:`Nested API Support <usage_develop_nested>` section for details. 
+    
+    For complex cases that can't be handled by :code:`NestedModule`, you can handle them manually by adding the :code:`_search_call` and :code:`_build_request` methods. Per example see: `webproxy_general <https://github.com/O-X-L/ansible_opnsense/blob/latest/plugins/module_utils/main/webproxy_general.py>`_.
 
 * :code:`FIELDS_CHANGE`
 
@@ -212,6 +214,32 @@ Optional
             'icp_port': 'icpPort',
             'connect_timeout': 'connecttimeout',
         }
+
+* :code:`FIELDS_TRANSLATE_RCV`
+
+    **For modules with nested API structure only** (using :code:`NestedModule` class).
+    
+    Reverse mapping for translating API flat paths back to Ansible field names when processing responses.
+    
+    This is automatically generated from :code:`FIELDS_TRANSLATE`:
+    
+    .. code-block:: python3
+    
+        # For nested APIs that use dot-notation paths like 'general.enabled'
+        FIELDS_TRANSLATE = {
+            'enabled': 'general.enabled',
+            'server_address': 'general.server_address',
+            'auth_password': 'auth.password',
+        }
+        
+        # Automatically create reverse mapping
+        FIELDS_TRANSLATE_RCV = {v: k for k, v in FIELDS_TRANSLATE.items()}
+        # Results in:
+        # {
+        #     'general.enabled': 'enabled',
+        #     'general.server_address': 'server_address', 
+        #     'auth.password': 'auth_password',
+        # }
 
 * :code:`TIMEOUT`
 
@@ -356,6 +384,87 @@ Optional
     Edge-case for inconsistent API-behavior.
 
     Override the character used to join/split lists for API-interaction. Default: :code:`,`
+
+.. _usage_develop_nested:
+
+Nested API Support
+==================
+
+Some OPNSense APIs return and expect complex nested JSON structures. For these cases, use the :code:`NestedModule` class instead of :code:`BaseModule` or :code:`GeneralModule`.
+
+**When to use NestedModule:**
+
+- API responses have deep nesting (e.g., :code:`{"agent": {"general": {"enabled": "1"}}}`)
+- API expects nested structure in requests  
+- Standard field translation doesn't handle the complexity
+
+**Class hierarchy:**
+
+.. code-block:: python3
+
+    NestedModule(GeneralModule)  # For nested APIs
+    GeneralModule(BaseShared)    # For single-entry APIs  
+    BaseModule(BaseShared)       # For multi-entry APIs
+
+**Key features of NestedModule:**
+
+1. **Automatic flattening/unflattening**: Converts between nested API structure and flat Ansible parameters
+2. **Bi-directional field translation**: Uses both :code:`FIELDS_TRANSLATE` and :code:`FIELDS_TRANSLATE_RCV`
+3. **Missing field handling**: Initializes missing fields with :code:`None` to prevent KeyError
+4. **Type conversion support**: Full support for all :code:`FIELDS_TYPING` operations
+
+**Example implementation:**
+
+.. code-block:: python3
+
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import NestedModule
+
+    class WazuhAgent(NestedModule):
+        API_MOD = 'wazuhagent'
+        API_CONT = 'settings'
+        
+        # Standard mapping (Ansible -> API flat paths)
+        FIELDS_TRANSLATE = {
+            'enabled': 'general.enabled',
+            'server_address': 'general.server_address',
+            'auth_password': 'auth.password',
+            'remote_commands': 'logcollector.remote_commands',
+        }
+        
+        # Reverse mapping (automatically generated)
+        FIELDS_TRANSLATE_RCV = {v: k for k, v in FIELDS_TRANSLATE.items()}
+        
+        FIELDS_TYPING = {
+            'bool': ['enabled', 'remote_commands'],
+            'select': ['protocol'],  # Handles {tcp: {selected: 1}} format
+        }
+
+**How it works:**
+
+1. **API Response** → **Flattening** → **Translation** → **Type conversion** → **Ansible fields**
+2. **Ansible fields** → **Translation** → **Unflattening** → **API Request**
+
+**Internal process flow:**
+
+.. code-block:: python3
+
+    # 1. API returns: {"agent": {"general": {"enabled": "1", "protocol": {"tcp": {"selected": 1}}}}}
+    # 2. Flatten: {"general.enabled": "1", "general.protocol": {"tcp": {"selected": 1}}}  
+    # 3. Translate: {"enabled": "1", "protocol": {"tcp": {"selected": 1}}}
+    # 4. Type convert: {"enabled": True, "protocol": "tcp"}
+
+**Debugging nested modules:**
+
+Use :code:`debug: true` to see the transformation process:
+
+.. code-block:: yaml
+
+    - name: Debug nested API
+      ansibleguy.opnsense.wazuh_agent:
+        debug: true
+        server_address: "192.168.1.100"
+
+This will show the raw API response, flattened data, translated fields, and final request structure.
 
 ----
 
