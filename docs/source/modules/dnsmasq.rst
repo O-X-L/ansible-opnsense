@@ -9,6 +9,7 @@ Dnsmasq
 **STATE**: unstable
 
 **TESTS**: `General <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_general.yml>`_ |
+`Domain <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_domain.yml>`_ |
 `Host <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_host.yml>`_ |
 `Range <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_range.yml>`_ |
 `Option <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_option.yml>`_ |
@@ -61,6 +62,22 @@ ansibleguy.opnsense.dnsmasq_general
     "log_queries","boolean","false","false","\-","Log DNS queries"
     "no_ident","boolean","false","false","\-","Do not respond to CHAOS or TXT bind queries"
     "regdhcpdomain","str","false","false","\-","Domain used for DHCP hostname registrations"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+ansibleguy.opnsense.dnsmasq_domain
+==================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "domain","string","true","\-","name","Domain to override."
+    "sequence","int","false","1","seq","Sort with a sequence number."
+    "ip","string","false","\-","\-","IP address of the authoritative DNS server for this domain, leave empty to prevent lookups for this domain."
+    "port","int","false","\-","\-","Specify a non standard port number. Leave blank for default."
+    "src_ip","string","false","\-","\-","Source IP address for queries to the DNS server for the override domain."
+    "ipset","string","false","\-","alias","Choose an 'external' type alias from 'Firewall - Aliases'. Whenever a client successfully resolves the domain, the resolved IP addresses will be automatically added to the chosen alias."
+    "description","string","false","\-","desc","A description for your reference (not parsed)."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.dnsmasq_host
@@ -231,6 +248,56 @@ ansibleguy.opnsense.dnsmasq_general
         - name: Printing settings
           ansible.builtin.debug:
             var: dnsmasq_general_settings
+
+----
+
+ansibleguy.opnsense.dnsmasq_domain
+==================================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: false
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+        ansibleguy.opnsense.list:
+          target: 'dnsmasq_domain'
+
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.dnsmasq_domain:
+            domain: 'template.ansibleguy'
+            # sequence: 1
+            # ip:
+            # port:
+            # src_ip:
+            # ipset:
+            # description:
+            # state: 'absent'
+            # debug: false
+
+        - name: Adding Domain
+          ansibleguy.opnsense.dnsmasq_domain:
+            domain: 'template.ansibleguy'
+            ip: 192.168.0.1
+
+        - name: Change Domain
+          ansibleguy.opnsense.dnsmasq_domain:
+            domain: 'template.ansibleguy'
+            ip: 192.168.0.1
+            port: 5353
+
+        - name: Listing Domain
+          ansibleguy.opnsense.list:
+          #  target: 'dnsmasq_domain'
+          register: existing_domain
+
+        - name: Printing
+          ansible.builtin.debug:
+            var: existing_domain.data
 
 ----
 

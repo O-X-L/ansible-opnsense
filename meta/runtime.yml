@@ -138,6 +138,7 @@ action_groups:
     - ansibleguy.opnsense.openvpn_client_export
   dnsmasq:
     - ansibleguy.opnsense.dnsmasq_general
+    - ansibleguy.opnsense.dnsmasq_domain
     - ansibleguy.opnsense.dnsmasq_host
     - ansibleguy.opnsense.dnsmasq_range
     - ansibleguy.opnsense.dnsmasq_option

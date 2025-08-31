@@ -965,6 +965,14 @@
     - name: Cleanup dnsmasq General
       ansibleguy.opnsense.dnsmasq_general:
         enabled: false
+        
+    - name: Cleanup dnsmasq Domain
+      ansibleguy.opnsense.dnsmasq_domain:
+        domain: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'test1.ansibleguy'
+        - 'test2.ansibleguy'
 
     - name: Cleanup dnsmasq Host
       ansibleguy.opnsense.dnsmasq_host:
