@@ -29,7 +29,7 @@ def run_module():
             description='Enable/disable the Wazuh agent'
         ),
         server_address=dict(
-            type='str', required=True, aliases=['server'],
+            type='str', required=False, aliases=['server'],
             description='Wazuh server hostname or IP address'
         ),
         agent_name=dict(
@@ -62,10 +62,6 @@ def run_module():
         ),
         
         # Log collector settings
-        logcollector_enabled=dict(
-            type='bool', required=False, default=True,
-            description='Enable log collector module'
-        ),
         remote_commands=dict(
             type='bool', required=False, default=True,
             description='Allow remote commands execution'
