@@ -1,4 +1,5 @@
 from typing import Callable
+from functools import reduce
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
@@ -311,6 +312,8 @@ def simplify_translate(
         for k, v in translate.items():
             if v in existing:
                 simple[k] = existing[v]
+            elif isinstance(v, tuple):
+                simple[k] = reduce(lambda e, i: e[i], v, existing)
 
         translate_fields = translate.values()
         for k in existing:
