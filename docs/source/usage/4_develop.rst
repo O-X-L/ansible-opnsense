@@ -216,6 +216,15 @@ Optional
             'connect_timeout': 'connecttimeout',
         }
 
+    If the API-fields have additional hierarchical depth, they can be translated by providing a tuple as the api-field.
+
+    .. code-block:: python3
+
+        FIELDS_TRANSLATE = {
+            # ansible-field <=> api-field
+            'log_target': ('logging', 'target'),
+        }
+
 * :code:`TIMEOUT`
 
     Change the maximum time in seconds the API calls are allowed to last.
