@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/wireguard.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/wireguard.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/wireguard.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/wireguard.html'
 
 
 def run_module():

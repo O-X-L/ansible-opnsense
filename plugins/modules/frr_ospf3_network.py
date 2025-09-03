@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/frr_bgp.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/frr_bgp.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/frr_bgp.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/frr_bgp.html'
 
 
 def run_module():

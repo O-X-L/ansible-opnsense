@@ -1,4 +1,8 @@
-docs/build
+docs/build/
+.venv/
+.idea/
+.vscode/
+
 *.tar.gz
 .coverage
 .coverage.*

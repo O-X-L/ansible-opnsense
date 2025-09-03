@@ -20,8 +20,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/postfix.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/postfix.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/postfix.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/postfix.html'
 
 
 def run_module():
