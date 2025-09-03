@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/frr_ospf.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/frr_ospf.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/frr_ospf.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/frr_ospf.html'
 
 
 def run_module():

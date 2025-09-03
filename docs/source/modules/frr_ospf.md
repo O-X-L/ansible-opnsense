@@ -39,13 +39,13 @@ You need to install the FRR plugin:
 os-frr
 ```
 
-You can also install it using the [package module](https://opnsense.ansibleguy.net/modules/package.html).
+You can also install it using the [package module](https://ansible-opnsense.oxl.app/modules/package.html).
 
 ----
 
 ## Definition
 
-For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic.html)
+For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basic.html)
 
 ### OSPF
 
@@ -60,7 +60,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | originate        | boolean | false    | false         | orig, advertise_default_gw                          | This will send the information that we have a default gateway                                                                                                                                                                                                  |
 | originate_always | boolean | false    | false         | orig_always, always_advertise_default_gw            | This will send the information that we have a default gateway, regardless of if it is available                                                                                                                                                                |
 | originate_metric | integer | false    | -             | orig_metric                                         | This let you manipulate the metric when advertising default gateway                                                                                                                                                                                            |
-| reload           | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+| reload           | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
 | enabled          | boolean | false    | true                 | -       | En- or disable the service                                                                                                                                                                                                                                     |
 
 #### ansibleguy.opnsense.frr_ospf_network
@@ -74,7 +74,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | area_range   | string  | -                                  | -              | -                                    | Here you can summarize a network for this area like 192.168.0.0/23                                                                                                                                                 |
 | prefix_list_in   | string  | -                                  | -              | prefix_in, pre_in                    | Prefix-List for inbound direction                                                                                                                                                 |
 | prefix_list_out   | string  | -                                  | -              | prefix_out, pre_out                  | Prefix-List for outbound direction                                                                                                                                                 |
-| reload       | boolean | false                              | true           | -                                    | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+| reload       | boolean | false                              | true           | -                                    | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
 
 #### ansibleguy.opnsense.frr_ospf_interface
 
@@ -95,7 +95,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | transmit_delay      | integer  | false                                  | -                     | delay     | Integer between 0 and 4294967295                                                                                                                                                                                                                                 |
 | priority            | integer  | false                                  | -                     | prio     | Integer between 0 and 4294967295                                                                                                                                                                                                                                 |
 | network_type        | string  | false                                  | -                     | nw_type         | One of: 'broadcast', 'non-broadcast', 'point-to-multipoint', 'point-to-point'                                                                                                                                                                                    |
-| reload              | boolean | false                                  | true                  | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+| reload              | boolean | false                                  | true                  | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
 
 #### ansibleguy.opnsense.frr_ospf_prefix_list
 
@@ -105,7 +105,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | seq       | string | false for state changes, else true    | -          | seq_number | The ACL sequence number (10-99) |
 | network   | string | false for state changes, else true    | -          | net        | The network pattern you want to match. It's not validated so please be careful! |
 | action    | string | false for state changes, else true    | -          | -          | Set permit for match or deny to negate the rule. One of: 'permit', 'deny' |
-| reload    | boolean | false    | true          | -          | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+| reload    | boolean | false    | true          | -          | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
 
 #### ansibleguy.opnsense.frr_ospf_route_map
 
@@ -116,7 +116,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | action  | string  | false for state changes, else true    | -             | -         | Set permit for match or deny to negate the rule. One of: 'permit', 'deny'                                                                                                                                                                                                                                                                                                                                                          |                                                                                                                                                  |
 | prefix_list  | list    | false    | -             | prefix    | List of prefix-list entries to link                                                                                                                                                                                                                                                                                                                                                                                                |                                                                                                                                                  |
 | set  | string  | false    | -             | -         | Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)                                                                                                                                                                                                                        |                                                                                                                                                  |
-| reload       | boolean | false    | true          | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html).                                                                                                                                                                   |
+| reload       | boolean | false    | true          | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html).                                                                                                                                                                   |
 
 #### ansibleguy.opnsense.frr_ospf_redistribution
 
@@ -125,7 +125,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | redistribution | string  | false    | -             | -       | Select routing sources to redistribute to other nodes. One of: 'bgp', 'connected', 'kernel', 'rip' or 'static'. |
 | description    | string  | true     | -             | desc    | Description for this distribution. |
 | route_map      | string  | false    | -             | map, rm | Optional Route-map to apply to this redistribution. |
-| reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+| reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
 
 ----
 
@@ -137,7 +137,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 |:-------------|:--------|:---------|:--------------|:----------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | carp  | boolean | false    | false         | carp_demote                                         | Register CARP status monitor, when no neighbors are found, consider this node less attractive. This feature needs syslog enabled using "Debugging" logging to catch all relevant status events. This option is not compatible with "Enable CARP Failover" |
 | id  | string  | false    | -             | router_id                                           | If you have a CARP setup, you may want to configure a router id in case of a conflict. (_4-byte field/IPv4 Address_)                                                                                                                                      |                                                                                                                                                  |
-| reload       | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+| reload       | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
 | enabled          | boolean | false    | true                 | -       | En- or disable the service                                                                                                                                                                                                                                     |
 
 #### ansibleguy.opnsense.frr_ospf3_network
@@ -151,7 +151,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | area_range   | string  | -                                  | -              | -                                    | Here you can summarize a network for this area like fe80:1234::/56                                                                                                                                                 |
 | prefix_list_in   | string  | -                                  | -              | prefix_in, pre_in                    | Prefix-List for inbound direction                                                                                                                                                 |
 | prefix_list_out   | string  | -                                  | -              | prefix_out, pre_out                  | Prefix-List for outbound direction                                                                                                                                                 |
-| reload       | boolean | false                              | true           | -                                    | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+| reload       | boolean | false                              | true           | -                                    | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
 
 #### ansibleguy.opnsense.frr_ospf3_interface
 
@@ -170,7 +170,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | transmit_delay       | integer  | false    | -                     | delay     | Integer between 0 and 4294967295                                                                                                                                                                                                                                 |
 | priority       | integer  | false    | -                     | prio     | Integer between 0 and 4294967295                                                                                                                                                                                                                                 |
 | network_type       | string  | false    | -                     | nw_type         | One of: 'broadcast', 'point-to-point'                                                                                                                                                                                                                            |
-| reload       | boolean | false    | true                  | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+| reload       | boolean | false    | true                  | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
 
 #### ansibleguy.opnsense.frr_ospf3_prefix_list
 
@@ -180,7 +180,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | seq       | string | false for state changes, else true    | -          | seq_number | The ACL sequence number (10-99) |
 | network   | string | false for state changes, else true    | -          | net        | The network pattern you want to match. It's not validated so please be careful! |
 | action    | string | false for state changes, else true    | -          | -          | Set permit for match or deny to negate the rule. One of: 'permit', 'deny' |
-| reload    | boolean | false    | true          | -          | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+| reload    | boolean | false    | true          | -          | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
 
 #### ansibleguy.opnsense.frr_ospf3_route_map
 
@@ -191,7 +191,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | action  | string  | false for state changes, else true    | -             | -         | Set permit for match or deny to negate the rule. One of: 'permit', 'deny'                                                                                                                                                                                                                                                                                                                                                          |                                                                                                                                                  |
 | prefix_list  | list    | false    | -             | prefix    | List of prefix-list entries to link                                                                                                                                                                                                                                                                                                                                                                                                |                                                                                                                                                  |
 | set  | string  | false    | -             | -         | Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)                                                                                                                                                                                                                        |                                                                                                                                                  |
-| reload       | boolean | false    | true          | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html).                                                                                                                                                                   |
+| reload       | boolean | false    | true          | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html).                                                                                                                                                                   |
 
 #### ansibleguy.opnsense.frr_ospf3_redistribution
 
@@ -200,7 +200,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | redistribution | string  | false    | -             | -       | Select routing sources to redistribute to other nodes. One of: 'bgp', 'connected', 'kernel', 'rip' or 'static'. |
 | description    | string  | true     | -             | desc    | Description for this distribution. |
 | route_map      | string  | false    | -             | map, rm | Optional Route-map to apply to this redistribution. |
-| reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+| reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
 
 ----
 

@@ -19,7 +19,7 @@ Thanks to [@Rath](https://github.com/superstes) for developing these modules!
 
 ## Definition
 
-For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic.html)
+For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basic.html)
 
 ### ansibleguy.opnsense.wireguard_server
 
@@ -37,7 +37,7 @@ For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic
 | gateway        | string  | false    | -             | gw                                                                                                                            | IP address to use as gateway. Can only be used if you enable the 'disable_routes' option.                                                                                                                                                                                                        |
 | vip            | string  | false    | -             | vip_depend, carp, carp_depend                                                                                                 | The Virtual-CARP-IP (CARP VHID) to depend on.  When this virtual address is not in master state, then the instance will be shutdown                                                                                                                                                              |
 | link_peers     | boolean | false    | true          | -                                                                                                  | Whether you want to link peers by the server instance. If that is the case - you should disable 'link_servers' on your peer-entries. Will always be true if you supply any peers                                                                                                                 |
-| reload         | boolean | false    | true          | -                                                                                                                             | If the running config should be reloaded on change - this will take some time. For mass-managing items you might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html).                                    |
+| reload         | boolean | false    | true          | -                                                                                                                             | If the running config should be reloaded on change - this will take some time. For mass-managing items you might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html).                                    |
 
 ### ansibleguy.opnsense.wireguard_peer
 
@@ -54,7 +54,7 @@ Alias: :code:`wireguard_client`
 | port         | integer | false    | -             | -                                                                                                  | Optionally provide the port of the peer instance                                                                                                                                                                                                              |
 | keepalive    | integer | false    | -             | -                                                                                                  | Integer between 1 and 86400. Should be used if one of the connection-members is behind NAT                                                                                                                                                                    |
 | link_servers | boolean | false    | false         | -                                                                                                  | Whether you want to link servers instance by the peer. If that is the case - you should disable 'link_peers' on your server-entries. Will always be true if you supply any servers                                                                                                                         |
-| reload       | boolean | false    | true          | -                                                                                                  | If the running config should be reloaded on change - this will take some time. For mass-managing items you might want to reload it 'manually' after all changes are done => using the [reload module](https://opnsense.ansibleguy.net/modules/2_reload.html). |
+| reload       | boolean | false    | true          | -                                                                                                  | If the running config should be reloaded on change - this will take some time. For mass-managing items you might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
 
 ### ansibleguy.opnsense.wireguard_show
 

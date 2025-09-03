@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/openvpn.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/openvpn.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/openvpn.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/openvpn.html'
 
 def run_module():
     module_args = dict(

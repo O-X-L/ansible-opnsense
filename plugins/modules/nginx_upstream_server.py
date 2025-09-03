@@ -19,8 +19,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/nginx.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/nginx.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/nginx.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/nginx.html'
 
 
 def run_module():

@@ -21,8 +21,8 @@ try:
 except MODULE_EXCEPTIONS:
     module_dependency_error()
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/dhcp.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/dhcp.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/dhcp.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/dhcp.html'
 
 
 def run_module():

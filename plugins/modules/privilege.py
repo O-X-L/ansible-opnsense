@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/auth.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/auth.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/auth.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/auth.html'
 
 
 def run_module():
