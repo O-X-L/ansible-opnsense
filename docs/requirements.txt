@@ -1,4 +1,4 @@
 # pip requirements to build docs
 sphinx
-piccolo_theme
+sphinx-immaterial
 myst-parser

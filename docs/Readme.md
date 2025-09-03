@@ -1,3 +1,3 @@
 # Documentation
 
-Sphinx-based documentation: [https://opnsense.ansibleguy.net](https://opnsense.ansibleguy.net)
+Sphinx-based documentation: [https://ansible-opnsense.oxl.app](https://ansible-opnsense.oxl.app)

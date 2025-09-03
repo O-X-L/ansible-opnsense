@@ -64,7 +64,7 @@ ansibleguy.opnsense.group
     "description","string","false","\-","desc","Group description for your reference"
     "member","list","false","\-","m","List of group members."
     "privilege","list","false","\-","priv, p","List of granted privileges."
-    "source_net","list","false"."\-","source, src, s","List of networks which constraint the membership of this group to their location."
+    "source_net","list","false","\-","source, src, s","List of networks which constraint the membership of this group to their location."
 
 
 ansibleguy.opnsense.privilege
