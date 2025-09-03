@@ -27,7 +27,7 @@ html_theme_options = {
     #                '<a href="https://www.o-x-l.com">Get Support</a>'
     "site_url": "https://ansible-opnsense.oxl.app",
     "repo_url": "https://github.com/O-X-L/ansible-opnsense",
-    "repo_name": "OPNsense Ansible Community-Collection (by OXL)",
+    "repo_name": "OPNsense Ansible Collection",
     "globaltoc_collapse": True,
     "features": [
         "navigation.expand",
