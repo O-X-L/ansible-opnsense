@@ -7,12 +7,12 @@ on:
     branches: [latest]
     paths:
       - 'docs/**'
-      - '.github/workflows/lint.yml'
+      - '.github/workflows/check_docs.yml'
   pull_request:
     branches: [latest]
     paths:
       - 'docs/**'
-      - '.github/workflows/lint.yml'
+      - '.github/workflows/check_docs.yml'
 
 jobs:
   lint:
