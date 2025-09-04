@@ -1,4 +1,3 @@
-from unittest.mock import Mock
 import pytest
 
 @pytest.mark.parametrize('existing, translate, simple', [
