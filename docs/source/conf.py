@@ -45,6 +45,7 @@ html_theme_options = {
         "search.suggest",
         "toc.follow",
         "toc.sticky",
+        "toc.integrate",
         "content.tabs.link",
         "content.code.copy",
         "content.action.edit",
