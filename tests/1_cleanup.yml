@@ -261,6 +261,14 @@
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
 
+    - name: Cleanup GIF interfaces
+      ansibleguy.opnsense.interface_gif:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
     - name: Cleanup source-nat
       ansibleguy.opnsense.source_nat:
         description: "{{ item }}"

@@ -42,7 +42,7 @@ TARGETS = [
     'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre', 'nat_one_to_one', 'nat_source',
     'ipsec_manual_spd', 'hasync_general', 'snapshot', 'frr_bgp_redistribution', 'frr_ospf_redistribution',
     'frr_ospf3_redistribution', 'frr_ospf3_route_map', 'frr_ospf3_prefix_list', 'frr_ospf3_network',
-    'frr_bgp_peer_group', 'user', 'group', 'privilege', 'interface_bridge',
+    'frr_bgp_peer_group', 'user', 'group', 'privilege', 'interface_bridge', 'interface_gif',
 ]
 
 
@@ -196,6 +196,10 @@ def run_module():
         elif target == 'interface_bridge':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface_bridge import \
                 Bridge as Target_Obj
+
+        elif target == 'interface_gif':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface_gif import \
+                Gif as Target_Obj
 
         elif target in ['source_nat', 'nat_source']:
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.nat_source import \
