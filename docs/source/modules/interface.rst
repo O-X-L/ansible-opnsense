@@ -33,32 +33,32 @@ Info
 ansibleguy.opnsense.interface_vlan
 ==================================
 
-This module manages VLAN configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - VLAN'
+This module manages VLAN configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - VLAN'
 
 ansibleguy.opnsense.interface_vxlan
 ===================================
 
-This module manages VXLAN configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - VXLAN'
+This module manages VXLAN configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - VXLAN'
 
 ansibleguy.opnsense.interface_vip
-===================================
+=================================
 
 This module manages VIP configuration that can be found in the WEB-UI menu: 'Interfaces - Virtual IPs - Settings'
 
 ansibleguy.opnsense.interface_lagg
-===================================
+==================================
 
-This module manages LAGG configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - LAGG'
+This module manages LAGG configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - LAGG'
 
 ansibleguy.opnsense.interface_loopback
 ======================================
 
-This module manages Loopback configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - Loopback'
+This module manages Loopback configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - Loopback'
 
 ansibleguy.opnsense.interface_gre
-===================================
+=================================
 
-This module manages GRE Tunnel configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - GRE'
+This module manages GRE Tunnel configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - GRE'
 
 ansibleguy.opnsense.interface_bridge
 ====================================
@@ -166,7 +166,7 @@ ansibleguy.opnsense.interface_loopback
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.interface_gre
-======================================
+=================================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -457,7 +457,7 @@ ansibleguy.opnsense.interface_loopback
             state: 'absent'
 
 ansibleguy.opnsense.interface_gre
-======================================
+=================================
 
 .. code-block:: yaml
 
@@ -497,11 +497,11 @@ ansibleguy.opnsense.interface_gre
           #  target: 'interface_gre'
           register: existing_entries
     
-        - name: Printing Loopbacks
+        - name: Printing GRE Tunnels
           ansible.builtin.debug:
             var: existing_entries.data
     
-        - name: Removing GRE
+        - name: Removing GRE Tunnel 
           ansibleguy.opnsense.interface_gre:
             description: 'MyGRETunnel'
             state: 'absent'
