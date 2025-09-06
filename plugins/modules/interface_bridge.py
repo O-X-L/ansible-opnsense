@@ -91,7 +91,8 @@ def run_module():
             description='Automatically detect the point-to-point status on selected interfaces.',
         ),
         static_interfaces=dict(
-            type='list', elements='str', required=False, default=[], aliases=['static_ports', 'static_ints', 'sticky_interfaces', 'sticky_ports', 'sticky_ints'],
+            type='list', elements='str', required=False, default=[],
+            aliases=['static_ports', 'static_ints', 'sticky_interfaces', 'sticky_ports', 'sticky_ints'],
             description='Mark interfaces as a "sticky" interface.',
         ),
         private_interfaces=dict(
