@@ -118,6 +118,7 @@ run_test_soft 'interface_lagg' 1
 run_test_soft 'interface_loopback' 1
 run_test_soft 'interface_gre' 1
 run_test_soft 'interface_bridge' 1
+run_test_soft 'interface_gif' 1
 run_test_soft 'nat_source' 1
 run_test_soft 'nat_one_to_one' 1
 run_test_soft 'frr_diagnostic' 1

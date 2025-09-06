@@ -15,7 +15,8 @@ Interface
 `lagg <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_lagg.yml>`_ |
 `loopback <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_loopback.yml>`_ |
 `gre <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_gre.yml>`_ |
-`bridge <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_bridge.yml>`_
+`bridge <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_bridge.yml>`_ |
+`gif <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_gif.yml>`_
 
 **API Docs**: `Core - Interfaces <https://docs.opnsense.org/development/api/core/interfaces.html>`_
 
@@ -24,7 +25,8 @@ Interface
 `VIP Docs <https://docs.opnsense.org/manual/firewall_vip.html>`_ |
 `LAGG Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=lagg#lagg>`_ |
 `GRE Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=gre#gre>`_ |
-`Bridge Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=bridge#bridge>`_
+`Bridge Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=bridge#bridge>`_ |
+`GIF Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=gif#gif>`_
 
 
 Info
@@ -64,6 +66,11 @@ ansibleguy.opnsense.interface_bridge
 ====================================
 
 This module manages Bridge configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - Bridge'
+
+ansibleguy.opnsense.interface_gif
+=================================
+
+This module manages GIF Tunnel configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - GIF'
 
 
 Contribution
@@ -205,6 +212,23 @@ ansibleguy.opnsense.interface_bridge
     "auto_ptp_interfaces","list","false","\-","auto_ptp_ports, auto_ptp_ints","Automatically detect the point-to-point status on selected interfaces"
     "static_interfaces","list","false","\-","static_ports, static_ints, sticky_interfaces, sticky_ports, sticky_ints","Mark interfaces as a 'sticky' interface."
     "private_interfaces","list","false","\-","private_ports, private_ints","Mark interfaces as a 'private' interface"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+ansibleguy.opnsense.interface_gif
+=================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "description","string","true","\-","desc, name","The unique description used to match the configured entries to the existing ones"
+    "local","string","true","\-","l, local_addr","The local address or interface to use."
+    "remote","string","true","\-","r, remote_addr","Peer address where encapsulated gre packets will be sent."
+    "tunnel_local","string","true","\-","tl, tunnel_local_addr","Local gre tunnel endpoint."
+    "tunnel_remote","string","true","\-","tr, tunnel_remote_addr","Remote gre tunnel endpoint."
+    "tunnel_remote_net","integer","false","32","\-","Netmask `ipv4` or prefix `ipv6` to use for this tunnel "
+    "ingress_filtering","boolean","false","true","filtering","Enable ingress filtering on outer tunnel"
+    "ecn_friendly","boolean","false","false","ecn","Enable ECN friendly behavior this violates RFC2893"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ----
@@ -563,4 +587,56 @@ ansibleguy.opnsense.interface_bridge
         - name: Removing Bridge
           ansibleguy.opnsense.interface_bridge:
             description: 'MyBridge'
+            state: 'absent'
+
+ansibleguy.opnsense.interface_gif
+=================================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: no
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+    
+        ansibleguy.opnsense.list:
+          target: 'interface_gif'
+    
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.interface_gif:
+            description: 'MyGIFTunnel'
+            local: 'lan'
+            remote: '192.168.100.1'
+            tunnel_local: '10.0.0.1'
+            tunnel_remote: '10.0.0.2'
+            # tunnel_remote_net: 32
+            # ingres_filtering: true
+            # ecn_friendly: false
+            # debug: false
+            # state: 'present'
+            # reload: true
+    
+        - name: Adding GIF Tunnel
+          ansibleguy.opnsense.interface_gif:
+            description: 'MyGIFTunnel'
+            local: 'lan'
+            remote: '192.168.100.1'
+            tunnel_local: '10.0.0.1'
+            tunnel_remote: '10.0.0.2'
+    
+        - name: Listing
+          ansibleguy.opnsense.list:
+          #  target: 'interface_gif'
+          register: existing_entries
+    
+        - name: Printing GIF Tunnels
+          ansible.builtin.debug:
+            var: existing_entries.data
+    
+        - name: Removing GIF Tunnel 
+          ansibleguy.opnsense.interface_gif:
+            description: 'MyGIFTunnel'
             state: 'absent'
