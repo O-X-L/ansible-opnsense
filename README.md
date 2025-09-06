@@ -213,6 +213,7 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible_opn
 | **Snapshot**              | ansibleguy.opnsense.snapshot                                           | [Docs](https://ansible-opnsense.oxl.app/modules/snapshot.html)                                                      | stable |
 | **High Availability**     | ansibleguy.opnsense.hasync_general                                     | [Docs](https://ansible-opnsense.oxl.app/modules/hasync.html)                                                        | stable |
 | **High Availability**     | ansibleguy.opnsense.hasync_service                                     | [Docs](https://ansible-opnsense.oxl.app/modules/hasync.html)                                                        | stable |
+| **Neighbor**              | ansibleguy.opnsense.neighbor                                           | [Docs](https://ansible-opnsense.oxl.app/modules/neighbor.html)                                                      | unstable |
 
 ### Roadmap
 
