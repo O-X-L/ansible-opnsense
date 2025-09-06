@@ -2,18 +2,18 @@
 
 **STATE**: stable
 
-**TESTS**: [frr_ospf_general](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_general.yml) |
-[frr_ospf_prefix_list](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_prefix_list.yml) |
-[frr_ospf_interface](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_interface.yml) |
-[frr_ospf_route_map](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_route_map.yml) |
-[frr_ospf_network](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_network.yml) |
-[frr_ospf_redistribution](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_redistribution.yml) |
-[frr_ospf3_general](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_general.yml) |
-[frr_ospf3_prefix_list](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_prefix_list.yml) |
-[frr_ospf3_interface](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_interface.yml) |
-[frr_ospf3_route_map](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_route_map.yml) |
-[frr_ospf_network](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf_network.yml) |
-[frr_ospf3_redistribution](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_ospf3_redistribution.yml)
+**TESTS**: [frr_ospf_general](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_general.yml) |
+[frr_ospf_prefix_list](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_prefix_list.yml) |
+[frr_ospf_interface](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_interface.yml) |
+[frr_ospf_route_map](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_route_map.yml) |
+[frr_ospf_network](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_network.yml) |
+[frr_ospf_redistribution](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_redistribution.yml) |
+[frr_ospf3_general](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf3_general.yml) |
+[frr_ospf3_prefix_list](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf3_prefix_list.yml) |
+[frr_ospf3_interface](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf3_interface.yml) |
+[frr_ospf3_route_map](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf3_route_map.yml) |
+[frr_ospf_network](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_network.yml) |
+[frr_ospf3_redistribution](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf3_redistribution.yml)
 
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)

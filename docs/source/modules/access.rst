@@ -9,8 +9,8 @@ Access / User Management
 **STATE**: unstable
 
 **TESTS**: `user <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/user.yml>`_ |
-`group <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/group.yml>`_ |
-`privilege <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/privilege.yml>`_
+`group <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/group.yml>`_ |
+`privilege <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/privilege.yml>`_
 
 **API Docs**: `Core - Auth <https://docs.opnsense.org/development/api/core/auth.html>`_
 

@@ -8,7 +8,7 @@ Nginx
 
 **STATE**: unstable
 
-**TESTS**: `nginx_upstream_server <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/nginx_upstream_server.yml>`_
+**TESTS**: `nginx_upstream_server <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/nginx_upstream_server.yml>`_
 
 **API Docs**: `Plugins - Nginx <https://docs.opnsense.org/development/api/plugins/nginx.html>`_
 
