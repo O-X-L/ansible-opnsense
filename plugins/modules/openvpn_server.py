@@ -44,6 +44,11 @@ def run_module():
             type='int', required=False, default=1194, aliases=['local_port', 'bind_port'],
             description='Port number to use'
         ),
+        port_share=dict(
+            type='str', required=False,
+            description='Proxy the connection to the given host:port when a non-OpenVPN protocol '
+                        'connections is detected.'
+        ),
         server_ip4=dict(
             type='str', required=False, aliases=['server', 'client_net_ip4', 'net_ip4'],
             description='This directive will set up an OpenVPN server which will allocate addresses to clients '
@@ -55,6 +60,11 @@ def run_module():
             description='This directive will set up an OpenVPN server which will allocate addresses to clients '
                         'out of the given network/netmask. The server itself will take the next base address (+1) '
                         'of the given network for use as the server-side endpoint of the local TUN/TAP interface'
+        ),
+        pool=dict(
+            type='bool', required=False, default=True,
+            description='Set up a dynamic pool for the server directive. IP addresses will otherwise only be pushed '
+                        'to a client if specified in a CSO.'
         ),
         max_connections=dict(
             type='int', required=False, aliases=['max_conn', 'max_clients'],
@@ -137,6 +147,21 @@ def run_module():
                         'mechanisms. When set to 0, the token will never expire, any other value specifies the '
                         'lifetime in seconds.'
         ),
+        auth_token_renewal=dict(
+            type='int', required=False, aliases=['auth_renewal', 'token_renewal'],
+            description='How often the auth token will be renewed, token expire after 2 * renewal time.'
+        ),
+        auth_token_secret=dict(
+            type='string', required=False, aliases=['auth_secret', 'token_secret'], no_log=True,
+            description=' Optional secret for use with auth-gen-token. This is useful to allow failover between '
+                        'multiple servers without user interaction.'
+        ),
+        require_client_provisioning=dict(
+            type='bool', required=False, default=False, aliases=['provision_exclusive'],
+            description='Require, as a condition for authentication, that a tunnel address will be provisioned '
+                        'either from a local defined client-specific override or offered by an authenticator '
+                        '(such as RADIUS).'
+        ),
         # misc
         push_options=dict(
             type='list', elements='str', required=False, default=[], aliases=['push_opts'],
@@ -177,6 +202,10 @@ def run_module():
             type='list', elements='str', required=False, default=[], aliases=['ntp'],
             description='Set primary NTP server address (Network Time Protocol). '
                         'Repeat this option to set secondary NTP server addresses.'
+        ),
+        persist_address_pool=dict(
+            type='bool', required=False, default=False,
+            description='Save ip address pool to disk.'
         ),
         **OPENVPN_INSTANCE_MOD_ARGS,
         **RELOAD_MOD_ARG,
