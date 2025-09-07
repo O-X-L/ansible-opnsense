@@ -76,7 +76,7 @@ def run_module():
         ),
         redirect_gateway=dict(
             type='list', elements='str', required=False, default=[], aliases=['redirect_gw', 'redir_gw'],
-            choices=['local', 'autolocal', 'def1', 'bypass_dhcp', 'bypass_dns', 'block_local', 'ipv6', 'notipv4'],
+            choices=['local', 'autolocal', 'def1', 'bypass-dhcp', 'bypass-dns', 'block-local', 'ipv6', '!ipv4'],
             description='Automatically execute routing commands to cause all outgoing IP traffic to be '
                         'redirected over the VPN.'
         ),
