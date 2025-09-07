@@ -47,8 +47,10 @@ ansibleguy.opnsense.openvpn_server
     "name","string","true","\-","description, desc","The name used to match this config to existing entries"
     "server_ip4","string","true if no server_ip6","\-","server, client_net_ip4","This directive will set up an OpenVPN server which will allocate addresses to clients out of the given network/netmask. The server itself will take the .1 address of the given network for use as the server-side endpoint of the local TUN/TAP interface"
     "server_ip6","string","true if no server_ip4","\-","server6, client_net_ip6","This directive will set up an OpenVPN server which will allocate addresses to clients out of the given network/netmask. The server itself will take the next base address (+1) of the given network for use as the server-side endpoint of the local TUN/TAP interface"
+    "pool","boolean","false","true","\-","Set up a dynamic pool for the server directive. IP addresses will otherwise only be pushed to a client if specified in a CSO."
     "protocol","string","false","udp","proto","One of: 'udp', 'udp4', 'udp6', 'tcp', 'tcp4', 'tcp6'. Use protocol for communicating with remote host."
     "port","integer","false","1194","local_port, bind_port","Port number to use"
+    "port_share","string","false","\-","\-","hare OpenVPN TCP with another service. If OpenVPN senses a connection to its port which is using a non-OpenVPN protocol, it will proxy the connection to the server at host:port. Currently only designed to work with HTTP/HTTPS."
     "address","string","false","\-","bind_address, bind, ip","Optional IP address for bind. If specified, OpenVPN will bind to this address only. If unspecified, OpenVPN will bind to all interfaces."
     "mode","string","false","tun","type","One of: 'tun', 'tap'. Choose the type of tunnel, OSI Layer 3 [tun] is the most common option to route IPv4 or IPv6 traffic, [tap] offers Ethernet 802.3 (OSI Layer 2) connectivity between hosts and is usually combined with a bridge."
     "topology","string","false","subnet","topo","One of: 'net30', 'p2p', 'subnet'. Configure virtual addressing topology when running in --dev tun mode. This directive has no meaning in --dev tap mode, which always uses a subnet topology."
@@ -58,7 +60,11 @@ ansibleguy.opnsense.openvpn_server
     "keepalive_timeout","integer","false","\-","kat","Causes OpenVPN to restart after n seconds pass without reception of a ping or other packet from remote."
     "renegotiate_time","integer","false","\-","reneg_time, reneg","Renegotiate data channel key after n seconds (default=3600). When using a one time password, be advised that your connection will automatically drop because your password is not valid anymore. Set to 0 to disable, remember to change your client as well."
     "auth_token_time","integer","false","\-","auth_time, token_time","After successful user/password authentication, the OpenVPN server will with this option generate a temporary authentication token and push that to the client. On the following renegotiations, the OpenVPN client will pass this token instead of the users password. On the server side the server will do the token authentication internally and it will NOT do any additional authentications against configured external user/password authentication mechanisms. When set to 0, the token will never expire, any other value specifies the lifetime in seconds."
+    "auth_token_renewal","integer","false","\-","auth_renewal, token_renewal","How often the auth token will be renewed, token expire after 2 * renewal time."
+    "auth_token_secret","string","false","\-","auth_secret, token_secret","Optional secret for use with auth-gen-token. This is useful to allow failover between multiple servers without user interaction."
+    "require_client_provisioning","boolean","false","false","provision_exclusive","Require, as a condition for authentication, that a tunnel address will be provisioned either from a local defined client-specific override or offered by an authenticator (such as RADIUS)."
     "certificate","string","true if no ca","\-","cert","Certificate to use for this service."
+    "verify_remote_certificate","boolean","false","false","\-","Require that the peer certificate was signed with an explicit 'key usage' and 'extended key usage' based on RFC 3280 rules."
     "ca","string","true if no certificate","\-","certificate_authority, authority","Select a certificate authority when it differs from the attached certificate."
     "crl","string","false","\-","certificate_revocation_list, revocation_list","Select a certificate revocation list to use for this service."
     "key","string","false","\-","tls_key, tls_static_key","Add an additional layer of HMAC authentication on top of the TLS control channel to mitigate DoS attacks and attacks on the TLS stack. The prefixed mode determines if this measurement is only used for authentication (--tls-auth) or includes encryption (--tls-crypt)."
@@ -86,6 +92,7 @@ ansibleguy.opnsense.openvpn_server
     "user_as_cn","boolean","false","false","username_as_cn","Use the authenticated username as the common-name, rather than the common-name from the client certificate."
     "user_cn_strict","string","false","no","username_cn_strict","One of: 'yes', 'no', 'case-insensitive', 'ci', 'true', 'false'. When authenticating users, enforce a match between the Common Name of the client certificate and the username given at login."
     "mss_fix","boolean","false","false","mss","Announce to TCP sessions running over the tunnel that they should limit their send packet sizes such that after OpenVPN has encapsulated them, the resulting UDP packet size that OpenVPN sends to its peer will not exceed the recommended size."
+    "persist_address_pool","boolean","false","false","\-","Save ip address pool to disk."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.openvpn_client
@@ -205,10 +212,13 @@ ansibleguy.opnsense.openvpn_server
             name: 'example'
             server_ip4: ''
             server_ip6: ''
+            # pool: true
             certificate: ''
+            # verify_remote_certificate: false
             # topology: 'subnet'
             # protocol: 'udp'
             # port: ''
+            # port_share: ''
             # address: ''
             # mode: 'tun'
             # max_connections: ''
@@ -228,6 +238,8 @@ ansibleguy.opnsense.openvpn_server
             # auth_group: ''
             # renegotiate_time: ''
             # auth_token_time: ''
+            # auth_token_renewal: ''
+            # auth_token_secret: ''
             # network_local: []
             # network_remote: []
             # options: []
@@ -244,6 +256,7 @@ ansibleguy.opnsense.openvpn_server
             # user_as_cn: false
             # user_cn_strict: 'yes'
             # mss_fix: false
+            # persist_address_pool: false
             # reload: true
             # enabled: true
 

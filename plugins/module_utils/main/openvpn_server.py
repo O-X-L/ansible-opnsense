@@ -30,7 +30,8 @@ class Server(BaseModule):
         'topology', 'crl', 'verify_client_cert', 'cert_depth', 'data_ciphers', 'data_cipher_fallback',
         'ocsp', 'auth_mode', 'auth_group', 'user_as_cn', 'user_cn_strict', 'auth_token_time', 'push_options',
         'redirect_gateway', 'route_metric', 'register_dns', 'domain', 'domain_list', 'dns_servers',
-        'ntp_servers',
+        'ntp_servers', 'port_share', 'pool', 'verify_remote_certificate', 'auth_token_renewal', 'auth_token_secret',
+        'require_client_provisioning', 'persist_address_pool',
     ]
     FIELDS_ALL = ['role', 'enabled', 'vpnid', FIELD_ID]
     FIELDS_ALL.extend(FIELDS_CHANGE)
@@ -58,15 +59,26 @@ class Server(BaseModule):
         'user_as_cn': 'username_as_common_name',
         'user_cn_strict': 'strictusercn',
         'auth_token_time': 'auth-gen-token',
+        'auth_token_renewal': 'auth-gen-token-renewal',
+        'auth_token_secret': 'auth-gen-token-secret',
         'push_options': 'various_push_flags',
         'domain': 'dns_domain',
         'domain_list': 'dns_domain_search',
         'ocsp': 'use_ocsp',
         'data_ciphers': 'data-ciphers',
         'data_cipher_fallback': 'data-ciphers-fallback',
+        'port_share': 'port-share',
+        'pool': 'nopool',
+        'verify_remote_certificate': 'remote_cert_tls',
+        'require_client_provisioning': 'provision_exclusive',
+        'persist_address_pool': 'ifconfig-pool-persist',
     }
+    FIELDS_BOOL_INVERT = ['pool']
     FIELDS_TYPING = {
-        'bool': ['enabled', 'mss_fix', 'ocsp', 'user_as_cn', 'register_dns'],
+        'bool': [
+            'enabled', 'mss_fix', 'ocsp', 'user_as_cn', 'register_dns', 'pool', 'verify_remote_certificate',
+            'require_client_provisioning', 'persist_address_pool',
+        ],
         'list': [
             'network_local', 'network_remote', 'options', 'data_ciphers', 'auth_mode', 'push_options',
             'redirect_gateway', 'domain_list', 'dns_servers', 'ntp_servers',
@@ -77,7 +89,7 @@ class Server(BaseModule):
             'data_cipher_fallback', 'auth_group',
         ],
         'select_opt_list_idx': ['log_level', 'user_cn_strict'],
-        'int': ['fragment_size', 'mtu', 'route_metric'],
+        'int': ['fragment_size', 'mtu', 'route_metric', 'auth_token_time', 'auth_token_renewal'],
     }
     INT_VALIDATIONS = {
         'mtu': {'min': 60, 'max': 65535},
