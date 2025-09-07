@@ -26,7 +26,8 @@ class Client(BaseModule):
     FIELDS_CHANGE = [
         'remote', 'protocol', 'port', 'address', 'mode', 'log_level', 'keepalive_interval', 'keepalive_timeout',
         'carp_depend_on', 'certificate', 'ca', 'key', 'authentication', 'username', 'password', 'renegotiate_time',
-        'network_local', 'network_remote', 'options', 'mtu', 'fragment_size', 'mss_fix',
+        'network_local', 'network_remote', 'options', 'mtu', 'fragment_size', 'mss_fix', 'verify_remote_certificate',
+        'http_proxy',
     ]
     FIELDS_ALL = ['role', 'enabled', 'vpnid', FIELD_ID]
     FIELDS_ALL.extend(FIELDS_CHANGE)
@@ -46,9 +47,11 @@ class Client(BaseModule):
         'fragment_size': 'fragment',
         'mss_fix': 'mssfix',
         'key': 'tls_key',
+        'verify_remote_certificate': 'remote_cert_tls',
+        'http_proxy': 'http-proxy',
     }
     FIELDS_TYPING = {
-        'bool': ['enabled', 'mss_fix'],
+        'bool': ['enabled', 'mss_fix', 'verify_remote_certificate'],
         'list': ['network_local', 'network_remote', 'options', 'remote'],
         'select': [
             'certificate', 'ca', 'key', 'authentication', 'carp_depend_on', 'log_level',

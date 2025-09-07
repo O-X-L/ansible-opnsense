@@ -114,6 +114,7 @@ ansibleguy.opnsense.openvpn_client
     "renegotiate_time","integer","false","\-","reneg_time, reneg","Renegotiate data channel key after n seconds (default=3600). When using a one time password, be advised that your connection will automatically drop because your password is not valid anymore. Set to 0 to disable, remember to change your client as well."
     "carp_depend_on","string","false","\-","vip, vip_depend, carp, carp_depend","The CARP VHID to depend on. When this virtual address is not in master state, then the instance will be shutdown."
     "certificate","string","true if no ca","\-","cert","Certificate to use for this service."
+    "verify_remote_certificate","boolean","false","false","\-","Require that the peer certificate was signed with an explicit 'key usage' and 'extended key usage' based on RFC 3280 rules."
     "ca","string","true if no certificate","\-","certificate_authority, authority","Select a certificate authority when it differs from the attached certificate."
     "key","string","false","\-","tls_key, tls_static_key","Add an additional layer of HMAC authentication on top of the TLS control channel to mitigate DoS attacks and attacks on the TLS stack. The prefixed mode determines if this measurement is only used for authentication (--tls-auth) or includes encryption (--tls-crypt)."
     "authentication","string","false","\-","auth, auth_algo","One of: 'BLAKE2b512', 'BLAKE2s256', 'whirlpool', 'none', 'MD4', 'MD5', 'MD5-SHA1', 'RIPEMD160', 'SHA1', 'SHA224', 'SHA256', 'SHA3-224', 'SHA3-256', 'SHA3-384', 'SHA3-512', 'SHA384', 'SHA512', 'SHA512-224', 'SHA512-256', 'SHAKE128', 'SHAKE256'. Authenticate data channel packets and (if enabled) tls-auth control channel packets with HMAC using message digest algorithm alg."
@@ -125,6 +126,7 @@ ansibleguy.opnsense.openvpn_client
     "mtu","integer","false","\-","tun_mtu","Take the TUN device MTU to be tun-mtu and derive the link MTU from it."
     "fragment_size","integer","false","\-","frag_size","Enable internal datagram fragmentation so that no UDP datagrams are sent which are larger than the specified byte size."
     "mss_fix","boolean","false","false","mss","Announce to TCP sessions running over the tunnel that they should limit their send packet sizes such that after OpenVPN has encapsulated them, the resulting UDP packet size that OpenVPN sends to its peer will not exceed the recommended size."
+    "http_proxy","string","false","\-","proxy","Use a http proxy to connect to the selected server, define as host:port."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.openvpn_static_key
@@ -345,6 +347,7 @@ ansibleguy.opnsense.openvpn_client
             name: 'example'
             remote: 'example.ovpn.ansibleguy.net:10000'
             certificate: ''
+            # verify_remote_certificate: false
             # ca: ''
             # protocol: 'udp'
             # port: ''
@@ -365,6 +368,7 @@ ansibleguy.opnsense.openvpn_client
             # mtu: ''
             # fragment_size: ''
             # mss_fix: false
+            # proxy: ''
             # reload: true
             # enabled: true
 
