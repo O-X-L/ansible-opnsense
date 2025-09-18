@@ -180,6 +180,7 @@
       failed_when: >
         opn24.failed or
         opn24.changed
+      when: not ansible_check_mode
 
     - name: Cleanup
       ansibleguy.opnsense.rule:
