@@ -70,7 +70,7 @@ RULE_MOD_ARG_ALIASES = {
     'allow_opts': ['opts'],
     'overload': ['ol'],
     'schedule': ['sched'],
-    'description': ['desc'],
+    'description': ['name', 'desc'],
     'state': ['st'],
     'enabled': ['en'],
     'icmp_type': ['icmp_types'],

@@ -266,9 +266,12 @@ def get_simple_existing(
     return simple_entries
 
 
-def format_int(data: (int, str)) -> (int, str):
+def format_int(data: (int, str)) -> (int, str, None):
     if isinstance(data, int):
         return data
+
+    if data is None:
+        return None
 
     if data.isnumeric():
         return int(data)
