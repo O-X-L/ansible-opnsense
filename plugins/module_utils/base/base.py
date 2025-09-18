@@ -596,6 +596,9 @@ class Base:
 
             if not found:
                 if fail:
+                    if self.i.p['debug']:
+                        self.i.m.warn(f"Unable to find link by field '{field}': '{self.i.p[field]}' in '{existing}'")
+
                     self.i.m.fail_json(
                         f"Provided {field} '{self.i.p[field]}' was not found!"
                     )
