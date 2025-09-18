@@ -49,6 +49,11 @@ def _build_alias_args(multi: bool) -> dict:
             type='str', default=None, aliases=['int', 'if'], required=False,
             description=' Select the interface for the V6 dynamic IP.',
         ),
+        path_expression=dict(
+            type='str', default='', aliases=['pe', 'jq'], required=False,
+            description='Simplified expression to select a field inside a container, a dot is used as field separator. '
+                        'Expressions using the jq language are also supported.',
+        ),
         **STATE_MOD_ARG,
     )
     if not multi:

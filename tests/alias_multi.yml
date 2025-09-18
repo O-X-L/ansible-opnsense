@@ -75,7 +75,7 @@
           # urltables
           - name: 'ANSIBLE_TEST_2_8'
             type: 'urltable'
-            content: ['https://www.spamhaus.org/drop/drop.txt', 'https://www.spamhaus.org/drop/edrop.txt']
+            content: ['https://www.spamhaus.org/drop/drop.txt']
             updatefreq_days: 6.5
 
           # geoip
