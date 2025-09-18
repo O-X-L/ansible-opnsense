@@ -38,12 +38,24 @@ def run_module():
                         'already be assigned to an existing interface. When the interface is configured in '
                         'unicast mode, the listening socket is bound to this address.'
         ),
+        local_port=dict(
+            type='int', required=False, aliases=[
+                'source_port', 'vxlanlocalport', 'srcport',
+            ],
+            description='Define the port to be used.'
+        ),
         remote=dict(
             type='str', required=False, aliases=[
                 'remote_address', 'remote_ip', 'destination', 'vxlanremote', 'dest',
             ],
             description='The interface can be configured in a unicast, or point-to-point, mode to create '
                         'a tunnel between two hosts. This is the IP address of the remote end of the tunnel.'
+        ),
+        remote_port=dict(
+            type='int', required=False, aliases=[
+                'destination_port', 'vxlanremoteport', 'destport',
+            ],
+            description='Define the port to be used.'
         ),
         group=dict(
             type='str', required=False, aliases=[

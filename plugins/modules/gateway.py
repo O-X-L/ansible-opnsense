@@ -128,6 +128,13 @@ def run_module():
             default=0
         ),
         description=dict(type='str', required=False, aliases=['desc']),
+        match_fields=dict(
+            type='list', required=False, elements='str',
+            description='Fields that are used to match configured gateways with the running config - '
+                        "if any of those fields are changed, the module will think it's a new gateway",
+            choices=['name', 'gateway', 'description'],
+            default=['name', 'gateway'],
+        ),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,
         **OPN_MOD_ARGS,
