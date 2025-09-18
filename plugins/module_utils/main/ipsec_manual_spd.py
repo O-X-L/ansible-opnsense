@@ -46,12 +46,6 @@ class ManualSPD(BaseModule):
         self._base_check()
 
         if self.p['state'] == 'present' and not is_unset(self.p['connection_child']):
-            # temporary workaround for API-bug: https://github.com/opnsense/core/issues/9224
-            if '-' in self.p['connection_child']:
-                self.p['connection_child'] = self.p['connection_child'].split('-')[1]
-
-            self.p['connection_child'] = f" - {self.p['connection_child'].strip()}"
-
             self.b.find_single_link(
                 field='connection_child',
                 existing=self._search_connection_child(),
@@ -59,6 +53,21 @@ class ManualSPD(BaseModule):
             )
 
     def _search_connection_child(self) -> dict:
-        return self.s.get(cnf={
+        res = self.s.get(cnf={
             **self.call_cnf, **{'command': self.CMDS['detail']}
         })['spd']['connection_child']
+
+        # temporary workaround for API-bug: https://github.com/opnsense/core/issues/9224
+        tmp_fix = False
+        for values in res.values():
+            if 'value' in values and values['value'].startswith(' -'):
+                tmp_fix = True
+                break
+
+        if tmp_fix:
+            if '-' in self.p['connection_child']:
+                self.p['connection_child'] = self.p['connection_child'].split('-')[1]
+
+            self.p['connection_child'] = f" - {self.p['connection_child'].strip()}"
+
+        return res
