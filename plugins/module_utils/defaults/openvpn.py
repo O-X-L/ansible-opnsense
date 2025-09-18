@@ -39,6 +39,11 @@ OPENVPN_INSTANCE_MOD_ARGS = dict(
         type='str', required=False, aliases=['cert'],
         description='Certificate to use for this service.'
     ),
+    verify_remote_certificate=dict(
+        type='bool', required=False, default=False,
+        description='Require that the peer certificate was signed with an explicit "key usage" and '
+                    '"extended key usage" based on RFC 3280 rules.'
+    ),
     ca=dict(
         type='str', required=False, default='', aliases=['certificate_authority', 'authority'],
         description='Select a certificate authority when it differs from the attached certificate.'

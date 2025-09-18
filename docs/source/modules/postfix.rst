@@ -6,10 +6,10 @@
 Postfix
 =======
 
-**STATE**: unstable
+**STATE**: stable
 
 **TESTS**: `postfix_general <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_general.yml>`_ |
-`postfix_ <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_domain.yml>`_ |
+`postfix_domain <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_domain.yml>`_ |
 `postfix_recipient <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_recipient.yml>`_ |
 `postfix_recipientbcc <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_recipientbcc.yml>`_ |
 `postfix_sender <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_sender.yml>`_ |

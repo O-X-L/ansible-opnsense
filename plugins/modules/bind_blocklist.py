@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/bind.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/bind.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/bind.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/bind.html'
 
 BL_MAPPING = {
     'AdAway List': 'aa',

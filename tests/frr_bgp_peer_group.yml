@@ -12,6 +12,9 @@
     ansibleguy.opnsense.list:
       target: 'frr_bgp_peer_group'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:
@@ -118,6 +121,7 @@
       ansibleguy.opnsense.frr_bgp_peer_group:
         name: 'ANSIBLE_TEST_1_2'
         as_mode: internal
+        listen_ranges: ['192.168.0.0/24']
       register: opn6
       failed_when: >
         opn6.failed or
@@ -127,6 +131,7 @@
       ansibleguy.opnsense.frr_bgp_peer_group:
         name: 'ANSIBLE_TEST_1_2'
         as_mode: internal
+        listen_ranges: ['192.168.0.0/24']
       register: opn7
       failed_when: >
         opn7.failed or
@@ -136,7 +141,6 @@
     - name: Removing 2
       ansibleguy.opnsense.frr_bgp_peer_group:
         name: 'ANSIBLE_TEST_1_2'
-        as_mode: internal
         state: 'absent'
       register: opn8
       failed_when: >
@@ -180,6 +184,9 @@
 
     ansibleguy.opnsense.list:
       target: 'frr_bgp_peer_group'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
     - name: Listing

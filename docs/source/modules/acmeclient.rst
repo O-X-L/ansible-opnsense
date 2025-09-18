@@ -6,7 +6,7 @@
 ACME Client
 ===========
 
-**STATE**: unstable
+**STATE**: stable
 
 **TESTS**: `acme_account <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_account.yml>`_ |
 `acme_action <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_action.yml>`_ |
@@ -34,7 +34,7 @@ You need to install the FRR plugin:
 os-acme-client
 ```
 
-You can also install it using the `package module <https://opnsense.ansibleguy.net/modules/package.html>`_.
+You can also install it using the `package module <https://ansible-opnsense.oxl.app/modules/package.html>`_.
 
 ----
 

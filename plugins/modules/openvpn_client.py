@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/openvpn.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/openvpn.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/openvpn.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/openvpn.html'
 
 def run_module():
     module_args = dict(
@@ -50,6 +50,11 @@ def run_module():
         password=dict(
             type='str', required=False, aliases=['pwd'], no_log=True,
             description='Password belonging to the user specified above'
+        ),
+        # misc
+        http_proxy=dict(
+            type='str', required=False, aliases=['proxy'],
+            description='Use a http proxy to connect to the selected server, define as host:port'
         ),
         **OPENVPN_INSTANCE_MOD_ARGS,
         **RELOAD_MOD_ARG,

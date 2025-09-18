@@ -19,6 +19,9 @@
     test_app1: 'os-hw-probe'
     test_app2: 'os-dmidecode'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:

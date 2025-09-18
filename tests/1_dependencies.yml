@@ -12,6 +12,9 @@
     ansibleguy.opnsense.package:
       timeout: 120
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Installing packages
       ansibleguy.opnsense.package:

@@ -1,0 +1,44 @@
+---
+
+name: Functional-Tests Ad-Hoc Cleanup
+
+on: workflow_dispatch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Test Connection
+        run: |
+          echo '10.0.0.1 ${{ vars.CI_TEST_FIREWALL_1 }}' | sudo tee -a /etc/hosts
+          https_proxy=${{ secrets.CI_TEST_PROXY }} curl --fail-with-body https://${{ vars.CI_TEST_FIREWALL_1 }} --insecure > /tmp/test.html
+
+          if grep -q 'DNS Rebind attack' < /tmp/test.html
+          then
+            echo 'ERROR: Firewall Hostname ${{ vars.CI_TEST_FIREWALL_1 }} not configured!'
+            exit 1
+          fi
+        shell: bash
+
+      - name: Install requirements
+        run: pip install -r requirements_test.txt > /dev/null
+        shell: bash
+
+      - name: Cleanup Integration-Test-Setup
+        run: |
+          echo "${{ secrets.CI_TEST_API_CREDENTIALS }}" > /tmp/api_credentials.txt
+          chmod 600 /tmp/api_credentials.txt
+          bash scripts/test_ci_cleanup.sh
+        shell: bash
+        env:
+          TEST_FIREWALL: ${{ vars.CI_TEST_FIREWALL_1 }}
+          TEST_API_KEY: /tmp/api_credentials.txt
+          TEST_PROXY: ${{ secrets.CI_TEST_PROXY }}
+          PYTHONUNBUFFERED: 1

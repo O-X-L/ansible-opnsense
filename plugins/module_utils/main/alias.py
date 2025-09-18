@@ -14,9 +14,9 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Alias(BaseModule):
     FIELD_ID = 'name'
     CMDS = {
-        'add': 'addItem',
-        'del': 'delItem',
-        'set': 'setItem',
+        'add': 'add_item',
+        'del': 'del_item',
+        'set': 'set_item',
         'search': 'get',
         'toggle': 'toggleItem',
     }
@@ -26,7 +26,7 @@ class Alias(BaseModule):
     FIELDS_CHANGE = ['content', 'description']
     FIELDS_ALL = ['name', 'type', 'enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
-    FIELDS_ALL.extend(['updatefreq_days', 'interface'])
+    FIELDS_ALL.extend(['updatefreq_days', 'interface', 'path_expression'])
     FIELDS_TRANSLATE = {
         'updatefreq_days': 'updatefreq',
     }
@@ -38,6 +38,8 @@ class Alias(BaseModule):
     JOIN_CHAR = '\n'
     TIMEOUT = 20.0
     MAX_ALIAS_LEN = 32
+
+    DEFAULT_UPDATEFREQ_DAYS_URLTABLE = 7.0  # see: https://github.com/O-X-L/ansible-opnsense/pull/270
 
     def __init__(
             self, module: AnsibleModule, result: dict, cnf: dict = None,
@@ -52,6 +54,14 @@ class Alias(BaseModule):
     def check(self) -> None:
         if self.p['type'] == 'urltable':
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['updatefreq_days']
+            if not is_unset(self.p['updatefreq_days']):
+                self.p['updatefreq_days'] = float(self.p['updatefreq_days'])
+
+            else:
+                self.p['updatefreq_days'] = self.DEFAULT_UPDATEFREQ_DAYS_URLTABLE
+
+        if self.p['type'] == 'urljson':
+            self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['updatefreq_days', 'path_expression']
             if not is_unset(self.p['updatefreq_days']):
                 self.p['updatefreq_days'] = float(self.p['updatefreq_days'])
 
@@ -93,7 +103,7 @@ class Alias(BaseModule):
             **simple,
         }
 
-        if simple['type'] == 'urltable':
+        if simple['type'] in ['urltable', 'urljson']:
             try:
                 simple['updatefreq_days'] = round(float(alias['updatefreq']), 1)
 

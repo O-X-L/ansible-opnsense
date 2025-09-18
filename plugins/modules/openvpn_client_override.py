@@ -19,8 +19,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/openvpn.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/openvpn.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/openvpn.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/openvpn.html'
 
 def run_module():
     module_args = dict(
@@ -76,7 +76,7 @@ def run_module():
         ),
         redirect_gateway=dict(
             type='list', elements='str', required=False, default=[], aliases=['redirect_gw', 'redir_gw'],
-            choices=['local', 'autolocal', 'def1', 'bypass_dhcp', 'bypass_dns', 'block_local', 'ipv6', 'notipv4'],
+            choices=['local', 'autolocal', 'def1', 'bypass-dhcp', 'bypass-dns', 'block-local', 'ipv6', '!ipv4'],
             description='Automatically execute routing commands to cause all outgoing IP traffic to be '
                         'redirected over the VPN.'
         ),

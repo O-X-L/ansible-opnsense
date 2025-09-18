@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/frr_bgp.html#ansibleguy-opnsense-frr-bgp-neighbor'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/frr_bgp.html#id2'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/frr_bgp.html#ansibleguy-opnsense-frr-bgp-neighbor'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/frr_bgp.html#id2'
 
 
 def run_module():
@@ -67,6 +67,10 @@ def run_module():
         route_map_out=dict(
             type='str', required=False, aliases=['map_out', 'rm_out'],
             description='Route-map to apply to routes advertised to this neighbor.',
+        ),
+        listen_ranges=dict(
+            type='list', elements='str', required=False, aliases=['ranges'], default=[],
+            description='One or multiple valid IP networks in CIDR notation.',
         ),
         **STATE_MOD_ARG,
         **RELOAD_MOD_ARG,

@@ -10,31 +10,35 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class Vxlan(BaseModule):
     FIELD_ID = 'id'
     CMDS = {
-        'add': 'addItem',
-        'del': 'delItem',
-        'set': 'setItem',
+        'add': 'add_item',
+        'del': 'del_item',
+        'set': 'set_item',
         'search': 'get',
     }
     API_KEY_PATH = 'vxlan.vxlan'
     API_MOD = 'interfaces'
     API_CONT = 'vxlan_settings'
-    FIELDS_CHANGE = ['interface', 'local', 'remote', 'group']
+    FIELDS_CHANGE = ['interface', 'local', 'local_port', 'remote', 'remote_port', 'group']
     FIELDS_ALL = [FIELD_ID]
     FIELDS_ALL.extend(FIELDS_CHANGE)
     FIELDS_TRANSLATE = {
         # 'name': 'deviceId',  # can't be configured
         'id': 'vxlanid',
         'local': 'vxlanlocal',
+        'local_port': 'vxlanlocalport',
         'remote': 'vxlanremote',
+        'remote_port': 'vxlanremoteport',
         'group': 'vxlangroup',
         'interface': 'vxlandev',
     }
     FIELDS_TYPING = {
         'select': ['interface'],
-        'int': ['id'],
+        'int': ['id', 'local_port', 'remote_port'],
     }
     INT_VALIDATIONS = {
         'id': {'min': 0, 'max': 16777215},
+        'local_port': {'min': 1, 'max': 65535},
+        'remote_port': {'min': 1, 'max': 65535},
     }
     FIELDS_IP = ['local', 'remote', 'group']
     EXIST_ATTR = 'vxlan'

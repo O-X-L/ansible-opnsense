@@ -62,6 +62,7 @@ ansibleguy.opnsense.gateway
 
     "name","string","true","\-","\-","Gateway Name"
     "interface","string","true","\-","int, if","Interface belonging to this gateway"
+    "ip_protocol","string","false","\-","\-","Internet Protocol this gateway uses. Possible options: ['inet', 'inet6']. Required if no gateway is set."
     "gateway","string","true","\-","gw, ip","Gateway IP"
     "description","string","false","\-","desc","Optional description for the Gateway. Could be used as unique-identifier when set as only 'match_field'."
     "default_gw","string","true","\-","default, internet, inet","This will select the above gateway as a default gateway candidate."

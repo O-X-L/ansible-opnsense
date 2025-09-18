@@ -9,9 +9,9 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main im
 class Test(BaseModule):
     FIELD_ID = 'name'
     CMDS = {
-        'add': 'addTest',
-        'del': 'delTest',
-        'set': 'setTest',
+        'add': 'add_test',
+        'del': 'del_test',
+        'set': 'set_test',
         'search': 'get',
     }
     API_KEY_PATH = 'monit.test'

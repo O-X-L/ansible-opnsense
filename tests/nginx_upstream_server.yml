@@ -12,6 +12,9 @@
     ansibleguy.opnsense.list:
       target: 'nginx_upstream_server'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:

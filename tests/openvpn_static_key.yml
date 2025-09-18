@@ -21,6 +21,9 @@
         50043805c5bac513baf2306e42c1c1f8\n0fd16661536a3ee72ffbd1d2d1b1f6c0\n9683064c9bc044ee0357f4b94f5687ed\n
         67cb013625cfb9b113ecff16674d63e6\n-----END OpenVPN Static key V1-----'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:

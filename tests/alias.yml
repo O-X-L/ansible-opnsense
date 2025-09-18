@@ -9,6 +9,9 @@
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Removing - does not exist
       ansibleguy.opnsense.alias:
@@ -117,6 +120,9 @@
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
     # hosts
@@ -351,6 +357,29 @@
         - ['httks://test.ansibleguy.net']
         #        - ['https://ansibleguy.net']  # not an urltable
 
+    # urljson
+
+    - name: Adding urljson
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_URLJSON1'
+        type: 'urltable'
+        updatefreq_days: 2
+        content: 'https://api.github.com/meta'
+        path_expression: .web + .api + .git | .[]
+
+    - name: Adding urljson - nothing changed
+      ansibleguy.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_URLJSON1'
+        type: 'urltable'
+        updatefreq_days: 2
+        content: 'https://api.github.com/meta'
+        path_expression: .web + .api + .git | .[]
+      register: opn16
+      failed_when: >
+        opn16.failed or
+        opn16.changed
+      when: not ansible_check_mode
+
     # geoip
 
     - name: Adding geoip
@@ -395,6 +424,7 @@
         state: 'absent'
       diff: false
       loop:
+        - 'ANSIBLE_TEST_1_2_URLJSON1'
         - 'ANSIBLE_TEST_1_2_URLTABLE3'
         - 'ANSIBLE_TEST_1_2_URLTABLE2'
         - 'ANSIBLE_TEST_1_2_URLTABLE1'
@@ -436,6 +466,9 @@
 
     ansibleguy.opnsense.list:
       target: 'alias'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
     - name: Listing aliases (none)

@@ -21,6 +21,9 @@
       ip1: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL_GW1') | default('172.17.1.69', true) }}"
       ip2: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL_GW2') | default('172.17.1.70', true) }}"
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Removing - does not exist
       ansibleguy.opnsense.gateway:
@@ -30,6 +33,14 @@
       failed_when: >
         opn3.failed or
         opn3.changed
+
+    - name: Adding 1 - failing because of invalid gateway
+      ansibleguy.opnsense.gateway:
+        name: 'ANSIBLE_TEST_1'
+        interface: 'lan'
+        gateway: 999.999.999.999
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
 
     - name: Adding 1
       ansibleguy.opnsense.gateway:

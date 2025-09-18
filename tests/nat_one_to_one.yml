@@ -13,6 +13,9 @@
     ansibleguy.opnsense.list:
       target: 'nat_one_to_one'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:

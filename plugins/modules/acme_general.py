@@ -18,8 +18,8 @@ try:
 except MODULE_EXCEPTIONS:
     module_dependency_error()
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/en/latest/modules/acmeclient.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/en/latest/modules/acmeclient.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/en/latest/modules/acmeclient.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/en/latest/modules/acmeclient.html'
 
 
 def run_module():

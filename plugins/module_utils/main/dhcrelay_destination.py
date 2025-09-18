@@ -10,9 +10,9 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 class DhcRelayDestination(BaseModule):
     FIELD_ID = 'name'
     CMDS = {
-        'add': 'addDest',
-        'del': 'delDest',
-        'set': 'setDest',
+        'add': 'add_dest',
+        'del': 'del_dest',
+        'set': 'set_dest',
         'search': 'get',
     }
     API_KEY_PATH = 'dhcrelay.destinations'

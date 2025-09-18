@@ -9,11 +9,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 
 class SubnetV4(BaseModule):
     CMDS = {
-        'add': 'addSubnet',
-        'del': 'delSubnet',
-        'set': 'setSubnet',
-        'search': 'searchSubnet',
-        'detail': 'getSubnet',
+        'add': 'add_subnet',
+        'del': 'del_subnet',
+        'set': 'set_subnet',
+        'search': 'search_subnet',
+        'detail': 'get_subnet',
     }
     API_KEY = 'subnet4'
     API_KEY_PATH = 'subnet4'
@@ -27,6 +27,7 @@ class SubnetV4(BaseModule):
     FIELDS_TYPING = {
         'list': ['gateway', 'dns', 'domain_search', 'ntp_servers', 'time_servers'],  # 'pools',
         'bool': ['auto_options'],
+        'int': ['v6_only_preferred'],
     }
     FIELDS_TRANSLATE = {
         'auto_options': 'option_data_autocollect',
@@ -34,7 +35,7 @@ class SubnetV4(BaseModule):
     API_ATTR_OPTIONS = 'option_data'
     API_FIELDS_OPTIONS = [
         'gateway', 'routes', 'dns', 'domain', 'domain_search', 'ntp_servers', 'time_servers',
-        'next_server', 'tftp_server', 'tftp_file',
+        'next_server', 'tftp_server', 'tftp_file', 'v6_only_preferred',
     ]
     POOL_JOIN_CHAR = '\n'
     FIELDS_TRANSLATE_SPECIAL = {
@@ -61,30 +62,37 @@ class SubnetV4(BaseModule):
         )
 
         simple['pools'] = simple['pools'].split(self.POOL_JOIN_CHAR)
-        opts = entry[self.API_ATTR_OPTIONS]
-        if isinstance(opts, dict):
-            simple['dns'] = get_selected_list(opts[self.FIELDS_TRANSLATE_SPECIAL['dns']])
-            simple['domain_search'] = get_selected_list(opts['domain_search'])
-            simple['gateway'] = get_selected_list(opts[self.FIELDS_TRANSLATE_SPECIAL['gateway']])
-            simple['routes'] = opts[self.FIELDS_TRANSLATE_SPECIAL['routes']]
-            simple['domain'] = opts[self.FIELDS_TRANSLATE_SPECIAL['domain']]
-            simple['ntp_servers'] = get_selected_list(opts['ntp_servers'])
-            simple['time_servers'] = get_selected_list(opts['time_servers'])
-            simple['tftp_server'] = opts[self.FIELDS_TRANSLATE_SPECIAL['tftp_server']]
-            simple['tftp_file'] = opts[self.FIELDS_TRANSLATE_SPECIAL['tftp_file']]
+        if self.API_ATTR_OPTIONS in entry:
+            # get/details call
+            opts = entry[self.API_ATTR_OPTIONS]
+            return {
+                **simple,
+                'dns': get_selected_list(opts[self.FIELDS_TRANSLATE_SPECIAL['dns']]),
+                'domain_search': get_selected_list(opts['domain_search']),
+                'gateway': get_selected_list(opts[self.FIELDS_TRANSLATE_SPECIAL['gateway']]),
+                'routes': opts[self.FIELDS_TRANSLATE_SPECIAL['routes']],
+                'domain': opts[self.FIELDS_TRANSLATE_SPECIAL['domain']],
+                'ntp_servers': get_selected_list(opts['ntp_servers']),
+                'time_servers': get_selected_list(opts['time_servers']),
+                'tftp_server': opts[self.FIELDS_TRANSLATE_SPECIAL['tftp_server']],
+                'tftp_file': opts[self.FIELDS_TRANSLATE_SPECIAL['tftp_file']],
+                'v6_only_preferred': opts['v6_only_preferred'],
+            }
 
-        else:
-            opt_keys = list(self.FIELDS_TRANSLATE_SPECIAL.keys())
-            opt_keys.extend(['domain_search', 'ntp_servers', 'time_servers'])
-
-            for opt in opt_keys:
-                if opt in self.FIELDS_TYPING['list']:
-                    simple[opt] = []
-
-                else:
-                    simple[opt] = ''
-
-        return simple
+        # search-call :'(
+        return {
+            **simple,
+            'dns': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['dns']}"],
+            'domain_search': entry['option_data.domain_search'],
+            'gateway': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['gateway']}"],
+            'routes': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['routes']}"],
+            'domain': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['domain']}"],
+            'ntp_servers': entry['option_data.ntp_servers'],
+            'time_servers': entry['option_data.time_servers'],
+            'tftp_server': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['tftp_server']}"],
+            'tftp_file': entry[f"option_data.{self.FIELDS_TRANSLATE_SPECIAL['tftp_file']}"],
+            'v6_only_preferred': entry['option_data.v6_only_preferred'],
+        }
 
     def _build_request(self) -> dict:
         raw_request = self.b.build_request(ignore_fields=self.API_FIELDS_OPTIONS)
@@ -100,6 +108,7 @@ class SubnetV4(BaseModule):
             'ntp_servers': self.b.RESP_JOIN_CHAR.join(self.p['ntp_servers']),
             'time_servers': self.b.RESP_JOIN_CHAR.join(self.p['time_servers']),
             'domain_search': self.b.RESP_JOIN_CHAR.join(self.p['domain_search']),
+            'v6_only_preferred': self.p['v6_only_preferred'],
         }
 
         return raw_request

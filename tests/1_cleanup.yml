@@ -9,6 +9,9 @@
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Cleanup Rules
       ansibleguy.opnsense.rule_purge:
@@ -244,6 +247,22 @@
 
     - name: Cleanup GRE interfaces
       ansibleguy.opnsense.interface_gre:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
+    - name: Cleanup Bridge interfaces
+      ansibleguy.opnsense.interface_bridge:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
+    - name: Cleanup GIF interfaces
+      ansibleguy.opnsense.interface_gif:
         description: "{{ item }}"
         state: 'absent'
       loop:
@@ -782,6 +801,7 @@
         state: 'absent'
       loop:
         - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_DUMMY_1_1'
 
     - name: Cleanup ACME Action
@@ -918,3 +938,23 @@
       failed_when:
         - cl_snap2.failed
         - "'Unsupported' not in cl_snap2.msg | default('')"
+
+    - name: Cleanup Users
+      ansibleguy.opnsense.user:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_2_2'
+
+    - name: Cleanup Groups
+      ansibleguy.opnsense.group:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_2_2'

@@ -6,7 +6,7 @@
 DNS - Unbound - Blocklists
 ==========================
 
-**STATE**: unstable
+**STATE**: stable
 
 **TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/unbound_dnsbl.yml>`_
 

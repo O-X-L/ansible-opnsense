@@ -17,6 +17,9 @@
     ansibleguy.opnsense.list:
       target: 'unbound_forward'
 
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
   tasks:
     - name: Listing
       ansibleguy.opnsense.list:

@@ -19,8 +19,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/en/latest/modules/acmeclient.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/en/latest/modules/acmeclient.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/en/latest/modules/acmeclient.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/en/latest/modules/acmeclient.html'
 
 
 def run_module():
@@ -78,7 +78,7 @@ def run_module():
         argument_spec=module_args,
         supports_check_mode=True,
         required_if=[
-            ('ca', 'custom', ('custom_ca')),
+            ('ca', 'custom', ('custom_ca',)),
         ],
     )
 
