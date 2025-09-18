@@ -36,8 +36,8 @@
       ansibleguy.opnsense.interface_bridge:
         description: 'ANSIBLE_TEST_1_1'
         members:
-          - 'lan'
           - 'opt1'
+          - 'opt2'
       register: opn1
       failed_when: >
         opn1.failed or
@@ -46,9 +46,9 @@
     - name: Changing 1
       ansibleguy.opnsense.interface_bridge:
         description: 'ANSIBLE_TEST_1_1'
-        members: 'lan'
+        members: 'opt1'
         link_local: true
-        span_interfaces: 'opt1'
+        span_interfaces: 'opt2'
       register: opn2
       failed_when: >
         opn2.failed or
@@ -57,9 +57,9 @@
     - name: Changing 1 - nothing changed
       ansibleguy.opnsense.interface_bridge:
         description: 'ANSIBLE_TEST_1_1'
-        members: 'lan'
+        members: 'opt1'
         link_local: true
-        span_interfaces: 'opt1'
+        span_interfaces: 'opt2'
       register: opn3
       failed_when: >
         opn3.failed or
@@ -70,23 +70,23 @@
       ansibleguy.opnsense.interface_bridge:
         description: 'ANSIBLE_TEST_1_2'
         members:
-          - 'lan'
           - 'opt1'
+          - 'opt2'
         link_local: true
         stp: true
         stp_proto: 'stp'
-        stp_interfaces: 'lan'
+        stp_interfaces: 'opt1'
         stp_max_age: 10
         stp_fwdelay: 10
         stp_hold: 5
         cache_size: 1000
         cache_timeout: 600
-        edge_interfaces: 'lan'
-        auto_edge_interfaces: 'opt1'
-        ptp_interfaces: 'lan'
-        auto_ptp_interfaces: 'opt1'
-        static_interfaces: 'lan'
-        private_interfaces: 'opt1'
+        edge_interfaces: 'opt1'
+        auto_edge_interfaces: 'opt2'
+        ptp_interfaces: 'opt1'
+        auto_ptp_interfaces: 'opt2'
+        static_interfaces: 'opt1'
+        private_interfaces: 'opt2'
       register: opn4
       failed_when: >
         opn4.failed or
@@ -96,23 +96,23 @@
       ansibleguy.opnsense.interface_bridge:
         description: 'ANSIBLE_TEST_1_2'
         members:
-          - 'lan'
           - 'opt1'
+          - 'opt2'
         link_local: true
         stp: true
         stp_proto: 'stp'
-        stp_interfaces: 'lan'
+        stp_interfaces: 'opt1'
         stp_max_age: 10
         stp_fwdelay: 10
         stp_hold: 5
         cache_size: 1000
         cache_timeout: 600
-        edge_interfaces: 'lan'
-        auto_edge_interfaces: 'opt1'
-        ptp_interfaces: 'lan'
-        auto_ptp_interfaces: 'opt1'
-        static_interfaces: 'lan'
-        private_interfaces: 'opt1'
+        edge_interfaces: 'opt1'
+        auto_edge_interfaces: 'opt2'
+        ptp_interfaces: 'opt1'
+        auto_ptp_interfaces: 'opt2'
+        static_interfaces: 'opt1'
+        private_interfaces: 'opt2'
       register: opn5
       failed_when: >
         opn5.failed or
