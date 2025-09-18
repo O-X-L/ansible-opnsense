@@ -48,7 +48,7 @@ Examples
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
@@ -69,7 +69,7 @@ Practical
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
@@ -85,7 +85,7 @@ Practical
         - name: Adding DNS overrides
           ansibleguy.opnsense.unbound_host:
             hostname: "{{ item.host }}"
-            domain: 'opnsense.template.ansibleguy.net'
+            domain: 'opnsense.template.opnsense.oxl.app'
             value: "{{ item.value }}"
             reload: false
           loop:

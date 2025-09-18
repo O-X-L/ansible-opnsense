@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright: (C) 2025, AnsibleGuy <guy@ansibleguy.net>
+# Copyright: (C) 2025, Pascal Rath <contact+opnsense@OXL.at>
 # GNU General Public License v3.0+ (see https://www.gnu.org/licenses/gpl-3.0.txt)
 
 # see: https://docs.opnsense.org/development/api/core/firewall.html
@@ -21,8 +21,8 @@ try:
 except MODULE_EXCEPTIONS:
     module_dependency_error()
 
-# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/alias_multi.html'
-# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/alias_multi.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/alias.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/alias.html'
 
 
 def run_module():
@@ -32,31 +32,10 @@ def run_module():
         **OPN_MOD_ARGS,
     )
 
-    result = dict(
-        changed=False,
-        diff={
-            'before': {},
-            'after': {},
-        }
-    )
-
-    module = AnsibleModule(
+    AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
-    )
-
-    if module.params['profiling'] or module.params['debug']:
-        profiler(
-            check=process, kwargs=dict(
-                m=module, p=module.params, r=result,
-            ),
-        )
-
-    else:
-        process(m=module, p=module.params, r=result)
-
-    result['diff'] = diff_remove_empty(result['diff'])
-    module.exit_json(**result)
+    ).fail_json('This module was deprecated: https://ansible-opnsense.oxl.app/modules/1_multi.html')
 
 
 def main():

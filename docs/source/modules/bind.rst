@@ -239,7 +239,7 @@ ansibleguy.opnsense.bind_general
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -312,7 +312,7 @@ ansibleguy.opnsense.bind_blocklist
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -333,7 +333,7 @@ ansibleguy.opnsense.bind_blocklist
         - name: Configuring blocklists
           ansibleguy.opnsense.bind_blocklist:
             block: ['Steven Black List', 'NoCoin List', 'Blocklist.site Phishing', 'AdGuard List']
-            exclude: ['test.ansibleguy.net', 'ansibleguy.net']
+            exclude: ['test.opnsense.oxl.app', 'opnsense.oxl.app']
             safe_google: true
             safe_youtube: true
 
@@ -341,7 +341,7 @@ ansibleguy.opnsense.bind_blocklist
           ansibleguy.opnsense.bind_blocklist:
             enabled: false
             block: ['Steven Black List', 'NoCoin List', 'Blocklist.site Phishing', 'AdGuard List']
-            exclude: ['test.ansibleguy.net', 'ansibleguy.net']
+            exclude: ['test.opnsense.oxl.app', 'opnsense.oxl.app']
             safe_google: true
             safe_youtube: true
 
@@ -363,7 +363,7 @@ ansibleguy.opnsense.bind_acl
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -417,7 +417,7 @@ ansibleguy.opnsense.bind_domain
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -491,7 +491,7 @@ ansibleguy.opnsense.bind_record
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -552,7 +552,7 @@ ansibleguy.opnsense.bind_record_multi
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:

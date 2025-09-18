@@ -247,7 +247,7 @@ ansibleguy.opnsense.interface_vlan
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
         ansibleguy.opnsense.list:
@@ -293,7 +293,7 @@ ansibleguy.opnsense.interface_vxlan
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
         ansibleguy.opnsense.list:
@@ -340,7 +340,7 @@ ansibleguy.opnsense.interface_vip
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
         ansibleguy.opnsense.list:
@@ -397,7 +397,7 @@ ansibleguy.opnsense.interface_lagg
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
         ansibleguy.opnsense.list:
@@ -450,7 +450,7 @@ ansibleguy.opnsense.interface_loopback
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
         ansibleguy.opnsense.list:
@@ -491,7 +491,7 @@ ansibleguy.opnsense.interface_gre
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
         ansibleguy.opnsense.list:
@@ -541,7 +541,7 @@ ansibleguy.opnsense.interface_bridge
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
         ansibleguy.opnsense.list:
@@ -600,7 +600,7 @@ ansibleguy.opnsense.interface_gif
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
         ansibleguy.opnsense.list:

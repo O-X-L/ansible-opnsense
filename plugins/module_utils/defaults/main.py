@@ -114,7 +114,7 @@ def build_multi_mod_args(entry: dict, aliases: list = None, description: str = N
             elements='dict', options={**opn_args_multi, **RELOAD_MOD_ARG_DEF_FALSE, **entry},
         ),
         multi_purge=dict(
-            type='list', required=False, default=[], aliases=['purge', 'many_purge'],
+            type='list', required=False, default=[], aliases=['multi_delete', 'purge', 'many_purge'],
             description='Provide multiple entries to purge (delete or disable)',
             elements='dict', options={**opn_args_multi, **RELOAD_MOD_ARG_DEF_FALSE, **entry},
         ),

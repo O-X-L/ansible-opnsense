@@ -202,7 +202,7 @@ ansibleguy.opnsense.openvpn_server
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -335,7 +335,7 @@ ansibleguy.opnsense.openvpn_client
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -345,7 +345,7 @@ ansibleguy.opnsense.openvpn_client
         - name: Example
           ansibleguy.opnsense.openvpn_client:
             name: 'example'
-            remote: 'example.ovpn.ansibleguy.net:10000'
+            remote: 'example.ovpn.opnsense.oxl.app:10000'
             certificate: ''
             # verify_remote_certificate: false
             # ca: ''
@@ -375,7 +375,7 @@ ansibleguy.opnsense.openvpn_client
         - name: Adding
           ansibleguy.opnsense.openvpn_client:
             name: 'test1'
-            remote: 'openvpn.test.ansibleguy.net:20000'
+            remote: 'openvpn.test.opnsense.oxl.app:20000'
             protocol: 'udp'
             mode: 'tun'
             network_remote: ['192.168.77.128/27', '192.168.89.64/27']
@@ -387,7 +387,7 @@ ansibleguy.opnsense.openvpn_client
         - name: Changing
           ansibleguy.opnsense.openvpn_client:
             name: 'test1'
-            remote: 'openvpn.test.ansibleguy.net:10000'
+            remote: 'openvpn.test.opnsense.oxl.app:10000'
             protocol: 'tcp'
             mode: 'tun'
             network_remote: ['192.168.77.0/24']
@@ -399,7 +399,7 @@ ansibleguy.opnsense.openvpn_client
         - name: Disabling
           ansibleguy.opnsense.openvpn_client:
             name: 'test1'
-            remote: 'openvpn.test.ansibleguy.net:10000'
+            remote: 'openvpn.test.opnsense.oxl.app:10000'
             protocol: 'tcp'
             mode: 'tun'
             network_remote: ['192.168.77.0/24']
@@ -434,7 +434,7 @@ ansibleguy.opnsense.openvpn_static_key
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -492,7 +492,7 @@ ansibleguy.opnsense.openvpn_static_key
         - name: Linking key to OpenVPN-client
           ansibleguy.opnsense.openvpn_client:
             name: 'test-client'
-            remote: 'openvpn.test.ansibleguy.net'
+            remote: 'openvpn.test.opnsense.oxl.app'
             ca: 'OpenVPN'
             key: 'test-key'
 
@@ -507,7 +507,7 @@ ansibleguy.opnsense.openvpn_client_override
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
@@ -572,7 +572,7 @@ ansibleguy.opnsense.openvpn_status
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:

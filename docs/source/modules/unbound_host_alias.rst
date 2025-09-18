@@ -84,7 +84,7 @@ Examples
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.unbound_host_alias:
@@ -97,8 +97,8 @@ Examples
         - name: Example
           ansibleguy.opnsense.unbound_host_alias:
             alias: 'test'
-            domain: 'opnsense.template.ansibleguy.net'
-            target: 'host.opnsense.template.ansibleguy.net'
+            domain: 'opnsense.template.opnsense.oxl.app'
+            target: 'host.opnsense.template.opnsense.oxl.app'
             # match_fields: ['description']
             # description: 'example'
             # state: 'present'

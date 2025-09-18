@@ -87,7 +87,7 @@ Examples
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.unbound_host:
@@ -100,7 +100,7 @@ Examples
         - name: Example
           ansibleguy.opnsense.unbound_host:
             hostname: 'host'
-            domain: 'opnsense.template.ansibleguy.net'
+            domain: 'opnsense.template.opnsense.oxl.app'
             value: '192.168.0.1'
             # match_fields: ['description']
             # record_type: 'A'
@@ -114,7 +114,7 @@ Examples
         - name: Adding
           ansibleguy.opnsense.unbound_host:
             hostname: 'host'
-            domain: 'opnsense.template.ansibleguy.net'
+            domain: 'opnsense.template.opnsense.oxl.app'
             value: '192.168.0.1'
             description: 'test1'
             # match_fields: ['description']
@@ -122,7 +122,7 @@ Examples
         - name: Removing
           ansibleguy.opnsense.unbound_host:
             hostname: 'host'
-            domain: 'opnsense.template.ansibleguy.net'
+            domain: 'opnsense.template.opnsense.oxl.app'
             value: '192.168.0.1'
             state: 'absent'
             description: 'test1'
@@ -131,8 +131,8 @@ Examples
         - name: Adding MX record
           ansibleguy.opnsense.unbound_host:
             hostname: 'mx'
-            domain: 'opnsense.template.ansibleguy.net'
-            value: 'host.opnsense.template.ansibleguy.net'
+            domain: 'opnsense.template.opnsense.oxl.app'
+            value: 'host.opnsense.template.opnsense.oxl.app'
             record_type: 'MX'
             description: 'test2'
             # match_fields: ['description']

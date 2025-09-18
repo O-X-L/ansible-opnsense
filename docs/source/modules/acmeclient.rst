@@ -436,7 +436,7 @@ Examples
       gather_facts: false
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
@@ -490,8 +490,8 @@ Examples
 
         - name: Adding ACME Certificate
           ansibleguy.opnsense.acme_certificate:
-            name: ansibleguy.net
-            description: LE ansibleguy.net
+            name: opnsense.oxl.app
+            description: LE opnsense.oxl.app
             alt_names: ['ansibleguy.com']
             account: LE opnsense
             validation: HTTP
