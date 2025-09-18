@@ -14,7 +14,9 @@ Interface
 `vip <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_vip.yml>`_ |
 `lagg <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_lagg.yml>`_ |
 `loopback <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_loopback.yml>`_ |
-`gre <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_gre.yml>`_
+`gre <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_gre.yml>`_ |
+`bridge <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_bridge.yml>`_ |
+`gif <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_gif.yml>`_
 
 **API Docs**: `Core - Interfaces <https://docs.opnsense.org/development/api/core/interfaces.html>`_
 
@@ -22,7 +24,9 @@ Interface
 `VxLAN Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=vlan#vxlan>`_ |
 `VIP Docs <https://docs.opnsense.org/manual/firewall_vip.html>`_ |
 `LAGG Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=lagg#lagg>`_ |
-`GRE Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=gre#gre>`_
+`GRE Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=gre#gre>`_ |
+`Bridge Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=bridge#bridge>`_ |
+`GIF Docs <https://docs.opnsense.org/manual/other-interfaces.html?highlight=gif#gif>`_
 
 
 Info
@@ -31,32 +35,42 @@ Info
 ansibleguy.opnsense.interface_vlan
 ==================================
 
-This module manages VLAN configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - VLAN'
+This module manages VLAN configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - VLAN'
 
 ansibleguy.opnsense.interface_vxlan
 ===================================
 
-This module manages VXLAN configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - VXLAN'
+This module manages VXLAN configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - VXLAN'
 
 ansibleguy.opnsense.interface_vip
-===================================
+=================================
 
 This module manages VIP configuration that can be found in the WEB-UI menu: 'Interfaces - Virtual IPs - Settings'
 
 ansibleguy.opnsense.interface_lagg
-===================================
+==================================
 
-This module manages LAGG configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - LAGG'
+This module manages LAGG configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - LAGG'
 
 ansibleguy.opnsense.interface_loopback
 ======================================
 
-This module manages Loopback configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - Loopback'
+This module manages Loopback configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - Loopback'
 
 ansibleguy.opnsense.interface_gre
-===================================
+=================================
 
-This module manages GRE Tunnel configuration that can be found in the WEB-UI menu: 'Interfaces - Other Types - GRE'
+This module manages GRE Tunnel configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - GRE'
+
+ansibleguy.opnsense.interface_bridge
+====================================
+
+This module manages Bridge configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - Bridge'
+
+ansibleguy.opnsense.interface_gif
+=================================
+
+This module manages GIF Tunnel configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - GIF'
 
 
 Contribution
@@ -159,7 +173,7 @@ ansibleguy.opnsense.interface_loopback
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.interface_gre
-======================================
+=================================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -171,6 +185,50 @@ ansibleguy.opnsense.interface_gre
     "tunnel_local","string","true","\-","tl, tunnel_local_addr","Local gre tunnel endpoint."
     "tunnel_remote","string","true","\-","tr, tunnel_remote_addr","Remote gre tunnel endpoint."
     "tunnel_remote_net","integer","false","32","\-","Netmask `ipv4` or prefix `ipv6` to use for this tunnel "
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+ansibleguy.opnsense.interface_bridge
+====================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "description","string","true","\-","desc, name","The unique description used to match the configured entries to the existing ones"
+    "members","list","false","\-","ports, ints","Interfaces participating in the bridge. - you must provide the network port as shown in 'Interfaces - Assignments - Network port"
+    "link_local","boolean","false","false","\-","Enable link-local addresses on the interface"
+    "stp","boolean","false","false","\-","Enable spanning tree options for this bridge"
+    "stp_proto","string","false","rstp","\-","Protocol used for spanning tree. One of: 'rstp' or 'stp'"
+    "stp_interfaces","list","false","\-","stp_ports, stp_ints","Interfaces to enable Spanning Tree Protocol on"
+    "stp_max_age","integer","false","\-","\-","Time that a Spanning Tree Protocol configuration is valid"
+    "stp_fwdelay","integer","false","\-","\-","Time that must pass before an interface begins forwarding packets"
+    "stp_hold","integer","false","\-","\-","Tansmit hold count for Spanning Tree"
+    "cache_size","integer","false","\-","\-","Size of the bridge address cache"
+    "cache_timeout","integer","false","\-","\-","Timeout of address cache entries"
+    "span_interfaces","list","false","\-","span_ports, span_ints","Interfaces to add as span ports"
+    "edge_interfaces","list","false","\-","edge_ports, edge_ints","Interfaces to set as edge ports"
+    "auto_edge_interfaces","list","false","\-","auto_edge_ports, auto_edge_ints","Allow selected interfaces to automatically detect edge status"
+    "ptp_interfaces","list","false","\-","ptp_ports, ptp_ints","Interfaces to set as point-to-point link"
+    "auto_ptp_interfaces","list","false","\-","auto_ptp_ports, auto_ptp_ints","Automatically detect the point-to-point status on selected interfaces"
+    "static_interfaces","list","false","\-","static_ports, static_ints, sticky_interfaces, sticky_ports, sticky_ints","Mark interfaces as a 'sticky' interface."
+    "private_interfaces","list","false","\-","private_ports, private_ints","Mark interfaces as a 'private' interface"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+ansibleguy.opnsense.interface_gif
+=================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "description","string","true","\-","desc, name","The unique description used to match the configured entries to the existing ones"
+    "local","string","true","\-","l, local_addr","The local address or interface to use."
+    "remote","string","true","\-","r, remote_addr","Peer address where encapsulated gre packets will be sent."
+    "tunnel_local","string","true","\-","tl, tunnel_local_addr","Local gre tunnel endpoint."
+    "tunnel_remote","string","true","\-","tr, tunnel_remote_addr","Remote gre tunnel endpoint."
+    "tunnel_remote_net","integer","false","32","\-","Netmask `ipv4` or prefix `ipv6` to use for this tunnel "
+    "ingress_filtering","boolean","false","true","filtering","Enable ingress filtering on outer tunnel"
+    "ecn_friendly","boolean","false","false","ecn","Enable ECN friendly behavior this violates RFC2893"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ----
@@ -423,7 +481,7 @@ ansibleguy.opnsense.interface_loopback
             state: 'absent'
 
 ansibleguy.opnsense.interface_gre
-======================================
+=================================
 
 .. code-block:: yaml
 
@@ -463,11 +521,122 @@ ansibleguy.opnsense.interface_gre
           #  target: 'interface_gre'
           register: existing_entries
     
-        - name: Printing Loopbacks
+        - name: Printing GRE Tunnels
           ansible.builtin.debug:
             var: existing_entries.data
     
-        - name: Removing GRE
+        - name: Removing GRE Tunnel 
           ansibleguy.opnsense.interface_gre:
             description: 'MyGRETunnel'
+            state: 'absent'
+
+ansibleguy.opnsense.interface_bridge
+====================================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: no
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+    
+        ansibleguy.opnsense.list:
+          target: 'interface_bridge'
+    
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.interface_bridge:
+            description: 'MyBridge'
+            members: 'lan'
+            # link_local: false
+            # stp: false
+            # stp_proto: rstp
+            # stp_interfaces:
+            # stp_max_age:
+            # stp_fwdelay:
+            # stp_hold:
+            # cache_size:
+            # cache_timeout:
+            # span_interfaces:
+            # edge_interfaces:
+            # auto_edge_interfaces:
+            # ptp_interfaces:
+            # auto_ptp_interfaces:
+            # static_interfaces:
+            # private_interfaces:
+            # debug: false
+            # state: 'present'
+            # reload: true
+    
+        - name: Adding Bridge
+          ansibleguy.opnsense.interface_bridge:
+            description: 'MyBridge'
+            members: 'lan'
+    
+        - name: Listing
+          ansibleguy.opnsense.list:
+          #  target: 'interface_bridge'
+          register: existing_entries
+    
+        - name: Printing Bridges
+          ansible.builtin.debug:
+            var: existing_entries.data
+    
+        - name: Removing Bridge
+          ansibleguy.opnsense.interface_bridge:
+            description: 'MyBridge'
+            state: 'absent'
+
+ansibleguy.opnsense.interface_gif
+=================================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: no
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+    
+        ansibleguy.opnsense.list:
+          target: 'interface_gif'
+    
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.interface_gif:
+            description: 'MyGIFTunnel'
+            local: 'lan'
+            remote: '192.168.100.1'
+            tunnel_local: '10.0.0.1'
+            tunnel_remote: '10.0.0.2'
+            # tunnel_remote_net: 32
+            # ingres_filtering: true
+            # ecn_friendly: false
+            # debug: false
+            # state: 'present'
+            # reload: true
+    
+        - name: Adding GIF Tunnel
+          ansibleguy.opnsense.interface_gif:
+            description: 'MyGIFTunnel'
+            local: 'lan'
+            remote: '192.168.100.1'
+            tunnel_local: '10.0.0.1'
+            tunnel_remote: '10.0.0.2'
+    
+        - name: Listing
+          ansibleguy.opnsense.list:
+          #  target: 'interface_gif'
+          register: existing_entries
+    
+        - name: Printing GIF Tunnels
+          ansible.builtin.debug:
+            var: existing_entries.data
+    
+        - name: Removing GIF Tunnel 
+          ansibleguy.opnsense.interface_gif:
+            description: 'MyGIFTunnel'
             state: 'absent'

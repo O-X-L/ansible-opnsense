@@ -128,6 +128,9 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible_opn
 | **Interfaces**            | ansibleguy.opnsense.interface_vip                                      | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                     | stable   |
 | **Interfaces**            | ansibleguy.opnsense.interface_lagg                                     | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                     | stable |
 | **Interfaces**            | ansibleguy.opnsense.interface_loopback                                 | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                     | stable |
+| **Interfaces**            | ansibleguy.opnsense.interface_gre                                      | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                     | stable   |
+| **Interfaces**            | ansibleguy.opnsense.interface_bridge                                   | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                     | unstable |
+| **Interfaces**            | ansibleguy.opnsense.interface_gif                                      | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                     | unstable |
 | **NAT**                   | ansibleguy.opnsense.nat_source                                         | [Docs](https://ansible-opnsense.oxl.app/modules/source_nat.html)                                                    | stable   |
 | **NAT**                   | ansibleguy.opnsense.nat_one_to_one                                     | [Docs](https://ansible-opnsense.oxl.app/modules/one_to_one.html)                                                    | stable |
 | **Dynamic Routing**       | ansibleguy.opnsense.frr_diagnostic                                     | [Docs](https://ansible-opnsense.oxl.app/modules/frr_diagnostic.html)                                                | stable   |
@@ -210,6 +213,7 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible_opn
 | **Snapshot**              | ansibleguy.opnsense.snapshot                                           | [Docs](https://ansible-opnsense.oxl.app/modules/snapshot.html)                                                      | stable |
 | **High Availability**     | ansibleguy.opnsense.hasync_general                                     | [Docs](https://ansible-opnsense.oxl.app/modules/hasync.html)                                                        | stable |
 | **High Availability**     | ansibleguy.opnsense.hasync_service                                     | [Docs](https://ansible-opnsense.oxl.app/modules/hasync.html)                                                        | stable |
+| **Neighbor**              | ansibleguy.opnsense.neighbor                                           | [Docs](https://ansible-opnsense.oxl.app/modules/neighbor.html)                                                      | unstable |
 
 ### Roadmap
 
