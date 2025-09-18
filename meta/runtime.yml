@@ -135,6 +135,8 @@ action_groups:
     - ansibleguy.opnsense.openvpn_client_override
     - ansibleguy.opnsense.openvpn_client_template
     - ansibleguy.opnsense.openvpn_client_export
+  dnsmasq:
+    - ansibleguy.opnsense.dnsmasq_general
   dhcrelay:
     - ansibleguy.opnsense.dhcrelay_destination
     - ansibleguy.opnsense.dhcrelay_relay
