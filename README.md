@@ -1,4 +1,4 @@
-# Ansible Collection - ansibleguy.opnsense
+# Ansible Collection to manage OPNsense Firewalls
 
 [![Lint](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint.yml)
 [![Unit Test Status](https://github.com/O-X-L/ansible_opnsense/actions/workflows/unit_test.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/unit_test.yml)
@@ -6,7 +6,7 @@
 
 **Functional Tests**: 
 
-* Status: [![Functional Test Status](https://badges.ansibleguy.net/opnsense.collection.test.svg)](https://github.com/O-X-L/ansible_opnsense/blob/latest/scripts/test.sh) |
+* Status: [![Functional Test Status](https://badges.ansibleguy.net/opnsense.collection.test.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/functional_test_result.yml) |
 [![Functional-Tests](https://github.com/O-X-L/ansible_opnsense/actions/workflows/functional_test_result.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/functional_test_result.yml)
 * Logs: [API](https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000) |
 [Daily Archive](https://github.com/O-X-L/ansible_opnsense/actions/workflows/functional_test_result.yml)
@@ -77,12 +77,12 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible_opn
 ### Implemented
 
 
-| Function                  | Module                                                                 | Usage                                                                                                              | State    |
-|:--------------------------|:-----------------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------|:---------|
+| Function                  | Module                                                                 | Usage                                                                                                               | State    |
+|:--------------------------|:-----------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------|:---------|
 | **Base**                  | ansibleguy.opnsense.list                                               | [Docs](https://ansible-opnsense.oxl.app/modules/2_list.html)                                                        | stable   |
 | **Base**                  | ansibleguy.opnsense.reload                                             | [Docs](https://ansible-opnsense.oxl.app/modules/2_reload.html)                                                      | stable   |
 | **Services**              | ansibleguy.opnsense.service                                            | [Docs](https://ansible-opnsense.oxl.app/modules/service.html)                                                       | stable   |
-| **Raw**                   | ansibleguy.opnsense.raw                                                 | [Docs](https://ansible-opnsense.oxl.app/modules/raw.html)                                                           | unstable |
+| **Raw**                   | ansibleguy.opnsense.raw                                                | [Docs](https://ansible-opnsense.oxl.app/modules/raw.html)                                                           | unstable |
 | **Alias**                 | ansibleguy.opnsense.alias                                              | [Docs](https://ansible-opnsense.oxl.app/modules/alias.html)                                                         | stable   | 
 | **Alias**                 | ansibleguy.opnsense.alias_multi                                        | [Docs](https://ansible-opnsense.oxl.app/modules/alias_multi.html)                                                   | stable   |
 | **Alias**                 | ansibleguy.opnsense.alias_purge                                        | [Docs](https://ansible-opnsense.oxl.app/modules/alias_multi.html#ansibleguy-opnsense-alias-purge)                   | unstable |
@@ -128,6 +128,9 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible_opn
 | **Interfaces**            | ansibleguy.opnsense.interface_vip                                      | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                     | stable   |
 | **Interfaces**            | ansibleguy.opnsense.interface_lagg                                     | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                     | stable |
 | **Interfaces**            | ansibleguy.opnsense.interface_loopback                                 | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                     | stable |
+| **Interfaces**            | ansibleguy.opnsense.interface_gre                                      | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                     | stable   |
+| **Interfaces**            | ansibleguy.opnsense.interface_bridge                                   | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                     | unstable |
+| **Interfaces**            | ansibleguy.opnsense.interface_gif                                      | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                     | unstable |
 | **NAT**                   | ansibleguy.opnsense.nat_source                                         | [Docs](https://ansible-opnsense.oxl.app/modules/source_nat.html)                                                    | stable   |
 | **NAT**                   | ansibleguy.opnsense.nat_one_to_one                                     | [Docs](https://ansible-opnsense.oxl.app/modules/one_to_one.html)                                                    | stable |
 | **Dynamic Routing**       | ansibleguy.opnsense.frr_diagnostic                                     | [Docs](https://ansible-opnsense.oxl.app/modules/frr_diagnostic.html)                                                | stable   |
@@ -144,7 +147,7 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible_opn
 | **Dynamic Routing**       | ansibleguy.opnsense.frr_bgp_peer_group                                 | [Docs](https://ansible-opnsense.oxl.app/modules/frr_bgp.html#ansibleguy-opnsense-frr-bgp-peer-group)                | stable |
 | **Dynamic Routing**       | ansibleguy.opnsense.frr_ospf_general                                   | [Docs](https://ansible-opnsense.oxl.app/modules/frr_ospf.html#ansibleguy-opnsense-frr-ospf-general)                 | stable   |
 | **Dynamic Routing**       | ansibleguy.opnsense.frr_ospf_prefix_list                               | [Docs](https://ansible-opnsense.oxl.app/modules/frr_ospf.html#ansibleguy-opnsense-frr-ospf-prefix-list)             | stable   |
-| **Dynamic Routing**       | ansibleguy.opnsense.frr_ospf_route_map                                 | [Docs](https://ansible-opnsense.oxl.app/modules/frr_ospf.html#ansibleguy-opnsense-frr-ospf-route-map)                | stable   |
+| **Dynamic Routing**       | ansibleguy.opnsense.frr_ospf_route_map                                 | [Docs](https://ansible-opnsense.oxl.app/modules/frr_ospf.html#ansibleguy-opnsense-frr-ospf-route-map)               | stable   |
 | **Dynamic Routing**       | ansibleguy.opnsense.frr_ospf_interface                                 | [Docs](https://ansible-opnsense.oxl.app/modules/frr_ospf.html#ansibleguy-opnsense-frr-ospf-interface)               | stable   |
 | **Dynamic Routing**       | ansibleguy.opnsense.frr_ospf_network                                   | [Docs](https://ansible-opnsense.oxl.app/modules/frr_ospf.html#ansibleguy-opnsense-frr-ospf-network)                 | stable   |
 | **Dynamic Routing**       | ansibleguy.opnsense.frr_ospf_redistribution                            | [Docs](https://ansible-opnsense.oxl.app/modules/frr_ospf.html#ansibleguy-opnsense-frr-ospf-redistribution)          | stable |
@@ -213,6 +216,8 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible_opn
 | **User Management**       | ansibleguy.opnsense.user                                               | [Docs](https://ansible-opnsense.oxl.app/modules/access.html)                                                        | unstable |
 | **User Management**       | ansibleguy.opnsense.group                                              | [Docs](https://ansible-opnsense.oxl.app/modules/access.html)                                                        | unstable |
 | **User Management**       | ansibleguy.opnsense.privilege                                          | [Docs](https://ansible-opnsense.oxl.app/modules/access.html)                                                        | unstable |
+| **Neighbor**              | ansibleguy.opnsense.neighbor                                           | [Docs](https://ansible-opnsense.oxl.app/modules/neighbor.html)                                                      | unstable |
+| **Dnsmasq**               | ansibleguy.opnsense.dnsmasq_general                                    | [Docs](https://ansible-opnsense.oxl.app/modules/dnsmasq.html)                                                             | unstable |
 
 ### Roadmap
 

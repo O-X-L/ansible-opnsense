@@ -1,0 +1,91 @@
+---
+
+- name: Testing dnsmasq general
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+        target: 'dnsmasq_general'
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | length == 0
+
+    - name: Enable and configure all dnsmasq options
+      ansibleguy.opnsense.dnsmasq_general:
+        enabled: true
+        interfaces: ['opt1', 'opt2']
+        regdhcp: true
+        regdhcpstatic: true
+        domain_needed: true
+        dns_port: 2053
+        dnssec: true
+        no_hosts: true
+        dhcpfirst: true
+        strict_order: true
+        strictbind: true
+        no_private_reverse: true
+        log_queries: true
+        no_ident: false
+        regdhcpdomain: 'test.domain'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Nothing changed
+      ansibleguy.opnsense.dnsmasq_general:
+        enabled: true
+        interfaces: ['opt1', 'opt2']
+        regdhcp: true
+        regdhcpstatic: true
+        domain_needed: true
+        dns_port: 2053
+        dnssec: true
+        no_hosts: true
+        dhcpfirst: true
+        strict_order: true
+        strictbind: true
+        no_private_reverse: true
+        log_queries: true
+        no_ident: false
+        regdhcpdomain: 'test.domain'
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        opn3.changed
+      when: not ansible_check_mode
+
+    - name: Changing
+      ansibleguy.opnsense.dnsmasq_general:
+        enabled: true
+        interfaces: ['opt1']
+        regdhcp: true
+        regdhcpstatic: False
+        domain_needed: False
+        dns_port: 2054
+        dnssec: true
+        no_hosts: true
+        dhcpfirst: true
+        strict_order: true
+        strictbind: true
+        no_private_reverse: true
+        log_queries: false
+        no_ident: false
+        regdhcpdomain: 'test2.domain'
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.dnsmasq_general:
+        enabled: false

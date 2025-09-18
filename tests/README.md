@@ -31,9 +31,14 @@ See also: `1_dependencies.yml`
 
 Some tests benefit from having a second network-interface available.
 
+Add dummy interfaces:
+* vtnet1 => assigned as `TEST`/`opt1` (should be in a dedicated layer-2 network)
+* vtnet2 => leave unassigned
+* vtnet3 => assigned as `TEST2`/`opt2` (interface down)
+
 You need to add a `opt1` dummy-interface named `TEST`. The assigned IPs do not matter.
 
-Add another interface and leave it unassigned (`vtnet2`).
+Add another interface and leave it unassigned (`opt2` - `vtnet2`).
 
 ### Internet access
 

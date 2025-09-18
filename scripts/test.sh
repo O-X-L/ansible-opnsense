@@ -117,6 +117,8 @@ run_test_soft 'interface_vip' 1
 run_test_soft 'interface_lagg' 1
 run_test_soft 'interface_loopback' 1
 run_test_soft 'interface_gre' 1
+run_test_soft 'interface_bridge' 1
+run_test_soft 'interface_gif' 1
 run_test_soft 'nat_source' 1
 run_test_soft 'nat_one_to_one' 1
 run_test_soft 'frr_diagnostic' 1
@@ -214,6 +216,8 @@ run_test_soft 'raw' 1
 run_test_soft 'user' 1
 run_test_soft 'group' 1
 run_test_soft 'privilege' 0 # check mode => dependency on user and group
+run_test_soft 'neighbor' 1
+run_test_soft 'dnsmasq_general' 1
 
 echo ''
 echo '##############################'
