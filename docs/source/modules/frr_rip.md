@@ -2,7 +2,7 @@
 
 **STATE**: stable
 
-**TESTS**: [frr_rip](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_rip.yml)
+**TESTS**: [frr_rip](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_rip.yml)
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
 

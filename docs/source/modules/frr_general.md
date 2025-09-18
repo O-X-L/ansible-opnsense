@@ -2,7 +2,7 @@
 
 **STATE**: stable
 
-**TESTS**: [frr_general](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_general.yml)
+**TESTS**: [frr_general](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_general.yml)
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
 

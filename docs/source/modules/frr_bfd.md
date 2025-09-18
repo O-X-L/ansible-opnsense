@@ -2,7 +2,7 @@
 
 **STATE**: stable
 
-**TESTS**: [frr_bfd_general](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bfd_general.yml) | [frr_bfd_neighbor](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bfd_neighbor.yml)
+**TESTS**: [frr_bfd_general](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_bfd_general.yml) | [frr_bfd_neighbor](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_bfd_neighbor.yml)
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
 

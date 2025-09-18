@@ -81,7 +81,7 @@ class Base:
         self.i.call_cnf['module'] = mod_get
 
         if self.i.CMDS['search'].startswith('search'):
-            # case for api-refactoring: https://github.com/ansibleguy/collection_opnsense/issues/51
+            # case for api-refactoring: https://github.com/O-X-L/ansible-opnsense/issues/51
             if 'detail' not in self.i.CMDS:
                 exit_bug("To use the 'search' commands you need to also define the related 'detail' (get) command!")
 

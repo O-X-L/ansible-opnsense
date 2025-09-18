@@ -85,9 +85,6 @@ class Gw(BaseModule):
             if not self.p['interface']:
                 self.m.fail_json('You need to provide a value for the interface!')
 
-            if not self.p['gateway']:
-                self.m.fail_json('You need to provide a value for the gateway!')
-
             if is_unset(self.p['ip_protocol']):
                 if is_ip6(self.p['gateway']):
                     self.p['ip_protocol'] = 'inet6'

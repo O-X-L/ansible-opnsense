@@ -1,2 +1,2 @@
 .. tip::
-    Check out `the repository on GitHub <https://github.com/ansibleguy/collection_opnsense>`_
+    Check out `the repository on GitHub <https://github.com/O-X-L/ansible-opnsense>`_
