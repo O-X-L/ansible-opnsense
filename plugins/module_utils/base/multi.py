@@ -15,12 +15,12 @@ class MultiModule:
     def __init__(
             self, module: AnsibleModule, result: dict, entry_args: dict, kind: str, obj: BaseModule,
             validation: bool = True, cache_existing: bool = True,
-            callback_build: Callable[dict, dict] = None,
-            callback_validation: Callable[dict, bool] = None,
-            callback_get_existing: Callable[BaseModule, dict] = None,
+            callback_build: Callable[[dict], dict] = None,
+            callback_validation: Callable[[dict], bool] = None,
+            callback_get_existing: Callable[[BaseModule], dict] = None,
             callback_set_existing: Callable[[BaseModule, dict], None] = None,
             callback_update_existing: Callable[[dict, dict], dict] = None,
-            callback_purge_exclude: Callable[dict, bool] = None,
+            callback_purge_exclude: Callable[[dict], bool] = None,
     ):
         self.m = module
         self.p = module.params
@@ -49,12 +49,24 @@ class MultiModule:
         self.callback_set_existing = callback_set_existing
         self.callback_update_existing = callback_update_existing
         self.callback_purge_exclude = callback_purge_exclude
+        if self.callback_build is None:
+            self.callback_build = self._default_callback_build
+
+        if self.callback_validation is None:
+            self.callback_validation = self._default_callback_validation
+
         if self.cache_existing:
             if self.callback_get_existing is None:
                 self.callback_get_existing = self._default_callback_get_existing
 
             if self.callback_set_existing is None:
                 self.callback_set_existing = self._default_callback_set_existing
+
+            if self.callback_update_existing is None:
+                self.callback_update_existing = self._default_callback_update_existing
+
+        if self.callback_purge_exclude is None:
+            self.callback_purge_exclude = self._default_callback_purge_exclude
 
         if hasattr(self.o, 'FIELD_ID'):
             self.field_id = getattr(self.o, 'FIELD_ID')
@@ -103,7 +115,7 @@ class MultiModule:
         else:
             result = True
 
-        if result and self.callback_validation is not None:
+        if result:
             try:
                 result = self.callback_validation(entry)
 
@@ -137,8 +149,7 @@ class MultiModule:
                 **overrides,
             }
 
-            if self.callback_build is not None:
-                entry = self.callback_build(entry)
+            entry = self.callback_build(entry)
 
             if entry['debug']:
                 self.m.warn(f"Validating {self.k}: '{entry}'")
@@ -173,7 +184,7 @@ class MultiModule:
                 entry.check()
                 entry.process()
 
-                if self.cache_existing and self.callback_update_existing is not None:
+                if self.cache_existing:
                     self.cache = self.callback_update_existing(entry_cnf, cache=self.cache)
 
                 self._add_entry_result(entry, entry_result)
@@ -240,16 +251,16 @@ class MultiModule:
                     entry.delete()
 
                 else:
-                    result['diff']['before'][entry_name] = entry_cnf
-                    result['diff']['after'][entry_name] = None
+                    self.r['diff']['before'][entry_name] = entry_cnf
+                    self.r['diff']['after'][entry_name] = None
 
             elif entry.b.is_enabled():
                 if not self.m.check_mode:
                     entry.b.disable()
 
                 else:
-                    result['diff']['before'][entry_name] = {'enabled': True}
-                    result['diff']['after'][entry_name] = {'enabled': False}
+                    self.r['diff']['before'][entry_name] = {'enabled': True}
+                    self.r['diff']['after'][entry_name] = {'enabled': False}
 
             self._add_entry_result(entry, entry_result)
 
@@ -258,20 +269,19 @@ class MultiModule:
 
     def _purge(self):
         if not self.mc['purge_all'] and is_unset(self.p['multi_purge']) and is_unset(self.mc['purge_filter']):
-            m.fail_json("You need to either provide entries via 'multi_purge' or 'multi_control.purge_filter'!")
+            self.m.fail_json("You need to either provide entries via 'multi_purge' or 'multi_control.purge_filter'!")
 
         # checking if all entries should be purged
         for entry_cnf in self.cache['main']:
-            if self.callback_purge_exclude is not None:
-                if self.callback_purge_exclude(entry_cnf):
-                    continue
+            if self.callback_purge_exclude(entry_cnf):
+                continue
 
             if self.mc['purge_all'] or self._entry_in_purge_list(entry_cnf):
                 if not self._entry_matches_purge_filter(entry_cnf):
                     continue
 
                 if self.p['debug']:
-                    self.m.warn(f"Existing {self.kind} '{self._entry_id(entry_cnf)}' will be {self.mc['purge_action']}d!")
+                    self.m.warn(f"Existing {self.k} '{self._entry_id(entry_cnf)}' will be {self.mc['purge_action']}d!")
 
                 self._purge_entry(entry_cnf)
 
@@ -320,9 +330,67 @@ class MultiModule:
         return 'NO-ID-FOUND'
 
     @staticmethod
+    def _default_callback_build(entry: dict) -> dict:
+        """
+        Callback to make modifications to a raw entry that was provided by the user, before it gets processed.
+        This happens after the overrides were applied.
+
+        :param entry: The entry that can be modified
+        :return: The modified entry
+        """
+        return entry
+
+    @staticmethod
+    def _default_callback_validation(entry: dict) -> bool:
+        """
+        Callback to validate a raw entry that was provided by the use.
+        This Validation extends the default Ansible-Module-Argument Validation.
+        It is called after the 'build' callback.
+
+        :param entry: The entry that should be validated
+        :return: If the entry was valid
+        """
+        return True
+
+    @staticmethod
     def _default_callback_get_existing(meta_entry: BaseModule) -> dict:
+        """
+        Callback to pull the 'existing_entries' that will be written to the cache.
+
+        :param meta_entry: A dummy/meta-entry as BaseModule-instance that is used to pull all existing entries from the API
+        :return: Result that will be used as cache
+        """
         return {'main': meta_entry.get_existing()}
 
     @staticmethod
     def _default_callback_set_existing(entry: BaseModule, cache: dict):
+        """
+        Callback to set the 'existing_entries' of an entry-instance that is about to be processed
+
+        :param entry: The entry BaseModule-instance that might need 'existing_entries' to be set
+        :param cache: The full cache
+        :return: None
+        """
         entry.existing_entries = cache['main']
+
+    @staticmethod
+    def _default_callback_update_existing(entry: dict, cache: dict) -> dict:
+        """
+        Callback to update the cache after an entry was processed
+
+        :param entry: The entry that was just processed
+        :param cache: The full cache
+        :return: The updated cache
+        """
+        return cache
+
+    @staticmethod
+    def _default_callback_purge_exclude(entry: dict) -> bool:
+        """
+        Callback to check if an entry should be excluded from purge/deletion.
+        This should only be used if there are built-in entries that should be protected.
+
+        :param entry: The entry that should get purged/deleted
+        :return: If the entry should be excluded from being purged
+        """
+        return False

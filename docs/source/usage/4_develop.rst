@@ -442,6 +442,55 @@ Adding new module
 
 ----
 
+Mass Management
+***************
+
+This Ansible Collection has built-in handling for mass-management of entries. We can save on time-consuming API-calls when many entries are processed at once.
+
+You can find the abstracted logic in:
+
+* `module_utils/base/multi.py <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/module_utils/base/multi.py>`_
+* `module_utils/helper/wrapper.py <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/module_utils/helper/wrapper.py>`_
+
+Modes have to be set-up to support mass-management!
+
+1. There is some initialization needed inside the :code:`module/<NAME>.py` file!
+
+  For an implementation-example see: `modules/alias.py <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/modules/alias.py>`_
+
+2. The abstracted logic uses callback-functions to allow for module-specific handling. All of these are optional!
+
+  * **Build Callback**:
+
+    Callback to make modifications to a raw entry that was provided by the user, before it gets processed.
+
+    This happens after the overrides were applied.
+
+  * **Validation Callback**:
+
+    Callback to validate a raw entry that was provided by the use.
+
+    This Validation extends the default Ansible-Module-Argument Validation.
+
+    It is called after the 'build' callback.
+
+  * **Get-Existing Callback**:
+
+    Callback to pull the 'existing_entries' that will be written to the cache.
+
+  * **Set-Existing Callback**:
+
+    Callback to set the 'existing_entries' of an entry-instance that is about to be processed
+
+  * **Purge-Exclude Callback**:
+
+    Callback to check if an entry should be excluded from purge/deletion.
+
+    This should only be used if there are built-in entries that should be protected.
+
+
+----
+
 Testing
 *******
 

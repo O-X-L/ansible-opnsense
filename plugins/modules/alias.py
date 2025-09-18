@@ -80,13 +80,13 @@ def _multi_callback_build(entry: dict) -> dict:
 #     entry.existing_entries = cache['aliases']
 
 
-def _multi_callback_update_existing(entry_cnf: dict, cache: dict) -> dict:
-    cache['main'].append(entry_cnf)
+def _multi_callback_update_existing(entry: dict, cache: dict) -> dict:
+    cache['main'].append(entry)
     return cache
 
 
-def _multi_callback_purge_exclude(entry_cnf: dict) -> bool:
-    return builtin_alias(entry_cnf['name'])
+def _multi_callback_purge_exclude(entry: dict) -> bool:
+    return builtin_alias(entry['name'])
 
 
 def run_module():
