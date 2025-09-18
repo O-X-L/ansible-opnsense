@@ -3,6 +3,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import is_unset
 
 
 class ManualSPD(BaseModule):
@@ -44,7 +45,13 @@ class ManualSPD(BaseModule):
     def check(self) -> None:
         self._base_check()
 
-        if self.p['state'] == 'present':
+        if self.p['state'] == 'present' and not is_unset(self.p['connection_child']):
+            # temporary workaround for API-bug: https://github.com/opnsense/core/issues/9224
+            if '-' in self.p['connection_child']:
+                self.p['connection_child'] = self.p['connection_child'].split('-')[1]
+
+            self.p['connection_child'] = f" - {self.p['connection_child'].strip()}"
+
             self.b.find_single_link(
                 field='connection_child',
                 existing=self._search_connection_child(),
