@@ -16,24 +16,40 @@
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
+    - name: Fail required args (1)
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_action: 'disable'
+      register: opn12
+      failed_when: not opn12.failed
+
+    - name: Fail required args (2)
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_filter:
+            type: 'port'
+      register: opn13
+      failed_when: not opn13.failed
+
     - name: Adding 1
-      ansibleguy.opnsense.alias_multi:
-        aliases:
-          ANSIBLE_TEST_4_1:
+      ansibleguy.opnsense.alias:
+        multi:
+          - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
-          ANSIBLE_TEST_4_2:
+          - name: 'ANSIBLE_TEST_4_2'
             type: 'network'
             content: '192.168.1.0/24'
-          ANSIBLE_TEST_4_3:
+          - name: 'ANSIBLE_TEST_4_3'
             type: 'port'
             content: [80, 443]
       when: not ansible_check_mode
 
     - name: Simple disable-purge
-      ansibleguy.opnsense.alias_purge:
-        aliases:
-          ANSIBLE_TEST_4_2:
-        action: 'disable'
+      ansibleguy.opnsense.alias:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_4_2'
+        multi_control:
+          purge_action: 'disable'
       register: opn1
       failed_when: >
         opn1.failed or
@@ -41,17 +57,18 @@
       when: not ansible_check_mode
 
     - name: Simple disable-purge - nothing changed
-      ansibleguy.opnsense.alias_purge:
-        aliases:
-          ANSIBLE_TEST_4_2:
-        action: 'disable'
+      ansibleguy.opnsense.alias:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_4_2'
+        multi_control:
+          purge_action: 'disable'
       register: opn11
       when: not ansible_check_mode
 
     - name: Simple purge
-      ansibleguy.opnsense.alias_purge:
-        aliases:
-          ANSIBLE_TEST_4_2:
+      ansibleguy.opnsense.alias:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_4_2'
       when: not ansible_check_mode
       register: opn2
       failed_when: >
@@ -63,31 +80,30 @@
       register: opn3
       failed_when: >
         'data' not in opn3 or
-        opn3.data | length != 1
+        opn3.data | length != 2
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.alias_multi:
-        aliases:
-          ANSIBLE_TEST_4_1:
+      ansibleguy.opnsense.alias:
+        multi:
+          - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
-          ANSIBLE_TEST_4_2:
+          - name: 'ANSIBLE_TEST_4_2'
             type: 'network'
             content: '192.168.1.0/24'
-          ANSIBLE_TEST_4_3:
+          - name: 'ANSIBLE_TEST_4_3'
             type: 'port'
             content: [80, 443]
       when: not ansible_check_mode
 
     - name: Filtered purge (single)
-      ansibleguy.opnsense.alias_purge:
-        filters:
-          type: 'port'
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_all: true
+          purge_filter:
+            type: 'port'
       when: not ansible_check_mode
       register: opn4
-      failed_when: >
-        opn4.failed or
-        not opn4.changed
 
     - name: Listing aliases
       ansibleguy.opnsense.list:
@@ -98,23 +114,25 @@
       when: not ansible_check_mode
 
     - name: Adding 3
-      ansibleguy.opnsense.alias_multi:
-        aliases:
-          ANSIBLE_TEST_4_1:
+      ansibleguy.opnsense.alias:
+        multi:
+          - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
-          ANSIBLE_TEST_4_2:
+          - name: 'ANSIBLE_TEST_4_2'
             type: 'network'
             content: '192.168.1.0/24'
-          ANSIBLE_TEST_4_3:
+          - name: 'ANSIBLE_TEST_4_3'
             type: 'port'
             content: [80, 443]
       when: not ansible_check_mode
 
     - name: Filtered purge (single inverted)
-      ansibleguy.opnsense.alias_purge:
-        filters:
-          type: 'port'
-        filter_invert: true
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_all: true
+          purge_filter:
+            type: 'port'
+          purge_filter_invert: true
       when: not ansible_check_mode
       register: opn6
       failed_when: >
@@ -130,18 +148,18 @@
       when: not ansible_check_mode
 
     - name: Adding 4
-      ansibleguy.opnsense.alias_multi:
-        aliases:
-          ANSIBLE_TEST_4_1:
+      ansibleguy.opnsense.alias:
+        multi:
+          - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
-          ANSIBLE_TEST_4_2:
+          - name: 'ANSIBLE_TEST_4_2'
             content: 'ANSIBLE_TEST_4_1'
       when: not ansible_check_mode
 
     - name: Purge used alias
-      ansibleguy.opnsense.alias_purge:
-        aliases:
-          ANSIBLE_TEST_4_2:
+      ansibleguy.opnsense.alias:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_4_2'
       when: not ansible_check_mode
       register: opn11
       failed_when: >
@@ -149,20 +167,15 @@
         'warnings' not in opn11
 
     - name: Purge using alias first
-      ansibleguy.opnsense.alias_purge:
-        aliases:
-          ANSIBLE_TEST_4_1:
+      ansibleguy.opnsense.alias:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_4_1'
       when: not ansible_check_mode
-
-    - name: Purge ALL - not forced
-      ansibleguy.opnsense.alias_purge:
-      when: not ansible_check_mode
-      register: opn8
-      failed_when: not opn8.failed
 
     - name: Purge ALL
-      ansibleguy.opnsense.alias_purge:
-        force_all: true
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_all: true
       when: not ansible_check_mode
       register: opn9
       failed_when: >

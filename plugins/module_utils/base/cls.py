@@ -53,8 +53,13 @@ class BaseShared:
 
 
 class BaseModule(BaseShared):
-    def __init__(self, m: AnsibleModule, r: dict, s: Session = None):
+    def __init__(self, m: AnsibleModule, r: dict, s: Session = None, f: dict = None):
         super().__init__(m, r, s)
+        if f is None:
+            f = {}
+
+        self.fail_verify = f.get('verify', False)
+        self.fail_process = f.get('process', False)
 
     def _base_check(self, match_fields: list = None):
         self._check_validators()

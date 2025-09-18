@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright: (C) 2025, AnsibleGuy <guy@ansibleguy.net>
+# Copyright: (C) 2025, Pascal Rath <contact+opnsense@OXL.at>
 # GNU General Public License v3.0+ (see https://www.gnu.org/licenses/gpl-3.0.txt)
 
 # see: https://docs.opnsense.org/development/api/plugins/bind.html
@@ -12,13 +12,10 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.utils import profiler
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-        diff_remove_empty
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.legacy_multi import \
+        FAIL_MOD_ARG_MULTI, INFO_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-        OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG, INFO_MOD_ARG, FAIL_MOD_ARG_MULTI
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.bind_record_multi import \
-        process
+        OPN_MOD_ARGS, RELOAD_MOD_ARG, STATE_MOD_ARG
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
@@ -45,32 +42,11 @@ def run_module():
         **RELOAD_MOD_ARG,
     )
 
-    result = dict(
-        changed=False,
-        diff={
-            'before': {},
-            'after': {},
-        }
-    )
-
-    module = AnsibleModule(
+    AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
-    )
+    ).fail_json('This module was deprecated in favor of: https://ansible-opnsense.oxl.app/modules/1_multi.html')
 
-    if module.params['profiling'] or module.params['debug']:
-        profiler(
-            check=process,
-            kwargs=dict(
-                m=module, p=module.params, r=result,
-            ),
-        )
-
-    else:
-        process(m=module, p=module.params, r=result)
-
-    result['diff'] = diff_remove_empty(result['diff'])
-    module.exit_json(**result)
 
 
 def main():
