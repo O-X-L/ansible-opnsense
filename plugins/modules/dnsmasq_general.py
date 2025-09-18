@@ -4,7 +4,7 @@
 # Copyright: (C) 2024, AnsibleGuy <guy@ansibleguy.net>
 # GNU General Public License v3.0+ (see https://www.gnu.org/licenses/gpl-3.0.txt)
 
-# see: https://docs.opnsense.org/development/api/plugins/nginx.html
+# see: https://docs.opnsense.org/development/api/plugins/dnsmasq.html
 
 from ansible.module_utils.basic import AnsibleModule
 
@@ -16,8 +16,6 @@ try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
         EN_ONLY_MOD_ARG, OPN_MOD_ARGS, RELOAD_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_general import General
-    #from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
-
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
         is_true, to_digit
 
@@ -52,8 +50,8 @@ def run_module():
             description='If this option is set, we will not forward A or AAAA queries for plain names,'
                         'without dots or domain parts, to upstream name servers. If the name is not known from /etc/hosts or DHCP then a "not found" answer is returned.'
         ),
-        dns_port=dict(
-            type='int', required=False, default=53,
+        port=dict(
+            type='int', required=False, default=53, aliases=['dns_port'],
             description='The port used for responding to DNS queries. It should normally be left blank unless'
                         'another service needs to bind to TCP/UDP port 53. Setting this to zero (0) completely disables DNS function'
         ),
@@ -101,12 +99,6 @@ def run_module():
             description='The domain name to use for DHCP hostname registration. If empty, the default system domain is used.'
                         'Note that all DHCP leases will be assigned to the same domain. If this is undesired, static DHCP lease registration is able to provide coherent mappings.'
         ),
-#        fw_rules=dict(
-#            type='bool', default='True', aliases=['default_fw_rules'],
-#            description='Automatically register firewall rules to allow dhcp traffic for all explicitly selected interfaces,'
-#                        'can be disabled for more fine grained control if needed. Changes are only effective after a firewall service restart'
-#                        '(see system diagnostics).'
-#        ),
         **EN_ONLY_MOD_ARG,
         **RELOAD_MOD_ARG,
         **OPN_MOD_ARGS,

@@ -217,6 +217,7 @@ run_test_soft 'user' 1
 run_test_soft 'group' 1
 run_test_soft 'privilege' 0 # check mode => dependency on user and group
 run_test_soft 'neighbor' 1
+run_test_soft 'dnsmasq_general' 1
 
 echo ''
 echo '##############################'
