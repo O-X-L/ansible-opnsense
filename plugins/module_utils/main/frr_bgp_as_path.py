@@ -35,8 +35,8 @@ class AsPath(BaseModule):
     }
     EXIST_ATTR = 'as_path'
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.as_path = {}
 
     def check(self) -> None:

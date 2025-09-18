@@ -13,7 +13,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.alias imp
 
 
 # pylint: disable=R0915
-def process(m: AnsibleModule, p: dict, r: dict, ) -> None:
+def process(m: AnsibleModule, p: dict, r: dict) -> None:
     session = Session(module=m)
     meta_alias = Alias(module=m, session=session, result={})
     existing_aliases = meta_alias.get_existing()
@@ -78,8 +78,8 @@ def process(m: AnsibleModule, p: dict, r: dict, ) -> None:
                 result=alias_result,
                 cnf=alias_config,
                 session=session,
-                fail_verify=p['fail_verification'],
-                fail_proc=p['fail_processing'],
+                fail_verify=p['fail_verify'],
+                fail_proc=p['fail_process'],
             )
             # save on requests
             alias.existing_entries = existing_aliases

@@ -65,7 +65,7 @@ class Rule(BaseModule):
         ],
         'select': [
             'action', 'direction', 'ip_protocol', 'protocol', 'gateway', 'replyto', 'state_type', 'state_policy',
-            'overload', 'prio', 'set_prio', 'set_prio_low', 'schedule', 'tos', 'shaper1', 'shaper2',
+            'overload', 'prio', 'set_prio', 'set_prio_low', 'schedule', 'tos',
         ],
         'list': ['interface', 'tcp_flags', 'tcp_flags_clear', 'icmp_type'],
         'int': ['sequence', 'state_timeout'],
@@ -80,12 +80,10 @@ class Rule(BaseModule):
 
     def __init__(
             self, module: AnsibleModule, result: dict, cnf: dict = None,
-            session: Session = None, fail_verify: bool = True, fail_proc: bool = True
+            session: Session = None, fail: dict = None,
     ):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.p = self.m.params if cnf is None else cnf  # to allow override by rule_multi
-        self.fail_verify = fail_verify
-        self.fail_proc = fail_proc
         self.rule = {}
         self.log_name = None
 
@@ -126,7 +124,7 @@ class Rule(BaseModule):
         self._base_check()
 
     def _error(self, msg: str, verification: bool = True) -> None:
-        if (verification and self.fail_verify) or (not verification and self.fail_proc):
+        if (verification and self.fail_verify) or (not verification and self.fail_process):
             self.m.fail_json(msg)
 
         else:

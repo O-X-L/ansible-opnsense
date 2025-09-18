@@ -62,8 +62,8 @@ class Gw(BaseModule):
     }
     EXIST_ATTR = 'gw'
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.gw = {}
 
     def check(self) -> None:
@@ -84,6 +84,9 @@ class Gw(BaseModule):
 
             if not self.p['interface']:
                 self.m.fail_json('You need to provide a value for the interface!')
+
+            if not self.p['gateway']:
+                self.m.fail_json('You need to provide a value for the gateway!')
 
             if is_unset(self.p['ip_protocol']):
                 if is_ip6(self.p['gateway']):

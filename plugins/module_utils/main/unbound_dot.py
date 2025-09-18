@@ -36,8 +36,8 @@ class DnsOverTls(BaseModule):
         'port': {'min': 1, 'max': 65535},
     }
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.dot = {}
 
     def check(self) -> None:

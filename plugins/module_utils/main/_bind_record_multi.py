@@ -46,7 +46,7 @@ def process(m: AnsibleModule, p: dict, r: dict) -> None:
         if domain not in existing_domain_mapping:
             msg = f"The domain '{domain}' does not seem to exist! " \
                   "Create one before managing its records."
-            if p['fail_processing']:
+            if p['fail_process']:
                 m.fail_json(msg)
 
             else:
@@ -108,8 +108,8 @@ def process(m: AnsibleModule, p: dict, r: dict) -> None:
                 result=record_result,
                 cnf=record_config,
                 session=s,
-                fail_verify=p['fail_verification'],
-                fail_proc=p['fail_processing'],
+                fail_verify=p['fail_verify'],
+                fail_proc=p['fail_process'],
             )
             # save on requests
             record.existing_entries = existing_records
