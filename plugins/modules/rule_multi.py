@@ -12,8 +12,10 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.legacy_multi import \
+        STATE_MOD_ARG_MULTI, FAIL_MOD_ARG_MULTI, INFO_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-        OPN_MOD_ARGS, STATE_MOD_ARG_MULTI, INFO_MOD_ARG, FAIL_MOD_ARG_MULTI, RELOAD_MOD_ARG
+        OPN_MOD_ARGS, RELOAD_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.rule import \
         RULE_MATCH_FIELDS_ARG, RULE_MOD_ARG_KEY_FIELD
 
@@ -26,7 +28,7 @@ except MODULE_EXCEPTIONS:
 
 
 def run_module():
-    FAIL_MOD_ARG_MULTI['fail_verify']['default'] = True
+    FAIL_MOD_ARG_MULTI['fail_verification']['default'] = True
 
     module_args = dict(
         rules=dict(type='dict', required=True),
@@ -48,7 +50,7 @@ def run_module():
     AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
-    ).fail_json('This module was deprecated: https://ansible-opnsense.oxl.app/modules/1_multi.html')
+    ).fail_json('This module was deprecated in favor of: https://ansible-opnsense.oxl.app/modules/1_multi.html')
 
 
 

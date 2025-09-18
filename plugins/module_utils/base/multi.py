@@ -8,6 +8,111 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main im
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import is_unset
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+    OPN_MOD_ARGS, RELOAD_MOD_ARG_DEF_FALSE
+
+
+def build_multi_mod_args(
+        mod_args: dict,
+        aliases: list = None,
+        description: str = None,
+        not_required: list[str] = None,
+) -> dict:
+    """
+    Function to dynamically build the module-arguments required for mass-management.
+
+    :param mod_args: The module-specific arguments
+    :param aliases: List of module-specific aliases for the 'multi' argument
+    :param description: An optional description for the 'multi' argument
+    :param not_required: List of module-specific arguments (only keys) that should be set to be NOT required
+    :return: Module arguments required for mass-management
+    """
+    args_base = mod_args.copy()
+
+    aliases_purge = ['multi_delete', 'purge', 'many_purge']
+    if aliases is None:
+        aliases = []
+
+    else:
+        for a in aliases:
+            aliases_purge.append(f'{a}_purge')
+
+    aliases.append('many')
+
+    if description is None:
+        description = 'Provide multiple entries to manage'
+
+    for opn_arg in OPN_MOD_ARGS:
+        if opn_arg in args_base:
+            args_base.pop(opn_arg)
+
+    opn_args_multi = OPN_MOD_ARGS
+    opn_args_multi['firewall']['required'] = False
+
+    if not_required is None:
+        not_required = []
+
+    not_required.append('match_fields')
+    for field in not_required:
+        if field in args_base:
+            args_base[field]['required'] = False
+
+    return dict(
+        multi=dict(
+            type='list', required=False, default=[], aliases=aliases,
+            description=description,
+            elements='dict', options={**opn_args_multi, **RELOAD_MOD_ARG_DEF_FALSE, **args_base},
+        ),
+        multi_purge=dict(
+            type='list', required=False, default=[], aliases=aliases_purge,
+            description='Provide multiple entries to purge (delete or disable)',
+            elements='dict', options={**opn_args_multi, **RELOAD_MOD_ARG_DEF_FALSE, **args_base},
+        ),
+        multi_control=dict(
+            type='dict', required=False, default={}, aliases=['multi_ctrl', 'mc'],
+            description=description,
+            options=dict(
+                # NOTE: we keep state and enabled outside overrides for convenience
+                state=dict(type='str', required=False, choices=['present', 'absent'], default=None),
+                enabled=dict(type='bool', required=False, default=None),
+                # overrides for other parameters
+                override=dict(
+                    type='dict', required=False, default={}, description='Parameters to override for all entries',
+                    aliases=['all', 'overrides'],
+                ),
+                fail_verify=dict(
+                    type='bool', required=False, default=False, aliases=['fail_verification'],
+                    description='Fail module if a single entry fails the verification.'
+                ),
+                fail_process=dict(
+                    type='bool', required=False, default=True, aliases=['fail_proc', 'fail_processing'],
+                    description='Fail module if a single entry fails to be processed.'
+                ),
+                output_info=dict(type='bool', required=False, default=False, aliases=['info']),
+                purge_action=dict(
+                    type='str', required=False, default='delete', choices=['disable', 'delete'],
+                    description='What to do with the matched items'
+                ),
+                purge_filter=dict(
+                    type='dict', required=False, default={}, aliases=['purge_filters'],
+                    description='Field-value pairs to filter on - per example: {param1: test} '
+                                "- to only purge items that have 'param1' set to 'test'"
+                ),
+                purge_filter_invert=dict(
+                    type='bool', required=False, default=False,
+                    description='If true - it will purge all but the filtered ones'
+                ),
+                purge_filter_partial=dict(
+                    type='bool', required=False, default=False,
+                    description="If true - the filter will also match if it is just a partial value-match"
+                ),
+                purge_all=dict(
+                    type='bool', required=False, default=False,
+                    description='If set to true and neither items, nor filters are provided - all items will be purged'
+                ),
+            ),
+        ),
+    )
 
 
 # pylint: disable=R0913,R0917
@@ -68,6 +173,7 @@ class MultiModule:
         if self.callback_purge_exclude is None:
             self.callback_purge_exclude = self._default_callback_purge_exclude
 
+        self.field_id = None
         if hasattr(self.o, 'FIELD_ID'):
             self.field_id = getattr(self.o, 'FIELD_ID')
             self.match_fields = [self.field_id]
@@ -78,14 +184,22 @@ class MultiModule:
         else:
             self.match_fields = self.p['match_fields']
 
+        if self.field_id is None:
+            self.field_id = self.p['match_fields'][0]
+
     def process(self) -> None:
         if self.cache_existing:
             self.cache = self.callback_get_existing(self.meta_entry)
 
-        self._create_update()
+        if len(self.mc['purge_filter']) > 0:
+            raise ValueError(self.mc['purge_filter'])
 
-        if len(self.p['multi_purge']) > 0 or self.mc['purge_all']:
+
+        if len(self.p['multi_purge']) > 0 or self.mc['purge_all'] or len(self.mc['purge_filter']) > 0:
             self._purge()
+
+        else:
+            self._create_update()
 
         if self.r['changed'] and self.p['reload']:
             self.meta_entry.reload()
@@ -194,26 +308,17 @@ class MultiModule:
 
     # PURGE METHODS
     def _entry_matches_purge_filter(self, entry_cnf: dict) -> bool:
-        for filter_key, filter_value in self.mc['purge_filter'].items():
-            if self.mc['purge_filter_invert']:
-                # purge all except matches
-                if self.mc['purge_filter_partial']:
-                    if str(entry_cnf[filter_key]).find(filter_value) != -1:
-                        return False
+        # include in purge if matching & 'not inverted' - else exclude
+        result = self.mc['purge_filter_invert'] is False
 
-                else:
-                    if entry_cnf[filter_key] == filter_value:
-                        return False
+        for filter_key, filter_value in self.mc['purge_filter'].items():
+            if self.mc['purge_filter_partial']:
+                if str(entry_cnf[filter_key]).find(filter_value) != -1:
+                    return result
 
             else:
-                # purge only matches
-                if self.mc['purge_filter_partial']:
-                    if str(entry_cnf[filter_key]).find(filter_value) == -1:
-                        return False
-
-                else:
-                    if entry_cnf[filter_key] != filter_value:
-                        return False
+                if entry_cnf[filter_key] == filter_value:
+                    return result
 
         return True
 
@@ -241,12 +346,14 @@ class MultiModule:
 
             entry.p['debug'] = self.p['debug']
             entry.p['state'] = 'absent' if self.mc['purge_action'] == 'delete' else 'present'
+            entry_cnf['match_fields'] = self.match_fields
 
             entry.check()
             if not entry.exists:
                 return
 
             if self.mc['purge_action'] == 'delete':
+                entry_result['changed'] = True
                 if not self.m.check_mode:
                     entry.delete()
 
@@ -255,6 +362,7 @@ class MultiModule:
                     self.r['diff']['after'][entry_name] = None
 
             elif entry.b.is_enabled():
+                entry_result['changed'] = True
                 if not self.m.check_mode:
                     entry.b.disable()
 
@@ -268,8 +376,17 @@ class MultiModule:
             pass
 
     def _purge(self):
-        if not self.mc['purge_all'] and is_unset(self.p['multi_purge']) and is_unset(self.mc['purge_filter']):
+        purge_entries_set = len(self.p['multi_purge']) > 0
+        purge_filter_set = len(self.mc['purge_filter']) > 0
+
+        if not self.mc['purge_all'] and not purge_entries_set and not purge_filter_set:
             self.m.fail_json("You need to either provide entries via 'multi_purge' or 'multi_control.purge_filter'!")
+
+        if self.mc['purge_action'] != 'delete':
+            raise ValueError(self.mc['purge_filter'])
+
+        if purge_filter_set :
+            self.m.fail_json("A purge_filter requires 'multi_control.purge_all' or items via 'multi_purge'!")
 
         # checking if all entries should be purged
         for entry_cnf in self.cache['main']:
@@ -287,6 +404,8 @@ class MultiModule:
 
     # UTIL METHODS
     def _init_entry(self, entry_cnf: dict, entry_result: dict) -> BaseModule:
+        entry_cnf['match_fields'] = self.match_fields
+
         return self.o(
             module=self.m,
             result=entry_result,
@@ -382,6 +501,7 @@ class MultiModule:
         :param cache: The full cache
         :return: The updated cache
         """
+        cache['main'].append(entry)
         return cache
 
     @staticmethod

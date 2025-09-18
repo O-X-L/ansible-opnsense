@@ -118,7 +118,7 @@ Definition
     "tcp_flags_clear","list","false","\-","\-","TCP flags that must be cleared for this rule to match. Selection of: 'syn', 'ack', 'fin', 'rst', 'psh', 'urg', 'ece', 'cwr'"
     "schedule","string","false","\-","sched","Match packets during the given schedule"
     "tos","string","false","\-","\-","Match packets which have the given TOS/DCSP assigned"
-    "description","string","false","\-","desc","Description for the rule"
+    "description","string","false","\-","name,desc","Description for the rule"
     "state","string","false","'present'","st","State of the rule. One of: 'present', 'absent'"
     "enabled","boolean","false","true","en","If the rule should be en- or disabled"
     "uuid","string","false","\-","\-","Optionally you can supply the uuid of an existing rule"

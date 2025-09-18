@@ -47,7 +47,7 @@ def module_multi_wrapper(
     )
     if module.params['profiling'] or module.params['debug']:
         module_name = inspect_getfile(inspect_stack()[1][0]).rsplit('/', 1)[1].rsplit('.', 1)[0]
-        return profiler(check=m.process, module_name=module_name)
+        return profiler(check=m.process, module_name=module_name, kwargs={})
 
     return m.process()
 

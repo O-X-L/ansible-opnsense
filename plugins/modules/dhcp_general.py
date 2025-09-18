@@ -10,7 +10,7 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
     module_dependency_error, MODULE_EXCEPTIONS
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.wrapper import module_wrapper
 
 try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \

@@ -12,10 +12,12 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import \
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.wrapper import \
         module_wrapper, is_multi_module_call, module_multi_wrapper
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import \
+        build_multi_mod_args
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-        RELOAD_MOD_ARG_DEF_FALSE, build_multi_mod_args, OPN_MOD_ARGS, STATE_MOD_ARG
+        RELOAD_MOD_ARG_DEF_FALSE, OPN_MOD_ARGS, STATE_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.alias import Alias
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import ensure_list
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import builtin_alias
@@ -28,9 +30,25 @@ except MODULE_EXCEPTIONS:
 # EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/alias.html'
 
 
-def _build_alias_args(multi: bool) -> dict:
-    a = dict(
-        name=dict(type='str', required=multi, aliases=['n']),
+def _multi_callback_build(entry: dict) -> dict:
+    entry['content'] = list(map(str, ensure_list(entry['content'])))
+    if 'updatefreq_days' in entry:
+        dec = 1
+        if str(entry['updatefreq_days']).endswith('.0'):
+            dec = None
+
+        entry['updatefreq_days'] = round(entry['updatefreq_days'], dec)
+
+    return entry
+
+
+def _multi_callback_purge_exclude(entry: dict) -> bool:
+    return builtin_alias(entry['name'])
+
+
+def run_module():
+    entry_args = dict(
+        name=dict(type='str', required=True, aliases=['n']),
         description=dict(
             type='str', required=False, default='', aliases=['desc'],
         ),
@@ -56,52 +74,16 @@ def _build_alias_args(multi: bool) -> dict:
         ),
         **STATE_MOD_ARG,
     )
-    if not multi:
-        a = {
-            **a,
-            **OPN_MOD_ARGS,
-        }
 
-    return a
-
-
-def _multi_callback_build(entry: dict) -> dict:
-    entry['content'] = list(map(str, ensure_list(entry['content'])))
-    if 'updatefreq_days' in entry:
-        dec = 1
-        if str(entry['updatefreq_days']).endswith('.0'):
-            dec = None
-
-        entry['updatefreq_days'] = round(entry['updatefreq_days'], dec)
-
-    return entry
-
-
-# def _multi_callback_get_existing(meta_entry: Alias) -> dict:
-#     return {'aliases': meta_entry.get_existing()}
-
-
-# def _multi_callback_set_existing(entry: Alias, cache: dict) -> None:
-#     entry.existing_entries = cache['aliases']
-
-
-def _multi_callback_update_existing(entry: dict, cache: dict) -> dict:
-    cache['main'].append(entry)
-    return cache
-
-
-def _multi_callback_purge_exclude(entry: dict) -> bool:
-    return builtin_alias(entry['name'])
-
-
-def run_module():
     module_args = dict(
         **RELOAD_MOD_ARG_DEF_FALSE,  # default-true takes pretty long sometimes (urltables and so on)
-        **_build_alias_args(multi=False),
+        **entry_args,
         **build_multi_mod_args(
-            entry=_build_alias_args(multi=True),
-            aliases=['aliases']
+            mod_args=entry_args,
+            aliases=['aliases'],
+            not_required=['name'],
         ),
+        **OPN_MOD_ARGS,
     )
 
     result = dict(
@@ -131,9 +113,6 @@ def run_module():
             kind='alias',
             module_args=module_args,
             callback_build=_multi_callback_build,
-            # callback_get_existing=_multi_callback_get_existing,
-            # callback_set_existing=_multi_callback_set_existing,
-            callback_update_existing=_multi_callback_update_existing,
             callback_purge_exclude=_multi_callback_purge_exclude,
         )
 

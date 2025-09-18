@@ -65,7 +65,7 @@ class Rule(BaseModule):
         ],
         'select': [
             'action', 'direction', 'ip_protocol', 'protocol', 'gateway', 'replyto', 'state_type', 'state_policy',
-            'overload', 'prio', 'set_prio', 'set_prio_low', 'schedule', 'tos', 'shaper1', 'shaper2',
+            'overload', 'prio', 'set_prio', 'set_prio_low', 'schedule', 'tos',
         ],
         'list': ['interface', 'tcp_flags', 'tcp_flags_clear', 'icmp_type'],
         'int': ['sequence', 'state_timeout'],

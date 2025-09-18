@@ -45,7 +45,7 @@ def run_module():
     AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
-    ).fail_json('This module was deprecated: https://ansible-opnsense.oxl.app/modules/1_multi.html')
+    ).fail_json('This module was deprecated in favor of: https://ansible-opnsense.oxl.app/modules/1_multi.html')
 
 
 
