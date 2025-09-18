@@ -1,4 +1,4 @@
-# Ansible Collection - ansibleguy.opnsense
+# Ansible Collection to manage OPNsense Firewalls
 
 [![Lint](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint.yml)
 [![Unit Test Status](https://github.com/O-X-L/ansible_opnsense/actions/workflows/unit_test.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/unit_test.yml)
@@ -6,7 +6,7 @@
 
 **Functional Tests**: 
 
-* Status: [![Functional Test Status](https://badges.ansibleguy.net/opnsense.collection.test.svg)](https://github.com/O-X-L/ansible_opnsense/blob/latest/scripts/test.sh) |
+* Status: [![Functional Test Status](https://badges.ansibleguy.net/opnsense.collection.test.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/functional_test_result.yml) |
 [![Functional-Tests](https://github.com/O-X-L/ansible_opnsense/actions/workflows/functional_test_result.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/functional_test_result.yml)
 * Logs: [API](https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000) |
 [Daily Archive](https://github.com/O-X-L/ansible_opnsense/actions/workflows/functional_test_result.yml)
