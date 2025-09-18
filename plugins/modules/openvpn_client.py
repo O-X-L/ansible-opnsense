@@ -51,6 +51,11 @@ def run_module():
             type='str', required=False, aliases=['pwd'], no_log=True,
             description='Password belonging to the user specified above'
         ),
+        # misc
+        http_proxy=dict(
+            type='str', required=False, aliases=['proxy'],
+            description='Use a http proxy to connect to the selected server, define as host:port'
+        ),
         **OPENVPN_INSTANCE_MOD_ARGS,
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,

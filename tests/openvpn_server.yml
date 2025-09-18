@@ -159,18 +159,26 @@
       ansibleguy.opnsense.openvpn_server:
         name: 'ANSIBLE_TEST_1_2'
         port: 20010
+        port_share: 127.0.0.1:443
         protocol: 'tcp4'
         mode: 'tap'
         server: '192.168.77.128/29'
         network_local: ['192.168.78.0/27']
         ca: 'OpenVPN'
         certificate: 'OpenVPN Server'
+        verify_remote_certificate: true
         data_cipher_fallback: 'CHACHA20-POLY1305'
         max_connections: 10
         user_as_cn: true
         auth_token_time: 3600
+        auth_token_renewal: 5
+        require_client_provisioning: true
         mtu: 1420
         dns_servers: ['1.1.1.1', '8.8.8.8']
+        redirect_gateway:
+          - def1
+          - block-local
+        persist_address_pool: true
       register: opn5
       failed_when: >
         opn5.failed or
@@ -180,19 +188,31 @@
       ansibleguy.opnsense.openvpn_server:
         name: 'ANSIBLE_TEST_1_2'
         port: 20010
+        port_share: 127.0.0.1:443
         protocol: 'tcp4'
         mode: 'tap'
         server: '192.168.77.128/29'
         network_local: ['192.168.78.0/27']
         ca: 'OpenVPN'
         certificate: 'OpenVPN Server'
+        verify_remote_certificate: true
         data_cipher_fallback: 'CHACHA20-POLY1305'
         max_connections: 10
         user_as_cn: true
         auth_token_time: 3600
+        auth_token_renewal: 5
+        require_client_provisioning: true
         mtu: 1420
         dns_servers: ['1.1.1.1', '8.8.8.8']
+        redirect_gateway:
+          - def1
+          - block-local
+        persist_address_pool: true
       when: not ansible_check_mode
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
 
     - name: Removing 2
       ansibleguy.opnsense.openvpn_server:
