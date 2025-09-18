@@ -27,7 +27,6 @@
       ansibleguy.opnsense.interface_gif:
         description: 'ANSIBLE_TEST_1_1'
         state: 'absent'
-        debug: true
       register: opn_pre2
       failed_when: >
         opn_pre2.failed or
