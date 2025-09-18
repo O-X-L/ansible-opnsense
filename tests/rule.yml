@@ -159,6 +159,28 @@
         opn22.failed or
         not opn22.changed
 
+    - name: Test ICMP-type
+      ansibleguy.opnsense.rule:
+        ip_protocol: 'inet46'
+        protocol: 'ICMP'
+        icmp_type: ['echoreq', 'echorep']
+        description: 'ANSIBLE_TEST_1_15'
+      register: opn23
+      failed_when: >
+        opn23.failed or
+        not opn23.changed
+
+    - name: Test ICMP-type - Nothing changed
+      ansibleguy.opnsense.rule:
+        ip_protocol: 'inet46'
+        protocol: 'ICMP'
+        icmp_type: ['echoreq', 'echorep']
+        description: 'ANSIBLE_TEST_1_15'
+      register: opn24
+      failed_when: >
+        opn24.failed or
+        opn24.changed
+
     - name: Cleanup
       ansibleguy.opnsense.rule:
         description: "{{ item }}"
@@ -172,6 +194,7 @@
         - 'ANSIBLE_TEST_1_12'
         - 'ANSIBLE_TEST_1_13'
         - 'ANSIBLE_TEST_1_14'
+        - 'ANSIBLE_TEST_1_15'
 
 - name: Testing Rules - aliases
   hosts: localhost

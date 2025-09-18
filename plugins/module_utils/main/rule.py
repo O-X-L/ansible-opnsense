@@ -29,7 +29,7 @@ class Rule(BaseModule):
         'allow_opts', 'state_type', 'state_policy', 'state_timeout',
         'max_states', 'max_src_nodes', 'max_src_states', 'max_src_conn', 'max_src_conn_rate',
         'max_src_conn_rates', 'overload', 'adaptive_start', 'adaptive_end', 'prio', 'set_prio', 'set_prio_low',
-        'tcp_flags', 'tcp_flags_clear', 'schedule', 'tos',
+        'tcp_flags', 'tcp_flags_clear', 'schedule', 'tos', 'icmp_type',
     ]
     FIELDS_ALL = ['enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
@@ -56,6 +56,7 @@ class Rule(BaseModule):
         'tcp_flags': 'tcpflags1',
         'tcp_flags_clear': 'tcpflags2',
         'schedule': 'sched',
+        'icmp_type': 'icmptype',
     }
     FIELDS_TYPING = {
         'bool': [
@@ -66,7 +67,7 @@ class Rule(BaseModule):
             'action', 'direction', 'ip_protocol', 'protocol', 'gateway', 'replyto', 'state_type', 'state_policy',
             'overload', 'prio', 'set_prio', 'set_prio_low', 'schedule', 'tos', 'shaper1', 'shaper2',
         ],
-        'list': ['interface', 'tcp_flags', 'tcp_flags_clear'],
+        'list': ['interface', 'tcp_flags', 'tcp_flags_clear', 'icmp_type'],
         'int': ['sequence', 'state_timeout'],
     }
     EXIST_ATTR = 'rule'
