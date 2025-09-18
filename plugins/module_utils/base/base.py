@@ -4,6 +4,7 @@
 # pylint: disable=W0212,R0912,R0915
 
 from typing import Callable
+from functools import reduce
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     single_get, single_post
@@ -549,6 +550,10 @@ class Base:
 
             else:
                 request[opn_field] = opn_data
+
+            if isinstance(opn_field, tuple):
+                hreqest = reduce(lambda r, i: r.setdefault(i, {}), opn_field[:-1], request)
+                hreqest[opn_field[-1]] = request.pop(opn_field)
 
         payload = request
 
