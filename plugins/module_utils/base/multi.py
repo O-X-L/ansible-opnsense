@@ -187,18 +187,18 @@ class MultiModule:
         if self.field_id is None:
             self.field_id = self.p['match_fields'][0]
 
+        self._has_multi_entries = len(self.p['multi']) > 0
+        self._has_multi_purge_entries = len(self.p['multi_purge']) > 0
+        self._has_multi_purge_filters = len(self.mc['purge_filter']) > 0
+
     def process(self) -> None:
         if self.cache_existing:
             self.cache = self.callback_get_existing(self.meta_entry)
 
-        if len(self.mc['purge_filter']) > 0:
-            raise ValueError(self.mc['purge_filter'])
-
-
-        if len(self.p['multi_purge']) > 0 or self.mc['purge_all'] or len(self.mc['purge_filter']) > 0:
+        if self._has_multi_purge_entries or self.mc['purge_all'] or self._has_multi_purge_filters:
             self._purge()
 
-        else:
+        elif self._has_multi_entries:
             self._create_update()
 
         if self.r['changed'] and self.p['reload']:
@@ -376,16 +376,13 @@ class MultiModule:
             pass
 
     def _purge(self):
-        purge_entries_set = len(self.p['multi_purge']) > 0
-        purge_filter_set = len(self.mc['purge_filter']) > 0
-
-        if not self.mc['purge_all'] and not purge_entries_set and not purge_filter_set:
+        if not self.mc['purge_all'] and not self._has_multi_purge_entries and not self._has_multi_purge_filters:
             self.m.fail_json("You need to either provide entries via 'multi_purge' or 'multi_control.purge_filter'!")
 
         if self.mc['purge_action'] != 'delete':
             raise ValueError(self.mc['purge_filter'])
 
-        if purge_filter_set :
+        if self._has_multi_purge_filters:
             self.m.fail_json("A purge_filter requires 'multi_control.purge_all' or items via 'multi_purge'!")
 
         # checking if all entries should be purged

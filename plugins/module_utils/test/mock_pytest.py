@@ -1,39 +1,42 @@
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.mock_http_pytest import \
+    pytest_mock_http_responses
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.mock_mod_pytest import \
+    MockOPNsenseModule, MOCK_RESPONSES
 
-class MockHttpResponse:
-    def __init__(self, res: dict):
-        self._res = res
-        self.status_code = 200
-
-    def json(self) -> dict:
-        return self._res
+ANSIBLE_RESULT = {'changed': False, 'diff': {'before': {}, 'after': {}}}
 
 
-class MockHttpClient:
-    def __init__(self, mock_responses: dict, base_url: str = '', **kwargs):
-        self._mock_responses = mock_responses
-        self.base_url = base_url
-        del kwargs
-
-    def get(self, url: str) -> MockHttpResponse:
-        location = url.replace(self.base_url, '')
-        return MockHttpResponse(self._mock_responses[f'get-{location}'])
-
-    def post(self, url: str, **kwargs) -> MockHttpResponse:
-        del kwargs
-        location = url.replace(self.base_url, '')
-        return MockHttpResponse(self._mock_responses[f'post-{location}'])
-
-    def close(self):
-        return
+class AnsibleError(Exception):
+    pass
 
 
-def pytest_mock_http_responses(mocker, responses: dict):
-    """
-    Mock httpx.Client to unit-test 'around' it
+class MockAnsibleModule:
+    def __init__(self):
+        self.params = dict(
+            firewall='127.0.0.1',
+            api_port=51337,
+            api_key='dummy',
+            api_secret='secret',
+            api_credential_file=None,
+            ssl_verify=False,
+            ssl_ca_file=None,
+            debug=False,
+            profiling=False,
+            api_timeout=None,
+            api_retries=0,
 
-    :param mocker: pytest mocker instance
-    :param responses: A mapping of '<get/post>-<HTTP-LOCATION>' => response dict
-    :return: None
-    """
-    mock_resolver = mocker.patch('httpx.Client', autospec=True)
-    mock_resolver.return_value = MockHttpClient(mock_responses=responses)
+            multi={},
+            multi_purge={},
+            multi_control={},
+        )
+
+    def fail_json(self, msg: str):
+        raise AnsibleError(msg)
+
+
+DUMMY_MODULE = MockAnsibleModule()
+DUMMY_REQ = dict(
+    module='dummy',
+    controller='dummy',
+    command='test',
+)
