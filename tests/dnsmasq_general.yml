@@ -4,29 +4,29 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    ansibleguy.opnsense.dnsmasq_general:
+    group/ansibleguy.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
-      # match_fields: ['description']
 
   tasks:
-#    - name: Listing
-#      ansibleguy.opnsense.list:
-#      register: opn_pre1
-#      failed_when: >
-#        'data' not in opn_pre1 or
-#        opn_pre1.data | length != 0
+    - name: Listing
+      ansibleguy.opnsense.list:
+        target: 'dnsmasq_general'
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | length == 0
 
-    - name: enable and configure all dnsmasq options
+    - name: Enable and configure all dnsmasq options
       ansibleguy.opnsense.dnsmasq_general:
-        enabled: 1
-        interfaces: ['wan','opt1']
-        regdhcp: True
-        regdhcpstatic: 1
-        domain_needed: 1
-        dns_port: 54 # config-based.. not in memory.. probably needs a reboot of the service?
-        dnssec: True
+        enabled: true
+        interfaces: ['opt1', 'opt2']
+        regdhcp: true
+        regdhcpstatic: true
+        domain_needed: true
+        dns_port: 2053
+        dnssec: true
         no_hosts: true
         dhcpfirst: true
         strict_order: true
@@ -40,52 +40,52 @@
         opn1.failed or
         not opn1.changed
 
-    - ansible.builtin.pause:
-
-    - name: change dnsmasq to different interface
+    - name: Nothing changed
       ansibleguy.opnsense.dnsmasq_general:
-        enabled: 1
-        interfaces: ['wan']
-#        regdhcp: True
-#        regdhcpstatic: 1
-#        domain_needed: 1
-#        dns_port: 54 # config-based.. not in memory.. probably needs a reboot of the service?
-#        dnssec: True
-#        no_hosts: true
-#        dhcpfirst: true
-#        strict_order: true
-#        strictbind: true
-#        no_private_reverse: true
-#        log_queries: true
-#        no_ident: false
-#        regdhcpdomain: 'test.domain'
-      register: opn1
+        enabled: true
+        interfaces: ['opt1', 'opt2']
+        regdhcp: true
+        regdhcpstatic: true
+        domain_needed: true
+        dns_port: 2053
+        dnssec: true
+        no_hosts: true
+        dhcpfirst: true
+        strict_order: true
+        strictbind: true
+        no_private_reverse: true
+        log_queries: true
+        no_ident: false
+        regdhcpdomain: 'test.domain'
+      register: opn3
       failed_when: >
-        opn1.failed or
-        not opn1.changed
+        opn3.failed or
+        opn3.changed
+      when: not ansible_check_mode
 
-    - ansible.builtin.pause:
-
-    - name: disable dnsmasq
+    - name: Changing
       ansibleguy.opnsense.dnsmasq_general:
-        enabled: false
+        enabled: true
+        interfaces: ['opt1']
+        regdhcp: true
+        regdhcpstatic: False
+        domain_needed: False
+        dns_port: 2054
+        dnssec: true
+        no_hosts: true
+        dhcpfirst: true
+        strict_order: true
+        strictbind: true
+        no_private_reverse: true
+        log_queries: false
+        no_ident: false
+        regdhcpdomain: 'test2.domain'
       register: opn2
       failed_when: >
         opn2.failed or
         not opn2.changed
+      when: not ansible_check_mode
 
-#    - name: Cleanup
-#      ansibleguy.opnsense.list:
-#
-#      loop:
-#        - 'ANSIBLE_TEST_1_1'
-#        - 'ANSIBLE_TEST_1_2'
-#      when: not ansible_check_mode
-#
-#    - name: Listing
-#      ansibleguy.opnsense.list:
-#      register: opn_clean1
-#      failed_when: >
-#        'data' not in opn_clean1 or
-#        opn_clean1.data | length != 0
-#      when: not ansible_check_mode
+    - name: Cleanup
+      ansibleguy.opnsense.dnsmasq_general:
+        enabled: false

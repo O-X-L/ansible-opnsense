@@ -2,9 +2,9 @@
 
 .. include:: ../_include/head.rst
 
-============
+=======
 Dnsmasq
-============
+=======
 
 **STATE**: unstable
 
@@ -19,7 +19,7 @@ This module allows you to manage the general requirements for the dnsmasq servic
 Contribution
 ************
 
-Thanks to `@kalsto <https://github.com/kalsto`_ for working on this module!
+Thanks to `@kalsto <https://github.com/kalsto>`_ for working on this module!
 
 ----
 
