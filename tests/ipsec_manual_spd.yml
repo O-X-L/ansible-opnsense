@@ -143,11 +143,11 @@
             opn7.failed or
             not opn7.changed
 
-        - name: Adding 2 - nothing changed (only child-name)
+        - name: Adding 2 - nothing changed
           ansibleguy.opnsense.ipsec_manual_spd:
             description: 'ANSIBLE_TEST_1_2'
             source: 192.168.1.0/24
-            connection_child: 'ANSIBLE_TEST_2_1'
+            connection_child: 'ANSIBLE_TEST_3_1 - ANSIBLE_TEST_2_1'
           register: opn8
           failed_when: >
             opn8.failed or
