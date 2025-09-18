@@ -8,12 +8,12 @@ IPSec
 
 **STATE**: stable
 
-**TESTS**: `ipsec_cert <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/ipsec_cert.yml>`_ |
-`ipsec_psk <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/ipsec_psk.yml>`_ |
-`ipsec_connection <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/ipsec_connection.yml>`_ |
-`ipsec_pool <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/ipsec_pool.yml>`_ |
-`ipsec_vti <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/ipsec_vti.yml>`_ |
-`ipsec_manual_spd <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/ipsec_manual_spd.yml>`_
+**TESTS**: `ipsec_cert <https://github.com/ansibleguy/collection_opnsense/blob/stable/tests/ipsec_cert.yml>`_ |
+`ipsec_psk <https://github.com/ansibleguy/collection_opnsense/blob/stable/tests/ipsec_psk.yml>`_ |
+`ipsec_connection <https://github.com/ansibleguy/collection_opnsense/blob/stable/tests/ipsec_connection.yml>`_ |
+`ipsec_pool <https://github.com/ansibleguy/collection_opnsense/blob/stable/tests/ipsec_pool.yml>`_ |
+`ipsec_vti <https://github.com/ansibleguy/collection_opnsense/blob/stable/tests/ipsec_vti.yml>`_ |
+`ipsec_manual_spd <https://github.com/ansibleguy/collection_opnsense/blob/stable/tests/ipsec_manual_spd.yml>`_
 
 **API Docs**: `Core - IPSec <https://docs.opnsense.org/development/api/core/ipsec.html>`_
 
@@ -210,7 +210,7 @@ ansibleguy.opnsense.ipsec_cert
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -266,7 +266,7 @@ ansibleguy.opnsense.ipsec_psk
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -301,7 +301,7 @@ ansibleguy.opnsense.ipsec_manual_spd
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:

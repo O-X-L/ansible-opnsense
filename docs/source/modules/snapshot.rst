@@ -8,7 +8,7 @@ Snapshot
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/snapshot.yml>`_
+**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/snapshot.yml>`_
 
 **API Docs**: `Core - Core <https://docs.opnsense.org/development/api/core/core.html>`_
 
@@ -56,7 +56,7 @@ Examples
       gather_facts: false
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:

@@ -8,8 +8,8 @@ High Availability
 
 **STATE**: stable
 
-**TESTS**: `ansibleguy.opnsense.hasync_general <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/hasync_general.yml>`_ |
-`ansibleguy.opnsense.hasync_service <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/hasync_service.yml>`_
+**TESTS**: `ansibleguy.opnsense.hasync_general <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/hasync_general.yml>`_ |
+`ansibleguy.opnsense.hasync_service <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/hasync_service.yml>`_
 
 **API Docs**: `Core - HASync <https://docs.opnsense.org/development/api/core/core.html>`_
 
@@ -81,7 +81,7 @@ ansibleguy.opnsense.hasync_general
       gather_facts: false
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -141,7 +141,7 @@ ansibleguy.opnsense.hasync_service
       gather_facts: false
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
 

@@ -8,7 +8,7 @@ Rule
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/rule.yml>`_
+**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/rule.yml>`_
 
 **API Docs**: `Core - Firewall <https://docs.opnsense.org/development/api/core/firewall.html>`_
 
@@ -118,7 +118,7 @@ Definition
     "tcp_flags_clear","list","false","\-","\-","TCP flags that must be cleared for this rule to match. Selection of: 'syn', 'ack', 'fin', 'rst', 'psh', 'urg', 'ece', 'cwr'"
     "schedule","string","false","\-","sched","Match packets during the given schedule"
     "tos","string","false","\-","\-","Match packets which have the given TOS/DCSP assigned"
-    "description","string","false","\-","desc","Description for the rule"
+    "description","string","false","\-","name,desc","Description for the rule"
     "state","string","false","'present'","st","State of the rule. One of: 'present', 'absent'"
     "enabled","boolean","false","true","en","If the rule should be en- or disabled"
     "uuid","string","false","\-","\-","Optionally you can supply the uuid of an existing rule"
@@ -156,7 +156,7 @@ Basic
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -232,7 +232,7 @@ With inventory config
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.rule:
@@ -316,7 +316,7 @@ You can also use the :ref:`ansibleguy.opnsense.rule_purge <modules_rule_multi>` 
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:

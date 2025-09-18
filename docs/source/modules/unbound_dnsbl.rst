@@ -63,7 +63,7 @@ Examples
       gather_facts: false
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -78,7 +78,7 @@ Examples
             type: atl
             # safesearch: false
             # lists: ['https://example.com/dns.blocklist']
-            # whitelists: ['ansibleguy.net']
+            # whitelists: ['opnsense.oxl.app']
             # blocklists: ['example.net']
             # wildcards: ['example.net']
             # address: 192.168.254.254

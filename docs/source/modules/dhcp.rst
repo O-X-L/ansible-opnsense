@@ -105,7 +105,7 @@ ansibleguy.opnsense.dhcp_general
         gather_facts: no
         module_defaults:
           group/ansibleguy.opnsense.all:
-            firewall: 'opnsense.template.ansibleguy.net'
+            firewall: 'opnsense.template.opnsense.oxl.app'
             api_credentials_file: '/home/guy/.secret/opn.key'
 
         tasks:
@@ -128,7 +128,7 @@ ansibleguy.opnsense.dhcp_reservation
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -177,7 +177,7 @@ ansibleguy.opnsense.dhcp_controlagent
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
@@ -205,7 +205,7 @@ ansibleguy.opnsense.dhcp_subnet
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:

@@ -8,15 +8,15 @@ Postfix
 
 **STATE**: stable
 
-**TESTS**: `postfix_general <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_general.yml>`_ |
-`postfix_domain <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_domain.yml>`_ |
-`postfix_recipient <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_recipient.yml>`_ |
-`postfix_recipientbcc <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_recipientbcc.yml>`_ |
-`postfix_sender <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_sender.yml>`_ |
-`postfix_senderbcc <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_senderbcc.yml>`_ |
-`postfix_sendercanonical <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_sendercanonical.yml>`_ |
-`postfix_headercheck <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_headercheck.yml>`_ |
-`postfix_address <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_address.yml>`_
+**TESTS**: `postfix_general <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_general.yml>`_ |
+`postfix_domain <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_domain.yml>`_ |
+`postfix_recipient <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_recipient.yml>`_ |
+`postfix_recipientbcc <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_recipientbcc.yml>`_ |
+`postfix_sender <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_sender.yml>`_ |
+`postfix_senderbcc <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_senderbcc.yml>`_ |
+`postfix_sendercanonical <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_sendercanonical.yml>`_ |
+`postfix_headercheck <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_headercheck.yml>`_ |
+`postfix_address <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/postfix_address.yml>`_
 
 **API Docs**: `Plugins - Postfix <https://docs.opnsense.org/development/api/plugins/postfix.html>`_
 
@@ -267,7 +267,7 @@ Examples
       gather_facts: false
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
@@ -325,38 +325,38 @@ Examples
 
         - name: Add Domain
           ansibleguy.opnsense.postfix_domain:
-            domainname: ansibleguy.net
-            # destination: mail.ansibleguy.net
+            domainname: opnsense.oxl.app
+            # destination: mail.opnsense.oxl.app
             # enable: true
 
         - name: Block Recipient
           ansibleguy.opnsense.postfix_recipient:
-            address: noreply@ansibleguy.net
+            address: noreply@opnsense.oxl.app
             action: REJECT
             # enable: true
 
         - name: Auto BCC Recipient
           ansibleguy.opnsense.postfix_recipient:
-            address: alice@ansibleguy.net
-            to: bob@ansibleguy.net
+            address: alice@opnsense.oxl.app
+            to: bob@opnsense.oxl.app
             # enable: true
 
         - name: Block Sender
           ansibleguy.opnsense.postfix_recipient:
-            address: internal-only@ansibleguy.net
+            address: internal-only@opnsense.oxl.app
             action: REJECT
             # enable: true
 
         - name: Auto BCC Sender
           ansibleguy.opnsense.postfix_recipient:
-            address: alice@ansibleguy.net
-            to: bob@ansibleguy.net
+            address: alice@opnsense.oxl.app
+            to: bob@opnsense.oxl.app
             # enable: true
 
         - name: Sender Canonical Rewriting
           ansibleguy.opnsense.postfix_sendercanonical:
             address: '@ansibleguy.com'
-            to: '@ansibleguy.net'
+            to: '@opnsense.oxl.app'
             # enable: true
 
         - name: Strip User-Agent header
@@ -367,8 +367,8 @@ Examples
 
         - name: Address Rewriting
           ansibleguy.opnsense.postfix_address:
-            address: root@ansibleguy.net
-            to: alice@ansibleguy.net
+            address: root@opnsense.oxl.app
+            to: alice@opnsense.oxl.app
             # enable: true
 
         - name: Listing jobs

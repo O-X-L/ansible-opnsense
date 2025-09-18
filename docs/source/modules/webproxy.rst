@@ -400,7 +400,7 @@ ansibleguy.opnsense.webproxy_general
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -447,7 +447,7 @@ ansibleguy.opnsense.webproxy_cache
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -488,7 +488,7 @@ ansibleguy.opnsense.webproxy_parent
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -526,7 +526,7 @@ ansibleguy.opnsense.webproxy_traffic
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -564,7 +564,7 @@ ansibleguy.opnsense.webproxy_forward
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -602,7 +602,7 @@ ansibleguy.opnsense.webproxy_acl
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -630,7 +630,7 @@ ansibleguy.opnsense.webproxy_acl
             allow: ['192.168.0.0/24', '172.16.1.0/29', '172.16.0.5']
             exclude: ['192.168.2.0/28', '172.16.1.5']
             banned: ['172.16.3.0/24', '172.16.2.5']
-            exclude_domains: ['ansibleguy.net']
+            exclude_domains: ['opnsense.oxl.app']
             block_domains: ['ansibleguy.com']
             block_user_agents: ['test1', 'test2']
             block_mime_types: ['video/flv', 'test']
@@ -656,7 +656,7 @@ ansibleguy.opnsense.webproxy_icap
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -697,7 +697,7 @@ ansibleguy.opnsense.webproxy_auth
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -735,7 +735,7 @@ ansibleguy.opnsense.webproxy_remote_acl
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -745,7 +745,7 @@ ansibleguy.opnsense.webproxy_remote_acl
         - name: Example
           ansibleguy.opnsense.webproxy_remote_acl:
             file: 'example'
-            url: 'https://example.ansibleguy.net/rac1'
+            url: 'https://example.opnsense.oxl.app/rac1'
             description: 'example ACL'
             # categories: []
             # username: ''
@@ -799,7 +799,7 @@ ansibleguy.opnsense.webproxy_pac_proxy
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -809,7 +809,7 @@ ansibleguy.opnsense.webproxy_pac_proxy
         - name: Example
           ansibleguy.opnsense.webproxy_pac_proxy:
             name: 'example'
-            url: 'example.ansibleguy.net:3128'
+            url: 'example.opnsense.oxl.app:3128'
             # type: 'proxy'
             # description: ''
             # reload: true
@@ -844,7 +844,7 @@ ansibleguy.opnsense.webproxy_pac_match
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -873,13 +873,13 @@ ansibleguy.opnsense.webproxy_pac_match
 
         - name: Adding hostname match
           ansibleguy.opnsense.webproxy_pac_match:
-            hostname: 'test.ansibleguy.net'
+            hostname: 'test.opnsense.oxl.app'
             type: 'hostname_matches'
             description: 'test'
 
         - name: Adding time match
           ansibleguy.opnsense.webproxy_pac_match:
-            hostname: 'test.ansibleguy.net'
+            hostname: 'test.opnsense.oxl.app'
             description: 'working hours'
             type: 'time_range'
             hour_from: 6
@@ -908,7 +908,7 @@ ansibleguy.opnsense.webproxy_pac_rule
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:

@@ -62,7 +62,7 @@ Examples
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:
@@ -82,9 +82,9 @@ Examples
 
         - name: Adding
           ansibleguy.opnsense.unbound_dot:
-            domain: 'dot.template.ansibleguy.net'
+            domain: 'dot.template.opnsense.oxl.app'
             target: '1.1.1.1'
-            verify: 'dot.template.ansibleguy.net'
+            verify: 'dot.template.opnsense.oxl.app'
 
         - name: Listing
           ansibleguy.opnsense.list:

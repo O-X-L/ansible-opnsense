@@ -4,12 +4,12 @@
 
 **TESTS**: [frr_bgp_general](https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/frr_bgp_general.yml) | 
 [frr_bgp_neighbor](https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/frr_bgp_neighbor.yml) | 
-[frr_bgp_prefix_list](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_bgp_prefix_list.yml) | 
-[frr_bgp_route_map](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_bgp_route_map.yml) | 
-[frr_bgp_community_list](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_bgp_community_list.yml) | 
-[frr_bgp_as_path](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_bgp_as_path.yml) |
-[frr_bgp_redistribution](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_bgp_redistribution.yml) |
-[frr_bgp_peer_group](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_bgp_peer_group.yml)
+[frr_bgp_prefix_list](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_prefix_list.yml) | 
+[frr_bgp_route_map](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_route_map.yml) | 
+[frr_bgp_community_list](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_community_list.yml) | 
+[frr_bgp_as_path](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_as_path.yml) |
+[frr_bgp_redistribution](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_redistribution.yml) |
+[frr_bgp_peer_group](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_peer_group.yml)
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
 
@@ -170,7 +170,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -218,7 +218,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.frr_bgp_neighbor:
@@ -307,7 +307,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -361,7 +361,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -418,7 +418,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -474,7 +474,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -527,7 +527,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -574,7 +574,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:

@@ -2,7 +2,7 @@
 
 **STATE**: stable
 
-**TESTS**: [frr_rip](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_rip.yml)
+**TESTS**: [frr_rip](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_rip.yml)
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
 
@@ -56,7 +56,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:

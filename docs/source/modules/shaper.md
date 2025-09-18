@@ -2,9 +2,9 @@
 
 **STATE**: stable
 
-**TESTS**: [shaper_pipe](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/shaper_pipe.yml) | 
-[shaper_queue](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/shaper_queue.yml) | 
-[shaper_rule](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/shaper_rule.yml)
+**TESTS**: [shaper_pipe](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/shaper_pipe.yml) | 
+[shaper_queue](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/shaper_queue.yml) | 
+[shaper_rule](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/shaper_rule.yml)
 
 **API Docs**: [Core - Traffic Shaper](https://docs.opnsense.org/development/api/core/trafficshaper.html)
 
@@ -106,7 +106,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -169,7 +169,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -234,7 +234,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:

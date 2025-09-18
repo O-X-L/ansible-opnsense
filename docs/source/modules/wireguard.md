@@ -83,7 +83,7 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
   tasks:
@@ -103,7 +103,7 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
   tasks:
@@ -123,7 +123,7 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -148,7 +148,7 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
     - name: Adding peer
       ansibleguy.opnsense.wireguard_peer:
         name: 'test1'
-        endpoint: 'wg.template.ansibleguy.net'
+        endpoint: 'wg.template.opnsense.oxl.app'
         allowed_ips: ['10.200.0.1/32']
         public_key: 'gTuhGXA28/qRSLPnH3szr2+A4l3C4tKlUsOORV63+SE='
 
@@ -179,7 +179,7 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
