@@ -21,7 +21,7 @@
     - name: Enable and configure all dnsmasq options
       ansibleguy.opnsense.dnsmasq_general:
         enabled: true
-        interfaces: ['opt1','opt2']
+        interfaces: ['opt1', 'opt2']
         regdhcp: true
         regdhcpstatic: true
         domain_needed: true
@@ -43,7 +43,7 @@
     - name: Nothing changed
       ansibleguy.opnsense.dnsmasq_general:
         enabled: true
-        interfaces: ['opt1','opt2']
+        interfaces: ['opt1', 'opt2']
         regdhcp: true
         regdhcpstatic: true
         domain_needed: true
