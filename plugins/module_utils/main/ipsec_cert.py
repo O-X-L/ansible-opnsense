@@ -1,3 +1,4 @@
+import re
 from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
@@ -51,7 +52,10 @@ class KeyPair(BaseModule):
                 self.m.fail_json("The provided 'public_key' has an invalid format!")
 
             priv_start, priv_end = '-----BEGIN (RSA | EC )?PRIVATE KEY-----', '-----END (RSA | EC )?PRIVATE KEY----- *$'
-            if re.match(priv_start, self.p['private_key']) is None or re.search(priv_end, self.p['private_key']) is None:
+            if (
+                re.match(priv_start, self.p['private_key']) is None or
+                re.search(priv_end, self.p['private_key']) is None
+            ):
                 self.m.fail_json(
                     "The provided 'private_key' has an invalid format - should be "
                     f"'{self.p['type'].upper()} PRIVATE KEY'!"

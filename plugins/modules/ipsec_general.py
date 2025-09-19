@@ -30,7 +30,8 @@ def run_module():
         ),
         disable_vpn_rules=dict(
           type='bool', required=False, default=False,
-          description='This option only applies to legacy tunnel configurations, connections do require manual firewall rules being setup',
+          description='This option only applies to legacy tunnel configurations, connections do require manual '
+                      'firewall rules being setup',
         ),
         passthrough_networks=dict(
           type='list', elements='str', required=False, default=[],
@@ -38,7 +39,8 @@ def run_module():
         ),
         authentication=dict(
           type='list', elements='str', required=False, default=[],
-          description='Select authentication methods to use, leave empty if no challenge response authentication is needed',
+          description='Select authentication methods to use, leave empty if no challenge response authentication '
+                      'is needed',
         ),
         local_group=dict(
           type='str', required=False,
@@ -77,7 +79,8 @@ def run_module():
         ),
         charon_threads=dict(
           type='int', required=False, default=16,
-          description='Number of worker threads,several of these are reserved for long running tasks in internal modules and plugins',
+          description='Number of worker threads, several of these are reserved for long running tasks '
+                      'in internal modules and plugins',
         ),
         charon_ikesa_table_size=dict(
           type='int', required=False, default=32,
@@ -93,7 +96,7 @@ def run_module():
         ),
         charon_ignore_acquire_ts=dict(
           type='bool', required=False, default=True,
-          description='Prefix each log entry with the connection name and a unique numerical identifier for each IKE_SA',
+          description='Prefix each log entry with the connection name and a unique identifier for each IKE_SA',
         ),
         charon_make_before_break=dict(
           type='bool', required=False, default=False,
@@ -131,7 +134,8 @@ def run_module():
         # Syslog
         syslog_log_name=dict(
           type='bool', required=False, default=True,
-          description='Prefix each log entry with the connection name and a unique numerical identifier for each IKE_SA',
+          description='Prefix each log entry with the connection name and a unique numerical identifier '
+                      'for each IKE_SA',
         ),
         syslog_log_level=dict(
           type='bool', required=False, default=False,
