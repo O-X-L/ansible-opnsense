@@ -152,7 +152,7 @@ ansibleguy.opnsense.ipsec_cert
     "name","string","true","\-","\-","Name of the key-pair - used to identify the entry."
     "public_key","string","false for state changes, else true","\-","pub_key, pub","\-"
     "private_key","string","false for state changes, else true","\-","priv_key, priv","\-"
-    "type","string","false","rsa","\-","Type of the key. Currently the only option is 'rsa'"
+    "type","string","false","rsa","\-","Type of the key. One of: 'rsa' or 'ecdsa'"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.ipsec_psk

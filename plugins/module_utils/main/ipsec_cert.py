@@ -50,11 +50,11 @@ class KeyPair(BaseModule):
                     self.p['public_key'].find(pub_end) == -1:
                 self.m.fail_json("The provided 'public_key' has an invalid format!")
 
-            priv_start, priv_end = '-----BEGIN RSA PRIVATE KEY-----', '-----END RSA PRIVATE KEY-----'
-            if self.p['private_key'].find(priv_start) == -1 or self.p['private_key'].find(priv_end) == -1:
+            priv_start, priv_end = '-----BEGIN (RSA | EC )?PRIVATE KEY-----', '-----END (RSA | EC )?PRIVATE KEY----- *$'
+            if re.match(priv_start, self.p['private_key']) is None or re.search(priv_end, self.p['private_key']) is None:
                 self.m.fail_json(
                     "The provided 'private_key' has an invalid format - should be "
-                    "'RSA PRIVATE KEY'!"
+                    f"'{self.p['type'].upper()} PRIVATE KEY'!"
                 )
 
             self.p['public_key'] = self.p['public_key'].strip()
