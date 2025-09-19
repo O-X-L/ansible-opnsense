@@ -50,6 +50,7 @@
     - name: Filtered purge (single)
       ansibleguy.opnsense.rule:
         multi_control:
+          purge_all: true
           purge_filter:
             destination_net: '192.168.10.0/24'
           purge_action: 'disable'
@@ -112,6 +113,7 @@
     - name: Filtered purge (single)
       ansibleguy.opnsense.rule:
         multi_control:
+          purge_all: true
           purge_filter:
             destination_net: '192.168.10.0/24'
       when: not ansible_check_mode
@@ -177,21 +179,29 @@
             destination_invert: true
             destination_net: '192.168.10.0/24'
             action: 'block'
+
           - name: 'ANSIBLE_TEST_3_2'
             source_net: '192.168.0.0/24'
             destination_net: '192.168.10.0/24'
             destination_port: 443
             protocol: 'TCP'
             interface: 'lan'
+            action: 'pass'
+
           - name: 'ANSIBLE_TEST_3_3'
             source_invert: true
             source_net: 'bogons'
             action: 'block'
       when: not ansible_check_mode
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        not opn8.changed
 
     - name: Filtered purge (multiple)
       ansibleguy.opnsense.rule:
         multi_control:
+          purge_all: true
           purge_filter:
             ip_protocol: 'inet'
             action: 'block'

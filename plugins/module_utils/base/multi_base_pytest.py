@@ -274,6 +274,16 @@ def test_multi_module_base(mocker):
         {'name': 'match'},  # entry
         True, False, False,
     ),
+    (
+        {'ip_protocol': 'inet', 'action': 'block'},  # filter
+        {'name': 'test', 'destination_net': '1.1.1.1', 'ip_protocol': 'inet', 'action': 'block'},  # entry
+        False, False, True,
+    ),
+    (
+        {'ip_protocol': 'inet', 'action': 'block'},  # filter
+        {'name': 'test', 'destination_net': '1.1.1.1', 'ip_protocol': 'inet', 'action': 'pass'},  # entry
+        False, False, False,
+    ),
 ])
 def test_multi_module_purge_filter(mocker, purge_filter, entry, partial, invert, result):
     pytest_mock_http_responses(

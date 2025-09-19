@@ -143,7 +143,6 @@
         local_port: 10800
         remote: '192.168.5.1'
         remote_port: 10801
-        interface: 'lan'
       register: opn8
       failed_when: >
         opn8.failed or
@@ -156,7 +155,6 @@
         local_port: 10900
         remote: '192.168.5.1'
         remote_port: 10901
-        interface: 'lan'
       register: opn9
       failed_when: >
         opn9.failed or

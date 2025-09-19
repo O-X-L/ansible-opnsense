@@ -243,8 +243,8 @@ class MultiModule:
 
         if self.field_id is None:
             fallback = None
-            if 'match_fields' in self.p and len(self.p['match_fields']) > 0:
-                if not isinstance(self.p['match_fields'], list):
+            if 'match_fields' in self.p and self.p['match_fields'] is not None:
+                if len(self.p['match_fields']) > 0 and not isinstance(self.p['match_fields'], list):
                     self.p['match_fields'] = [self.p['match_fields']]
 
                 fallback = self.p['match_fields'][0]
@@ -434,18 +434,18 @@ class MultiModule:
         return False
 
     def _matches_purge_filter_partial(self, entry_cnf: dict) -> bool:
+        matches = []
         for k, v in self.mc['purge_filter'].items():
-            if str(entry_cnf[k]).find(str(v)) != -1:
-                return True
+            matches.append(str(entry_cnf[k]).find(str(v)) != -1)
 
-        return False
+        return all(matches)
 
     def _matches_purge_filter_full(self, entry_cnf: dict) -> bool:
+        matches = []
         for k, v in self.mc['purge_filter'].items():
-            if str(entry_cnf[k]) == str(v):
-                return True
+            matches.append(str(entry_cnf[k]) == str(v))
 
-        return False
+        return all(matches)
 
     def _matches_purge_filter(self, entry_cnf: dict) -> bool:
         # include in purge if matching & 'not inverted' - else exclude

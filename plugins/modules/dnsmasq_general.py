@@ -77,7 +77,7 @@ def run_module():
                         'rather than all at once in parallel.'
         ),
         strictbind=dict(
-            type='bool', required=False,
+            type='bool', required=False, default=False,
             description='By default we bind the wildcard address, even when listening on some interfaces. '
                         'Requests that shouldnt be handled are discarded, this has the advantage of working '
                         'even when interfaces come and go and change address. '

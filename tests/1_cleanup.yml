@@ -18,7 +18,6 @@
         multi_control:
           purge_all: true
         match_fields: ['description']
-        key_field: 'description'
 
     - name: Cleanup Aliases
       ansibleguy.opnsense.alias:
