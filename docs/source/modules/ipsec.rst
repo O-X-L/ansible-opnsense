@@ -80,6 +80,7 @@ Module alias: ansibleguy.opnsense.ipsec_network
 
     "name","string","true","\-","\-","Unique pool/network name"
     "network","string","false for state changes, else true","\-","net, cidr","Pool network in CIDR format"
+    "dns","list of strings","false","\-","\-","DNS servers to push as configuration payload. Accepts multiple IPv4/IPv6 addresses"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.ipsec_child
@@ -329,6 +330,41 @@ ansibleguy.opnsense.ipsec_connection
         - name: Printing
           ansible.builtin.debug:
             var: existing_ipsec_connections.data
+
+----
+
+ansibleguy.opnsense.ipsec_pool
+==============================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: false
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+        ansibleguy.opnsense.list:
+          target: 'ipsec_pool'
+
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.ipsec_pool:
+            name: IPSec POOL
+            network: 192.168.1.0/28
+            # dns:
+            # state: 'absent'
+            # debug: false
+
+        - name: Listing IPSec pools
+          ansibleguy.opnsense.list:
+          #  target: 'ipsec_pool'
+          register: existing_ipsec_pool
+
+        - name: Printing
+          ansible.builtin.debug:
+            var: existing_ipsec_pool.data
 
 ----
 
