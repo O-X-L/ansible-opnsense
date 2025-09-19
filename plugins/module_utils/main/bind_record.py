@@ -9,17 +9,21 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main im
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
     is_ip4, is_ip6, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.bind_domain import Domain
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import ModuleSoftError
 
 
 class Record(BaseModule):
+    MULTI_DIFF_KEY = 'name'
     CMDS = {
         'add': 'addRecord',
         'del': 'delRecord',
         'set': 'setRecord',
-        'search': 'get',
+        'search': 'searchRecord',
+        'detail': 'getRecord',
         'toggle': 'toggleRecord',
     }
-    API_KEY_PATH = 'record.records.record'
+    API_KEY_PATH = 'record'
     API_MOD = 'bind'
     API_CONT = 'record'
     API_CONT_REL = 'service'
@@ -64,11 +68,9 @@ class Record(BaseModule):
                     self.m.fail_json(f"Value '{self.p['value']}' is not a valid IPv6-address!")
 
         # custom matching as dns round-robin allows for multiple records to match..
+        self.search_call_domains()
         if self.existing_entries is None:
             self.existing_entries = self.get_existing()
-
-        if self.existing_domains is None:
-            self.existing_domains = self.search_call_domains()
 
         if len(self.existing_domains) == 0:
             if self.p['state'] == 'present':
@@ -78,7 +80,7 @@ class Record(BaseModule):
             domain_found = False
             if self.existing_domain_mapping is None:
                 for uuid, dom in self.existing_domains.items():
-                    if dom['domainname'] == self.p['domain']:
+                    if dom['domainname'] == self.p['domain'] or uuid == self.p['domain']:
                         self.p['domain'] = uuid
                         domain_found = True
                         break
@@ -103,7 +105,7 @@ class Record(BaseModule):
             self.exists_rr = len(self.existing) > 1
             self.exists = len(self.existing) == 1
 
-            if self.exists_rr:
+            if self.exists_rr or self.p.get('round_robin', False):
                 self.r['diff']['before'] = self.existing
 
             else:
@@ -114,10 +116,35 @@ class Record(BaseModule):
 
         self._base_check()
 
-    def search_call_domains(self) -> dict:
-        return self.s.get(cnf={
-            **self.call_cnf, **{'command': self.CMDS['search'], 'controller': 'domain'}
-        })['domain']['domains']['domain']
+    def _search_call(self) -> list:
+        self.search_call_domains()
+
+        existing = []
+        for uuid in self.existing_domains:
+            existing.extend(self.b.api_search_post(
+                cnf={
+                    'module': self.API_MOD,
+                    'controller': self.API_CONT,
+                    'command': self.CMDS['search'],
+                },
+                data={'domain': uuid}
+            ))
+
+        return existing
+
+    def search_call_domains(self):
+        if self.existing_domains is not None:
+            return
+
+        data = self.s.get(cnf={
+            'module': Domain.API_MOD,
+            'controller': Domain.API_CONT,
+            'command': Domain.CMDS['search'],
+        })
+        for k in Domain.API_KEY_PATH.split('.'):
+            data = data[k]
+
+        self.existing_domains = data
 
     def _error(self, msg: str, verification: bool = True) -> None:
         if (verification and self.fail_verify) or (not verification and self.fail_process):

@@ -5,6 +5,8 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.mock_pyte
 
 def test_build_multi_mod_args():
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+        OPN_MOD_ARGS
 
     mod_args = {
         'arg1': {'a': 'b'},
@@ -41,6 +43,10 @@ def test_build_multi_mod_args():
     assert 'purge_filter_invert' in mc
     assert 'purge_filter_partial' in mc
     assert 'purge_all' in mc
+
+    mo = a['multi']['options']
+    for k in OPN_MOD_ARGS:
+        assert k in mo
 
 
 def test_multi_module_base(mocker):

@@ -235,6 +235,8 @@ Optional
 
     Can be used to validate integer values provided by the user.
 
+    Client-side validation should **only be used if necessary**! It leads to maintenance-effort whenever the server-side values change.
+
     Example:
 
     .. code-block:: python3
@@ -247,6 +249,8 @@ Optional
 * :code:`STR_VALIDATIONS` and :code:`STR_LEN_VALIDATIONS`
 
     Can be used to validate string values provided by the user.
+
+    Client-side validation should **only be used if necessary**! It leads to maintenance-effort whenever the server-side values change.
 
     Example:
 
@@ -488,6 +492,7 @@ Modes have to be set-up to support mass-management!
 
     This should only be used if there are built-in entries that should be protected.
 
+3. The result-difference will use the :code:`FIELD_ID` or :code:`MULTI_DIFF_KEY` as key. As fallback the first field inside :code:`match_fields` is used - but this is discouraged.
 
 ----
 

@@ -83,6 +83,7 @@ run_test_soft 'system' 1
 run_test_soft 'package' 1
 run_test_soft '1_dependencies' 0
 run_test_soft 'alias' 1
+run_test_soft '1_multi' 1
 run_test_soft 'alias_multi' 1
 run_test_soft 'alias_purge' 0
 run_test_soft 'rule' 1

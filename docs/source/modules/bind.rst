@@ -14,7 +14,7 @@ DNS - BIND
 `bind_acl <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/bind_acl.yml>`_ |
 `bind_domain <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/bind_domain.yml>`_ |
 `bind_record <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/bind_record.yml>`_ |
-`bind_record_multi <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/bind_record_multi.yml>`_
+`bind_record <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/bind_record.yml>`_
 
 **API Docs**: `Plugins - Bind <https://docs.opnsense.org/development/api/plugins/bind.html>`_
 
@@ -158,23 +158,10 @@ ansibleguy.opnsense.bind_record
     "round_robin","boolean","false","false","\-","If multiple records with the same domain/name/type combination exist - the module will only execute 'state=absent' if set to 'false'. To create multiple ones set this to 'true'. Records will only be created, NOT UPDATED! (no matching is done)"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.bind_record_multi
-=====================================
+ansibleguy.opnsense.bind_record (multi)
+=======================================
 
-.. modules_bind_record_multi:
-
-..  csv-table:: Definition
-    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
-    :widths: 15 10 10 10 10 45
-
-    "records","dictionary","true","\-","record","Records to process. Format of the dictionary: {'domain1': [{'name': 'record1', 'value': '192.168.0.1'}, {'name': 'record2', 'type': 'TXT', 'value': 'random'}]} (*dictionary of domains with a list of record-dictionaries*)"
-    "match_fields","list","false","['domain', 'name', 'type']","\-","Fields that are used to match configured records with the running config - if any of those fields are changed, the module will think it's a new record. At least one of: 'domain', 'name', 'type', 'value'"
-    "fail_verification","boolean","false","false","fail_verify","Fail module if single record fails the verification"
-    "fail_processing","boolean","false","true","fail_proc","Fail module if single record fails to be processed"
-    "state","string","false","'present'","\-","Options: 'present', 'absent'"
-    "enabled","boolean","false","true","\-","If all records should be en- or disabled"
-    "output_info","boolean","false","false","info","Enable to show some information on processing at runtime. Will be hidden if the tasks 'no_log' parameter is set to 'true'."
-    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+See: :ref:`Mass Management Arguments <modules_multi>`
 
 ----
 
@@ -184,7 +171,7 @@ Info
 Mass-Manage
 ===========
 
-If you want to mass-manage DNS records - use the ansibleguy.opnsense.bind_record_multi module. It scales better for that use-case!
+If you want to mass-manage DNS records - use the ansibleguy.opnsense.bind_record module. It scales better for that use-case!
 
 For other modules:
 
@@ -426,7 +413,7 @@ ansibleguy.opnsense.bind_domain
       tasks:
         - name: Example
           ansibleguy.opnsense.bind_domain:
-            name: 'example.ansibleguy'
+            name: 'example.opnsense.oxl.app'
             # enabled: true
             # mode: 'primary'
             # transfer_key_algo: ''
@@ -446,7 +433,7 @@ ansibleguy.opnsense.bind_domain
 
         - name: Adding
           ansibleguy.opnsense.bind_domain:
-            name: 'test1.ansibleguy'
+            name: 'test1.opnsense.oxl.app'
             transfer_key_algo: 'hmac-sha512'
             transfer_key_name: 'test'
             transfer_key: "{{ 'randomsecret' | b64encode }}"
@@ -455,7 +442,7 @@ ansibleguy.opnsense.bind_domain
 
         - name: Changing
           ansibleguy.opnsense.bind_domain:
-            name: 'test1.ansibleguy'
+            name: 'test1.opnsense.oxl.app'
             transfer_key_algo: 'hmac-sha512'
             transfer_key_name: 'test'
             transfer_key: "{{ 'randomsecretNEW' | b64encode }}"
@@ -465,7 +452,7 @@ ansibleguy.opnsense.bind_domain
 
         - name: Disabling
           ansibleguy.opnsense.bind_domain:
-            name: 'test1.ansibleguy'
+            name: 'test1.opnsense.oxl.app'
             enabled: false
 
         - name: Listing
@@ -479,7 +466,7 @@ ansibleguy.opnsense.bind_domain
 
         - name: Removing
           ansibleguy.opnsense.bind_domain:
-            name: 'test1.ansibleguy'
+            name: 'test1.opnsense.oxl.app'
             state: 'absent'
 
 ansibleguy.opnsense.bind_record
@@ -500,7 +487,7 @@ ansibleguy.opnsense.bind_record
       tasks:
         - name: Example
           ansibleguy.opnsense.bind_record:
-            domain: 'template.ansibleguy'
+            domain: 'template.opnsense.oxl.app'
             name: 'example'
             # value: ''
             # type: 'A'
@@ -511,19 +498,19 @@ ansibleguy.opnsense.bind_record
 
         - name: Adding
           ansibleguy.opnsense.bind_record:
-            domain: 'template.ansibleguy'
+            domain: 'template.opnsense.oxl.app'
             name: 'test1'
             value: '192.168.0.1'
 
         - name: Changing
           ansibleguy.opnsense.bind_record:
-            domain: 'template.ansibleguy'
+            domain: 'template.opnsense.oxl.app'
             name: 'test1'
             value: '192.168.1.1'
 
         - name: Disabling
           ansibleguy.opnsense.bind_record:
-            domain: 'template.ansibleguy'
+            domain: 'template.opnsense.oxl.app'
             name: 'test1'
             value: '192.168.1.1'
             enabled: false
@@ -539,12 +526,12 @@ ansibleguy.opnsense.bind_record
 
         - name: Removing
           ansibleguy.opnsense.bind_record:
-            domain: 'template.ansibleguy'
+            domain: 'template.opnsense.oxl.app'
             name: 'test1'
             state: 'absent'
 
-ansibleguy.opnsense.bind_record_multi
-=====================================
+ansibleguy.opnsense.bind_record (multi)
+=======================================
 
 .. code-block:: yaml
 
@@ -555,82 +542,121 @@ ansibleguy.opnsense.bind_record_multi
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
+        ansibleguy.opnsense.bind_record:
+          match_fields: ['domain', 'name', 'type']
+  
       tasks:
         - name: Example
-          ansibleguy.opnsense.bind_record_multi:
+          ansibleguy.opnsense.bind_record:
             records:
-              'template.ansibleguy':  # domain
-                - name: 'example'
-                  value: '192.168.1.1'
-            # fail_verification: false
-            # fail_processing: false
-            # enabled: true
+              - name: 'example'
+                domain: 'template.opnsense.oxl.app'
+                value: '192.168.1.1'
+
+            multi_control:
+              # fail_verify: false
+              # fail_processing: false
+              # enabled: true
+              # output_info: false
+
             # match_fields: ['domain', 'name', 'type']
             # reload: true
-            # output_info: false
 
         - name: Adding
-          ansibleguy.opnsense.bind_record_multi:
+          ansibleguy.opnsense.bind_record:
             records:
-              'template.ansibleguy':
-                - name: 'test1'
-                  value: '192.168.1.1'
-                - name: 'test1'
-                  type: 'TXT'
-                  value: 'random'
-                - name: 'test2'
-                  value: '192.168.2.1'
-                - name: 'test3'
-                  value: '192.168.3.1'
-                - name: 'test4'
-                  type: 'CNAME'
-                  value: 'test1.test3.ansibleguy'
+              - name: 'test1'
+                domain: 'template.opnsense.oxl.app'
+                value: '192.168.1.1'
+
+              - name: 'test1'
+                domain: 'template.opnsense.oxl.app'
+                type: 'TXT'
+                value: 'random'
+
+              - name: 'test2'
+                domain: 'template.opnsense.oxl.app'
+                value: '192.168.2.1'
+
+              - name: 'test3'
+                domain: 'template.opnsense.oxl.app'
+                value: '192.168.3.1'
+
+              - name: 'test4'
+                domain: 'template.opnsense.oxl.app'
+                type: 'CNAME'
+                value: 'test1.test3.opnsense.oxl.app'
 
         - name: Changing
-          ansibleguy.opnsense.bind_record_multi:
+          ansibleguy.opnsense.bind_record:
             records:
-              'template.ansibleguy':
-                - name: 'test1'
-                  value: '192.168.1.2'
-                - name: 'test1'
-                  type: 'TXT'
-                  value: 'random_new'
-                - name: 'test2'
-                  value: '192.168.2.1'
-                  enabled: false
-                - name: 'test3'
-                  state: 'absent'
-                - name: 'test4'
-                  type: 'CNAME'
-                  value: 'test2.test3.ansibleguy'
+              - name: 'test1'
+                domain: 'template.opnsense.oxl.app'
+                value: '192.168.1.2'
+
+              - name: 'test1'
+                domain: 'template.opnsense.oxl.app'
+                type: 'TXT'
+                value: 'random_new'
+
+              - name: 'test2'
+                domain: 'template.opnsense.oxl.app'
+                value: '192.168.2.1'
+                enabled: false
+
+              - name: 'test3'
+                domain: 'template.opnsense.oxl.app'
+                state: 'absent'
+
+              - name: 'test4'
+                domain: 'template.opnsense.oxl.app'
+                type: 'CNAME'
+                value: 'test2.test3.opnsense.oxl.app'
 
         - name: Disabling all
-          ansibleguy.opnsense.bind_record_multi:
+          ansibleguy.opnsense.bind_record:
             records:
-              'template.ansibleguy':
-                - name: 'test1'
-                  value: '192.168.1.2'
-                - name: 'test1'
-                  type: 'TXT'
-                  value: 'random_new'
-                - name: 'test2'
-                  value: '192.168.2.1'
-                - name: 'test3'
-                  state: 'absent'
-                - name: 'test4'
-                  type: 'CNAME'
-                  value: 'test2.test3.ansibleguy'
-            enabled: false
+              - name: 'test1'
+                domain: 'template.opnsense.oxl.app'
+                value: '192.168.1.2'
+
+              - name: 'test1'
+                domain: 'template.opnsense.oxl.app'
+                type: 'TXT'
+                value: 'random_new'
+
+              - name: 'test2'
+                domain: 'template.opnsense.oxl.app'
+                value: '192.168.2.1'
+
+              - name: 'test3'
+                domain: 'template.opnsense.oxl.app'
+                state: 'absent'
+
+              - name: 'test4'
+                domain: 'template.opnsense.oxl.app'
+                type: 'CNAME'
+                value: 'test2.test3.opnsense.oxl.app'
+
+            multi_control:
+              enabled: false
 
         - name: Removing all
-          ansibleguy.opnsense.bind_record_multi:
+          ansibleguy.opnsense.bind_record:
             records:
-              'template.ansibleguy':
-                - 'test1'
-                - name: 'test1'
-                  type: 'TXT'
-                - 'test2'
-                - 'test3'
-                - name: 'test4'
-                  type: 'CNAME'
-            state: 'absent'
+              - name: 'test1'
+                domain: 'template.opnsense.oxl.app'
+                type: 'TXT'
+
+              - name: 'test2'
+                domain: 'template.opnsense.oxl.app'
+
+              - name: 'test3'
+                domain: 'template.opnsense.oxl.app'
+
+              - name: 'test4'
+                domain: 'template.opnsense.oxl.app'
+                type: 'CNAME'
+
+            multi_control:
+              state: 'absent'

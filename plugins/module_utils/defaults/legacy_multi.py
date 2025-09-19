@@ -41,3 +41,10 @@ FAIL_MOD_ARG_MULTI = dict(
 INFO_MOD_ARG = dict(
     output_info=dict(type='bool', required=False, default=False, aliases=['info']),
 )
+
+RULE_MOD_ARG_KEY_FIELD = dict(
+    key_field=dict(
+        type='str', required=True, choices=['sequence', 'description', 'uuid'], aliases=['key'],
+        description='What field is used as key of the provided dictionary'
+    )
+)

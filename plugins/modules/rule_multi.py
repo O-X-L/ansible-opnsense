@@ -13,11 +13,11 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
 
 try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.legacy_multi import \
-        STATE_MOD_ARG_MULTI, FAIL_MOD_ARG_MULTI, INFO_MOD_ARG
+        STATE_MOD_ARG_MULTI, FAIL_MOD_ARG_MULTI, INFO_MOD_ARG, RULE_MOD_ARG_KEY_FIELD
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, RELOAD_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.rule import \
-        RULE_MATCH_FIELDS_ARG, RULE_MOD_ARG_KEY_FIELD
+        RULE_MATCH_FIELDS_ARG
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()

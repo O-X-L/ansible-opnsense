@@ -18,7 +18,7 @@ try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import \
         build_multi_mod_args
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-        RELOAD_MOD_ARG_DEF_FALSE, OPN_MOD_ARGS, STATE_MOD_ARG
+        RELOAD_MOD_ARG_DEF_FALSE, OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.rule import RULE_MOD_ARGS
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.rule import Rule
 
@@ -31,12 +31,28 @@ except MODULE_EXCEPTIONS:
 
 
 def run_module():
+    entry_args = RULE_MOD_ARGS
+    entry_multi_args = build_multi_mod_args(
+        mod_args=entry_args,
+        aliases=['rules'],
+    )
+
     module_args = dict(
-        **RULE_MOD_ARGS,
-        **build_multi_mod_args(
-           mod_args=RULE_MOD_ARGS,
-           aliases=['rules']
-        ),
+        **entry_args,
+        **entry_multi_args,
+        **OPN_MOD_ARGS,
+        **RELOAD_MOD_ARG,
+    )
+
+    module = AnsibleModule(
+        argument_spec=module_args,
+        supports_check_mode=True,
+        mutually_exclusive=[
+            ('description', 'multi'), ('description', 'multi_purge'), ('description', 'multi_control.purge_all')
+        ],
+        required_one_of=[
+            ('description', 'multi', 'multi_purge', 'multi_control.purge_all'),
+        ],
     )
 
     result = dict(
@@ -47,18 +63,13 @@ def run_module():
         },
     )
 
-    module = AnsibleModule(
-        argument_spec=module_args,
-        supports_check_mode=True,
-    )
-
     if is_multi_module_call(module):
         module_multi_wrapper(
             module=module,
             result=result,
             obj=Rule,
             kind='rule',
-            module_args=module_args,
+            entry_args=entry_multi_args,
         )
 
     else:

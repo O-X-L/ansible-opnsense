@@ -12,6 +12,11 @@
     ansibleguy.opnsense.list:
       target: 'alias'
 
+    ansibleguy.opnsense.alias:
+      multi_control:
+        fail_verify: true
+        fail_process: true
+
   environment:
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 

@@ -1,6 +1,11 @@
 ---
 
-- name: Testing Multiple Aliases
+# these tests should cover the main functionality of the abstracted mass management
+#   module-specific logic should be tested by dedicated test-cases (<module>_multi.yml)
+
+# low-level checks should be done via unit-tests: module_utils/base/multi_pytest.py
+
+- name: Testing Mass Management
   hosts: localhost
   gather_facts: no
   module_defaults:

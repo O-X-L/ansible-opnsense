@@ -6,6 +6,8 @@
 1 - Mass Management
 ===================
 
+**Tests**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/1_multi.yml>`_
+
 This Ansible Collection has the ability to mass-manage many entries at once.
 
 That can improve the processing speed as it can improve the amount of API calls needed.
@@ -25,8 +27,7 @@ General
     :widths: 15 10 10 10 10 45
 
     "multi_control.fail_verify","boolean","false","false","multi_control.fail_verification","Fail module if a single entry fails the verification"
-    "multi_control.fail_process","boolean","false","false","multi_control.fail_proc, multi_control.fail_processing","Fail module if a single entry fails to be processed"
-    "multi_control.fail_verify","boolean","false","false","multi_control.fail_verification","Fail module if a single entry fails the verification"
+    "multi_control.fail_process","boolean","false","false","multi_control.fail_proc, multi_control.fail_processing","Fail module if a single entry fails to be processed. By default you will see a warning"
     "multi_control.output_info","boolean","false","false","multi_control.info","Increase output verbosity"
 
 Adding & Modifying
@@ -104,3 +105,28 @@ Examples
               purge_all: true
               purge_filter:
                 type: 'dynipv6host'
+
+Troubleshooting
+===============
+
+To simplify troubleshooting of bad configuration there are some troubleshooting parameters available.
+
+- info
+- debug overall
+- debug per rule
+
+.. code-block:: yaml
+
+    - name: Changing
+      ansibleguy.opnsense.rule:
+        rules: {...}
+
+        multi_control:
+          # if the module should fail if one rule has a bad config (default behaviour)
+          fail_verify: true
+
+          # to output information of processed rules
+          output_info: true
+
+          # output verbose information about requests and processing
+          debug: true

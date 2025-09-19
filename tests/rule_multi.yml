@@ -9,11 +9,14 @@
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.rule:
-      match_fields: ['description']
-
     ansibleguy.opnsense.list:
       target: 'rule'
+
+    ansibleguy.opnsense.rule:
+      match_fields: ['description']
+      multi_control:
+        fail_verify: true
+        fail_process: true
 
   environment:
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"

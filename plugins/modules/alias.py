@@ -15,7 +15,7 @@ try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.wrapper import \
         module_wrapper, is_multi_module_call, module_multi_wrapper
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import \
-        build_multi_mod_args
+        build_multi_mod_args, MultiModuleCallbacks
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
         RELOAD_MOD_ARG_DEF_FALSE, OPN_MOD_ARGS, STATE_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.alias import Alias
@@ -30,20 +30,22 @@ except MODULE_EXCEPTIONS:
 # EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/alias.html'
 
 
-def _multi_callback_build(entry: dict) -> dict:
-    entry['content'] = list(map(str, ensure_list(entry['content'])))
-    if 'updatefreq_days' in entry:
-        dec = 1
-        if str(entry['updatefreq_days']).endswith('.0'):
-            dec = None
+class MultiCallbacks(MultiModuleCallbacks):
+    @staticmethod
+    def build(entry: dict) -> dict:
+        entry['content'] = list(map(str, ensure_list(entry['content'])))
+        if 'updatefreq_days' in entry:
+            dec = 1
+            if str(entry['updatefreq_days']).endswith('.0'):
+                dec = None
 
-        entry['updatefreq_days'] = round(entry['updatefreq_days'], dec)
+            entry['updatefreq_days'] = round(entry['updatefreq_days'], dec)
 
-    return entry
+        return entry
 
-
-def _multi_callback_purge_exclude(entry: dict) -> bool:
-    return builtin_alias(entry['name'])
+    @staticmethod
+    def purge_exclude(entry: dict) -> bool:
+        return builtin_alias(entry['name'])
 
 
 def run_module():
@@ -74,24 +76,17 @@ def run_module():
         ),
         **STATE_MOD_ARG,
     )
+    entry_multi_args = build_multi_mod_args(
+        mod_args=entry_args,
+        aliases=['aliases'],
+        not_required=['name'],
+    )
 
     module_args = dict(
         **RELOAD_MOD_ARG_DEF_FALSE,  # default-true takes pretty long sometimes (urltables and so on)
         **entry_args,
-        **build_multi_mod_args(
-            mod_args=entry_args,
-            aliases=['aliases'],
-            not_required=['name'],
-        ),
+        **entry_multi_args,
         **OPN_MOD_ARGS,
-    )
-
-    result = dict(
-        changed=False,
-        diff={
-            'before': {},
-            'after': {},
-        }
     )
 
     module = AnsibleModule(
@@ -105,15 +100,22 @@ def run_module():
         ],
     )
 
+    result = dict(
+        changed=False,
+        diff={
+            'before': {},
+            'after': {},
+        }
+    )
+
     if is_multi_module_call(module):
         module_multi_wrapper(
             module=module,
             result=result,
             obj=Alias,
             kind='alias',
-            module_args=module_args,
-            callback_build=_multi_callback_build,
-            callback_purge_exclude=_multi_callback_purge_exclude,
+            entry_args=entry_multi_args,
+            callbacks=MultiCallbacks(),
         )
 
     else:
