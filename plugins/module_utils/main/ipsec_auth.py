@@ -46,8 +46,8 @@ class BaseAuth(BaseModule):
         'existing_remote_auth': 'swanctl.remotes.remote',
     }
 
-    def __init__(self, m: AnsibleModule, r: dict, s: Session = None, fail: dict = None):
-        BaseModule.__init__(self=self, m=m, r=r, s=s, f=fail)
+    def __init__(self, m: AnsibleModule, r: dict, s: Session = None, f: dict = None):
+        BaseModule.__init__(self=self, m=m, r=r, s=s, f=f)
         self.auth = {}
         self.existing_conns = None
         self.pubkey_link_found = False
