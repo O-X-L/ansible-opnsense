@@ -69,56 +69,12 @@ def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> 
             error_func(error)
 
 
-def check_purge_filter(module: AnsibleModule, existing_rule: dict) -> bool:
-    # used for 'alias_multi' and 'rule_multi'
-    to_purge = True
-
-    for filter_key, filter_value in module.params['filters'].items():
-        if module.params['filter_invert']:
-            # purge all except matches
-            if module.params['filter_partial']:
-                if str(existing_rule[filter_key]).find(filter_value) != -1:
-                    to_purge = False
-                    break
-
-            else:
-                if existing_rule[filter_key] == filter_value:
-                    to_purge = False
-                    break
-
-        else:
-            # purge only matches
-            if module.params['filter_partial']:
-                if str(existing_rule[filter_key]).find(filter_value) == -1:
-                    to_purge = False
-                    break
-
-            else:
-                if existing_rule[filter_key] != filter_value:
-                    to_purge = False
-                    break
-
-    return to_purge
-
-
 def compare_aliases(existing: dict, configured: dict) -> tuple:
     before = list(map(str, existing['content']))
     after = list(map(str, configured['content']))
     before.sort()
     after.sort()
     return before != after, before, after
-
-
-def check_purge_configured(module: AnsibleModule, existing_alias: dict) -> bool:
-    to_purge = True
-    existing_name = existing_alias['name']
-
-    for alias_name in module.params['aliases'].keys():
-        if existing_name == alias_name:
-            to_purge = False
-            break
-
-    return to_purge
 
 
 def builtin_alias(name: str) -> bool:

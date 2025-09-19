@@ -48,3 +48,8 @@ def test_validate_values(aliastype, value, valid):
         error_func.assert_not_called()
     else:
         error_func.assert_called_once()
+
+
+def test_placeholder():
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import \
+        compare_aliases, builtin_alias, filter_builtin_alias

@@ -244,7 +244,10 @@ class MultiModule:
         if self.field_id is None:
             self.field_id = getattr(self.o, 'MULTI_DIFF_KEY', self.p['match_fields'][0])
 
-        self._has_multi_entries = len(self.p['multi']) > 0
+        self._init_cases()
+
+    def _init_cases(self):
+        self._has_multi_crud_entries = len(self.p['multi']) > 0
         self._has_multi_purge_entries = len(self.p['multi_purge']) > 0
         self._has_multi_purge_filters = len(self.mc['purge_filter']) > 0
 
@@ -252,10 +255,7 @@ class MultiModule:
         return self._has_multi_purge_entries or self.mc['purge_all'] or self._has_multi_purge_filters
 
     def _is_multi_crud(self) -> bool:
-        if self._is_multi_purge():
-            return False
-
-        return self._has_multi_entries
+        return self._has_multi_crud_entries
 
     def process(self) -> None:
         if self.cache_existing:
@@ -379,28 +379,6 @@ class MultiModule:
                 continue
 
     # PURGE METHODS
-    def _entry_matches_purge_filter(self, entry_cnf: dict) -> bool:
-        # include in purge if matching & 'not inverted' - else exclude
-        result = self.mc['purge_filter_invert'] is False
-
-        for filter_key, filter_value in self.mc['purge_filter'].items():
-            if self.mc['purge_filter_partial']:
-                if str(entry_cnf[filter_key]).find(filter_value) != -1:
-                    return result
-
-            else:
-                if entry_cnf[filter_key] == filter_value:
-                    return result
-
-        return True
-
-    def _entry_in_purge_list(self, entry_cnf: dict) -> bool:
-        for purge_entry_cnf in self.p['multi_purge']:
-            if self._entry_matches(entry_cnf, purge_entry_cnf):
-                return True
-
-        return False
-
     def _purge_entry(self, entry_cnf: dict) -> None:
         entry_name = self._entry_id(entry_cnf)
 
@@ -445,14 +423,33 @@ class MultiModule:
         except ModuleSoftError:
             pass
 
+    def _in_entries_to_purge(self, entry_cnf: dict) -> bool:
+        for purge_entry_cnf in self.p['multi_purge']:
+            if self._entry_matches(entry_cnf, purge_entry_cnf):
+                return True
+
+        return False
+
+    def _matches_purge_filter(self, entry_cnf: dict) -> bool:
+        # include in purge if matching & 'not inverted' - else exclude
+        result = self.mc['purge_filter_invert'] is False
+
+        for filter_key, filter_value in self.mc['purge_filter'].items():
+            if self.mc['purge_filter_partial']:
+                if str(entry_cnf[filter_key]).find(filter_value) != -1:
+                    return result
+
+            else:
+                if entry_cnf[filter_key] == filter_value:
+                    return result
+
+        return False
+
     def _purge(self):
         if not self.mc['purge_all'] and not self._has_multi_purge_entries and not self._has_multi_purge_filters:
             self.m.fail_json("You need to either provide entries via 'multi_purge' or 'multi_control.purge_filter'!")
 
-        if self.mc['purge_action'] != 'delete':
-            raise ValueError(self.mc['purge_filter'])
-
-        if self._has_multi_purge_filters:
+        if self._has_multi_purge_filters and not self.mc['purge_all'] and not self._has_multi_purge_entries:
             self.m.fail_json("A purge_filter requires 'multi_control.purge_all' or items via 'multi_purge'!")
 
         # checking if all entries should be purged
@@ -460,8 +457,8 @@ class MultiModule:
             if self.callbacks.purge_exclude(entry_cnf):
                 continue
 
-            if self.mc['purge_all'] or self._entry_in_purge_list(entry_cnf):
-                if not self._entry_matches_purge_filter(entry_cnf):
+            if self.mc['purge_all'] or self._in_entries_to_purge(entry_cnf):
+                if not self._matches_purge_filter(entry_cnf):
                     continue
 
                 if self.p['debug']:

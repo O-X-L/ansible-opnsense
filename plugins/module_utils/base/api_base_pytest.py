@@ -1,5 +1,3 @@
-# pylint: disable=C0415
-
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.mock_pytest import \
     pytest_mock_http_responses, DUMMY_MODULE
 

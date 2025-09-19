@@ -11,6 +11,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 
 
 class Rule(BaseModule):
+    MULTI_DIFF_KEY = 'description'
     CMDS = {
         'add': 'add_rule',
         'del': 'del_rule',

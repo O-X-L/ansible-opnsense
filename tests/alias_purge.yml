@@ -41,9 +41,11 @@
         multi:
           - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
+
           - name: 'ANSIBLE_TEST_4_2'
             type: 'network'
             content: '192.168.1.0/24'
+
           - name: 'ANSIBLE_TEST_4_3'
             type: 'port'
             content: [80, 443]
@@ -93,9 +95,11 @@
         multi:
           - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
+
           - name: 'ANSIBLE_TEST_4_2'
             type: 'network'
             content: '192.168.1.0/24'
+
           - name: 'ANSIBLE_TEST_4_3'
             type: 'port'
             content: [80, 443]
@@ -123,9 +127,11 @@
         multi:
           - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
+
           - name: 'ANSIBLE_TEST_4_2'
             type: 'network'
             content: '192.168.1.0/24'
+
           - name: 'ANSIBLE_TEST_4_3'
             type: 'port'
             content: [80, 443]
@@ -157,6 +163,7 @@
         multi:
           - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
+
           - name: 'ANSIBLE_TEST_4_2'
             content: 'ANSIBLE_TEST_4_1'
       when: not ansible_check_mode
