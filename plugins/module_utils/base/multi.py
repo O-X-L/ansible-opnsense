@@ -7,7 +7,6 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import diff_remove_empty
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
     OPN_MOD_ARGS, RELOAD_MOD_ARG_DEF_FALSE
 
@@ -121,6 +120,7 @@ def build_multi_mod_args(
 
 
 class MultiModuleCallbacks(ABC):
+    # pylint: disable=W0613
     @staticmethod
     def build(entry: dict) -> dict:
         """
@@ -149,7 +149,8 @@ class MultiModuleCallbacks(ABC):
         """
         Callback to pull the 'existing_entries' that will be written to the cache.
 
-        :param meta_entry: A dummy/meta-entry as BaseModule-instance that is used to pull all existing entries from the API
+        :param meta_entry: A dummy/meta-entry as BaseModule-instance that
+                           is used to pull all existing entries from the API
         :return: Result that will be used as cache
         """
         return {'main': meta_entry.get_existing()}
@@ -197,7 +198,7 @@ class MultiModuleCallbacks(ABC):
         return False
 
 
-# pylint: disable=R0913,R0917
+# pylint: disable=R0913,R0915,R0917
 class MultiModule:
     def __init__(
             self, module: AnsibleModule, result: dict, entry_args: dict, kind: str, obj: BaseModule,
@@ -517,5 +518,3 @@ class MultiModule:
             return entry_cnf[self.field_id]
 
         return 'NO-ID-FOUND'
-
-

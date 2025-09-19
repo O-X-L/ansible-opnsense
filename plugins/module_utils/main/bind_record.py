@@ -10,7 +10,6 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validat
     is_ip4, is_ip6, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.bind_domain import Domain
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import ModuleSoftError
 
 
 class Record(BaseModule):

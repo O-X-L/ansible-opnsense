@@ -18,7 +18,7 @@ try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import \
         build_multi_mod_args
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-        RELOAD_MOD_ARG_DEF_FALSE, OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
+        OPN_MOD_ARGS, RELOAD_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.rule import RULE_MOD_ARGS
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.rule import Rule
 
