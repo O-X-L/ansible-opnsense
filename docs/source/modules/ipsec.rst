@@ -114,10 +114,13 @@ ansibleguy.opnsense.ipsec_vti
 
     "name","string","true","\-","description, desc","Unique name to identify the entry"
     "request_id","integer","false for state changes, else true","\-","req_id, reqid","This might be helpful in some scenarios, like route based tunnels (VTI), but works only if each CHILD_SA configuration is instantiated not more than once. The default uses dynamic reqids, allocated incrementally"
-    "local_address","string","false","\-","local_addr, local","\-"
-    "remote_address","string","false","\-","remote_addr, remote","\-"
-    "local_tunnel_address","string","false","\-","local_tun_addr, tunnel_local, local_tun","\-"
-    "remote_tunnel_address","string","false","\-","remote_tun_addr, tunnel_remote, remote_tun","\-"
+    "local_address","string","false","\-","local_addr, local","Local tunnel address used for the outer IP header of ESP packets"
+    "remote_address","string","false","\-","remote_addr, remote","Remote tunnel address used for the outer IP header of ESP packets"
+    "local_tunnel_address","string","false","\-","local_tun_addr, tunnel_local, local_tun","Inner tunnel local address to be used for routing purposes"
+    "remote_tunnel_address","string","false","\-","remote_tun_addr, tunnel_remote, remote_tun","Inner tunnel remote address to be used for routing purposes"
+    "local_tunnel_secondary_address","string","false","\-","local_tun_addr, tunnel_local, local_tun","Secondary inner tunnel local address to be used for routing purposes"
+    "remote_tunnel_secondary_address","string","false","\-","remote_tun_addr, tunnel_remote, remote_tun","Secondary nner tunnel remote address to be used for routing purposes"
+    "skip_firewall","boolean","false","false","skip_fw","Skip this  interface in our firewall rules which removes this inconsistencies"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.ipsec_auth_local

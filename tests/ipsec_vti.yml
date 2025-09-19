@@ -143,6 +143,9 @@
         remote_address: '192.168.20.2'
         local_tunnel_address: '192.168.1.101'
         remote_tunnel_address: '192.168.1.102'
+        local_tunnel_secondary_address: '192.168.2.101'
+        remote_tunnel_secondary_address: '192.168.2.102'
+        skip_firewall: true
       register: opn7
       failed_when: >
         opn7.failed or
@@ -156,6 +159,9 @@
         remote_address: '192.168.20.2'
         local_tunnel_address: '192.168.1.101'
         remote_tunnel_address: '192.168.1.102'
+        local_tunnel_secondary_address: '192.168.2.101'
+        remote_tunnel_secondary_address: '192.168.2.102'
+        skip_firewall: true
       register: opn8
       failed_when: >
         opn8.failed or
