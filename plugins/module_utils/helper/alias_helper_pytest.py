@@ -50,6 +50,17 @@ def test_validate_values(aliastype, value, valid):
         error_func.assert_called_once()
 
 
+def test_build_updatefreq():
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import build_updatefreq
+
+    assert build_updatefreq(2.0) == 2
+    assert build_updatefreq(2) == 2
+    assert build_updatefreq(1.9) == 1.9
+    assert build_updatefreq('1.9') == 1.9
+    assert build_updatefreq('') == ''
+    assert build_updatefreq(None) is None
+
+
 def test_placeholder():
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import \
         compare_aliases, builtin_alias, filter_builtin_alias

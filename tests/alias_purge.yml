@@ -21,21 +21,6 @@
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
-    - name: Fail required args (1)
-      ansibleguy.opnsense.alias:
-        multi_control:
-          purge_action: 'disable'
-      register: opn12
-      failed_when: not opn12.failed
-
-    - name: Fail required args (2)
-      ansibleguy.opnsense.alias:
-        multi_control:
-          purge_filter:
-            type: 'port'
-      register: opn13
-      failed_when: not opn13.failed
-
     - name: Adding 1
       ansibleguy.opnsense.alias:
         multi:
@@ -49,6 +34,24 @@
           - name: 'ANSIBLE_TEST_4_3'
             type: 'port'
             content: [80, 443]
+      when: not ansible_check_mode
+
+    - name: Simple purge
+      ansibleguy.opnsense.alias:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_4_1'
+      when: not ansible_check_mode
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Listing aliases
+      ansibleguy.opnsense.list:
+      register: opn3
+      failed_when: >
+        'data' not in opn3 or
+        opn3.data | length != 2
       when: not ansible_check_mode
 
     - name: Simple disable-purge
@@ -70,24 +73,6 @@
         multi_control:
           purge_action: 'disable'
       register: opn11
-      when: not ansible_check_mode
-
-    - name: Simple purge
-      ansibleguy.opnsense.alias:
-        multi_purge:
-          - name: 'ANSIBLE_TEST_4_2'
-      when: not ansible_check_mode
-      register: opn2
-      failed_when: >
-        opn2.failed or
-        not opn2.changed
-
-    - name: Listing aliases
-      ansibleguy.opnsense.list:
-      register: opn3
-      failed_when: >
-        'data' not in opn3 or
-        opn3.data | length != 2
       when: not ansible_check_mode
 
     - name: Adding 2

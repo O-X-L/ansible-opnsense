@@ -494,6 +494,12 @@ Modes have to be set-up to support mass-management!
 
 3. The result-difference will use the :code:`FIELD_ID` or :code:`MULTI_DIFF_KEY` as key. As fallback the first field inside :code:`match_fields` is used - but this is discouraged.
 
+4. You have to validate the API-calls that are actually performed by enabling the :code:`debug: true` mode!
+
+  If the module uses custom logic you have to ensure the 'existing_entries' cache if used correctly!
+
+  For an example on how to implement custom fetches - you can look into the :code:`bind_record` module: `modules/bind_record.py <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/modules/bind_record.py>`_ & `module_utils/main/bind_record.py <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/module_utils/main/bind_record.py>`_
+
 ----
 
 Testing

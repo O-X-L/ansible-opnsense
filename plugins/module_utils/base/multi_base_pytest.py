@@ -238,14 +238,44 @@ def test_multi_module_base(mocker):
     mm.p['multi_control']['purge_filter'] = {}
 
 
-@pytest.mark.parametrize('purge_filter, entry, result', [
+@pytest.mark.parametrize('purge_filter, entry, partial, invert, result', [
     (
-        {'name': 'match'},
-        {'name': 'test'},
-        False,
+        {'name': 'match'},  # filter
+        {'name': 'test'},  # entry
+        False, False, False,
+    ),
+    (
+        {'name': 'match'},  # filter
+        {'name': 'test'},  # entry
+        False, True, True,
+    ),
+    (
+        {'name': 'match'},  # filter
+        {'name': 'match'},  # entry
+        False, False, True,
+    ),
+    (
+        {'name': 'match'},  # filter
+        {'name': 'match1'},  # entry
+        False, False, False,
+    ),
+    (
+        {'name': 'match'},  # filter
+        {'name': 'match1'},  # entry
+        True, False, True,
+    ),
+    (
+        {'name': 'match1'},  # filter
+        {'name': 'match1'},  # entry
+        True, False, True,
+    ),
+    (
+        {'name': 'match1'},  # filter
+        {'name': 'match'},  # entry
+        True, False, False,
     ),
 ])
-def test_multi_module_purge_filter(mocker, purge_filter, entry, result):
+def test_multi_module_purge_filter(mocker, purge_filter, entry, partial, invert, result):
     pytest_mock_http_responses(
         mocker=mocker,
         responses=MOCK_RESPONSES
@@ -257,6 +287,8 @@ def test_multi_module_purge_filter(mocker, purge_filter, entry, result):
     am = MockAnsibleModule()
     am.params = ANSIBLE_MODULE_MULTI_PARAMS.copy()
     am.params['multi_control']['purge_all'] = True
+    am.params['multi_control']['purge_filter_partial'] = partial
+    am.params['multi_control']['purge_filter_invert'] = invert
     am.params['multi_control']['purge_filter'] = purge_filter
 
     mm = MultiModule(
@@ -267,6 +299,67 @@ def test_multi_module_purge_filter(mocker, purge_filter, entry, result):
         obj=MockOPNsenseModule,
     )
     assert mm._matches_purge_filter(entry) == result
+
+
+@pytest.mark.parametrize('e1, e2, match_fields, result', [
+    (
+        {'name': 'match'},
+        {'name': 'test'},
+        ['name'],
+        False,
+    ),
+    (
+        {'name': 'test'},
+        {'name': 'test'},
+        ['name'],
+        True,
+    ),
+    (
+        {'name': 1},
+        {'name': '1'},
+        ['name'],
+        True,
+    ),
+    (
+        {'name': 'test', 'desc': 'abc', 'text': 'this is a day'},
+        {'name': 'test', 'desc': 'no'},
+        ['name', 'desc'],
+        False,
+    ),
+    (
+        {'name': 'test', 'desc': 'abc', 'text': 'this is a day'},
+        {'name': 'test', 'text': 'is'},
+        ['name', 'text'],
+        False,
+    ),
+    (
+        {'name': 'test', 'desc': 'abc', 'text': 'this is a day'},
+        {'name': 'test', 'desc': 'abc'},
+        ['name', 'desc'],
+        True,
+    ),
+])
+def test_multi_module_entry_matches(mocker, e1, e2, match_fields, result):
+    pytest_mock_http_responses(
+        mocker=mocker,
+        responses=MOCK_RESPONSES
+    )
+
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+        MultiModule
+
+    am = MockAnsibleModule()
+    am.params = ANSIBLE_MODULE_MULTI_PARAMS.copy()
+    am.params['match_fields'] = match_fields
+
+    mm = MultiModule(
+        module=am,
+        result=ANSIBLE_RESULT,
+        entry_args={},
+        kind='test',
+        obj=MockOPNsenseModule,
+    )
+    assert mm._entry_matches(e1, e2) == result
 
 
 # todo: add tests for create/update/partial-deletion & purge delete/disable

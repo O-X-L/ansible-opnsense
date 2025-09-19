@@ -26,84 +26,68 @@
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
+    - name: Purging all
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_all: true
+
     - name: Fail required args (1)
       ansibleguy.opnsense.alias:
-      register: opn8
-      failed_when: not opn8.failed
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Fail required args (2)
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_action: 'disable'
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Fail required args (3)
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_filter:
+            type: 'port'
+      register: opn_fail3
+      failed_when: not opn_fail3.failed
 
     - name: Removing - do not exist
       ansibleguy.opnsense.alias:
         aliases:
-          - name: 'ANSIBLE_TEST_2_1'
-          - name: 'ANSIBLE_TEST_2_2'
-          - name: 'ANSIBLE_TEST_2_3'
-          - name: 'ANSIBLE_TEST_2_4'
-          - name: 'ANSIBLE_TEST_2_5'
-          - name: 'ANSIBLE_TEST_2_6'
-          - name: 'ANSIBLE_TEST_2_7'
-          - name: 'ANSIBLE_TEST_2_8'
-          - name: 'ANSIBLE_TEST_2_9'
-          - name: 'ANSIBLE_TEST_2_10'
-          - name: 'ANSIBLE_TEST_2_11'
-          - name: 'ANSIBLE_TEST_2_12'
-          - name: 'ANSIBLE_TEST_2_13'
-          - name: 'ANSIBLE_TEST_2_14'
+          - name: 'ANSIBLE_TEST_0_1'
         multi_control:
           state: 'absent'
       register: opn1
+      failed_when: >
+        opn1.failed or
+        opn1.changed
 
     - name: Adding
       ansibleguy.opnsense.alias:
         aliases:
-          # hosts
-          - name: 'ANSIBLE_TEST_2_1'
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
             content: '192.168.1.1'
-          - name: 'ANSIBLE_TEST_2_2'
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
             content: ['192.168.1.1', '192.168.1.2']
 
-          # networks
-          - name: 'ANSIBLE_TEST_2_3'
+          - name: 'ANSIBLE_TEST_0_3'
             type: 'network'
             content: '192.168.1.0/24'
-          - name: 'ANSIBLE_TEST_2_4'
+
+          - name: 'ANSIBLE_TEST_0_4'
             type: 'network'
             content: ['192.168.1.0/24', '192.168.2.0/24']
 
-          # ports
-          - name: 'ANSIBLE_TEST_2_5'
+          - name: 'ANSIBLE_TEST_0_5'
             type: 'port'
             content: 80
-          - name: 'ANSIBLE_TEST_2_6'
+
+          - name: 'ANSIBLE_TEST_0_6'
             type: 'port'
             content: [80, 443]
-
-          # urls
-          - name: 'ANSIBLE_TEST_2_7'
-            type: 'url'
-            content: 'http://test.ansibleguy.net'
-
-          # urltables
-          - name: 'ANSIBLE_TEST_2_8'
-            type: 'urltable'
-            content: ['https://www.spamhaus.org/drop/drop.txt']
-            updatefreq_days: 6.5
-
-          # geoip
-          - name: 'ANSIBLE_TEST_2_9'
-            type: 'geoip'
-            content: 'AT'
-          - name: 'ANSIBLE_TEST_2_10'
-            type: 'geoip'
-            content: ['AT', 'DE', 'CH']
-
-          # dynipv6host
-          - name: 'ANSIBLE_TEST_2_11'
-            type: 'dynipv6host'
-            content:
-              - '::f00d'
-            interface: 'lan'
-
-        reload: false  # geoip and urltable take LONG time
       register: opn2
       failed_when: >
         opn2.failed or
@@ -112,37 +96,29 @@
     - name: Changing
       ansibleguy.opnsense.alias:
         aliases:
-          - name: 'ANSIBLE_TEST_2_2'
-            content: ['192.168.1.1', '192.168.1.3']
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
 
-          - name: 'ANSIBLE_TEST_2_3'
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+
+          - name: 'ANSIBLE_TEST_0_3'
             type: 'network'
-            content: '192.168.10.0/24'
+            content: '192.168.1.0/25'
 
-          - name: 'ANSIBLE_TEST_2_5'
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.2.0/24', '192.168.20.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
             type: 'port'
-            content: 81
+            content: 443
 
-          - name: 'ANSIBLE_TEST_2_7'
-            type: 'url'
-            content: 'http://test.template.ansibleguy.net'
-
-          - name: 'ANSIBLE_TEST_2_8'
-            type: 'urltable'
-            content: 'https://www.spamhaus.org/drop/dropv6.txt'
-            updatefreq_days: 2
-
-          - name: 'ANSIBLE_TEST_2_9'
-            type: 'geoip'
-            content: 'DE'
-
-          - name: 'ANSIBLE_TEST_2_11'
-            type: 'dynipv6host'
-            content:
-              - '::1000'
-              - '::f00d'
-            interface: 'lan'
-        reload: false  # geoip and urltable take LONG time
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [80, 8443]
       register: opn3
       failed_when: >
         opn3.failed or
@@ -152,106 +128,181 @@
     - name: Nothing changed
       ansibleguy.opnsense.alias:
         aliases:
-          - name: 'ANSIBLE_TEST_2_2'
-            content: ['192.168.1.1', '192.168.1.3']
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
 
-          - name: 'ANSIBLE_TEST_2_3'
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+
+          - name: 'ANSIBLE_TEST_0_3'
             type: 'network'
-            content: '192.168.10.0/24'
+            content: '192.168.1.0/25'
 
-          - name: 'ANSIBLE_TEST_2_5'
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.2.0/24', '192.168.20.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
             type: 'port'
-            content: 81
+            content: 443
 
-          - name: 'ANSIBLE_TEST_2_7'
-            type: 'url'
-            content: 'http://test.template.ansibleguy.net'
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [80, 8443]
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        opn4.changed
+      when: not ansible_check_mode
 
-          - name: 'ANSIBLE_TEST_2_8'
-            type: 'urltable'
-            updatefreq_days: 2
-            content: 'https://www.spamhaus.org/drop/dropv6.txt'
+    - name: Changing few
+      ansibleguy.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
 
-          - name: 'ANSIBLE_TEST_2_9'
-            type: 'geoip'
-            content: 'DE'
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
 
-          - name: 'ANSIBLE_TEST_2_11'
-            type: 'dynipv6host'
-            content:
-              - '::1000'
-              - '::f00d'
-            interface: 'lan'
-        reload: false  # geoip and urltable take LONG time
+    - name: Nothing changed
+      ansibleguy.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
       register: opn6
       failed_when: >
         opn6.failed or
         opn6.changed
       when: not ansible_check_mode
 
-    - name: Adding nested aliases
+    - name: Disabling some
       ansibleguy.opnsense.alias:
         aliases:
-          # hosts
-          - name: 'ANSIBLE_TEST_2_12'
-            content: ['ANSIBLE_TEST_2_1', 'ANSIBLE_TEST_2_2']
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
 
-          # networks
-          - name: 'ANSIBLE_TEST_2_13'
-            type: 'network'
-            content: ['ANSIBLE_TEST_2_3', 'ANSIBLE_TEST_2_4']
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
 
-          # ports
-          - name: 'ANSIBLE_TEST_2_14'
-            type: 'port'
-            content: ['ANSIBLE_TEST_2_5', 'ANSIBLE_TEST_2_6']
-
-        reload: false  # geoip and urltable take LONG time
+        multi_control:
+          enabled: false
       register: opn7
       failed_when: >
         opn7.failed or
         not opn7.changed
       when: not ansible_check_mode
 
-    - name: Listing aliases
+    - name: Checking count
       ansibleguy.opnsense.list:
-      register: opn4
+      register: opn8
       failed_when: >
-        'data' not in opn4 or
-        opn4.data | length != 14
+        'data' not in opn8 or
+        opn8.data | length != 6
       when: not ansible_check_mode
 
-    - name: Removing nesting
+    - name: Checking disabled-state
       ansibleguy.opnsense.alias:
         aliases:
-          - name: 'ANSIBLE_TEST_2_12'
-          - name: 'ANSIBLE_TEST_2_13'
-          - name: 'ANSIBLE_TEST_2_14'
-        multi_control:
-          state: 'absent'
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        opn9.changed
       when: not ansible_check_mode
 
-    - name: Removing
+    - name: Removing some
       ansibleguy.opnsense.alias:
         aliases:
-          - name: 'ANSIBLE_TEST_2_1'
-          - name: 'ANSIBLE_TEST_2_2'
-          - name: 'ANSIBLE_TEST_2_3'
-          - name: 'ANSIBLE_TEST_2_4'
-          - name: 'ANSIBLE_TEST_2_5'
-          - name: 'ANSIBLE_TEST_2_6'
-          - name: 'ANSIBLE_TEST_2_7'
-          - name: 'ANSIBLE_TEST_2_8'
-          - name: 'ANSIBLE_TEST_2_9'
-          - name: 'ANSIBLE_TEST_2_10'
-          - name: 'ANSIBLE_TEST_2_11'
+          - name: 'ANSIBLE_TEST_0_1'
+          - name: 'ANSIBLE_TEST_0_2'
         multi_control:
           state: 'absent'
-
-    - name: Checking cleanup
-      ansibleguy.opnsense.list:
-      register: opn5
+      register: opn10
       failed_when: >
-        'data' not in opn5 or
-        opn5.data | length != 0
+        opn10.failed or
+        not opn10.changed
+      when: not ansible_check_mode
+
+    - name: Checking count
+      ansibleguy.opnsense.list:
+      register: opn11
+      failed_when: >
+        'data' not in opn11 or
+        opn11.data | length != 4
+      when: not ansible_check_mode
+
+    - name: Purging all
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_all: true
+      register: opn12
+      failed_when: >
+        opn12.failed or
+        not opn12.changed
+      when: not ansible_check_mode
+
+    - name: Checking count
+      ansibleguy.opnsense.list:
+      register: opn13
+      failed_when: >
+        'data' not in opn13 or
+        opn13.data | length != 0
       when: not ansible_check_mode

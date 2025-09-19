@@ -230,21 +230,26 @@ class MultiModule:
         if self.callbacks is None:
             self.callbacks = MultiModuleCallbacks()
 
+        self._init_match_fields()
+        self._init_cases()
+
+    def _init_match_fields(self):
         self.field_id = None
+
         if hasattr(self.o, 'FIELD_ID'):
             self.field_id = getattr(self.o, 'FIELD_ID')
-            self.match_fields = [self.field_id]
 
-        elif hasattr(self.o, 'FIELDS_MATCH'):
-            self.match_fields = getattr(self.o, 'FIELDS_MATCH')
-
-        else:
-            self.match_fields = self.p['match_fields']
+        self.match_fields = self.p.get('match_fields', [self.field_id])
 
         if self.field_id is None:
-            self.field_id = getattr(self.o, 'MULTI_DIFF_KEY', self.p['match_fields'][0])
+            fallback = None
+            if 'match_fields' in self.p and len(self.p['match_fields']) > 0:
+                if not isinstance(self.p['match_fields'], list):
+                    self.p['match_fields'] = [self.p['match_fields']]
 
-        self._init_cases()
+                fallback = self.p['match_fields'][0]
+
+            self.field_id = getattr(self.o, 'MULTI_DIFF_KEY', fallback)
 
     def _init_cases(self):
         self._has_multi_crud_entries = len(self.p['multi']) > 0
@@ -392,7 +397,9 @@ class MultiModule:
             )
             entry = self._init_entry(entry_cnf, entry_result)
 
-            entry.p['debug'] = self.p['debug']
+            if not entry.p.get('debug', False):
+                entry.p['debug'] = self.p['debug']
+
             entry.p['state'] = 'absent' if self.mc['purge_action'] == 'delete' else 'present'
             entry_cnf['match_fields'] = self.match_fields
 
@@ -402,21 +409,17 @@ class MultiModule:
 
             if self.mc['purge_action'] == 'delete':
                 entry_result['changed'] = True
+                self.r['diff']['before'][entry_name] = entry_cnf
+                self.r['diff']['after'][entry_name] = None
                 if not self.m.check_mode:
                     entry.delete()
 
-                else:
-                    self.r['diff']['before'][entry_name] = entry_cnf
-                    self.r['diff']['after'][entry_name] = None
-
             elif entry.b.is_enabled():
                 entry_result['changed'] = True
+                self.r['diff']['before'][entry_name] = {'enabled': True}
+                self.r['diff']['after'][entry_name] = {'enabled': False}
                 if not self.m.check_mode:
                     entry.b.disable()
-
-                else:
-                    self.r['diff']['before'][entry_name] = {'enabled': True}
-                    self.r['diff']['after'][entry_name] = {'enabled': False}
 
             self._add_entry_result(entry, entry_result)
 
@@ -430,20 +433,32 @@ class MultiModule:
 
         return False
 
-    def _matches_purge_filter(self, entry_cnf: dict) -> bool:
-        # include in purge if matching & 'not inverted' - else exclude
-        result = self.mc['purge_filter_invert'] is False
-
-        for filter_key, filter_value in self.mc['purge_filter'].items():
-            if self.mc['purge_filter_partial']:
-                if str(entry_cnf[filter_key]).find(filter_value) != -1:
-                    return result
-
-            else:
-                if entry_cnf[filter_key] == filter_value:
-                    return result
+    def _matches_purge_filter_partial(self, entry_cnf: dict) -> bool:
+        for k, v in self.mc['purge_filter'].items():
+            if str(entry_cnf[k]).find(str(v)) != -1:
+                return True
 
         return False
+
+    def _matches_purge_filter_full(self, entry_cnf: dict) -> bool:
+        for k, v in self.mc['purge_filter'].items():
+            if str(entry_cnf[k]) == str(v):
+                return True
+
+        return False
+
+    def _matches_purge_filter(self, entry_cnf: dict) -> bool:
+        # include in purge if matching & 'not inverted' - else exclude
+        if self.mc['purge_filter_partial']:
+            result = self._matches_purge_filter_partial(entry_cnf)
+
+        else:
+            result = self._matches_purge_filter_full(entry_cnf)
+
+        if self.mc['purge_filter_invert']:
+            return not result
+
+        return result
 
     def _purge(self):
         if not self.mc['purge_all'] and not self._has_multi_purge_entries and not self._has_multi_purge_filters:
@@ -458,7 +473,7 @@ class MultiModule:
                 continue
 
             if self.mc['purge_all'] or self._in_entries_to_purge(entry_cnf):
-                if not self._matches_purge_filter(entry_cnf):
+                if self._has_multi_purge_filters and not self._matches_purge_filter(entry_cnf):
                     continue
 
                 if self.p['debug']:
@@ -501,7 +516,9 @@ class MultiModule:
         matches = []
         for field in self.match_fields:
             matches.append(
-                field in e1 and field in e2 and e1[field] == e2[field]
+                field in e1 and
+                field in e2 and
+                str(e1[field]) == str(e2[field])
             )
 
         return all(matches)

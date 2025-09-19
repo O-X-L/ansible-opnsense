@@ -20,7 +20,8 @@ try:
         RELOAD_MOD_ARG_DEF_FALSE, OPN_MOD_ARGS, STATE_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.alias import Alias
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import ensure_list
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import builtin_alias
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import \
+        builtin_alias, build_updatefreq
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
@@ -35,11 +36,7 @@ class MultiCallbacks(MultiModuleCallbacks):
     def build(entry: dict) -> dict:
         entry['content'] = list(map(str, ensure_list(entry['content'])))
         if 'updatefreq_days' in entry:
-            dec = 1
-            if str(entry['updatefreq_days']).endswith('.0'):
-                dec = None
-
-            entry['updatefreq_days'] = round(entry['updatefreq_days'], dec)
+            entry['updatefreq_days'] = build_updatefreq(entry['updatefreq_days'])
 
         return entry
 
@@ -62,7 +59,7 @@ def run_module():
             'mac', 'dynipv6host', 'internal', 'external',
         ]),
         updatefreq_days=dict(
-            type='float', default=7, required=False,
+            type='str', default='', required=False,
             description="Update frequency used by type 'urltable' in days - per example '0.5' for 12 hours"
         ),
         interface=dict(

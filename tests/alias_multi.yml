@@ -46,6 +46,9 @@
         multi_control:
           state: 'absent'
       register: opn1
+      failed_when: >
+        opn1.failed or
+        opn1.changed
 
     - name: Adding
       ansibleguy.opnsense.alias:

@@ -68,6 +68,7 @@
       ansibleguy.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
         enabled: false
+        content: ['1.1.1.2', '1.1.1.3']
       register: opn5
       failed_when: >
         not opn5.changed or
@@ -78,6 +79,7 @@
       ansibleguy.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
         enabled: false
+        content: ['1.1.1.2', '1.1.1.3']
       register: opn8
       failed_when: >
         opn8.changed or
@@ -87,6 +89,7 @@
     - name: Enabling
       ansibleguy.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
+        content: ['1.1.1.2', '1.1.1.3']
       register: opn6
       failed_when: >
         not opn6.changed or
@@ -96,6 +99,7 @@
     - name: Enabling - nothing changed
       ansibleguy.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
+        content: ['1.1.1.2', '1.1.1.3']
       register: opn7
       failed_when: >
         opn7.changed or

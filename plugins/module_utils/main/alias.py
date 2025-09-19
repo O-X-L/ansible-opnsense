@@ -5,7 +5,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import \
-    validate_values, filter_builtin_alias
+    validate_values, filter_builtin_alias, build_updatefreq
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
     get_simple_existing, simplify_translate, is_unset
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
@@ -39,8 +39,6 @@ class Alias(BaseModule):
     TIMEOUT = 20.0
     MAX_ALIAS_LEN = 32
 
-    DEFAULT_UPDATEFREQ_DAYS_URLTABLE = 7.0  # see: https://github.com/O-X-L/ansible-opnsense/pull/270
-
     def __init__(
             self, module: AnsibleModule, result: dict, cnf: dict = None,
             session: Session = None, fail: dict = None,
@@ -52,16 +50,11 @@ class Alias(BaseModule):
     def check(self) -> None:
         if self.p['type'] == 'urltable':
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['updatefreq_days']
-            if not is_unset(self.p['updatefreq_days']):
-                self.p['updatefreq_days'] = float(self.p['updatefreq_days'])
-
-            else:
-                self.p['updatefreq_days'] = self.DEFAULT_UPDATEFREQ_DAYS_URLTABLE
+            self.p['updatefreq_days'] = build_updatefreq(self.p['updatefreq_days'], default=True)
 
         if self.p['type'] == 'urljson':
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['updatefreq_days', 'path_expression']
-            if not is_unset(self.p['updatefreq_days']):
-                self.p['updatefreq_days'] = float(self.p['updatefreq_days'])
+            self.p['updatefreq_days'] = build_updatefreq(self.p['updatefreq_days'], default=True)
 
         if self.p['type'] == 'dynipv6host':
             if is_unset(self.p['interface']):
@@ -102,11 +95,7 @@ class Alias(BaseModule):
         }
 
         if simple['type'] in ['urltable', 'urljson']:
-            try:
-                simple['updatefreq_days'] = round(float(alias['updatefreq']), 1)
-
-            except ValueError:
-                simple['updatefreq_days'] = float(0)
+            simple['updatefreq_days'] = build_updatefreq(alias['updatefreq'], default=False)
 
         return simple
 

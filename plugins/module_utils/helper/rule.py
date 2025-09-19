@@ -1,10 +1,5 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    get_matching
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.rule import \
-     RULE_DEFAULTS
-
 
 def validate_values(error_func, module: AnsibleModule, cnf: dict, kind: str = 'filter') -> None:
     # error = "Value '%s' is invalid for the field '%s'!"
