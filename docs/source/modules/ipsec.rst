@@ -49,7 +49,9 @@ Module alias: ansibleguy.opnsense.ipsec_tunnel
 
     "name","string","true","\-","description, desc","Unique connection/tunnel name"
     "local_addresses","list","false","\-","local_addr, local","Local address[es] to use for IKE communication. Accepts single IPv4/IPv6 addresses, DNS names, CIDR subnets or IP address ranges. As an initiator, the first non-range/non-subnet is used to initiate the connection from. As a responder the local destination address must match at least to one of the specified addresses, subnets or ranges. If FQDNs are assigned, they are resolved every time a configuration lookup is done. If DNS resolution times out, the lookup is delayed for that time. When left empty %any is choosen as default"
+    "local_port","string","false","500","\-","UDP port for IKE communication. If the default of port 500 is used, automatic IKE port floating to port 4500 is used to work around NAT issues"
     "remote_addresses","list","false","\-","remote_addr, remote","Remote address[es] to use for IKE communication. Accepts single IPv4/IPv6 addresses, DNS names, CIDR subnets or IP address ranges. As an initiator, the first non-range/non-subnet is used to initiate the connection to. As a responder the local destination address must match at least to one of the specified addresses, subnets or ranges. If FQDNs are assigned, they are resolved every time a configuration lookup is done. If DNS resolution times out, the lookup is delayed for that time. To initiate a connection, at least one specific address or DNS name must be specified"
+    "remote_port","string","false","500","\-","UDP port for IKE communication. If the default of port 500 is used, automatic IKE port floating to port 4500 is used to work around NAT issues"
     "pools","list","false","\-","networks","List of named IP pools to allocate virtual IP addresses and other configuration attributes from. Each name references a pool by name from either the pools section or an external pool. Note that the order in which they are queried primarily depends on the plugin order"
     "proposals","list","false","['default']","props","A proposal is a set of algorithms. For non-AEAD algorithms this includes IKE an encryption algorithm, an integrity algorithm, a pseudo random function (PRF) and a Diffie-Hellman key exchange group. For AEAD algorithms, instead of encryption and integrity algorithms a combined algorithm is used. With IKEv2 multiple algorithms of the same kind can be specified in a single proposal, from which one gets selected. For IKEv1 only one algorithm per kind is allowed per proposal, more algorithms get implicitly stripped. Use multiple proposals to offer different algorithm combinations with IKEv1. Algorithm keywords get separated using dashes. Multiple proposals may be separated by commas. The special value default adds a default proposal of supported algorithms considered safe and is usually a good choice for interoperability."
     "unique","string","false","no","\-","One of: 'no', 'never', 'keep', 'replace'; Connection uniqueness policy to enforce. To avoid multiple connections from the same user, a uniqueness policy can be enforced."
@@ -264,6 +266,71 @@ You may want to use '**ansible-vault**' to **encrypt** your 'private_key' conten
 
 Examples
 ********
+
+ansibleguy.opnsense.ipsec_connection
+====================================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: false
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+        ansibleguy.opnsense.list:
+          target: 'ipsec_connection'
+
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.ipsec_connection:
+            name: IPSec Connection
+            # state: 'absent'
+            # local_addresses: []
+            # local_port: 500
+            # remote_addresses: []
+            # remote_port: 500
+            # pools: []
+            # proposals: ['default']
+            # unique: false
+            # aggressive: false
+            # version: ike
+            # mobike: true
+            # encapsulation: false
+            # reauth_seconds:
+            # rekey_seconds:
+            # over_seconds:
+            # dpd_delay_seconds:
+            # dpd_timeout_seconds:
+            # send_certificate_request: true
+            # send_certificate:
+            # keying_tries:
+            # debug: false
+
+        - name: Adding IPSec Site A
+          ansibleguy.opnsense.ipsec_connection:
+            name: IPSec Example Siet2Site
+            local_addresses: 10.10.1.1
+            remote_addresses: 10.10.1.2
+
+        - name: Changing IPSec Site A
+          ansibleguy.opnsense.ipsec_connection:
+            name: IPSec Example Siet2Site
+            version: ike2
+            local_addresses: 10.10.1.1
+            remote_addresses: 10.10.1.2
+
+        - name: Listing IPSec connections
+          ansibleguy.opnsense.list:
+          #  target: 'ipsec_connection'
+          register: existing_ipsec_connections
+
+        - name: Printing
+          ansible.builtin.debug:
+            var: existing_ipsec_connections.data
+
+----
 
 ansibleguy.opnsense.ipsec_cert
 ==============================
