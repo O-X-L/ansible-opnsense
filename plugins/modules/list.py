@@ -43,7 +43,7 @@ TARGETS = [
     'ipsec_manual_spd', 'hasync_general', 'snapshot', 'frr_bgp_redistribution', 'frr_ospf_redistribution',
     'frr_ospf3_redistribution', 'frr_ospf3_route_map', 'frr_ospf3_prefix_list', 'frr_ospf3_network',
     'frr_bgp_peer_group', 'user', 'group', 'privilege', 'interface_bridge', 'interface_gif', 'neighbor',
-    'dnsmasq_general'
+    'dnsmasq_general', 'ipsec_general',
 ]
 
 
@@ -405,6 +405,10 @@ def run_module():
         elif target == 'ipsec_manual_spd':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.ipsec_manual_spd import \
                 ManualSPD as Target_Obj
+
+        elif target == 'ipsec_general':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.ipsec_general import \
+                General as Target_Obj
 
         elif target == 'ids_general':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.ids_general import \

@@ -13,7 +13,9 @@ IPSec
 `ipsec_connection <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/ipsec_connection.yml>`_ |
 `ipsec_pool <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/ipsec_pool.yml>`_ |
 `ipsec_vti <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/ipsec_vti.yml>`_ |
-`ipsec_manual_spd <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/ipsec_manual_spd.yml>`_
+`ipsec_manual_spd <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/ipsec_manual_spd.yml>`_ |
+`ipsec_general <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/ipsec_general.yml>`_
+
 
 **API Docs**: `Core - IPSec <https://docs.opnsense.org/development/api/core/ipsec.html>`_
 
@@ -55,7 +57,7 @@ Module alias: ansibleguy.opnsense.ipsec_tunnel
     "version","string","false","ike","vers, v","One of: 'ike', 'ikev1', 'ikev2'; IKE major version to use for connection. 1 uses IKEv1 aka ISAKMP, 2 uses IKEv2. A connection using IKEv1+IKEv2 accepts both IKEv1 and IKEv2 as a responder and initiates the connection actively with IKEv2"
     "mobike","boolean","false","true","mob","Enables MOBIKE on IKEv2 connections. MOBIKE is enabled by default on IKEv2 connections and allows mobility of clients and multi-homing on servers by migrating active IPsec tunnels. Usually keeping MOBIKE enabled is unproblematic, as it is not used if the peer does not indicate support for it. However, due to the design of MOBIKE, IKEv2 always floats to UDP port 4500 starting from the second exchange. Some implementations don’t like this behavior, hence it can be disabled"
     "encapsulation","boolean","false","false","udp_encapsulation, encap","To enforce UDP encapsulation of ESP packets, the IKE daemon can manipulate the NAT detection payloads. This makes the peer believe that a NAT situation exist on the transmission path, forcing it to encapsulate ESP packets in UDP. Usually this is not required but it can help to work around connectivity issues with too restrictive intermediary firewalls that block ESP packets"
-    "reauth_seconds","integer","false","\-","reauth, reauth_sec, reauth_time","	Time to schedule IKE reauthentication. IKE reauthentication recreates the IKE/ISAKMP SA from scratch and re-evaluates the credentials. In asymmetric configurations (with EAP or configuration payloads) it might not be possible to actively reauthenticate as responder. The IKEv2 reauthentication lifetime negotiation can instruct the client to perform reauthentication. Reauthentication is disabled by default (0). Enabling it usually may lead to small connection interruptions as strongSwan uses a break-before-make policy with IKEv2 by default"
+    "reauth_seconds","integer","false","\-","reauth, reauth_sec, reauth_time","Time to schedule IKE reauthentication. IKE reauthentication recreates the IKE/ISAKMP SA from scratch and re-evaluates the credentials. In asymmetric configurations (with EAP or configuration payloads) it might not be possible to actively reauthenticate as responder. The IKEv2 reauthentication lifetime negotiation can instruct the client to perform reauthentication. Reauthentication is disabled by default (0). Enabling it usually may lead to small connection interruptions as strongSwan uses a break-before-make policy with IKEv2 by default"
     "rekey_seconds","integer","false","\-","rekey, rekey_sec, rekey_time","IKE rekeying refreshes key material using a Diffie-Hellman key exchange, but does not re-check associated credentials. It is supported with IKEv2 only. IKEv1 performs a reauthentication procedure instead. With the default value, IKE rekeying is scheduled every 4 hours minus the configured rand_time. If a reauth_time is configured, rekey_time defaults to zero, disabling rekeying. In that case set rekey_time explicitly to both enforce rekeying and reauthentication"
     "over_seconds","integer","false","\-","over, over_sec, over_time","Hard IKE_SA lifetime if rekey/reauth does not complete, as time. To avoid having an IKE or ISAKMP connection kept alive if IKE reauthentication or rekeying fails perpetually, a maximum hard lifetime may be specified. If the IKE_SA fails to rekey or reauthenticate within the specified time, the IKE_SA gets closed. In contrast to CHILD_SA rekeying, over_time is relative in time to the rekey_time and reauth_time values, as it applies to both. The default is 10% of either rekey_time or reauth_time, whichever value is larger. [0.1 * max(rekey_time, reauth_time)]"
     "dpd_delay_seconds","integer","false","\-","dpd_delay, dpd_delay_sec, dpd_delay_time","Interval to check the liveness of a peer actively using IKEv2 INFORMATIONAL exchanges or IKEv1 R_U_THERE messages. Active DPD checking is only enforced if no IKE or ESP/AH packet has been received for the configured DPD delay. Defaults to 0s"
@@ -175,6 +177,68 @@ ansibleguy.opnsense.ipsec_manual_spd
     "connection_child","string","false","\-","\-","Connection child to register this manual spd entry on."
     "source","string","false for deletion, else true","\-","s, src, source_net","Source network, usually the networks you would like to accept using network address translation."
     "destination","string","false","\-","d, dest, destination_net","Destination network, leave empty to use the networks propagated in the child sa."
+
+ansibleguy.opnsense.ipsec_general
+=================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "prefer_old_sa","boolean","False","False","\-","If several SAs match always prefer old SAs over new ones"
+    "disable_vpn_rules","boolean","False","False","\-","This option only applies to legacy tunnel configurations, connections do require manual firewall rules being setup"
+    "passthrough_networks","list of strings","False","[]","\-","Exempts traffic for one or more subnets from getting processed by the IPsec stack in the kernel"
+    "authentication","list of strings","False","[]","\-","Select authentication methods to use, leave empty if no challenge response authentication is needed"
+    "local_group","strings","False","\-","\-","Restrict access to users in the selected local group"
+    "radius_servers","list of strings","False","[]","\-","RADIUS servers to configure"
+    "radius_accounting","boolean","False","False","\-","Enable RADIUS accounting"
+    "radius_class_group","boolean","False","False","\-","Enable RADIUS Group selection (class_group)"
+    "pam_service","strings","False","ipsec","\-","PAM service to use for authentication"
+    "pam_session","boolean","False","False","\-","Open/close a PAM session for each active IKE_SA"
+    "pam_trim_email","boolean","False","True","\-","If an email address is received as an XAuth username, trim it to just the username part"
+    "charon_max_ikev1_exchanges","integer","False","\-","\-","Maximum number of IKEv1 phase 2 exchanges per IKE_SA to keep state about and track concurrently"
+    "charon_threads","integer","False","16","\-","Number of worker threads,several of these are reserved for long running tasks in internal modules and plugins"
+    "charon_ikesa_table_size","integer","False","32","\-","Size of the IKE SA hash table"
+    "charon_ikesa_table_segments","integer","False","4","\-","Number of exclusively locked segments in the hash table"
+    "charon_init_limit_half_open","integer","False","1000","\-","Limit new connections based on the current number of half open IKE_SAs"
+    "charon_ignore_acquire_ts","boolean","False","True","\-","Prefix each log entry with the connection name and a unique numerical identifier for each IKE_SA"
+    "charon_make_before_break","boolean","False","False","\-","Initiate IKEv2 reauthentication with a make-before-break instead of a break-before-make scheme"
+    "charon_install_routes","boolean","False","False","\-","Install routes into a separate routing table for established IPsec tunnels"
+    "charon_cisco_unity","boolean","False","False","\-","Send Cisco Unity vendor ID payload (IKEv1 only)"
+    "retransmit_tries","integer","False","\-","\-","Number of retransmissions to send before giving up"
+    "retransmit_timeout","integer","False","\-","\-","Timeout in seconds"
+    "retransmit_base","integer","False","\-","\-","Base of exponential backoff"
+    "retransmit_jitter","integer","False","\-","\-","Maximum jitter in percent to apply randomly to calculated retransmission timeout (0 to disable)"
+    "retransmit_limit","integer","False","\-","\-","Upper limit in seconds for calculated retransmission timeout (0 to disable)"
+    "syslog_log_name","boolean","False","True","\-","Prefix each log entry with the connection name and a unique numerical identifier for each IKE_SA"
+    "syslog_log_level","boolean","False","False","\-","Add the log level of each message after the subsystem (e.g. [IKE2])"
+    "syslog_app","integer","False","1","\-","Log level for applications other than daemons"
+    "syslog_asn","integer","False","1","\-","Log level for low-level encoding/decoding (ASN.1, X.509 etc.)"
+    "syslog_cfg","integer","False","1","\-","Log level for configuration management and plugins"
+    "syslog_chd","integer","False","1","\-","Log level for CHILD_SA/IPsec SA"
+    "syslog_dmn","integer","False","1","\-","Log level for main daemon setup/cleanup/signal handling"
+    "syslog_enc","integer","False","1","\-","Log level for packet encoding/decoding encryption/decryption operations"
+    "syslog_esp","integer","False","1","\-","Log level for libipsec library messages"
+    "syslog_ike","integer","False","1","\-","Log level for IKE_SA/ISAKMP SA"
+    "syslog_imc","integer","False","1","\-","Log level for Integrity Measurement Collector"
+    "syslog_imv","integer","False","1","\-","Log level for Integrity Measurement Verifier"
+    "syslog_job","integer","False","1","\-","Log level for jobs queuing/processing and thread pool management"
+    "syslog_knl","integer","False","1","\-","Log level for IPsec/Networking kernel interface"
+    "syslog_lib","integer","False","1","\-","Log level for libstrongwan library messages"
+    "syslog_mgr","integer","False","1","\-","Log level for IKE_SA manager, handling synchronization for IKE_SA access"
+    "syslog_net","integer","False","1","\-","Log level for IKE network communication"
+    "syslog_pts","integer","False","1","\-","Log level for Platform Trust Service"
+    "syslog_tls","integer","False","1","\-","Log level for libtls library messages"
+    "syslog_tnc","integer","False","1","\-","Log level for Trusted Network Connect"
+    "attr_subnet","list of strings","False","[]","\-","The protected sub-networks that this edge-device protects (in CIDR notation). Usually ignored in deference to local_ts, though macOS clients will use this for routes"
+    "attr_dns","list of strings","False","[]","\-","DNS server"
+    "attr_nbns","list of strings","False","[]","attr_wins","WINS server"
+    "unity_split_include","list of strings","False","[]","\-","Comma-separated list of subnets to tunnel. The unity plugin provides a connection specific approach to assign this attribute"
+    "unity_dns_search","strings","False","\-","\-","Default search domain used when resolving host names via the assigned DNS servers"
+    "unity_dns_split","strings","False","\-","\-","If split tunneling is used clients might not install the assigned DNS servers globally. This space-separated list of domain names allows clients, such as macOS, to selectively query the assigned DNS servers"
+    "unity_login_banner","strings","False","\-","\-","Message displayed on certain clients after login"
+    "unity_save_password","boolean","False","False","\-","Allow client to save Xauth password in local storage"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
 Usage
@@ -343,3 +407,82 @@ ansibleguy.opnsense.ipsec_manual_spd
         - name: Printing
           ansible.builtin.debug:
             var: existing_manual_spd.data
+
+----
+
+ansibleguy.opnsense.ipsec_general
+=================================
+
+.. code-block:: yaml
+
+  
+    - hosts: localhost
+      gather_facts: no
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+      tasks:
+        - name: Example - General
+          ansibleguy.opnsense.ipsec_general:
+            # prefer_old_sa: false
+            # disable_vpn_rules: false
+            # passthrough_networks: []
+            # authentication: []
+            # local_group
+            # radius_servers: []
+            # radius_accounting: false
+            # radius_class_group: false
+            # pam_service: ipsec
+            # pam_session: false
+            # pam_trim_email: true
+            # charon_max_ikev1_exchanges:
+            # charon_threads: 16
+            # charon_ikesa_table_size: 32
+            # charon_ikesa_table_segments: 4
+            # charon_ignore_acquire_ts: true
+            # charon_make_before_break: false
+            # charon_install_routes: false
+            # charon_cisco_unity: false
+            # retransmit_tries:
+            # retransmit_timeout:
+            # retransmit_base:
+            # retransmit_jitter:
+            # retransmit_limit:
+            # syslog_log_name: true
+            # syslog_log_level: false
+            # syslog_app: 1
+            # syslog_asn: 1
+            # syslog_cfg: 1
+            # syslog_chd: 1
+            # syslog_dmn: 1
+            # syslog_enc: 1
+            # syslog_esp: 1
+            # syslog_ike: 1
+            # syslog_imc: 1
+            # syslog_imv: 1
+            # syslog_job: 1
+            # syslog_knl: 1
+            # syslog_lib: 1
+            # syslog_mgr: 1
+            # syslog_net: 1
+            # syslog_pts: 1
+            # syslog_tls: 1
+            # syslog_tnc: 1
+            # attr_subnet: []
+            # attr_dns: []
+            # attr_wins: []
+            # unity_split_include: []
+            # unity_dns_search:
+            # unity_dns_split:
+            # unity_login_banner:
+            # unity_save_password: false
+
+        - name: Setup Syslog
+          ansibleguy.opnsense.ipsec_general:
+            syslog_log_name: true
+            syslog_log_level: true
+            syslog_chd: 2
+            syslog_ike: 2
+            syslog_mgr: 2
