@@ -966,6 +966,14 @@
       ansibleguy.opnsense.dnsmasq_general:
         enabled: false
 
+    - name: Cleanup dnsmasq Host
+      ansibleguy.opnsense.dnsmasq_host:
+        description: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
     - name: Cleanup dnsmasq Range
       ansibleguy.opnsense.dnsmasq_range:
         description: '{{ item }}'
@@ -996,5 +1004,3 @@
         state: 'absent'
       loop:
         - 'AnsibleTest1'
-        - 'ANSIBLE_TEST_1_1'
-        - 'ANSIBLE_TEST_1_2'

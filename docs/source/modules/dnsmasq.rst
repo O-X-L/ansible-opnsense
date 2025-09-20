@@ -9,6 +9,7 @@ Dnsmasq
 **STATE**: unstable
 
 **TESTS**: `General <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_general.yml>`_ |
+`Host <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_host.yml>`_ |
 `Range <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_range.yml>`_ |
 `Option <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_option.yml>`_ |
 `Boot <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_boot.yml>`_ |
@@ -60,6 +61,28 @@ ansibleguy.opnsense.dnsmasq_general
     "log_queries","boolean","false","false","\-","Log DNS queries"
     "no_ident","boolean","false","false","\-","Do not respond to CHAOS or TXT bind queries"
     "regdhcpdomain","str","false","false","\-","Domain used for DHCP hostname registrations"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+ansibleguy.opnsense.dnsmasq_host
+================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "description","string","true","\-","desc","The unique description used to match the configured entries to the existing ones"
+    "host","string","false","\-","h","Name of the host, without the domain part. Use '*' to create a wildcard entry."
+    "domain","string",false","\-","d"," Domain of the host,"
+    "local","boolean","false","false","\-","Set the domain as local. This will configure this DNS server as authoritative."
+    "ip","list","false","\-","\-","IP addresses of the host. Can be multiple IPv4 and IPv6 addresses for dual stack configurations."
+    "alias","list","false","\-","\-","Adds additional static A, AAAA and PTR records for the given alternative names (FQDN). Please note that these records are only created if IP addresses are configured in this host entry."
+    "cname","list","false","\-","\-","Adds additional static A, AAAA and PTR records for the given alternative names (FQDN)."
+    "client_id","string","false","\-","\-","Match the identifier of the client. Setting the special character '*'' will ignore the client identifier for DHCPv4 leases if a client offers both as choice."
+    "hardware_addr","list","false","\-","mac","Match the hardware address of the client. Can be multiple addresses, e.g., if the client has multiple network cards."
+    "lease_time","int","false","\-","\-"," Defines how long the addresses (leases) given out by the server are valid (in seconds). Set 0 for infinite."
+    "set_tag","string","false","\-","\-","Tag to set for matching requests."
+    "ignore","boolean","false","false","\-","Ignore any DHCP packets of this host. Useful if it should get served by a different DHCP server."
+    "comments","string","false","\-","\-","A comment for your reference (not parsed)."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.dnsmasq_range
@@ -208,6 +231,64 @@ ansibleguy.opnsense.dnsmasq_general
         - name: Printing settings
           ansible.builtin.debug:
             var: dnsmasq_general_settings
+
+----
+
+ansibleguy.opnsense.dnsmasq_host
+================================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: false
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+        ansibleguy.opnsense.list:
+          target: 'dnsmasq_host'
+
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.dnsmasq_host:
+            description: Host Description
+            host: 'example'
+            domain: 'template.ansibleguy'
+            # local: false
+            ip: 192.168.0.1
+            # alias:
+            # cname:
+            # client_id:
+            # hardware_addr:
+            # lease_time:
+            # set_tag:
+            # ignore: false
+            # comments:
+            # state: 'absent'
+            # debug: false
+
+        - name: Adding DNS entry
+          ansibleguy.opnsense.dnsmasq_host:
+            description: DNS example.template.ansibleguy
+            host: 'example'
+            domain: 'template.ansibleguy'
+            ip: 192.168.0.1
+
+        - name: Adding DHCP entry
+          ansibleguy.opnsense.dnsmasq_host:
+            description: DHCP example.template.ansibleguy
+            ip: '192.168.0.2'
+            hardware_addr: 'aa:aa:aa:bb:bb:bb'
+
+        - name: Listing Host
+          ansibleguy.opnsense.list:
+          #  target: 'dnsmasq_host'
+          register: existing_host
+
+        - name: Printing
+          ansible.builtin.debug:
+            var: existing_host.data
 
 ----
 
