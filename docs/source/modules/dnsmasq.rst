@@ -9,6 +9,7 @@ Dnsmasq
 **STATE**: unstable
 
 **TESTS**: `General <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_general.yml>`_ |
+`Boot <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_boot.yml>`_ |
 `Tag <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_tag.yml>`_
 
 **API Docs**: `dnsmasq_general <https://docs.opnsense.org/development/api/core/dnsmasq.html>`_
@@ -57,6 +58,21 @@ ansibleguy.opnsense.dnsmasq_general
     "log_queries","boolean","false","false","\-","Log DNS queries"
     "no_ident","boolean","false","false","\-","Do not respond to CHAOS or TXT bind queries"
     "regdhcpdomain","str","false","false","\-","Domain used for DHCP hostname registrations"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+ansibleguy.opnsense.dnsmasq_boot
+================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "description","string","true","\-","desc","The unique description used to match the configured entries to the existing ones"
+    "interface","string","false","\-","int","Interface this boot options is set for."
+    "tag","list","false","[]","t","DHCP boot option is only sent when all the tags are matched."
+    "filename","string","true","\-","file, f","DHCP boot file path."
+    "servername","string","false","\-","\-","DHCP boot server name."
+    "address","string","false","\-","\-","DHCP boot server address."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.dnsmasq_tag
@@ -145,6 +161,55 @@ ansibleguy.opnsense.dnsmasq_general
         - name: Printing settings
           ansible.builtin.debug:
             var: dnsmasq_general_settings
+
+----
+
+ansibleguy.opnsense.dnsmasq_boot
+================================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: false
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+        ansibleguy.opnsense.list:
+          target: 'dnsmasq_boot'
+
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.dnsmasq_boot:
+            description: 'Boot PXELinux'
+            # interface:
+            # tag:
+            filename: '/tftpboot/pxelinux.0'
+            # servername:
+            # address:
+            # state: 'absent'
+            # debug: false
+
+        - name: Adding something
+          ansibleguy.opnsense.dnsmasq_boot:
+            description: 'Boot PXELinux'
+            filename: '/tftpboot/pxelinux.0'
+
+        - name: Changing something
+          ansibleguy.opnsense.dnsmasq_boot:
+            description: 'Boot PXELinux'
+            filename: '/tftpboot/pxelinux.0'
+            address: '192.168.1.1'
+
+        - name: Listing Boot
+          ansibleguy.opnsense.list:
+          #  target: 'dnsmasq_boot'
+          register: existing_boot
+
+        - name: Printing
+          ansible.builtin.debug:
+            var: existing_boot.data
 
 ----
 
