@@ -3,8 +3,8 @@
 name: Functional-Tests Execution for PRs
 
 on:
-  pull_request:
-    types: [opened, synchronize]
+  pull_request_target:
+    branches: ['latest']
     paths:
       - 'plugins/**.py'
       - 'tests/**.yml'
@@ -20,9 +20,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Query changes
         run: |
