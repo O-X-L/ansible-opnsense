@@ -43,7 +43,7 @@ TARGETS = [
     'ipsec_manual_spd', 'hasync_general', 'snapshot', 'frr_bgp_redistribution', 'frr_ospf_redistribution',
     'frr_ospf3_redistribution', 'frr_ospf3_route_map', 'frr_ospf3_prefix_list', 'frr_ospf3_network',
     'frr_bgp_peer_group', 'user', 'group', 'privilege', 'interface_bridge', 'interface_gif', 'neighbor',
-    'dnsmasq_general', 'ipsec_general', 'dnsmasq_option', 'dnsmasq_boot', 'dnsmasq_tag',
+    'dnsmasq_general', 'ipsec_general', 'dnsmasq_range', 'dnsmasq_option', 'dnsmasq_boot', 'dnsmasq_tag',
 ]
 
 
@@ -549,6 +549,10 @@ def run_module():
         elif target == 'dnsmasq_general':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_general import \
                 General as Target_Obj
+
+        elif target == 'dnsmasq_range':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_range import \
+                Range as Target_Obj
 
         elif target == 'dnsmasq_option':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_option import \

@@ -9,6 +9,7 @@ Dnsmasq
 **STATE**: unstable
 
 **TESTS**: `General <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_general.yml>`_ |
+`Range <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_range.yml>`_ |
 `Option <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_option.yml>`_ |
 `Boot <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_boot.yml>`_ |
 `Tag <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_tag.yml>`_
@@ -59,6 +60,33 @@ ansibleguy.opnsense.dnsmasq_general
     "log_queries","boolean","false","false","\-","Log DNS queries"
     "no_ident","boolean","false","false","\-","Do not respond to CHAOS or TXT bind queries"
     "regdhcpdomain","str","false","false","\-","Domain used for DHCP hostname registrations"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+ansibleguy.opnsense.dnsmasq_range
+=================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "description","string","true","\-","desc","The unique description used to match the configured entries to the existing ones"
+    "interface","string","false","\-","int","Interface this range is for."
+    "set_tag","string","false","\-","\-","Tag to set for matching requests."
+    "start_addr","string","true","\-","\-","Start of the range, e.g. 192.168.1.100 for DHCPv4, 2000::1 for DHCPv6 or when a constructor is used a suffix like ::1"
+    "end_addr","string","true","\-","\-","End of the range."
+    "subnet_mask","stzring","false","\-","\-","Leave empty to auto-calculate the subnet mask from the interface or the network class of the start address."
+    "constructor","string","false","\-","\-","Interface to use to calculate a DHCPv6 or RA range. Start address can then be specified as a suffix (e.g. ::, ::1 or ::400)."
+    "mode","list","false","[]","\-","Mode flags to set for this range, 'static' means no addresses will be automatically assigned."
+    "prefix_len","int","false","64","\-","Prefix length offered to the DHCPv6 client. Custom values in this field will be ignored if Router Advertisements are enabled."
+    "lease_time","int","false","86400","\-","Defines how long the addresses (leases) given out by the server are valid (in seconds). Set 0 for infinite."
+    "domain_type","string","false","range","\-","Choose if the domain will only match clients in this range, or all clients in any subnets on the selected interface. If you create both IPv4 and IPv6 ranges, setting this to 'interface' on both ranges is recommended. On of: 'range', 'interface'"
+    "domain","string","false","\-","\-","Offer this domain to DHCP clients."
+    "sync","boolean","false","true","\-","Sync this range by ha sync."
+    "ra_mode","string","false","\-","\-","Control how IPv6 clients receive their addresses. Enabling Router Advertisements in general settings will enable it for all configured DHCPv6 ranges with the managed address bits set, and the use SLAAC bit reset. To change this default, select a combination of the possible options here. 'slaac', 'ra-stateless' and 'ra-names' can be freely combined, all other options shall remain single selections. Options: 'ra-only', 'slaac', 'ra-names', 'ra-stateless', 'ra-advrouter', 'off-link'"
+    "ra_priority","string","false","''","\-","Priority of the RA announcements. One of: '', 'high', 'low'"
+    "ra_mtu","int","false","\-","\-","Optional MTU to send to clients via Router Advertisements."
+    "ra_interval","int","false","60","\-","Time in seconds between Router Advertisements."
+    "ra_router_lifetime","int","false","1200","\-","The lifetime of the route may be changed or set to zero, which allows a router to advertise prefixes but not a route via itself."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.dnsmasq_option
@@ -180,6 +208,83 @@ ansibleguy.opnsense.dnsmasq_general
         - name: Printing settings
           ansible.builtin.debug:
             var: dnsmasq_general_settings
+
+----
+
+ansibleguy.opnsense.dnsmasq_range
+=================================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: false
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+        ansibleguy.opnsense.list:
+          target: 'dnsmasq_range'
+
+      tasks:
+        - name: Example v4
+          ansibleguy.opnsense.dnsmasq_range:
+            description: IPv4 Range
+            # interface:
+            # set_tag:
+            start_addr: 192.168.1.100
+            end_addr: 192.168.1.200
+            # mode: static
+            # lease_time: 86400
+            # domain_type: range
+            # damin:
+            # sync: true
+            # state: 'absent'
+            # debug: false
+
+        - name: Example v6
+          ansibleguy.opnsense.dnsmasq_range:
+            description: IPv6 Range
+            # interface:
+            # set_tag:
+            start_addr: 2000::100
+            end_addr: 2000::100
+            # contructor:
+            # prefix_len: 64
+            # ra_mode:
+            # ra_priority:
+            # ra_mtu:
+            # ra_interval: 60
+            # ra_router_lifetime: 1200
+            # mode: static
+            # lease_time: 86400
+            # domain_type: range
+            # damin:
+            # sync: true
+            # state: 'absent'
+            # debug: false
+
+        - name: Adding range
+          ansibleguy.opnsense.dnsmasq_range:
+            description: IPv4 Range
+            start_addr: 192.168.1.100
+            end_addr: 192.168.1.200
+
+        - name: Changing range
+          ansibleguy.opnsense.dnsmasq_range:
+            description: IPv4 Range
+            start_addr: 192.168.1.100
+            end_addr: 192.168.1.150
+            domain: opn.local
+
+        - name: Listing Range
+          ansibleguy.opnsense.list:
+          #  target: 'dnsmasq_range'
+          register: existing_range
+
+        - name: Printing
+          ansible.builtin.debug:
+            var: existing_range.data
 
 ----
 
