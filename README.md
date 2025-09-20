@@ -1,6 +1,7 @@
 # Ansible Collection to manage OPNsense Firewalls
 
-[![Lint](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint.yml)
+[![Lint Python](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint-python.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint-python.yml)
+[![Lint Ansible](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint-ansible.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint-ansible.yml)
 [![Unit Test Status](https://github.com/O-X-L/ansible_opnsense/actions/workflows/unit_test.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/unit_test.yml)
 [![Ansible Galaxy](https://badges.ansibleguy.net/galaxy.badge.svg)](https://galaxy.ansible.com/ui/repo/published/ansibleguy/opnsense)
 
