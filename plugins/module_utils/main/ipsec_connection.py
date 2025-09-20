@@ -23,7 +23,7 @@ class Connection(BaseModule):
         'local_addresses', 'remote_addresses', 'pools', 'proposals', 'unique',
         'aggressive', 'version', 'mobike', 'encapsulation', 'reauth_seconds',
         'rekey_seconds', 'over_seconds', 'dpd_delay_seconds', 'dpd_timeout_seconds',
-        'send_certificate_request', 'send_certificate', 'keying_tries',
+        'send_certificate_request', 'send_certificate', 'keying_tries', 'local_port', 'remote_port'
     ]
     FIELDS_ALL = ['enabled', FIELD_ID]
     FIELDS_ALL.extend(FIELDS_CHANGE)
@@ -44,7 +44,7 @@ class Connection(BaseModule):
     FIELDS_TYPING = {
         'bool': ['enabled', 'aggressive', 'mobike', 'encapsulation', 'send_certificate_request'],
         'list': ['local_addresses', 'remote_addresses', 'pools', 'proposals'],
-        'select': ['send_certificate', 'unique'],
+        'select': ['send_certificate', 'unique', 'local_port', 'remote_port'],
         'select_opt_list': ['version'],  # don't know why this is a list instead of a dict
         'int': [
             'keying_tries', 'dpd_timeout_seconds', 'dpd_delay_seconds', 'over_seconds',
@@ -57,13 +57,17 @@ class Connection(BaseModule):
             'ikev1': 1,
             'ikev2': 2,
         },
+        'local_port': {'500': ''},
+        'remote_port': {'500': ''},
     }
     FIELDS_VALUE_MAPPING_RCV = {  # receiving
         'version': {
             'ikev1+2': 'IKEv1+IKEv2',
             'ikev1': 'IKEv1',
             'ikev2': 'IKEv2',
-        }
+        },
+        'local_port': {'500': ''},
+        'remote_port': {'500': ''},
     }
     INT_VALIDATIONS = {
         'keying_tries': {'min': 0, 'max': 1000},

@@ -1,6 +1,7 @@
 # Ansible Collection to manage OPNsense Firewalls
 
-[![Lint](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint.yml)
+[![Lint Python](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint-python.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint-python.yml)
+[![Lint Ansible](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint-ansible.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint-ansible.yml)
 [![Unit Test Status](https://github.com/O-X-L/ansible_opnsense/actions/workflows/unit_test.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/unit_test.yml)
 [![Ansible Galaxy](https://badges.ansibleguy.net/galaxy.badge.svg)](https://galaxy.ansible.com/ui/repo/published/ansibleguy/opnsense)
 
@@ -113,6 +114,7 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible_opn
 | **IPSec**                 | ansibleguy.opnsense.ipsec_cert                                         | [Docs](https://ansible-opnsense.oxl.app/modules/ipsec.html)                                                         | stable   |
 | **IPSec**                 | ansibleguy.opnsense.ipsec_psk                                          | [Docs](https://ansible-opnsense.oxl.app/modules/ipsec.html)                                                         | stable   |
 | **IPSec**                 | ansibleguy.opnsense.ipsec_manual_spd                                   | [Docs](https://ansible-opnsense.oxl.app/modules/ipsec.html)                                                         | stable   |
+| **IPSec**                 | ansibleguy.opnsense.general                                            | [Docs](https://ansible-opnsense.oxl.app/modules/ipsec.html)                                                         | unstable |
 | **Traffic Shaper**        | ansibleguy.opnsense.shaper_pipe                                        | [Docs](https://ansible-opnsense.oxl.app/modules/shaper.html)                                                        | stable   |
 | **Traffic Shaper**        | ansibleguy.opnsense.shaper_queue                                       | [Docs](https://ansible-opnsense.oxl.app/modules/shaper.html)                                                        | stable   |
 | **Traffic Shaper**        | ansibleguy.opnsense.shaper_rule                                        | [Docs](https://ansible-opnsense.oxl.app/modules/shaper.html)                                                        | stable   |

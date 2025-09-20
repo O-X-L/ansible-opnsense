@@ -174,6 +174,7 @@ run_test_soft 'ipsec_child' 0  # check mode => dependency on connection-entry
 run_test_soft 'ipsec_auth_local' 0  # check mode => dependency on connection/cert-entry
 run_test_soft 'ipsec_auth_remote' 0  # check mode => dependency on connection/cert-entry
 run_test_soft 'ipsec_manual_spd' 1
+run_test_soft 'ipsec_general' 1
 run_test_soft 'ids_action' 1
 run_test_soft 'ids_general' 1
 run_test_soft 'ids_ruleset' 1

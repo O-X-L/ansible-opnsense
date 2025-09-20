@@ -24,6 +24,8 @@ class Vti(BaseModule):
     FIELDS_CHANGE = [
         'request_id', 'local_address', 'remote_address',
         'local_tunnel_address', 'remote_tunnel_address',
+        'local_tunnel_secondary_address', 'remote_tunnel_secondary_address',
+        'skip_firewall',
     ]
     FIELDS_ALL = ['enabled', FIELD_ID]
     FIELDS_ALL.extend(FIELDS_CHANGE)
@@ -34,9 +36,13 @@ class Vti(BaseModule):
         'remote_address': 'remote',
         'local_tunnel_address': 'tunnel_local',
         'remote_tunnel_address': 'tunnel_remote',
+        'local_tunnel_secondary_address': 'tunnel_local2',
+        'remote_tunnel_secondary_address': 'tunnel_remote2',
+        'skip_firewall': 'skip_fw'
     }
     FIELDS_TYPING = {
         'int': ['request_id'],
+        'bool': ['skip_firewall'],
     }
     INT_VALIDATIONS = {
         'request_id': {'min': 1, 'max': 65535},

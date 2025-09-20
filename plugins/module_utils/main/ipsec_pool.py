@@ -4,6 +4,8 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api impor
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
     is_unset
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    is_ip
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
@@ -21,11 +23,14 @@ class Pool(BaseModule):
     API_MOD = 'ipsec'
     API_CONT = 'pools'
     API_CONT_REL = 'service'
-    FIELDS_CHANGE = ['network']
+    FIELDS_CHANGE = ['network', 'dns']
     FIELDS_ALL = ['enabled', FIELD_ID]
     FIELDS_ALL.extend(FIELDS_CHANGE)
     FIELDS_TRANSLATE = {'network': 'addrs'}
-    FIELDS_TYPING = {'bool': ['enabled']}
+    FIELDS_TYPING = {
+        'bool': ['enabled'],
+        'list': ['dns']
+    }
     EXIST_ATTR = 'pool'
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
@@ -36,5 +41,12 @@ class Pool(BaseModule):
         if self.p['state'] == 'present':
             if is_unset(self.p['network']):
                 self.m.fail_json("You need to provide a 'network' to create an IPSec-Pool!")
+
+            for ip in self.p['dns']:
+                if is_ip(ip):
+                    continue
+                self.m.fail_json(
+                    f"It seems you provided an invalid IP address as dns: '{ip}'"
+                )
 
         self._base_check()

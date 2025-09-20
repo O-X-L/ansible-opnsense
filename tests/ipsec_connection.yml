@@ -141,7 +141,9 @@
         mobike: false
         aggressive: true
         local_addresses: ['192.168.1.1']
+        local_port: 4500
         remote_addresses: ['192.168.2.1', '192.168.3.1']
+        remote_port: 4500
       register: opn7
       failed_when: >
         opn7.failed or
@@ -162,7 +164,9 @@
         mobike: false
         aggressive: true
         local_addresses: ['192.168.1.1']
+        local_port: 4500
         remote_addresses: ['192.168.2.1', '192.168.3.1']
+        remote_port: 4500
       register: opn8
       failed_when: >
         opn8.failed or

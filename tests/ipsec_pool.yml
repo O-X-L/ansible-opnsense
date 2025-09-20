@@ -40,6 +40,14 @@
       failed_when: not opn_fail1.failed
       when: not ansible_check_mode
 
+    - name: Adding 1 - failing because of invalid dns
+      ansibleguy.opnsense.ipsec_pool:
+        name: 'ANSIBLE_TEST_1_1'
+        network: '192.168.0.0/29'
+        dns: 'INVALID-IP'
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
     - name: Adding 1
       ansibleguy.opnsense.ipsec_pool:
         name: 'ANSIBLE_TEST_1_1'
@@ -63,6 +71,7 @@
       ansibleguy.opnsense.ipsec_pool:
         name: 'ANSIBLE_TEST_1_1'
         network: '192.168.1.0/28'
+        dns: '192.168.2.1'
       register: opn3
       failed_when: >
         opn3.failed or
@@ -72,6 +81,7 @@
       ansibleguy.opnsense.ipsec_pool:
         name: 'ANSIBLE_TEST_1_1'
         network: '192.168.1.0/28'
+        dns: '192.168.2.1'
         enabled: false
       register: opn4
       failed_when: >
@@ -83,6 +93,7 @@
       ansibleguy.opnsense.ipsec_network:
         name: 'ANSIBLE_TEST_1_1'
         network: '192.168.1.0/28'
+        dns: '192.168.2.1'
         enabled: false
       when: not ansible_check_mode
 
@@ -90,6 +101,7 @@
       ansibleguy.opnsense.ipsec_pool:
         name: 'ANSIBLE_TEST_1_1'
         network: '192.168.1.0/28'
+        dns: '192.168.2.1'
         enabled: false
       register: opn5
       failed_when: >
@@ -101,6 +113,7 @@
       ansibleguy.opnsense.ipsec_pool:
         name: 'ANSIBLE_TEST_1_1'
         network: '192.168.1.0/28'
+        dns: '192.168.2.1'
       register: opn6
       failed_when: >
         opn6.failed or
