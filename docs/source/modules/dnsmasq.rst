@@ -66,6 +66,16 @@ ansibleguy.opnsense.dnsmasq_general
  text'"
     "add_subnet","boolean","false","false","\-","Add the real client addresses to DNS queries which are forwarded upstream"
     "strip_subnet","boolean","false","false","\-","Strip the subnet received by a downstream DNS server"
+    "dhcp_disable_interfaces","list","false","\-","dhcp_dis_ints, ints_no_dhcp","Do not provide DHCP, TFTP or router advertisement on the specified interfaces."
+    "dhcp_fqdn","boolean","false","false","\-","Registers the qualified names of DHCP clients into the DNS."
+    "dhcp_domain","string","false","\-","\-","Domain part to registers the qualified names of DHCP clients into the DNS."
+    "dhcp_local","boolean","false","true","\-","Sets all DHCP domains as local."
+    "dhcp_lease_max","int","false","\-","\-","Limits Dnsmasq to the specified maximum number of DHCP leases."
+    "dhcp_authoritative","boolean","false","false","\-","Should be set when Dnsmasq is definitely the only DHCP server on a network."
+    "dhcp_reply_delay","int","false","\-","\-","Delays sending DHCPOFFER and PROXYDHCP replies for at least the specified number of seconds."
+    "dhcp_default_fw_rules","boolean","false","true","\-","Automatically register firewall rules to allow DHCP traffic for all selected interfaces."
+    "dhcp_enable_ra","boolean","false","false","\-","Enable Router Advertisements for all configured DHCPv6 ranges."
+    "dhcp_hasync","boolean","false","true","\-","HA sync DHCP general settings."
     "regdhcp","boolean","false","false","\-","Specify hostname when requesting DHCP lease"
     "regdhcpdomain","str","false","false","\-","Domain used for DHCP hostname registrations"
     "regdhcpstatic","boolean","false","false","\-","Register DHCP Static mappings"
@@ -229,6 +239,16 @@ ansibleguy.opnsense.dnsmasq_general
             # add_mac: ''
             # add_subnet: false
             # strip_subnet: false
+            # dhcp_disable_interfaces:
+            # dhcp_fqdn: false
+            # dhcp_domain:
+            # dhcp_local: true
+            # dhcp_lease_max:
+            # dhcp_authoritative: false
+            # dhcp_reply_delay:
+            # dhcp_default_fw_rules: true
+            # dhcp_enable_ra: false
+            # dhcp_hasync: true
             # regdhcp: true
             # regdhcpdomain: 'test.domain'
             # regdhcpstatic: true

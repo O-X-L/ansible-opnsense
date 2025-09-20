@@ -38,6 +38,16 @@
         add_mac: 'text'
         add_subnet: true
         strip_subnet: true
+        dhcp_disable_interfaces: 'opt2'
+        dhcp_fqdn: true
+        dhcp_domain: 'dhcp.example'
+        dhcp_local: false
+        dhcp_lease_max: 1000
+        dhcp_authoritative: true
+        dhcp_reply_delay: 10
+        dhcp_default_fw_rules: false
+        dhcp_enable_ra: true
+        dhcp_hasync: false
         regdhcp: true
         regdhcpdomain: 'test.domain'
         regdhcpstatic: true
@@ -67,6 +77,16 @@
         add_mac: 'text'
         add_subnet: true
         strip_subnet: true
+        dhcp_disable_interfaces: 'opt2'
+        dhcp_fqdn: true
+        dhcp_domain: 'dhcp.example'
+        dhcp_local: false
+        dhcp_lease_max: 1000
+        dhcp_authoritative: true
+        dhcp_reply_delay: 10
+        dhcp_default_fw_rules: false
+        dhcp_enable_ra: true
+        dhcp_hasync: false
         regdhcp: true
         regdhcpdomain: 'test.domain'
         regdhcpstatic: true

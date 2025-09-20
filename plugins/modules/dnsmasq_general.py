@@ -118,6 +118,47 @@ def run_module():
             type='bool', required=False, default=False,
             description='Strip the subnet received by a downstream DNS server.',
         ),
+        # DHCP
+        dhcp_disable_interfaces=dict(
+            type='list', elements='str', required=False, default=[], aliases=['dhcp_dis_ints', 'ints_no_dhcp'],
+            description='Do not provide DHCP, TFTP or router advertisement on the specified interfaces.',
+        ),
+        dhcp_fqdn=dict(
+            type='bool', required=False, default=False,
+            description='Registers the qualified names of DHCP clients into the DNS.',
+        ),
+        dhcp_domain=dict(
+            type='str', required=False,
+            description='Domain part to registers the qualified names of DHCP clients into the DNS.',
+        ),
+        dhcp_local=dict(
+            type='bool', required=False, default=True,
+            description='Sets all DHCP domains as local.',
+        ),
+        dhcp_lease_max=dict(
+            type='int', required=False,
+            description='Limits Dnsmasq to the specified maximum number of DHCP leases.',
+        ),
+        dhcp_authoritative=dict(
+            type='bool', required=False, default=False,
+            description='Should be set when Dnsmasq is definitely the only DHCP server on a network.',
+        ),
+        dhcp_reply_delay=dict(
+            type='int', required=False,
+            description='Delays sending DHCPOFFER and PROXYDHCP replies for at least the specified number of seconds',
+        ),
+        dhcp_default_fw_rules=dict(
+            type='bool', required=False, default=True,
+            description='Automatically register firewall rules to allow DHCP traffic for all selected interfaces.',
+        ),
+        dhcp_enable_ra=dict(
+            type='bool', required=False, default=False,
+            description='Enable Router Advertisements for all configured DHCPv6 ranges.',
+        ),
+        dhcp_hasync=dict(
+            type='bool', required=False, default=True,
+            description='HA sync DHCP general settings.',
+        ),
         # ISC / KEA DHCP (legacy)
         regdhcp=dict(
             type='bool', default=False, required=False,

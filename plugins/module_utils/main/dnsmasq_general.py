@@ -18,22 +18,36 @@ class General(GeneralModule):
         'enabled', 'interfaces', 'regdhcp', 'regdhcpstatic', 'domain_needed', 'port', 'dnssec',
         'no_hosts', 'dhcpfirst', 'strict_order', 'strictbind', 'no_private_reverse', 'log_queries',
         'no_ident', 'regdhcpdomain', 'dns_forward_max', 'cache_size', 'local_ttl', 'resolv_system',
-        'add_mac', 'add_subnet', 'add_subnet',
+        'add_mac', 'add_subnet', 'add_subnet', 'dhcp_disable_interfaces', 'dhcp_fqdn', 'dhcp_domain',
+        'dhcp_local', 'dhcp_lease_max', 'dhcp_authoritative', 'dhcp_reply_delay', 'dhcp_default_fw_rules',
+        'dhcp_enable_ra', 'dhcp_hasync',
     ]
     FIELDS_ALL = FIELDS_CHANGE
     FIELDS_TRANSLATE = {
         'enabled': 'enable',
         'interfaces': 'interface',
         'resolv_system': 'no_resolv',
+        'dhcp_disable_interfaces': ('dhcp', 'no_interface'),
+        'dhcp_fqdn': ('dhcp', 'fqdn'),
+        'dhcp_domain': ('dhcp', 'domain'),
+        'dhcp_local': ('dhcp', 'local'),
+        'dhcp_lease_max': ('dhcp', 'lease_max'),
+        'dhcp_authoritative': ('dhcp', 'authoritative'),
+        'dhcp_default_fw_rules': ('dhcp', 'default_fw_rules'),
+        'dhcp_reply_delay': ('dhcp', 'reply_delay'),
+        'dhcp_enable_ra': ('dhcp', 'enable_ra'),
+        'dhcp_hasync': ('dhcp', 'nosync'),
     }
+    FIELDS_BOOL_INVERT = ['dhcp_hasync']
     FIELDS_TYPING = {
         'bool': [
             'enabled','regdhcp','regdhcpstatic','domain_needed', 'dnssec', 'no_hosts', 'dhcpfirst', 'strict_order',
             'strictbind', 'no_private_reverse', 'log_queries', 'no_ident', 'resolv_system', 'add_subnet',
-            'add_subnet',
+            'add_subnet', 'dhcp_fqdn', 'dhcp_local', 'dhcp_authoritative', 'dhcp_default_fw_rules', 'dhcp_enable_ra',
+            'dhcp_hasync',
         ],
-        'int': ['port', 'dns_forward_max', 'cache_size', 'local_ttl'],
-        'list': ['interfaces'],
+        'int': ['port', 'dns_forward_max', 'cache_size', 'local_ttl', 'dhcp_lease_max', 'dhcp_reply_delay'],
+        'list': ['interfaces', 'dhcp_disable_interfaces'],
         'str': ['regdhcpdomain'],
         'select': ['add_mac'],
     }
@@ -42,6 +56,8 @@ class General(GeneralModule):
         'dns_forward_max': {'min': 0},
         'cache_size': {'min': 0},
         'local_ttl': {'min': 0},
+        'dhcp_lease_max': {'min': 0},
+        'dhcp_reply_delay': {'min': 0, 'max': 60},
     }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
