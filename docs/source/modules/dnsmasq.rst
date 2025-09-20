@@ -54,6 +54,9 @@ ansibleguy.opnsense.dnsmasq_general
     "dnssec","boolean","false","false","\-","Secure DNS"
     "no_hosts","boolean","false","false","\-","Do not read hostnames from /etc/hosts"
     "log_queries","boolean","false","false","\-","Log DNS queries"
+    "dns_forward_max","integer","false","\-","\-","Maximum number of concurrent DNS queries"
+    "cache_size","integer","false","\-","\-","Size of the cache. Setting the cache size to zero disables caching"
+    "local_ttl","integer","false","\-","\-","Time-to-live (in seconds) to be given for local DNS entries, i.e. /etc/hosts or DHCP leases"
     "no_ident","boolean","false","false","\-","Do not respond to CHAOS or TXT bind queries"
     "strict_order","boolean","false","false","\-","Query DNS Servers sequentially"
     "domain_needed","boolean","false","false","\-","Forward A or AAAA queries"
@@ -211,6 +214,9 @@ ansibleguy.opnsense.dnsmasq_general
             # dnssec: true
             # no_hosts: true
             # log_queries: true
+            # cache_size:
+            # local_ttl:
+            # no_ident:
             # no_ident: false
             # strict_order: true
             # domain_needed: true

@@ -27,6 +27,9 @@
         dnssec: true
         no_hosts: true
         log_queries: true
+        dns_forward_max: 4242
+        cache_size: 12345
+        local_ttl: 23
         no_ident: false
         strict_order: true
         domain_needed: true
@@ -49,6 +52,9 @@
         dnssec: true
         no_hosts: true
         log_queries: true
+        dns_forward_max: 4242
+        cache_size: 12345
+        local_ttl: 23
         no_ident: false
         strict_order: true
         domain_needed: true

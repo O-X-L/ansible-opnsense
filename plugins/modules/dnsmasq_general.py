@@ -62,6 +62,18 @@ def run_module():
             type='bool', default='False',
             description='If this option is set, we will log the DNS query'
         ),
+        dns_forward_max=dict(
+            type='int', required=False,
+            description='Maximum number of concurrent DNS queries',
+        ),
+        cache_size=dict(
+            type='int', required=False,
+            description='Size of the DNS cache. Setting the cache size to zero disables caching',
+        ),
+        local_ttl=dict(
+            type='int', required=False,
+            description='Time-to-live (in seconds) to be given for local DNS entries, i.e. /etc/hosts or DHCP leases',
+        ),
         no_ident=dict(
             type='bool', default='true',
             description='Do not respond to class CHAOS and type TXT in domain bind queries. '
