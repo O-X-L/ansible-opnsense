@@ -51,6 +51,9 @@ class General(GeneralModule):
         'str': ['regdhcpdomain'],
         'select': ['add_mac'],
     }
+    SEARCH_ADDITIONAL = {
+        'existing_interfaces': 'dnsmasq.interface',
+    }
     INT_VALIDATIONS = {
         'port': {'min': 0, 'max': 65535},
         'dns_forward_max': {'min': 0},
@@ -62,3 +65,20 @@ class General(GeneralModule):
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
+        self.existing_interfaces = {}
+
+    def check(self) -> None:
+        self._base_check()
+
+        self.b.find_multiple_links(
+            field='interfaces',
+            existing_field_id='value',
+            existing=self.existing_interfaces,
+            fail_soft=False, fail=False,
+        )
+        self.b.find_multiple_links(
+            field='dhcp_disable_interfaces',
+            existing_field_id='value',
+            existing=self.existing_interfaces,
+            fail_soft=False, fail=False,
+        )
