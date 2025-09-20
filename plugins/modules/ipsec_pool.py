@@ -34,6 +34,10 @@ def run_module():
             type='str', required=False, aliases=['net', 'cidr'],
             description='Pool network in CIDR format',
         ),
+        dns=dict(
+            type='list', elements='str', required=False, default=[],
+            description='DNS servers to push as configuration payload (RFC4306 3.15 - Value 3 and 10)',
+        ),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,
         **OPN_MOD_ARGS,

@@ -30,6 +30,7 @@ action_groups:
     - ansibleguy.opnsense.ipsec_connection
     - ansibleguy.opnsense.ipsec_pool
     - ansibleguy.opnsense.ipsec_manual_spd
+    - ansibleguy.opnsense.ipsec_general
   shaper:
     - ansibleguy.opnsense.shaper_pipe
     - ansibleguy.opnsense.shaper_queue
