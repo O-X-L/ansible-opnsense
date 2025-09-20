@@ -108,11 +108,11 @@
         log_queries: false
         ident: true
         strict_order: true
-        domain_needed: False
+        domain_needed: false
         forward_private_reverse: false
         regdhcp: true
         regdhcpdomain: 'test2.domain'
-        regdhcpstatic: False
+        regdhcpstatic: false
         dhcpfirst: true
       register: opn2
       failed_when: >

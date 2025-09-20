@@ -965,7 +965,7 @@
     - name: Cleanup dnsmasq General
       ansibleguy.opnsense.dnsmasq_general:
         enabled: false
-        
+
     - name: Cleanup dnsmasq Domain
       ansibleguy.opnsense.dnsmasq_domain:
         domain: '{{ item }}'

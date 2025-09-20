@@ -44,7 +44,7 @@
         type: match
         set_tag: Foo
         interface: TEST
-        option: 211 # pxelinux reboottime
+        option: 211  # pxelinux reboottime
         value: 30
       register: opn_fail2
       failed_when: not opn_fail2.failed
@@ -53,7 +53,7 @@
       ansibleguy.opnsense.dnsmasq_option:
         description: 'ANSIBLE_TEST_1_1'
         type: match
-        option: 211 # pxelinux reboottime
+        option: 211  # pxelinux reboottime
         value: 30
       register: opn_fail3
       failed_when: not opn_fail3.failed
@@ -61,7 +61,7 @@
     - name: Adding 1
       ansibleguy.opnsense.dnsmasq_option:
         description: 'ANSIBLE_TEST_1_1'
-        option: 211 # pxelinux reboottime
+        option: 211  # pxelinux reboottime
         value: 30
       register: opn1
       failed_when: >
@@ -71,7 +71,7 @@
     - name: Changing 1
       ansibleguy.opnsense.dnsmasq_option:
         description: 'ANSIBLE_TEST_1_1'
-        option: 211 # pxelinux reboottime
+        option: 211  # pxelinux reboottime
         value: 30
         interface: TEST
         force: true
@@ -89,7 +89,7 @@
       ansibleguy.opnsense.dnsmasq_option:
         description: 'ANSIBLE_TEST_1_2'
         type: match
-        option: 211 # pxelinux reboottime
+        option: 211  # pxelinux reboottime
         value: 30
         set_tag: 'AnsibleTest1'
       register: opn5
@@ -102,7 +102,7 @@
       ansibleguy.opnsense.dnsmasq_option:
         description: 'ANSIBLE_TEST_1_2'
         type: match
-        option: 211 # pxelinux reboottime
+        option: 211  # pxelinux reboottime
         value: 30
         set_tag: 'AnsibleTest1'
       register: opn6
