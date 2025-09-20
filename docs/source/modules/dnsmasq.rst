@@ -60,7 +60,12 @@ ansibleguy.opnsense.dnsmasq_general
     "no_ident","boolean","false","false","\-","Do not respond to CHAOS or TXT bind queries"
     "strict_order","boolean","false","false","\-","Query DNS Servers sequentially"
     "domain_needed","boolean","false","false","\-","Forward A or AAAA queries"
+    "resolv_system","boolean","false","false","\-","Forward DNS queries to system nameservers"
     "no_private_reverse","boolean","false","false","\-","No forwarding PTR records"
+    "add_mac","string","false","\-","\-","Add the MAC address of the requestor to DNS queries which are forwarded upstream. One of: '', 'standard', 'base64', 
+ text'"
+    "add_subnet","boolean","false","false","\-","Add the real client addresses to DNS queries which are forwarded upstream"
+    "strip_subnet","boolean","false","false","\-","Strip the subnet received by a downstream DNS server"
     "regdhcp","boolean","false","false","\-","Specify hostname when requesting DHCP lease"
     "regdhcpdomain","str","false","false","\-","Domain used for DHCP hostname registrations"
     "regdhcpstatic","boolean","false","false","\-","Register DHCP Static mappings"
@@ -216,11 +221,14 @@ ansibleguy.opnsense.dnsmasq_general
             # log_queries: true
             # cache_size:
             # local_ttl:
-            # no_ident:
             # no_ident: false
             # strict_order: true
             # domain_needed: true
+            # resolv_system: false
             # no_private_reverse: true
+            # add_mac: ''
+            # add_subnet: false
+            # strip_subnet: false
             # regdhcp: true
             # regdhcpdomain: 'test.domain'
             # regdhcpstatic: true

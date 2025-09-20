@@ -93,6 +93,10 @@ def run_module():
                         'without dots or domain parts, to upstream name servers. '
                         'If the name is not known from /etc/hosts or DHCP then a "not found" answer is returned.'
         ),
+        resolv_system=dict(
+            type='bool', required=False, default=True,
+            description='Forward DNS queries to system nameservers',
+        ),
         no_private_reverse=dict(
             type='bool', default='False',
             description='If this option is set, we will not forward reverse DNS lookups (PTR) for '
@@ -101,6 +105,18 @@ def run_module():
                         'names to a specific server are still forwarded. '
                         'If the IP to name is not known from /etc/hosts, DHCP or a specific domain override then '
                         'a "not found" answer is immediately returned.'
+        ),
+        add_mac=dict(
+            type='str', required=False, options=['', 'standard', 'base64', 'text'], default='',
+            description='Add the MAC address of the requestor to DNS queries which are forwarded upstream.',
+        ),
+        add_subnet=dict(
+            type='bool', required=False, default=False,
+            description='Add the real client addresses to DNS queries which are forwarded upstream.',
+        ),
+        strip_subnet=dict(
+            type='bool', required=False, default=False,
+            description='Strip the subnet received by a downstream DNS server.',
         ),
         # ISC / KEA DHCP (legacy)
         regdhcp=dict(

@@ -33,7 +33,11 @@
         no_ident: false
         strict_order: true
         domain_needed: true
+        resolv_system: false
         no_private_reverse: true
+        add_mac: 'text'
+        add_subnet: true
+        strip_subnet: true
         regdhcp: true
         regdhcpdomain: 'test.domain'
         regdhcpstatic: true
@@ -58,7 +62,11 @@
         no_ident: false
         strict_order: true
         domain_needed: true
+        resolv_system: false
         no_private_reverse: true
+        add_mac: 'text'
+        add_subnet: true
+        strip_subnet: true
         regdhcp: true
         regdhcpdomain: 'test.domain'
         regdhcpstatic: true

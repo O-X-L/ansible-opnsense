@@ -17,19 +17,25 @@ class General(GeneralModule):
     FIELDS_CHANGE = [
         'enabled', 'interfaces', 'regdhcp', 'regdhcpstatic', 'domain_needed', 'port', 'dnssec',
         'no_hosts', 'dhcpfirst', 'strict_order', 'strictbind', 'no_private_reverse', 'log_queries',
-        'no_ident', 'regdhcpdomain', 'dns_forward_max', 'cache_size', 'local_ttl',
+        'no_ident', 'regdhcpdomain', 'dns_forward_max', 'cache_size', 'local_ttl', 'resolv_system',
+        'add_mac', 'add_subnet', 'add_subnet',
     ]
     FIELDS_ALL = FIELDS_CHANGE
     FIELDS_TRANSLATE = {
         'enabled': 'enable',
         'interfaces': 'interface',
+        'resolv_system': 'no_resolv',
     }
     FIELDS_TYPING = {
-        'bool': ['enabled','regdhcp','regdhcpstatic','domain_needed', 'dnssec', 'no_hosts', 'dhcpfirst',
-                 'strict_order', 'strictbind', 'no_private_reverse', 'log_queries', 'no_ident' ],
+        'bool': [
+            'enabled','regdhcp','regdhcpstatic','domain_needed', 'dnssec', 'no_hosts', 'dhcpfirst', 'strict_order',
+            'strictbind', 'no_private_reverse', 'log_queries', 'no_ident', 'resolv_system', 'add_subnet',
+            'add_subnet',
+        ],
         'int': ['port', 'dns_forward_max', 'cache_size', 'local_ttl'],
         'list': ['interfaces'],
-        'str': ['regdhcpdomain']
+        'str': ['regdhcpdomain'],
+        'select': ['add_mac'],
     }
     INT_VALIDATIONS = {
         'port': {'min': 0, 'max': 65535},
