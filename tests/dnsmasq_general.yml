@@ -22,19 +22,36 @@
       ansibleguy.opnsense.dnsmasq_general:
         enabled: true
         interfaces: ['opt1', 'opt2']
-        regdhcp: true
-        regdhcpstatic: true
-        domain_needed: true
+        strictbind: true
         dns_port: 2053
         dnssec: true
-        no_hosts: true
-        dhcpfirst: true
-        strict_order: true
-        strictbind: true
-        no_private_reverse: true
+        resolve_etc_hosts: false
         log_queries: true
-        no_ident: false
+        dns_forward_max: 4242
+        cache_size: 12345
+        local_ttl: 23
+        ident: true
+        strict_order: true
+        domain_needed: true
+        resolv_system: false
+        forward_private_reverse: false
+        add_mac: 'text'
+        add_subnet: true
+        strip_subnet: true
+        dhcp_disable_interfaces: 'opt2'
+        dhcp_fqdn: true
+        dhcp_domain: 'dhcp.example'
+        dhcp_local: false
+        dhcp_lease_max: 1000
+        dhcp_authoritative: true
+        dhcp_reply_delay: 10
+        dhcp_default_fw_rules: false
+        dhcp_enable_ra: true
+        dhcp_hasync: false
+        regdhcp: true
         regdhcpdomain: 'test.domain'
+        regdhcpstatic: true
+        dhcpfirst: true
       register: opn1
       failed_when: >
         opn1.failed or
@@ -43,20 +60,37 @@
     - name: Nothing changed
       ansibleguy.opnsense.dnsmasq_general:
         enabled: true
-        interfaces: ['opt1', 'opt2']
-        regdhcp: true
-        regdhcpstatic: true
-        domain_needed: true
+        interfaces: ['TEST', 'TEST2']
+        strictbind: true
         dns_port: 2053
         dnssec: true
-        no_hosts: true
-        dhcpfirst: true
-        strict_order: true
-        strictbind: true
-        no_private_reverse: true
+        resolve_etc_hosts: false
         log_queries: true
-        no_ident: false
+        dns_forward_max: 4242
+        cache_size: 12345
+        local_ttl: 23
+        ident: true
+        strict_order: true
+        domain_needed: true
+        resolv_system: false
+        forward_private_reverse: false
+        add_mac: 'text'
+        add_subnet: true
+        strip_subnet: true
+        dhcp_disable_interfaces: 'TEST2'
+        dhcp_fqdn: true
+        dhcp_domain: 'dhcp.example'
+        dhcp_local: false
+        dhcp_lease_max: 1000
+        dhcp_authoritative: true
+        dhcp_reply_delay: 10
+        dhcp_default_fw_rules: false
+        dhcp_enable_ra: true
+        dhcp_hasync: false
+        regdhcp: true
         regdhcpdomain: 'test.domain'
+        regdhcpstatic: true
+        dhcpfirst: true
       register: opn3
       failed_when: >
         opn3.failed or
@@ -67,19 +101,19 @@
       ansibleguy.opnsense.dnsmasq_general:
         enabled: true
         interfaces: ['opt1']
-        regdhcp: true
-        regdhcpstatic: False
-        domain_needed: False
-        dns_port: 2054
-        dnssec: true
-        no_hosts: true
-        dhcpfirst: true
-        strict_order: true
         strictbind: true
-        no_private_reverse: true
+        port: 2054
+        dnssec: true
+        resolve_etc_hosts: false
         log_queries: false
-        no_ident: false
+        ident: true
+        strict_order: true
+        domain_needed: false
+        forward_private_reverse: false
+        regdhcp: true
         regdhcpdomain: 'test2.domain'
+        regdhcpstatic: false
+        dhcpfirst: true
       register: opn2
       failed_when: >
         opn2.failed or

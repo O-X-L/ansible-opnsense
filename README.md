@@ -219,7 +219,13 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible_opn
 | **User Management**       | ansibleguy.opnsense.group                                              | [Docs](https://ansible-opnsense.oxl.app/modules/access.html)                                                        | unstable |
 | **User Management**       | ansibleguy.opnsense.privilege                                          | [Docs](https://ansible-opnsense.oxl.app/modules/access.html)                                                        | unstable |
 | **Neighbor**              | ansibleguy.opnsense.neighbor                                           | [Docs](https://ansible-opnsense.oxl.app/modules/neighbor.html)                                                      | unstable |
-| **Dnsmasq**               | ansibleguy.opnsense.dnsmasq_general                                    | [Docs](https://ansible-opnsense.oxl.app/modules/dnsmasq.html)                                                             | unstable |
+| **Dnsmasq**               | ansibleguy.opnsense.dnsmasq_general                                    | [Docs](https://ansible-opnsense.oxl.app/modules/dnsmasq.html)                                                       | unstable |
+| **Dnsmasq**               | ansibleguy.opnsense.dnsmasq_domain                                     | [Docs](https://opnsense.ansibleguy.net/modules/dnsmasq.html)                                                       | unstable |
+| **Dnsmasq**               | ansibleguy.opnsense.dnsmasq_host                                       | [Docs](https://opnsense.ansibleguy.net/modules/dnsmasq.html)                                                       | unstable |
+| **Dnsmasq**               | ansibleguy.opnsense.dnsmasq_range                                      | [Docs](https://opnsense.ansibleguy.net/modules/dnsmasq.html)                                                       | unstable |
+| **Dnsmasq**               | ansibleguy.opnsense.dnsmasq_option                                     | [Docs](https://opnsense.ansibleguy.net/modules/dnsmasq.html)                                                       | unstable |
+| **Dnsmasq**               | ansibleguy.opnsense.dnsmasq_boot                                       | [Docs](https://opnsense.ansibleguy.net/modules/dnsmasq.html)                                                       | unstable |
+| **Dnsmasq**               | ansibleguy.opnsense.dnsmasq_tag                                        | [Docs](https://opnsense.ansibleguy.net/modules/dnsmasq.html)                                                       | unstable |
 
 ### Roadmap
 

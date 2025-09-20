@@ -75,6 +75,8 @@ jobs:
           TEST_API_KEY: /tmp/api_credentials.txt
           TEST_PROXY: ${{ secrets.CI_TEST_PROXY }}
           PYTHONUNBUFFERED: 1
+          PY_COLORS: 1
+          ANSIBLE_FORCE_COLOR: 1
 
       - uses: actions/upload-artifact@v4
         with:
