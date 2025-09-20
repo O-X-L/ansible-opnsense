@@ -16,9 +16,9 @@ Dnsmasq
 `Boot <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_boot.yml>`_ |
 `Tag <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_tag.yml>`_
 
-**API Docs**: `dnsmasq_general <https://docs.opnsense.org/development/api/core/dnsmasq.html>`_
+**API Docs**: `Core - Dnsmasq <https://docs.opnsense.org/development/api/core/dnsmasq.html>`_
 
-**Service Docs**: `dnsmasq_general <https://docs.opnsense.org/manual/dnsmasq.html>`_
+**Service Docs**: `Dnsmasq DNS & DHCP <https://docs.opnsense.org/manual/dnsmasq.html>`_
 
 This module allows you to manage the general requirements for the dnsmasq service.
 
@@ -48,20 +48,20 @@ ansibleguy.opnsense.dnsmasq_general
     :widths: 15 10 10 10 10 45
 
     "enabled","boolean","false","false","\-","En- or disable the dnsmasq service"
-    "interfaces","list","false","[]","[]","Interfaces for dnsmasq to listen on"
-    "regdhcp","boolean","false","false","\-","Specify hostname when requesting DHCP lease"
-    "regdhcpstatic","boolean","false","false","\-","Register DHCP Static mappings"
-    "domain_needed","boolean","false","false","\-","Forward A or AAAA queries"
-    "dns_port","int","false","53","\-","Port used for DNS Queries"
+    "interfaces","list","false","[]","ints","Interfaces for dnsmasq to listen on"
+    "strictbind","boolean","false","false","\-","Force bindings to interfaces listening on"
+    "port","int","false","53","dns_port","Port used for DNS Queries"
     "dnssec","boolean","false","false","\-","Secure DNS"
     "no_hosts","boolean","false","false","\-","Do not read hostnames from /etc/hosts"
-    "dhcpfirst","boolean","false","false","\-","DHCP Mappings resolved before manual list. Affects PTR records"
-    "strict_order","boolean","false","false","\-","Query DNS Servers sequentially"
-    "strictbind","boolean","false","false","\-","Force bindings to interfaces listening on"
-    "no_private_reverse","boolean","false","false","\-","No forwarding PTR records"
     "log_queries","boolean","false","false","\-","Log DNS queries"
     "no_ident","boolean","false","false","\-","Do not respond to CHAOS or TXT bind queries"
+    "strict_order","boolean","false","false","\-","Query DNS Servers sequentially"
+    "domain_needed","boolean","false","false","\-","Forward A or AAAA queries"
+    "no_private_reverse","boolean","false","false","\-","No forwarding PTR records"
+    "regdhcp","boolean","false","false","\-","Specify hostname when requesting DHCP lease"
     "regdhcpdomain","str","false","false","\-","Domain used for DHCP hostname registrations"
+    "regdhcpstatic","boolean","false","false","\-","Register DHCP Static mappings"
+    "dhcpfirst","boolean","false","false","\-","DHCP Mappings resolved before manual list. Affects PTR records"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.dnsmasq_domain
@@ -202,43 +202,40 @@ ansibleguy.opnsense.dnsmasq_general
 
 
       tasks:
-        # add optional parameters commented-out
-        # required ones normally
-        # add their default values to get a brief overview of how the module works
         - name: Example
           ansibleguy.opnsense.dnsmasq_general:
             # enabled: true
             # interfaces: ['wan','opt1']
-            # regdhcp: True
-            # regdhcpstatic: 1
-            # domain_needed: 1
-            # dns_port: 54 # config-based.. not in memory.. probably needs a reboot of the service?
-            # dnssec: True
-            # no_hosts: true
-            # dhcpfirst: true
-            # strict_order: true
             # strictbind: true
-            # no_private_reverse: true
+            # port: 53 # config-based.. not in memory.. probably needs a reboot of the service?
+            # dnssec: true
+            # no_hosts: true
             # log_queries: true
             # no_ident: false
+            # strict_order: true
+            # domain_needed: true
+            # no_private_reverse: true
+            # regdhcp: true
             # regdhcpdomain: 'test.domain'
+            # regdhcpstatic: true
+            # dhcpfirst: true
 
         - name: Configuring General settings for dnsmasq
           ansibleguy.opnsense.dnsmasq_general:
             enabled: true
             interfaces: ['wan','opt1']
-            regdhcp: True
-            regdhcpstatic: true
-            domain_needed: true
-            dnssec: True
-            no_hosts: true
-            dhcpfirst: true
-            strict_order: true
             strictbind: true
-            no_private_reverse: true
+            dnssec: true
+            no_hosts: true
             log_queries: true
             no_ident: false
+            strict_order: true
+            domain_needed: true
+            no_private_reverse: true
+            regdhcp: True
             regdhcpdomain: 'test.domain'
+            regdhcpstatic: true
+            dhcpfirst: true
 
         - name: Listing dnsmasq settings
           ansibleguy.opnsense.list:

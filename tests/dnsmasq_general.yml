@@ -22,19 +22,19 @@
       ansibleguy.opnsense.dnsmasq_general:
         enabled: true
         interfaces: ['opt1', 'opt2']
-        regdhcp: true
-        regdhcpstatic: true
-        domain_needed: true
+        strictbind: true
         dns_port: 2053
         dnssec: true
         no_hosts: true
-        dhcpfirst: true
-        strict_order: true
-        strictbind: true
-        no_private_reverse: true
         log_queries: true
         no_ident: false
+        strict_order: true
+        domain_needed: true
+        no_private_reverse: true
+        regdhcp: true
         regdhcpdomain: 'test.domain'
+        regdhcpstatic: true
+        dhcpfirst: true
       register: opn1
       failed_when: >
         opn1.failed or
@@ -44,19 +44,19 @@
       ansibleguy.opnsense.dnsmasq_general:
         enabled: true
         interfaces: ['opt1', 'opt2']
-        regdhcp: true
-        regdhcpstatic: true
-        domain_needed: true
+        strictbind: true
         dns_port: 2053
         dnssec: true
         no_hosts: true
-        dhcpfirst: true
-        strict_order: true
-        strictbind: true
-        no_private_reverse: true
         log_queries: true
         no_ident: false
+        strict_order: true
+        domain_needed: true
+        no_private_reverse: true
+        regdhcp: true
         regdhcpdomain: 'test.domain'
+        regdhcpstatic: true
+        dhcpfirst: true
       register: opn3
       failed_when: >
         opn3.failed or
@@ -67,19 +67,19 @@
       ansibleguy.opnsense.dnsmasq_general:
         enabled: true
         interfaces: ['opt1']
-        regdhcp: true
-        regdhcpstatic: False
-        domain_needed: False
-        dns_port: 2054
+        strictbind: true
+        port: 2054
         dnssec: true
         no_hosts: true
-        dhcpfirst: true
-        strict_order: true
-        strictbind: true
-        no_private_reverse: true
         log_queries: false
         no_ident: false
+        strict_order: true
+        domain_needed: False
+        no_private_reverse: true
+        regdhcp: true
         regdhcpdomain: 'test2.domain'
+        regdhcpstatic: False
+        dhcpfirst: true
       register: opn2
       failed_when: >
         opn2.failed or
