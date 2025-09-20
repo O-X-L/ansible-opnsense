@@ -16,8 +16,8 @@ class General(GeneralModule):
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
         'enabled', 'interfaces', 'regdhcp', 'regdhcpstatic', 'domain_needed', 'port', 'dnssec',
-        'no_hosts', 'dhcpfirst', 'strict_order', 'strictbind', 'no_private_reverse', 'log_queries',
-        'no_ident', 'regdhcpdomain', 'dns_forward_max', 'cache_size', 'local_ttl', 'resolv_system',
+        'resolve_etc_hosts', 'dhcpfirst', 'strict_order', 'strictbind', 'forward_private_reverse', 'log_queries',
+        'ident', 'regdhcpdomain', 'dns_forward_max', 'cache_size', 'local_ttl', 'resolv_system',
         'add_mac', 'add_subnet', 'add_subnet', 'dhcp_disable_interfaces', 'dhcp_fqdn', 'dhcp_domain',
         'dhcp_local', 'dhcp_lease_max', 'dhcp_authoritative', 'dhcp_reply_delay', 'dhcp_default_fw_rules',
         'dhcp_enable_ra', 'dhcp_hasync',
@@ -26,7 +26,10 @@ class General(GeneralModule):
     FIELDS_TRANSLATE = {
         'enabled': 'enable',
         'interfaces': 'interface',
+        'resolve_etc_hosts': 'no_hosts',
+        'ident': 'no_ident',
         'resolv_system': 'no_resolv',
+        'forward_private_reverse': 'no_private_reverse',
         'dhcp_disable_interfaces': ('dhcp', 'no_interface'),
         'dhcp_fqdn': ('dhcp', 'fqdn'),
         'dhcp_domain': ('dhcp', 'domain'),
@@ -38,13 +41,13 @@ class General(GeneralModule):
         'dhcp_enable_ra': ('dhcp', 'enable_ra'),
         'dhcp_hasync': ('dhcp', 'nosync'),
     }
-    FIELDS_BOOL_INVERT = ['dhcp_hasync']
+    FIELDS_BOOL_INVERT = ['resolve_etc_hosts', 'ident', 'forward_private_reverse', 'dhcp_hasync']
     FIELDS_TYPING = {
         'bool': [
-            'enabled','regdhcp','regdhcpstatic','domain_needed', 'dnssec', 'no_hosts', 'dhcpfirst', 'strict_order',
-            'strictbind', 'no_private_reverse', 'log_queries', 'no_ident', 'resolv_system', 'add_subnet',
-            'add_subnet', 'dhcp_fqdn', 'dhcp_local', 'dhcp_authoritative', 'dhcp_default_fw_rules', 'dhcp_enable_ra',
-            'dhcp_hasync',
+            'enabled','regdhcp','regdhcpstatic','domain_needed', 'dnssec', 'resolve_etc_hosts', 'dhcpfirst',
+            'strict_order', 'strictbind', 'forward_private_reverse', 'log_queries', 'ident', 'resolv_system',
+            'add_subnet', 'add_subnet', 'dhcp_fqdn', 'dhcp_local', 'dhcp_authoritative', 'dhcp_default_fw_rules',
+            'dhcp_enable_ra', 'dhcp_hasync',
         ],
         'int': ['port', 'dns_forward_max', 'cache_size', 'local_ttl', 'dhcp_lease_max', 'dhcp_reply_delay'],
         'list': ['interfaces', 'dhcp_disable_interfaces'],

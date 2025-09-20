@@ -54,9 +54,9 @@ def run_module():
             type='bool', default='False',
             description='Secure DNS'
         ),
-        no_hosts=dict(
-            type='bool', default='False',
-            description='Do not read hostnames in /etc/hosts'
+        resolve_etc_hosts=dict(
+            type='bool', default='True', aliases=['resolve_hosts'],
+            description='Do read hostnames in /etc/hosts'
         ),
         log_queries=dict(
             type='bool', default='False',
@@ -74,9 +74,9 @@ def run_module():
             type='int', required=False,
             description='Time-to-live (in seconds) to be given for local DNS entries, i.e. /etc/hosts or DHCP leases',
         ),
-        no_ident=dict(
-            type='bool', default='true',
-            description='Do not respond to class CHAOS and type TXT in domain bind queries. '
+        ident=dict(
+            type='bool', default=False,
+            description='Do respond to class CHAOS and type TXT in domain bind queries. '
                         'Without this option being set, the cache statistics are also available in the DNS '
                         'as answers to queries of class CHAOS and type TXT in domain bind.'
         ),
@@ -97,14 +97,14 @@ def run_module():
             type='bool', required=False, default=True,
             description='Forward DNS queries to system nameservers',
         ),
-        no_private_reverse=dict(
-            type='bool', default='False',
-            description='If this option is set, we will not forward reverse DNS lookups (PTR) for '
+        forward_private_reverse=dict(
+            type='bool', default='True',
+            description='If this option is set, we will forward reverse DNS lookups (PTR) for '
                         'private addresses (RFC 1918) to upstream name servers. '
                         'Any entries in the Domain Overrides section forwarding private "n.n.n.in-addr.arpa" '
-                        'names to a specific server are still forwarded. '
+                        'names to a specific server are still forwarded if disabled. '
                         'If the IP to name is not known from /etc/hosts, DHCP or a specific domain override then '
-                        'a "not found" answer is immediately returned.'
+                        'a "not found" answer is immediately returned in this case.'
         ),
         add_mac=dict(
             type='str', required=False, options=['', 'standard', 'base64', 'text'], default='',

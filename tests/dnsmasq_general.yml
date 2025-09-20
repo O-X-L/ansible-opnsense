@@ -25,16 +25,16 @@
         strictbind: true
         dns_port: 2053
         dnssec: true
-        no_hosts: true
+        resolve_etc_hosts: false
         log_queries: true
         dns_forward_max: 4242
         cache_size: 12345
         local_ttl: 23
-        no_ident: false
+        ident: true
         strict_order: true
         domain_needed: true
         resolv_system: false
-        no_private_reverse: true
+        forward_private_reverse: false
         add_mac: 'text'
         add_subnet: true
         strip_subnet: true
@@ -64,16 +64,16 @@
         strictbind: true
         dns_port: 2053
         dnssec: true
-        no_hosts: true
+        resolve_etc_hosts: false
         log_queries: true
         dns_forward_max: 4242
         cache_size: 12345
         local_ttl: 23
-        no_ident: false
+        ident: true
         strict_order: true
         domain_needed: true
         resolv_system: false
-        no_private_reverse: true
+        forward_private_reverse: false
         add_mac: 'text'
         add_subnet: true
         strip_subnet: true
@@ -104,12 +104,12 @@
         strictbind: true
         port: 2054
         dnssec: true
-        no_hosts: true
+        resolve_etc_hosts: false
         log_queries: false
-        no_ident: false
+        ident: true
         strict_order: true
         domain_needed: False
-        no_private_reverse: true
+        forward_private_reverse: false
         regdhcp: true
         regdhcpdomain: 'test2.domain'
         regdhcpstatic: False

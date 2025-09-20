@@ -52,16 +52,16 @@ ansibleguy.opnsense.dnsmasq_general
     "strictbind","boolean","false","false","\-","Force bindings to interfaces listening on"
     "port","int","false","53","dns_port","Port used for DNS Queries"
     "dnssec","boolean","false","false","\-","Secure DNS"
-    "no_hosts","boolean","false","false","\-","Do not read hostnames from /etc/hosts"
+    "resolve_etc_hosts","boolean","false","true","resolve_hosts","Do read hostnames from /etc/hosts"
     "log_queries","boolean","false","false","\-","Log DNS queries"
     "dns_forward_max","integer","false","\-","\-","Maximum number of concurrent DNS queries"
     "cache_size","integer","false","\-","\-","Size of the cache. Setting the cache size to zero disables caching"
     "local_ttl","integer","false","\-","\-","Time-to-live (in seconds) to be given for local DNS entries, i.e. /etc/hosts or DHCP leases"
-    "no_ident","boolean","false","false","\-","Do not respond to CHAOS or TXT bind queries"
+    "ident","boolean","false","true","\-","Do respond to CHAOS or TXT bind queries"
     "strict_order","boolean","false","false","\-","Query DNS Servers sequentially"
     "domain_needed","boolean","false","false","\-","Forward A or AAAA queries"
     "resolv_system","boolean","false","false","\-","Forward DNS queries to system nameservers"
-    "no_private_reverse","boolean","false","false","\-","No forwarding PTR records"
+    "forward_private_reverse","boolean","false","true","\-","Forward reverse DNS lookups (PTR) for private addresses (RFC 1918) to upstream name servers"
     "add_mac","string","false","\-","\-","Add the MAC address of the requestor to DNS queries which are forwarded upstream. One of: '', 'standard', 'base64', 
  text'"
     "add_subnet","boolean","false","false","\-","Add the real client addresses to DNS queries which are forwarded upstream"
@@ -227,7 +227,7 @@ ansibleguy.opnsense.dnsmasq_general
             # strictbind: true
             # port: 53 # config-based.. not in memory.. probably needs a reboot of the service?
             # dnssec: true
-            # no_hosts: true
+            # resolve_etc_hosts: false
             # log_queries: true
             # cache_size:
             # local_ttl:
@@ -260,7 +260,7 @@ ansibleguy.opnsense.dnsmasq_general
             interfaces: ['wan','opt1']
             strictbind: true
             dnssec: true
-            no_hosts: true
+            resolve_etc_hosts: false
             log_queries: true
             no_ident: false
             strict_order: true
