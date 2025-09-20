@@ -9,6 +9,7 @@ Dnsmasq
 **STATE**: unstable
 
 **TESTS**: `General <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_general.yml>`_ |
+`Option <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_option.yml>`_ |
 `Boot <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_boot.yml>`_ |
 `Tag <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_tag.yml>`_
 
@@ -58,6 +59,24 @@ ansibleguy.opnsense.dnsmasq_general
     "log_queries","boolean","false","false","\-","Log DNS queries"
     "no_ident","boolean","false","false","\-","Do not respond to CHAOS or TXT bind queries"
     "regdhcpdomain","str","false","false","\-","Domain used for DHCP hostname registrations"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+ansibleguy.opnsense.dnsmasq_option
+==================================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "description","string","true","\-","desc","The unique description used to match the configured entries to the existing ones"
+    "type","string","false","set","\-","'Set' option to send it to a client in a DHCP offer or 'Match' option to dynamically tag clients that send it in the initial DHCP request."
+    "option","int","false","\-","\-","DHCPv4 option to offer to the client."
+    "option6","int","false","\-","\-","DHCPv6 option to offer to the client."
+    "interface","string","false","\-","int","Interface this options is set for."
+    "tag","list","false","[]","t","DHCP option is only sent when all the tags are matched."
+    "set_tag","string","false","\-","\-","Tag to set for matching requests when using 'Match'."
+    "value","string","false","\-","\-","Value (or values) to send to the client. When using 'Match', leave empty to match on the option only."
+    "force","boolean","false","false","\-","Always send the option, also when the client does not ask for it in the parameter request list."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ansibleguy.opnsense.dnsmasq_boot
@@ -161,6 +180,68 @@ ansibleguy.opnsense.dnsmasq_general
         - name: Printing settings
           ansible.builtin.debug:
             var: dnsmasq_general_settings
+
+----
+
+ansibleguy.opnsense.dnsmasq_option
+==================================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: false
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+        ansibleguy.opnsense.list:
+          target: 'dnsmasq_option'
+
+      tasks:
+        - name: Example Set
+          ansibleguy.opnsense.dnsmasq_option:
+            # type: 'set'
+            option: 4 # time-server
+            # option6:
+            # interface:
+            # tag:
+            value: pool.ntp.org
+            # force: false
+            # state: 'absent'
+            # debug: false
+
+        - name: Example Match
+          ansibleguy.opnsense.dnsmasq_option:
+            type: 'match'
+            option: 60 # vendor-class
+            # option6:
+            value: SIPPhone
+            set_tag: voip
+            # state: 'absent'
+            # debug: false
+
+        - name: Adding Match Vendor-Class SIPPhone
+          ansibleguy.opnsense.dnsmasq_option:
+            type: 'match'
+            option: 60 # vendor-class
+            value: SIPPhone
+            set_tag: voip
+
+        - name: Adding Set time-server for SIPPhone
+          ansibleguy.opnsense.dnsmasq_option:
+            option: 4 # time-server
+            value: pool.ntp.org
+            tag: voip
+
+        - name: Listing Option
+          ansibleguy.opnsense.list:
+          #  target: 'dnsmasq_option'
+          register: existing_option
+
+        - name: Printing
+          ansible.builtin.debug:
+            var: existing_option.data
 
 ----
 
