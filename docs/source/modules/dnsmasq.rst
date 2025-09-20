@@ -1,4 +1,4 @@
-.. _modules_dnsmasq_general:
+.. _modules_dnsmasq:
 
 .. include:: ../_include/head.rst
 
@@ -8,7 +8,8 @@ Dnsmasq
 
 **STATE**: unstable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_general.yml>`_
+**TESTS**: `General <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_general.yml>`_ |
+`Tag <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_tag.yml>`_
 
 **API Docs**: `dnsmasq_general <https://docs.opnsense.org/development/api/core/dnsmasq.html>`_
 
@@ -58,6 +59,15 @@ ansibleguy.opnsense.dnsmasq_general
     "regdhcpdomain","str","false","false","\-","Domain used for DHCP hostname registrations"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
+ansibleguy.opnsense.dnsmasq_tag
+===============================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "tag","string","true","\-","t, name, n","An alphanumeric label which marks a network so that DHCP options may be specified on a per-network basis."
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 Usage
 *****
@@ -135,3 +145,40 @@ ansibleguy.opnsense.dnsmasq_general
         - name: Printing settings
           ansible.builtin.debug:
             var: dnsmasq_general_settings
+
+----
+
+ansibleguy.opnsense.dnsmasq_tag
+===============================
+
+.. code-block:: yaml
+
+    - hosts: localhost
+      gather_facts: false
+      module_defaults:
+        group/ansibleguy.opnsense.all:
+          firewall: 'opnsense.template.ansibleguy.net'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+        ansibleguy.opnsense.list:
+          target: 'dnsmasq_tag'
+
+      tasks:
+        - name: Example
+          ansibleguy.opnsense.dnsmasq_tag:
+            tag: 'test1'
+            # state: 'absent'
+            # debug: false
+
+        - name: Adding a tag
+          ansibleguy.opnsense.dnsmasq_tag:
+            tag: 'Tag1'
+
+        - name: Listing tags
+          ansibleguy.opnsense.list:
+          #  target: 'dnsmasq_tag'
+          register: existing_tags
+
+        - name: Printing
+          ansible.builtin.debug:
+            var: existing_tags.data

@@ -965,3 +965,10 @@
     - name: Cleanup dnsmasq General
       ansibleguy.opnsense.dnsmasq_general:
         enabled: false
+
+    - name: Cleanup dnsmasq Tags
+      ansibleguy.opnsense.dnsmasq_tag:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'AnsibleTest1'
