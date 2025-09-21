@@ -30,6 +30,7 @@ action_groups:
     - ansibleguy.opnsense.ipsec_connection
     - ansibleguy.opnsense.ipsec_pool
     - ansibleguy.opnsense.ipsec_manual_spd
+    - ansibleguy.opnsense.ipsec_general
   shaper:
     - ansibleguy.opnsense.shaper_pipe
     - ansibleguy.opnsense.shaper_queue
@@ -50,6 +51,9 @@ action_groups:
     - ansibleguy.opnsense.interface_lagg
     - ansibleguy.opnsense.interface_loopback
     - ansibleguy.opnsense.interface_gre
+    - ansibleguy.opnsense.interface_bridge
+    - ansibleguy.opnsense.interface_gif
+    - ansibleguy.opnsense.neighbor
   frr:
     - ansibleguy.opnsense.frr_diagnostic
     - ansibleguy.opnsense.frr_general
@@ -132,6 +136,14 @@ action_groups:
     - ansibleguy.opnsense.openvpn_client_override
     - ansibleguy.opnsense.openvpn_client_template
     - ansibleguy.opnsense.openvpn_client_export
+  dnsmasq:
+    - ansibleguy.opnsense.dnsmasq_general
+    - ansibleguy.opnsense.dnsmasq_domain
+    - ansibleguy.opnsense.dnsmasq_host
+    - ansibleguy.opnsense.dnsmasq_range
+    - ansibleguy.opnsense.dnsmasq_option
+    - ansibleguy.opnsense.dnsmasq_boot
+    - ansibleguy.opnsense.dnsmasq_tag
   dhcrelay:
     - ansibleguy.opnsense.dhcrelay_destination
     - ansibleguy.opnsense.dhcrelay_relay
@@ -163,6 +175,10 @@ action_groups:
     - ansibleguy.opnsense.wazuh_agent
   raw:
     - ansibleguy.opnsense.raw
+  access:
+    - ansibleguy.opnsense.user
+    - ansibleguy.opnsense.group
+    - ansibleguy.opnsense.privilege
   all:
     - metadata:
         extend_group:
@@ -191,6 +207,8 @@ action_groups:
           - ansibleguy.opnsense.hasync
           - ansibleguy.opnsense.wazuh
           - ansibleguy.opnsense.raw
+          - ansibleguy.opnsense.access
+          - ansibleguy.opnsense.dnsmasq
 
 plugin_routing:
   modules:

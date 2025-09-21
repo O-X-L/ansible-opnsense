@@ -9,12 +9,12 @@ Intrusion Prevention System
 **STATE**: stable
 
 **TESTS**: `ansibleguy.opnsense.ids_general <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/ids_general.yml>`_ |
-`ansibleguy.opnsense.ids_action <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_action.yml>`_ |
-`ansibleguy.opnsense.ids_policy <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_policy.yml>`_ |
-`ansibleguy.opnsense.ids_policy_rule <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_policy_rule.yml>`_ |
-`ansibleguy.opnsense.ids_rule <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_rule.yml>`_ |
-`ansibleguy.opnsense.ids_ruleset <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_ruleset.yml>`_ |
-`ansibleguy.opnsense.ids_user_rule <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_user_rule.yml>`_
+`ansibleguy.opnsense.ids_action <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/ids_action.yml>`_ |
+`ansibleguy.opnsense.ids_policy <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/ids_policy.yml>`_ |
+`ansibleguy.opnsense.ids_policy_rule <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/ids_policy_rule.yml>`_ |
+`ansibleguy.opnsense.ids_rule <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/ids_rule.yml>`_ |
+`ansibleguy.opnsense.ids_ruleset <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/ids_ruleset.yml>`_ |
+`ansibleguy.opnsense.ids_user_rule <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/ids_user_rule.yml>`_
 
 **API Docs**: `IDS <https://docs.opnsense.org/development/api/core/ids.html>`_
 

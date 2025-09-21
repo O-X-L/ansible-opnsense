@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/service.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/service.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/service.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/service.html'
 
 # c = api-module, m = custom action-mapping, a = limited actions
 SERVICES = {
@@ -43,7 +43,7 @@ SERVICES = {
         },
     },
     #   note: these would support more actions:
-    'ids': {}, 'proxy': {}, 'unbound': {}, 'kea': {},
+    'ids': {}, 'proxy': {}, 'unbound': {}, 'kea': {}, 'dnsmasq': {},
     # plugins
     'ftp_proxy': {'c': 'ftpproxy'},
     'iperf': {'a': ['reload', 'status', 'start', 'restart']},

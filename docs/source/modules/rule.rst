@@ -8,7 +8,7 @@ Rule
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/rule.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/rule.yml>`_
 
 **API Docs**: `Core - Firewall <https://docs.opnsense.org/development/api/core/firewall.html>`_
 
@@ -122,6 +122,7 @@ Definition
     "state","string","false","'present'","st","State of the rule. One of: 'present', 'absent'"
     "enabled","boolean","false","true","en","If the rule should be en- or disabled"
     "uuid","string","false","\-","\-","Optionally you can supply the uuid of an existing rule"
+    "icmp_type","list","false","\-","\-","If protocol is ICMP/IPV6-ICMP you can specify the types. One or more of: 'echoreq', 'echorep', 'unreach', 'squench', 'redir', 'althost', 'routeradv', 'routersol', 'timex', 'paramprob', 'timereq', 'timerep', 'inforeq', 'inforep', 'maskreq', 'maskrep'"
     "reload","boolean","false","true","apply", .. include:: ../_include/param_reload.rst
 
 .. include:: ../_include/param_basic.rst
@@ -206,6 +207,7 @@ Basic
             # tcp_flags_clear: None
             # schedule: None
             # tos: None
+            # icmp_type: []
             # state: 'present'
             # enabled: true
             # uuid: 'a9d85c00-0aa2-4705-b855-96aae16e05d7'  # optionally use uuid to identify existing rules
@@ -290,8 +292,8 @@ With inventory config
             log: "{{ rule.log | default(omit) }}"
             gateway: "{{ rule.gw | default(omit) }}"
             state: "{{ rule.state | default(omit) }}"
-            enabled: "{{ rule.enabled | default(omit) }}"
-            # debug: "{{ rule.debug | default(omit) }}"
+            enabled: "{{ rule.enabled | default(true) }}"
+            # debug: "{{ rule.debug | default(false) }}"
 
           vars:
             rule: "{{ rule_item.value }}"

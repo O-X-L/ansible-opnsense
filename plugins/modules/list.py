@@ -19,8 +19,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/list.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/list.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/list.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/list.html'
 
 TARGETS = [
     'alias', 'rule', 'rule_interface_group', 'route', 'gateway', 'syslog', 'package', 'unbound_host',
@@ -42,7 +42,9 @@ TARGETS = [
     'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre', 'nat_one_to_one', 'nat_source',
     'ipsec_manual_spd', 'hasync_general', 'snapshot', 'frr_bgp_redistribution', 'frr_ospf_redistribution',
     'frr_ospf3_redistribution', 'frr_ospf3_route_map', 'frr_ospf3_prefix_list', 'frr_ospf3_network',
-    'frr_bgp_peer_group', 'wazuh_agent',
+    'frr_bgp_peer_group', 'user', 'group', 'privilege', 'interface_bridge', 'interface_gif', 'neighbor',
+    'dnsmasq_general', 'ipsec_general', 'dnsmasq_domain', 'dnsmasq_host', 'dnsmasq_range', 'dnsmasq_option',
+    'dnsmasq_boot', 'dnsmasq_tag', 'wazuh_agent',
 ]
 
 
@@ -192,6 +194,14 @@ def run_module():
         elif target == 'interface_gre':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface_gre import \
                 Gre as Target_Obj
+
+        elif target == 'interface_bridge':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface_bridge import \
+                Bridge as Target_Obj
+
+        elif target == 'interface_gif':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.interface_gif import \
+                Gif as Target_Obj
 
         elif target in ['source_nat', 'nat_source']:
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.nat_source import \
@@ -397,6 +407,10 @@ def run_module():
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.ipsec_manual_spd import \
                 ManualSPD as Target_Obj
 
+        elif target == 'ipsec_general':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.ipsec_general import \
+                General as Target_Obj
+
         elif target == 'ids_general':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.ids_general import \
                 General as Target_Obj
@@ -516,10 +530,54 @@ def run_module():
         elif target == 'snapshot':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.snapshot import \
                 Snapshot as Target_Obj
-
+            
         elif target == 'wazuh_agent':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.wazuh_agent import \
                 WazuhAgent as Target_Obj
+            
+        elif target == 'user':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.user import \
+                User as Target_Obj
+
+        elif target == 'group':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.group import \
+                Group as Target_Obj
+
+        elif target == 'privilege':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.privilege import \
+                Privilege as Target_Obj
+
+        elif target == 'neighbor':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.neighbor import \
+                Neighbor as Target_Obj
+
+        elif target == 'dnsmasq_general':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_general import \
+                General as Target_Obj
+
+        elif target == 'dnsmasq_domain':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_domain import \
+                Domain as Target_Obj
+
+        elif target == 'dnsmasq_host':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_host import \
+                Host as Target_Obj
+
+        elif target == 'dnsmasq_range':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_range import \
+                Range as Target_Obj
+
+        elif target == 'dnsmasq_option':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_option import \
+                Option as Target_Obj
+
+        elif target == 'dnsmasq_boot':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_boot import \
+                Boot as Target_Obj
+
+        elif target == 'dnsmasq_tag':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_tag import \
+                Tag as Target_Obj
 
     except AttributeError:
         module_dependency_error()

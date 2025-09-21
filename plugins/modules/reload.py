@@ -19,8 +19,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/reload.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/reload.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/reload.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/reload.html'
 
 
 def run_module():
@@ -52,6 +52,7 @@ def run_module():
                 'dhcrelay',
                 'dhcp', 'kea',
                 'wazuh',
+                'dnsmasq'
             ],
             description='What part of the running config should be reloaded'
         ),
@@ -171,6 +172,10 @@ def run_module():
         elif target == 'wazuh':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.wazuh_agent import \
                 WazuhAgent as Target_Obj
+
+        elif target in ['dnsmasq']:
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_general import \
+                Dnsmasq as Target_Obj
 
     except MODULE_EXCEPTIONS:
         module_dependency_error()

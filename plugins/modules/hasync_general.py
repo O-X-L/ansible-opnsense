@@ -18,8 +18,8 @@ try:
 except MODULE_EXCEPTIONS:
     module_dependency_error()
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/hasync.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/hasync.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/hasync.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/hasync.html'
 
 
 def run_module():

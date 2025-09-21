@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/routing.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/routing.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/routing.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/routing.html'
 
 
 def run_module():
@@ -34,6 +34,10 @@ def run_module():
         interface=dict(
             type='str', required=False, aliases=['int', 'if'],
             description='Interface for Gateway'
+        ),
+        ip_protocol=dict(
+            type='str', required=False, choices=['inet', 'inet6'],
+            description='The Internet Protocol this gateway uses.',
         ),
         gateway=dict(
             type='str', required=False, aliases=['gw', 'ip'],
@@ -124,6 +128,13 @@ def run_module():
             default=0
         ),
         description=dict(type='str', required=False, aliases=['desc']),
+        match_fields=dict(
+            type='list', required=False, elements='str',
+            description='Fields that are used to match configured gateways with the running config - '
+                        "if any of those fields are changed, the module will think it's a new gateway",
+            choices=['name', 'gateway', 'description'],
+            default=['name', 'gateway'],
+        ),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,
         **OPN_MOD_ARGS,
@@ -140,6 +151,9 @@ def run_module():
     module = AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
+        required_if=[
+            ('state', 'present', ('gateway', 'ip_protocol'), True),
+        ],
     )
 
     module_wrapper(Gw(module=module, result=result))

@@ -1,0 +1,129 @@
+---
+
+- name: Testing dnsmasq host
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'dnsmasq_host'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | length != 0
+
+    - name: Removing - does not exist
+      ansibleguy.opnsense.dnsmasq_host:
+        description: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      register: opn_pre2
+      failed_when: >
+        opn_pre2.failed or
+        opn_pre2.changed
+
+    - name: Adding 1 - failing because of invalid domain
+      ansibleguy.opnsense.dnsmasq_host:
+        description: 'ANSIBLE_TEST_1_2'
+        host: server
+        domain: example:com
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Adding 1
+      ansibleguy.opnsense.dnsmasq_host:
+        description: 'ANSIBLE_TEST_1_1'
+        ip: '192.168.1.99'
+        hardware_addr: '00:11:22:33:44:55'
+        comments: 'DHCP Client'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing 1
+      ansibleguy.opnsense.dnsmasq_host:
+        description: 'ANSIBLE_TEST_1_1'
+        ip: '192.168.1.99'
+        hardware_addr: '00:11:22:33:44:55'
+        comments: 'DHCP Client'
+        lease_time: 3600
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Adding 2
+      ansibleguy.opnsense.dnsmasq_host:
+        description: 'ANSIBLE_TEST_1_2'
+        host: server
+        domain: example.com
+        cnames:
+          - server2.excample.com
+        ip: '192.168.1.10'
+        comments: 'DNS Entry'
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Adding 2 - nothing changed
+      ansibleguy.opnsense.dnsmasq_host:
+        description: 'ANSIBLE_TEST_1_2'
+        host: server
+        domain: example.com
+        cnames:
+          - server2.excample.com
+        ip: '192.168.1.10'
+        comments: 'DNS Entry'
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: not ansible_check_mode
+
+    - name: Removing 2
+      ansibleguy.opnsense.dnsmasq_host:
+        description: 'ANSIBLE_TEST_1_2'
+        host: server
+        state: 'absent'
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn6
+      failed_when: >
+        'data' not in opn6 or
+        opn6.data | length != 1
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.dnsmasq_host:
+        description: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+      when: not ansible_check_mode
+
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_clean1
+      failed_when: >
+        'data' not in opn_clean1 or
+        opn_clean1.data | length != 0
+      when: not ansible_check_mode

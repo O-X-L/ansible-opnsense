@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/unbound_acl.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/unbound_acl.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/unbound_acl.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/unbound_acl.html'
 
 
 def run_module():

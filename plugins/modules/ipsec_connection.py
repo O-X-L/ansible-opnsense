@@ -20,8 +20,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/ipsec.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/ipsec.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/ipsec.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/ipsec.html'
 
 
 def run_module():
@@ -39,6 +39,11 @@ def run_module():
                         'they are resolved every time a configuration lookup is done. If DNS resolution times out, '
                         'the lookup is delayed for that time. When left empty %any is choosen as default',
         ),
+        local_port=dict(
+            type='str', required=False, default='500', options=['500', '4500'],
+            description='UDP port for IKE communication. If the default of port 500 is used, automatic IKE '
+                        'port floating to port 4500 is used to work around NAT issues.',
+        ),
         remote_addresses=dict(
             type='list', elements='str', required=False, aliases=['remote_addr', 'remote'], default=[],
             description='Remote address[es] to use for IKE communication. Accepts single IPv4/IPv6 addresses, '
@@ -48,6 +53,11 @@ def run_module():
                         'they are resolved every time a configuration lookup is done. If DNS resolution times out, '
                         'the lookup is delayed for that time. To initiate a connection, at least one specific address '
                         'or DNS name must be specified',
+        ),
+        remote_port=dict(
+            type='str', required=False, default='500', options=['500', '4500'],
+            description='UDP port for IKE communication. If the default of port 500 is used, automatic IKE '
+                        'port floating to port 4500 is used to work around NAT issues.',
         ),
         pools=dict(
             type='list', elements='str', required=False, default=[], aliases=['networks', 'nets'],

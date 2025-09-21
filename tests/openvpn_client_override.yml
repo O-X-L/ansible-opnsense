@@ -50,6 +50,7 @@
       ansibleguy.opnsense.openvpn_client_override:
         name: 'ANSIBLE_TEST_1_1'
         servers: 'ANSIBLE_TEST_3_1'
+        redirect_gateway: '!ipv4'
       register: opn1
       failed_when: >
         opn1.failed or

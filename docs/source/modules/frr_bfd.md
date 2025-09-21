@@ -2,7 +2,7 @@
 
 **STATE**: stable
 
-**TESTS**: [frr_bfd_general](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bfd_general.yml) | [frr_bfd_neighbor](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bfd_neighbor.yml)
+**TESTS**: [frr_bfd_general](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_bfd_general.yml) | [frr_bfd_neighbor](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_bfd_neighbor.yml)
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
 
@@ -27,11 +27,11 @@ You need to install the FRR plugin:
 os-frr
 ```
 
-You can also install it using the [package module](https://opnsense.ansibleguy.net/modules/package.html).
+You can also install it using the [package module](https://ansible-opnsense.oxl.app/modules/package.html).
 
 ## Definition
 
-For basic parameters see: [Basics](https://opnsense.ansibleguy.net/usage/2_basic.html)
+For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basic.html)
 
 ### ansibleguy.opnsense.frr_bfd_general
 

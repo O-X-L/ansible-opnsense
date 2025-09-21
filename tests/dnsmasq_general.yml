@@ -1,0 +1,125 @@
+---
+
+- name: Testing dnsmasq general
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+        target: 'dnsmasq_general'
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | length == 0
+
+    - name: Enable and configure all dnsmasq options
+      ansibleguy.opnsense.dnsmasq_general:
+        enabled: true
+        interfaces: ['opt1', 'opt2']
+        strictbind: true
+        dns_port: 2053
+        dnssec: true
+        resolve_etc_hosts: false
+        log_queries: true
+        dns_forward_max: 4242
+        cache_size: 12345
+        local_ttl: 23
+        ident: true
+        strict_order: true
+        domain_needed: true
+        resolv_system: false
+        forward_private_reverse: false
+        add_mac: 'text'
+        add_subnet: true
+        strip_subnet: true
+        dhcp_disable_interfaces: 'opt2'
+        dhcp_fqdn: true
+        dhcp_domain: 'dhcp.example'
+        dhcp_local: false
+        dhcp_lease_max: 1000
+        dhcp_authoritative: true
+        dhcp_reply_delay: 10
+        dhcp_default_fw_rules: false
+        dhcp_enable_ra: true
+        dhcp_hasync: false
+        regdhcp: true
+        regdhcpdomain: 'test.domain'
+        regdhcpstatic: true
+        dhcpfirst: true
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Nothing changed
+      ansibleguy.opnsense.dnsmasq_general:
+        enabled: true
+        interfaces: ['TEST', 'TEST2']
+        strictbind: true
+        dns_port: 2053
+        dnssec: true
+        resolve_etc_hosts: false
+        log_queries: true
+        dns_forward_max: 4242
+        cache_size: 12345
+        local_ttl: 23
+        ident: true
+        strict_order: true
+        domain_needed: true
+        resolv_system: false
+        forward_private_reverse: false
+        add_mac: 'text'
+        add_subnet: true
+        strip_subnet: true
+        dhcp_disable_interfaces: 'TEST2'
+        dhcp_fqdn: true
+        dhcp_domain: 'dhcp.example'
+        dhcp_local: false
+        dhcp_lease_max: 1000
+        dhcp_authoritative: true
+        dhcp_reply_delay: 10
+        dhcp_default_fw_rules: false
+        dhcp_enable_ra: true
+        dhcp_hasync: false
+        regdhcp: true
+        regdhcpdomain: 'test.domain'
+        regdhcpstatic: true
+        dhcpfirst: true
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        opn3.changed
+      when: not ansible_check_mode
+
+    - name: Changing
+      ansibleguy.opnsense.dnsmasq_general:
+        enabled: true
+        interfaces: ['opt1']
+        strictbind: true
+        port: 2054
+        dnssec: true
+        resolve_etc_hosts: false
+        log_queries: false
+        ident: true
+        strict_order: true
+        domain_needed: false
+        forward_private_reverse: false
+        regdhcp: true
+        regdhcpdomain: 'test2.domain'
+        regdhcpstatic: false
+        dhcpfirst: true
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.dnsmasq_general:
+        enabled: false

@@ -3,23 +3,26 @@
 name: Functional-Tests Execution for PRs
 
 on:
-  pull_request:
+  pull_request_target:
+    branches: ['latest']
     paths:
       - 'plugins/**.py'
       - 'tests/**.yml'
       - '.github/workflows/functional_test_pr.yml'
       - 'scripts/get_changed_modules.py'
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 45
+    environment: pr-test
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Query changes
         run: |
@@ -72,6 +75,8 @@ jobs:
           TEST_API_KEY: /tmp/api_credentials.txt
           TEST_PROXY: ${{ secrets.CI_TEST_PROXY }}
           PYTHONUNBUFFERED: 1
+          PY_COLORS: 1
+          ANSIBLE_FORCE_COLOR: 1
 
       - uses: actions/upload-artifact@v4
         with:

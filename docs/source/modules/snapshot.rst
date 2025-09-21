@@ -8,7 +8,7 @@ Snapshot
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/snapshot.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/snapshot.yml>`_
 
 **API Docs**: `Core - Core <https://docs.opnsense.org/development/api/core/core.html>`_
 

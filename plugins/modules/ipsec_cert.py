@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/ipsec.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/ipsec.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/ipsec.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/ipsec.html'
 
 
 def run_module():
@@ -30,7 +30,7 @@ def run_module():
         name=dict(type='str', required=True),
         public_key=dict(type='str', required=False, aliases=['pub_key', 'pub']),
         private_key=dict(type='str', required=False, aliases=['priv_key', 'priv'], no_log=True),
-        type=dict(type='str', required=False, choices=['rsa'], default='rsa'),
+        type=dict(type='str', required=False, choices=['rsa', 'ecdsa'], default='rsa'),
         **RELOAD_MOD_ARG_DEF_FALSE,
         **STATE_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,

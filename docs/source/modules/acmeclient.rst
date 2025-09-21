@@ -8,11 +8,11 @@ ACME Client
 
 **STATE**: stable
 
-**TESTS**: `acme_account <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_account.yml>`_ |
-`acme_action <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_action.yml>`_ |
-`acme_certificate <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_certificate.yml>`_ |
-`acme_general <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_general.yml>`_ |
-`acme_validation <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_validation.yml>`_
+**TESTS**: `acme_account <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/acme_account.yml>`_ |
+`acme_action <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/acme_action.yml>`_ |
+`acme_certificate <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/acme_certificate.yml>`_ |
+`acme_general <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/acme_general.yml>`_ |
+`acme_validation <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/acme_validation.yml>`_
 
 
 **API Docs**: `Plugins - Acmeclient <https://docs.opnsense.org/development/api/plugins/acmeclient.html>`_
@@ -34,7 +34,7 @@ You need to install the FRR plugin:
 os-acme-client
 ```
 
-You can also install it using the `package module <https://opnsense.ansibleguy.net/modules/package.html>`_.
+You can also install it using the `package module <https://ansible-opnsense.oxl.app/modules/package.html>`_.
 
 ----
 

@@ -1,26 +1,28 @@
 ---
 
-name: Lint
+name: Lint Ansible
 
 on:
   push:
     branches: [latest]
     paths:
-      - '**.py'
-      - '**.yml'
-      - '.github/workflows/lint.yml'
+      - 'tests/**.yml'
+      - 'plugins/**.py'
+      - 'meta/*'
+      - '.github/workflows/lint-ansible.yml'
       - 'requirements_lint.txt'
       - '.yamllint'
-      - '.pylintrc'
+      - '.ansible-lint.yml'
   pull_request:
     branches: [latest]
     paths:
-      - '**.py'
-      - '**.yml'
-      - '.github/workflows/lint.yml'
+      - 'tests/**.yml'
+      - 'plugins/**.py'
+      - 'meta/*'
+      - '.github/workflows/lint-ansible.yml'
       - 'requirements_lint.txt'
       - '.yamllint'
-      - '.pylintrc'
+      - '.ansible-lint.yml'
 
 jobs:
   lint:
@@ -41,14 +43,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements_lint.txt > /dev/null
         shell: bash
-
-      - name: Running PyLint
-        run: |
-          pylint --version
-          pylint --recursive=y .
-        shell: bash
-        env:
-          PYTHONUNBUFFERED: 1
 
       - name: Running YamlLint
         run: |

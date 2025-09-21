@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/interface_loopback.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/interface_loopback.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/interface_loopback.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/interface_loopback.html'
 
 
 def run_module():

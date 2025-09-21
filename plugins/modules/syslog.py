@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/syslog.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/syslog.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/syslog.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/syslog.html'
 
 
 def run_module():

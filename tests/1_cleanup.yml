@@ -253,6 +253,22 @@
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
 
+    - name: Cleanup Bridge interfaces
+      ansibleguy.opnsense.interface_bridge:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
+    - name: Cleanup GIF interfaces
+      ansibleguy.opnsense.interface_gif:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
     - name: Cleanup source-nat
       ansibleguy.opnsense.source_nat:
         description: "{{ item }}"
@@ -899,6 +915,9 @@
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
 
+    - name: Cleanup IPSec General
+      ansibleguy.opnsense.ipsec_general:
+
     - name: Cleanup HASync
       ansibleguy.opnsense.hasync_general:
 
@@ -931,3 +950,74 @@
       failed_when:
         - cl_wazuh.failed
         - "'Unsupported' not in cl_wazuh.msg | default('')"
+
+    - name: Cleanup Users
+      ansibleguy.opnsense.user:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_2_2'
+
+    - name: Cleanup Groups
+      ansibleguy.opnsense.group:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_2_2'
+
+    - name: Cleanup dnsmasq General
+      ansibleguy.opnsense.dnsmasq_general:
+        enabled: false
+
+    - name: Cleanup dnsmasq Domain
+      ansibleguy.opnsense.dnsmasq_domain:
+        domain: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'test1.ansibleguy'
+        - 'test2.ansibleguy'
+
+    - name: Cleanup dnsmasq Host
+      ansibleguy.opnsense.dnsmasq_host:
+        description: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
+    - name: Cleanup dnsmasq Range
+      ansibleguy.opnsense.dnsmasq_range:
+        description: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
+    - name: Cleanup dnsmasq Option
+      ansibleguy.opnsense.dnsmasq_option:
+        description: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
+    - name: Cleanup dnsmasq Boot
+      ansibleguy.opnsense.dnsmasq_boot:
+        description: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
+    - name: Cleanup dnsmasq Tags
+      ansibleguy.opnsense.dnsmasq_tag:
+        name: '{{ item }}'
+        state: 'absent'
+      loop:
+        - 'AnsibleTest1'

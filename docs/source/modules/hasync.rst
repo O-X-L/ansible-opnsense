@@ -8,8 +8,8 @@ High Availability
 
 **STATE**: stable
 
-**TESTS**: `ansibleguy.opnsense.hasync_general <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/hasync_general.yml>`_ |
-`ansibleguy.opnsense.hasync_service <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/hasync_service.yml>`_
+**TESTS**: `ansibleguy.opnsense.hasync_general <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/hasync_general.yml>`_ |
+`ansibleguy.opnsense.hasync_service <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/hasync_service.yml>`_
 
 **API Docs**: `Core - HASync <https://docs.opnsense.org/development/api/core/core.html>`_
 

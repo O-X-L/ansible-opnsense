@@ -128,30 +128,32 @@ def debug_api(
         module: AnsibleModule, method: str = None, url: str = None,
         data: dict = None, headers: dict = None, response: dict = None,
 ) -> None:
-    if 'debug' in module.params and module.params['debug']:
-        if response is not None:
-            msg = f"RESPONSE: '{_clean_response(response.__dict__)}'"
+    if 'debug' not in module.params or not module.params['debug']:
+        return
 
-        else:
-            msg = f'REQUEST: {method} | URL: {url}'
+    if response is not None:
+        msg = f"RESPONSE: '{_clean_response(response.__dict__)}'"
 
-            if headers is not None:
-                msg += f" | HEADERS: '{headers}'"
+    else:
+        msg = f'REQUEST: {method} | URL: {url}'
 
-            if data is not None:
-                msg += f" | DATA: '{json_dumps(data)}'"
+        if headers is not None:
+            msg += f" | HEADERS: '{headers}'"
 
-            log_path = Path(DEBUG_CONFIG['path_log'])
-            if not log_path.exists():
-                log_path.mkdir()
+        if data is not None:
+            msg += f" | DATA: '{json_dumps(data)}'"
 
-            with open(
-                    f"{log_path}/{DEBUG_CONFIG['log_api_calls']}",
-                    'a+', encoding='utf-8'
-            ) as log:
-                log.write(f"\n{datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')} | {method} => {url}\n")
+        log_path = Path(DEBUG_CONFIG['path_log'])
+        if not log_path.exists():
+            log_path.mkdir()
 
-        module.warn(msg)
+        with open(
+                f"{log_path}/{DEBUG_CONFIG['log_api_calls']}",
+                'a+', encoding='utf-8'
+        ) as log:
+            log.write(f"\n{datetime.now().strftime('%Y-%m-%d %H:%M:%S:%f')} | {method} => {url}\n")
+
+    module.warn(msg)
 
 
 def check_response(module: AnsibleModule, cnf: dict, response) -> dict:
@@ -200,6 +202,6 @@ def api_pretty_exception(m: AnsibleModule, method: str, url: str, error):
 
     if str(error).find('CERTIFICATE_VERIFY_FAILED') != -1 or str(error).find('certificate verify failed') != -1:
         msg = f"SSL verification failed '{url}'! Make sure to follow the the documentation: "\
-              "https://opnsense.ansibleguy.net/usage/2_basic.html#ssl-certificate"
+              "https://ansible-opnsense.oxl.app/usage/2_basic.html#ssl-certificate"
 
     m.fail_json(f"{msg} ({error})")

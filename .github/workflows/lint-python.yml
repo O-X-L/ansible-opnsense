@@ -1,0 +1,47 @@
+---
+
+name: Lint Python
+
+on:
+  push:
+    branches: [latest]
+    paths:
+      - '**.py'
+      - '.github/workflows/lint-python.yml'
+      - 'requirements_lint.txt'
+      - '.pylintrc'
+  pull_request:
+    branches: [latest]
+    paths:
+      - '**.py'
+      - '.github/workflows/lint-python.yml'
+      - 'requirements_lint.txt'
+      - '.pylintrc'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements_lint.txt > /dev/null
+        shell: bash
+
+      - name: Running PyLint
+        run: |
+          pylint --version
+          pylint --recursive=y .
+        shell: bash
+        env:
+          PYTHONUNBUFFERED: 1

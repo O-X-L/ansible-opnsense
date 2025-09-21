@@ -117,6 +117,8 @@ run_test_soft 'interface_vip' 1
 run_test_soft 'interface_lagg' 1
 run_test_soft 'interface_loopback' 1
 run_test_soft 'interface_gre' 1
+run_test_soft 'interface_bridge' 1
+run_test_soft 'interface_gif' 1
 run_test_soft 'nat_source' 1
 run_test_soft 'nat_one_to_one' 1
 run_test_soft 'frr_diagnostic' 1
@@ -171,6 +173,7 @@ run_test_soft 'ipsec_child' 0  # check mode => dependency on connection-entry
 run_test_soft 'ipsec_auth_local' 0  # check mode => dependency on connection/cert-entry
 run_test_soft 'ipsec_auth_remote' 0  # check mode => dependency on connection/cert-entry
 run_test_soft 'ipsec_manual_spd' 1
+run_test_soft 'ipsec_general' 1
 run_test_soft 'ids_action' 1
 run_test_soft 'ids_general' 1
 run_test_soft 'ids_ruleset' 1
@@ -212,6 +215,17 @@ run_test_soft 'hasync_service' 0 # check mode => dependency on hasync_general
 run_test_soft 'snapshot' 1
 run_test_soft 'wazuh_agent' 1
 run_test_soft 'raw' 1
+run_test_soft 'user' 1
+run_test_soft 'group' 1
+run_test_soft 'privilege' 0 # check mode => dependency on user and group
+run_test_soft 'neighbor' 1
+run_test_soft 'dnsmasq_general' 1
+run_test_soft 'dnsmasq_domain' 1
+run_test_soft 'dnsmasq_host' 1
+run_test_soft 'dnsmasq_range' 1
+run_test_soft 'dnsmasq_option' 1
+run_test_soft 'dnsmasq_boot' 1
+run_test_soft 'dnsmasq_tag' 1
 
 echo ''
 echo '##############################'

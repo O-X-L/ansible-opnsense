@@ -20,8 +20,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://opnsense.ansibleguy.net/modules/ipsec.html'
-# EXAMPLES = 'https://opnsense.ansibleguy.net/modules/ipsec.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/ipsec.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/ipsec.html'
 
 
 def run_module():
@@ -48,6 +48,15 @@ def run_module():
         ),
         remote_tunnel_address=dict(
             type='str', required=False, aliases=['remote_tun_addr', 'tunnel_remote', 'remote_tun'],
+        ),
+        local_tunnel_secondary_address=dict(
+            type='str', required=False, aliases=['local_tun_sec_addr', 'tunnel_sec_local', 'local_sec_tun'],
+        ),
+        remote_tunnel_secondary_address=dict(
+            type='str', required=False, aliases=['remote_tun_sec_addr', 'tunnel_sec_remote', 'remote_sec_tun'],
+        ),
+        skip_firewall=dict(
+            type='bool', require=False, aliases=['skip_fw'], default=False
         ),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,

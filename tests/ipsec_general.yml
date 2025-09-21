@@ -1,0 +1,241 @@
+---
+
+- name: Testing IPSec General
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'ipsec_general'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1
+
+    - name: Configuring - General
+      ansibleguy.opnsense.ipsec_general:
+        prefer_old_sa: true
+        disable_vpn_rules: true
+        passthrough_networks:
+          - 192.168.255.255/24
+        authentication:
+          - 'Local Database'
+        local_group: admins
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Configuring - General - nothing changed
+      ansibleguy.opnsense.ipsec_general:
+        prefer_old_sa: true
+        disable_vpn_rules: true
+        passthrough_networks:
+          - 192.168.255.255/24
+        authentication:
+          - 'Local Database'
+        local_group: admins
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        opn2.changed
+      when: not ansible_check_mode
+
+    - name: Configuring - eap-radius
+      ansibleguy.opnsense.ipsec_general:
+        radius_accounting: true
+        radius_class_group: true
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Configuring - eap-radius - nothing changed
+      ansibleguy.opnsense.ipsec_general:
+        radius_accounting: true
+        radius_class_group: true
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        opn4.changed
+      when: not ansible_check_mode
+
+    - name: Configuring - xauth-pam
+      ansibleguy.opnsense.ipsec_general:
+        pam_service: ansible
+        pam_session: true
+        pam_trim_email: false
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+
+    - name: Configuring - xauth-pam - nothing changed
+      ansibleguy.opnsense.ipsec_general:
+        pam_service: ansible
+        pam_session: true
+        pam_trim_email: false
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: not ansible_check_mode
+
+    - name: Configuring - Charon
+      ansibleguy.opnsense.ipsec_general:
+        charon_max_ikev1_exchanges: 4
+        charon_threads: 8
+        charon_ikesa_table_size: 16
+        charon_ikesa_table_segments: 2
+        charon_ignore_acquire_ts: false
+        charon_make_before_break: true
+        charon_install_routes: true
+        charon_cisco_unity: true
+        retransmit_tries: 10
+        retransmit_timeout: 10
+        retransmit_base: 10
+        retransmit_jitter: 10
+        retransmit_limit: 10
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+
+    - name: Configuring - Charon - nothing changed
+      ansibleguy.opnsense.ipsec_general:
+        charon_max_ikev1_exchanges: 4
+        charon_threads: 8
+        charon_ikesa_table_size: 16
+        charon_ikesa_table_segments: 2
+        charon_ignore_acquire_ts: false
+        charon_make_before_break: true
+        charon_install_routes: true
+        charon_cisco_unity: true
+        retransmit_tries: 10
+        retransmit_timeout: 10
+        retransmit_base: 10
+        retransmit_jitter: 10
+        retransmit_limit: 10
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        opn8.changed
+      when: not ansible_check_mode
+
+    - name: Configuring - Syslog
+      ansibleguy.opnsense.ipsec_general:
+        syslog_log_name: false
+        syslog_log_level: true
+        syslog_app: 0
+        syslog_asn: 0
+        syslog_cfg: 0
+        syslog_chd: 0
+        syslog_dmn: 0
+        syslog_enc: 0
+        syslog_esp: 0
+        syslog_ike: 0
+        syslog_imc: 0
+        syslog_imv: 0
+        syslog_job: 0
+        syslog_knl: 0
+        syslog_lib: 0
+        syslog_mgr: 0
+        syslog_net: 0
+        syslog_pts: 0
+        syslog_tls: 0
+        syslog_tnc: 0
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+
+    - name: Configuring - Syslog - nothing changed
+      ansibleguy.opnsense.ipsec_general:
+        syslog_log_name: false
+        syslog_log_level: true
+        syslog_app: 0
+        syslog_asn: 0
+        syslog_cfg: 0
+        syslog_chd: 0
+        syslog_dmn: 0
+        syslog_enc: 0
+        syslog_esp: 0
+        syslog_ike: 0
+        syslog_imc: 0
+        syslog_imv: 0
+        syslog_job: 0
+        syslog_knl: 0
+        syslog_lib: 0
+        syslog_mgr: 0
+        syslog_net: 0
+        syslog_pts: 0
+        syslog_tls: 0
+        syslog_tnc: 0
+      register: opn10
+      failed_when: >
+        opn10.failed or
+        opn10.changed
+      when: not ansible_check_mode
+
+    - name: Configuring - Attr
+      ansibleguy.opnsense.ipsec_general:
+        attr_subnet:
+          - 172.16.0.0/24
+          - 172.16.1.0/24
+        attr_dns:
+          - 172.16.0.53
+          - 172.16.1.53
+        attr_wins:
+          - 172.16.0.42
+          - 172.16.1.42
+        unity_split_include:
+          - 172.16.0.0/24
+          - 172.16.1.0/24
+        unity_dns_search: opn.local
+        unity_dns_split: opn.local
+        unity_login_banner: |
+          Welcome to the Ansible Tests
+        unity_save_password: true
+      register: opn11
+      failed_when: >
+        opn11.failed or
+        not opn11.changed
+
+    - name: Configuring - Attr - nothing changed
+      ansibleguy.opnsense.ipsec_general:
+        attr_subnet:
+          - 172.16.0.0/24
+          - 172.16.1.0/24
+        attr_dns:
+          - 172.16.0.53
+          - 172.16.1.53
+        attr_nbns:
+          - 172.16.0.42
+          - 172.16.1.42
+        unity_split_include:
+          - 172.16.0.0/24
+          - 172.16.1.0/24
+        unity_dns_search: opn.local
+        unity_dns_split: opn.local
+        unity_login_banner: |
+          Welcome to the Ansible Tests
+        unity_save_password: true
+      register: opn12
+      failed_when: >
+        opn12.failed or
+        opn12.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.ipsec_general:
+      when: not ansible_check_mode

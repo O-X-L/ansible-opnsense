@@ -112,6 +112,9 @@ There are some required attributes:
             # select with multiple-choice
             'list': ['as_path_list', 'prefix_list', 'community_list'],
 
+            # select with multiple-choice but get the 'pretty-value'
+            'list_value': ['member'],
+
             # select with single-choice
             'select': ['action'],
 
@@ -211,6 +214,15 @@ Optional
             'errors': 'error_pages',
             'icp_port': 'icpPort',
             'connect_timeout': 'connecttimeout',
+        }
+
+    If the API-fields have additional hierarchical depth, they can be translated by providing a tuple as the api-field.
+
+    .. code-block:: python3
+
+        FIELDS_TRANSLATE = {
+            # ansible-field <=> api-field
+            'log_target': ('logging', 'target'),
         }
 
 * :code:`TIMEOUT`

@@ -1,0 +1,46 @@
+---
+
+name: Check Docs
+
+on:
+  push:
+    branches: [latest]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/check_docs.yml'
+  pull_request:
+    branches: [latest]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/check_docs.yml'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r docs/requirements.txt > /dev/null
+        shell: bash
+
+      - name: Building docs => failing on errors
+        run: |
+          if bash docs/html.sh 2>&1 | grep -q 'ERROR:'
+          then
+            echo 'GOT ERROR ON BUILDING-DOCS: "bash docs/html.sh"'
+            exit 1
+          fi
+        shell: bash
+        env:
+          PYTHONUNBUFFERED: 1

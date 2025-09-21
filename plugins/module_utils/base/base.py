@@ -4,6 +4,7 @@
 # pylint: disable=W0212,R0912,R0915
 
 from typing import Callable
+from functools import reduce
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     single_get, single_post
@@ -80,7 +81,7 @@ class Base:
         self.i.call_cnf['module'] = mod_get
 
         if self.i.CMDS['search'].startswith('search'):
-            # case for api-refactoring: https://github.com/ansibleguy/collection_opnsense/issues/51
+            # case for api-refactoring: https://github.com/O-X-L/ansible-opnsense/issues/51
             if 'detail' not in self.i.CMDS:
                 exit_bug("To use the 'search' commands you need to also define the related 'detail' (get) command!")
 
@@ -550,6 +551,10 @@ class Base:
             else:
                 request[opn_field] = opn_data
 
+            if isinstance(opn_field, tuple):
+                hreqest = reduce(lambda r, i: r.setdefault(i, {}), opn_field[:-1], request)
+                hreqest[opn_field[-1]] = request.pop(opn_field)
+
         payload = request
 
         if hasattr(self.i, self.ATTR_AK_PATH_REQ):
@@ -591,6 +596,9 @@ class Base:
 
             if not found:
                 if fail:
+                    if self.i.p['debug']:
+                        self.i.m.warn(f"Unable to find link by field '{field}': '{self.i.p[field]}' in '{existing}'")
+
                     self.i.m.fail_json(
                         f"Provided {field} '{self.i.p[field]}' was not found!"
                     )
