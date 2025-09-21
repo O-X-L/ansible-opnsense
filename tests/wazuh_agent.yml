@@ -93,7 +93,6 @@
         protocol: 'tcp'
         auth_password: 'test123'
         auth_port: 1515
-        logcollector_enabled: true
         remote_commands: true
         syslog_programs:
           - 'filterlog'

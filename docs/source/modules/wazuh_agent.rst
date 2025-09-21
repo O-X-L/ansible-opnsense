@@ -61,7 +61,6 @@ Parameters
    "debug_level","choice","false","0","","Debug level. One of: 0, 1, 2"
    "auth_password","string","false","","","Authentication password"
    "auth_port","integer","false","1515","","Authentication port"
-   "logcollector_enabled","boolean","false","true","","Enable log collector module"
    "remote_commands","boolean","false","true","","Allow remote commands execution"
    "syslog_programs","list","false","","","List of syslog programs to monitor"
    "suricata_eve_log","boolean","false","true","","Enable Suricata EVE log monitoring"
@@ -113,7 +112,6 @@ Examples
             # debug_level: 0
             # auth_password: ''
             # auth_port: 1515
-            # logcollector_enabled: true
             # remote_commands: true
             # syslog_programs: []
             # suricata_eve_log: true
@@ -143,7 +141,6 @@ Examples
         - name: Configure Wazuh agent with custom logging
           ansibleguy.opnsense.wazuh_agent:
             server_address: '10.0.0.100'
-            logcollector_enabled: true
             remote_commands: true
             syslog_programs:
               - 'filterlog'
