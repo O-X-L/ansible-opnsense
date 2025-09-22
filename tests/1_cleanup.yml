@@ -947,9 +947,7 @@
         enabled: false
         server_address: '127.0.0.1'  # placeholder
       register: cl_wazuh
-      failed_when:
-        - cl_wazuh.failed
-        - "'Unsupported' not in cl_wazuh.msg | default('')"
+      failed_when: cl_wazuh.failed
 
     - name: Cleanup Users
       ansibleguy.opnsense.user:
