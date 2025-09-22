@@ -1,0 +1,135 @@
+---
+
+- name: Testing HAProxy general cache settings
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_general_cache'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid total_max_size
+      ansibleguy.opnsense.haproxy_general_cache:
+        total_max_size: -1
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Configuring basic cache settings
+      ansibleguy.opnsense.haproxy_general_cache:
+        enabled: true
+        total_max_size: 16
+        max_age: 120
+        max_object_size: 8192
+        process_vary: true
+        max_secondary_entries: 20
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing cache settings
+      ansibleguy.opnsense.haproxy_general_cache:
+        enabled: true
+        total_max_size: 32
+        max_age: 300
+        max_object_size: 16384
+        process_vary: false
+        max_secondary_entries: 50
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+
+    - name: Disabling HAProxy cache
+      ansibleguy.opnsense.haproxy_general_cache:
+        enabled: false
+        total_max_size: 32
+        max_age: 300
+        max_object_size: 16384
+        process_vary: false
+        max_secondary_entries: 50
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+      when: not ansible_check_mode
+
+    - name: Disabling HAProxy cache - nothing changed
+      ansibleguy.opnsense.haproxy_general_cache:
+        enabled: false
+        total_max_size: 32
+        max_age: 300
+        max_object_size: 16384
+        process_vary: false
+        max_secondary_entries: 50
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        opn3.changed
+      when: not ansible_check_mode
+
+    - name: Enabling HAProxy cache
+      ansibleguy.opnsense.haproxy_general_cache:
+        enabled: true
+        total_max_size: 32
+        max_age: 300
+        max_object_size: 16384
+        process_vary: false
+        max_secondary_entries: 50
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        not opn4.changed
+      when: not ansible_check_mode
+
+    - name: Testing edge values
+      ansibleguy.opnsense.haproxy_general_cache:
+        enabled: true
+        total_max_size: 1
+        max_age: 1
+        max_object_size: 1024
+        process_vary: true
+        max_secondary_entries: 1
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      ansibleguy.opnsense.haproxy_general_cache:
+        enabled: true
+        total_max_size: 1
+        max_age: 1
+        max_object_size: 1024
+        process_vary: true
+        max_secondary_entries: 1
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.haproxy_general_cache:
+        enabled: false
+        total_max_size: 4
+        max_age: 60
+        process_vary: false
+        max_secondary_entries: 10
+      when: not ansible_check_mode

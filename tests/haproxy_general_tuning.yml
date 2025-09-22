@@ -1,0 +1,114 @@
+---
+
+- name: Testing HAProxy general tuning settings
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_general_tuning'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid max_connections
+      ansibleguy.opnsense.haproxy_general_tuning:
+        max_connections: 20000000
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Configuring - failing because of invalid nbthread
+      ansibleguy.opnsense.haproxy_general_tuning:
+        nbthread: 2048
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Configuring basic tuning settings
+      ansibleguy.opnsense.haproxy_general_tuning:
+        enabled: true
+        root: false
+        max_connections: 10000
+        nbthread: 4
+        resolvers_prefer: 'ipv4'
+        ssl_server_verify: 'required'
+        max_dh_size: 2048
+        buffer_size: 32768
+        spread_checks: 5
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing tuning settings
+      ansibleguy.opnsense.haproxy_general_tuning:
+        enabled: true
+        root: false
+        max_connections: 5000
+        nbthread: 2
+        resolvers_prefer: 'ipv6'
+        ssl_server_verify: 'none'
+        max_dh_size: 4096
+        buffer_size: 16384
+        spread_checks: 3
+        bogus_proxy_enabled: true
+        lua_max_mem: 100
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Disabling tuning
+      ansibleguy.opnsense.haproxy_general_tuning:
+        enabled: false
+        root: false
+        max_connections: 5000
+        nbthread: 2
+        resolvers_prefer: 'ipv6'
+        ssl_server_verify: 'none'
+        max_dh_size: 4096
+        buffer_size: 16384
+        spread_checks: 3
+        bogus_proxy_enabled: true
+        lua_max_mem: 100
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      ansibleguy.opnsense.haproxy_general_tuning:
+        enabled: false
+        root: false
+        max_connections: 5000
+        nbthread: 2
+        resolvers_prefer: 'ipv6'
+        ssl_server_verify: 'none'
+        max_dh_size: 4096
+        buffer_size: 16384
+        spread_checks: 3
+        bogus_proxy_enabled: true
+        lua_max_mem: 100
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        opn4.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      ansibleguy.opnsense.haproxy_general_tuning:
+        enabled: false
+        root: false
+      when: not ansible_check_mode
