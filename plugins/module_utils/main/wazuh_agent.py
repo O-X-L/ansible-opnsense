@@ -42,6 +42,7 @@ class WazuhAgent(GeneralModule):
 
     FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys())
     FIELDS_ALL = FIELDS_CHANGE
+    FIELDS_DIFF_NO_LOG = ['auth_password']
 
     FIELDS_TYPING = {
         'bool': [
