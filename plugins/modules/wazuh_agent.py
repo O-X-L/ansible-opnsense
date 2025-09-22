@@ -11,7 +11,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
 try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-        OPN_MOD_ARGS, RELOAD_MOD_ARG
+        OPN_MOD_ARGS, EN_ONLY_MOD_ARG, RELOAD_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.wazuh_agent import WazuhAgent
 
 except MODULE_EXCEPTIONS:
@@ -24,84 +24,80 @@ except MODULE_EXCEPTIONS:
 def run_module():
     module_args = dict(
         # General settings
-        enabled=dict(
-            type='bool', required=False, default=True,
-            description='Enable/disable the Wazuh agent'
-        ),
         server_address=dict(
             type='str', required=False, aliases=['server'],
-            description='Wazuh server hostname or IP address'
+            description='Specifies the IP address or the hostname of the Wazuh manager.'
         ),
         agent_name=dict(
             type='str', required=False, default='',
-            description='Agent name (defaults to hostname if not specified)'
+            description='Specifies the hostname of this agent.'
         ),
         protocol=dict(
             type='str', required=False, default='tcp',
             choices=['tcp', 'udp'],
-            description='Protocol to use for communication with server'
+            description='Specifies the transport protocol to use.'
         ),
         port=dict(
             type='int', required=False, default=1514,
-            description='Server port for agent communication'
+            description='Specifies the port to use for communicating with the Wazuh manager.'
         ),
         debug_level=dict(
             type='int', required=False, default=0,
-            choices=[0, 1, 2],
-            description='Debug level (0=no debug, 1=basic, 2=verbose)'
+            description='Debug level for this agents services.'
         ),
         
         # Authentication settings
         auth_password=dict(
             type='str', required=False, no_log=True,
-            description='Authentication password'
+            description='Password to use in authd.pass file.'
         ),
         auth_port=dict(
             type='int', required=False, default=1515,
-            description='Authentication port'
+            description='Specifies the port to use for communicating with the Wazuh manager during enrollment.'
         ),
         
         # Log collector settings
         remote_commands=dict(
             type='bool', required=False, default=True,
-            description='Allow remote commands execution'
+            description='Enable remote commands from the log collector'
         ),
         syslog_programs=dict(
             type='list', required=False, elements='str',
-            description='List of syslog programs to monitor'
+            description='Choose which applications to forward to Wazuh.'
         ),
         suricata_eve_log=dict(
             type='bool', required=False, default=True,
-            description='Enable Suricata EVE log monitoring'
+            description='Send events from the intrusion detection engine to Wazuh'
         ),
         
         # Module enablers
         rootcheck_enabled=dict(
             type='bool', required=False, default=True,
-            description='Enable rootcheck module'
+            description='Enable policy monitoring and anomaly detection'
         ),
         syscollector_enabled=dict(
             type='bool', required=False, default=True,
-            description='Enable syscollector module'
+            description='Enable syscollector'
         ),
         syscheck_enabled=dict(
             type='bool', required=False, default=True,
-            description='Enable syscheck module'
+            description='Enable file integrity monitoring'
         ),
         active_response_enabled=dict(
             type='bool', required=False, default=True,
-            description='Enable active response module'
+            description='Enable Active response'
         ),
         active_response_remote_commands=dict(
             type='bool', required=False, default=True,
-            description='Allow active response remote commands'
+            description='Toggles whether Command Module should accept commands'
         ),
         active_response_fw_alias_ignore=dict(
             type='list', required=False, elements='str',
-            description='Firewall aliases to ignore in active response'
+            description='Select an alias from which items should be ignored when dropping IP addresses'
         ),
         
         **RELOAD_MOD_ARG,
+        **EN_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,
     )
 

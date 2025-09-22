@@ -9,7 +9,8 @@ class WazuhAgent(GeneralModule):
         'search': 'get',
         'set': 'set',
     }
-    API_KEY = API_KEY_PATH = 'agent'
+    API_KEY_PATH = 'agent'
+    API_KEY_PATH_REQ = API_KEY_PATH
     API_MOD = 'wazuhagent'
     API_CONT = 'settings'
     API_CONT_REL = 'service'
@@ -52,6 +53,10 @@ class WazuhAgent(GeneralModule):
         'list': ['syslog_programs', 'active_response_fw_alias_ignore'],
         'select': ['protocol'],
         'select_opt_list_idx': ['debug_level'],
+    }
+    INT_VALIDATIONS = {
+        'port': {'min': 1, 'max': 65535},
+        'auth_port': {'min': 1, 'max': 65535},
     }
     
     TIMEOUT = 60.0
