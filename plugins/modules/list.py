@@ -44,7 +44,9 @@ TARGETS = [
     'frr_ospf3_redistribution', 'frr_ospf3_route_map', 'frr_ospf3_prefix_list', 'frr_ospf3_network',
     'frr_bgp_peer_group', 'user', 'group', 'privilege', 'interface_bridge', 'interface_gif', 'neighbor',
     'dnsmasq_general', 'ipsec_general', 'dnsmasq_domain', 'dnsmasq_host', 'dnsmasq_range', 'dnsmasq_option',
-    'dnsmasq_boot', 'dnsmasq_tag',
+    'dnsmasq_boot', 'dnsmasq_tag', 'haproxy_general_settings', 'haproxy_general_cache', 'haproxy_general_defaults',
+    'haproxy_general_logging', 'haproxy_general_peers', 'haproxy_general_stats', 'haproxy_general_tuning',
+    'haproxy_maintenance', 'haproxy_cpu', 'haproxy_user', 'haproxy_group',
 ]
 
 
@@ -574,6 +576,50 @@ def run_module():
         elif target == 'dnsmasq_tag':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_tag import \
                 Tag as Target_Obj
+
+        elif target == 'haproxy_general_settings':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_settings import \
+                GeneralSettings as Target_Obj
+
+        elif target == 'haproxy_general_cache':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_cache import \
+                GeneralCache as Target_Obj
+
+        elif target == 'haproxy_general_defaults':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_defaults import \
+                GeneralDefaults as Target_Obj
+
+        elif target == 'haproxy_general_logging':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_logging import \
+                GeneralLogging as Target_Obj
+
+        elif target == 'haproxy_general_peers':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_peers import \
+                GeneralPeers as Target_Obj
+
+        elif target == 'haproxy_general_stats':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_stats import \
+                GeneralStats as Target_Obj
+
+        elif target == 'haproxy_general_tuning':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_tuning import \
+                GeneralTuning as Target_Obj
+
+        elif target == 'haproxy_maintenance':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_maintenance import \
+                Maintenance as Target_Obj
+
+        elif target == 'haproxy_cpu':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_cpu import \
+                Cpu as Target_Obj
+
+        elif target == 'haproxy_user':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_user import \
+                HaproxyUser as Target_Obj
+
+        elif target == 'haproxy_group':
+            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_group import \
+                HaproxyGroup as Target_Obj
 
     except AttributeError:
         module_dependency_error()

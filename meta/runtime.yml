@@ -171,6 +171,18 @@ action_groups:
   hasync:
     - ansibleguy.opnsense.hasync_general
     - ansibleguy.opnsense.hasync_service
+  haproxy:
+    - ansibleguy.opnsense.haproxy_general_settings
+    - ansibleguy.opnsense.haproxy_general_cache
+    - ansibleguy.opnsense.haproxy_general_defaults
+    - ansibleguy.opnsense.haproxy_general_logging
+    - ansibleguy.opnsense.haproxy_general_peers
+    - ansibleguy.opnsense.haproxy_general_stats
+    - ansibleguy.opnsense.haproxy_general_tuning
+    - ansibleguy.opnsense.haproxy_maintenance
+    - ansibleguy.opnsense.haproxy_cpu
+    - ansibleguy.opnsense.haproxy_user
+    - ansibleguy.opnsense.haproxy_group
   raw:
     - ansibleguy.opnsense.raw
   access:
