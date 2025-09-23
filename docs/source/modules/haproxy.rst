@@ -153,7 +153,6 @@ Complete HAProxy setup with authentication and monitoring:
         # Configure performance
         - name: Configure HAProxy performance tuning
           ansibleguy.opnsense.haproxy_general_tuning:
-            enabled: true
             max_connections: 2000
             nbthread: 4
             buffer_size: 32768
@@ -170,9 +169,8 @@ Complete HAProxy setup with authentication and monitoring:
         - name: Configure HAProxy maintenance
           ansibleguy.opnsense.haproxy_maintenance:
             sync_certs: true
-            sync_certs_cron: '0 2 * * *'
-            update_ocsp: true
-            update_ocsp_cron: '*/30 * * * *'
+            reload_service: false
+            restart_service: false
 
 Advanced HAProxy setup with ACLs, Actions, and custom pages:
 
@@ -182,31 +180,54 @@ Advanced HAProxy setup with ACLs, Actions, and custom pages:
       hosts: opnsense_firewalls
       tasks:
         # Create ACLs for traffic filtering
-        - name: Create HAProxy ACLs
+        - name: Create ACL for API domain
           ansibleguy.opnsense.haproxy_acl:
-            name: "{{ item.name }}"
-            description: "{{ item.description }}"
-            expression: "{{ item.expression }}"
-            "{{ item.field }}": "{{ item.value }}"
-            negate: "{{ item.negate | default(false) }}"
-          loop:
-            - {name: 'acl_api_domain', description: 'API domain filter', expression: 'hdr', field: 'hdr', value: 'api.example.com'}
-            - {name: 'acl_rate_limit', description: 'Rate limiting', expression: 'src_conn_rate', field: 'src_conn_rate', value: 100}
-            - {name: 'acl_admin_path', description: 'Admin paths', expression: 'path_beg', field: 'path_beg', value: '/admin'}
+            name: 'acl_api_domain'
+            description: 'API domain filter'
+            expression: 'hdr'
+            hdr: 'api.example.com'
+
+        - name: Create ACL for rate limiting
+          ansibleguy.opnsense.haproxy_acl:
+            name: 'acl_rate_limit'
+            description: 'Rate limiting'
+            expression: 'src_conn_rate'
+            src_conn_rate_comparison: 'gt'
+            src_conn_rate: 100
+
+        - name: Create ACL for admin paths
+          ansibleguy.opnsense.haproxy_acl:
+            name: 'acl_admin_path'
+            description: 'Admin paths'
+            expression: 'path_beg'
+            path_beg: '/admin'
 
         # Create Actions for rule enforcement
-        - name: Create HAProxy Actions
+        - name: Create allow action for API
           ansibleguy.opnsense.haproxy_action:
-            name: "{{ item.name }}"
-            description: "{{ item.description }}"
-            test_type: "{{ item.test_type }}"
-            linked_acls: "{{ item.acls }}"
-            type: "{{ item.type }}"
-            "{{ item.action_field }}": "{{ item.action_value }}"
-          loop:
-            - {name: 'action_allow_api', description: 'Allow API access', test_type: 'if', acls: ['acl_api_domain'], type: 'http-request_allow'}
-            - {name: 'action_rate_header', description: 'Add rate limit header', test_type: 'if', acls: ['acl_rate_limit'], type: 'http-request_add-header', action_field: 'http_request_add_header_name', action_value: 'X-Rate-Limited'}
-            - {name: 'action_deny_admin', description: 'Deny admin access', test_type: 'if', acls: ['acl_admin_path'], type: 'http-request_deny'}
+            name: 'action_allow_api'
+            description: 'Allow API access'
+            test_type: 'if'
+            linked_acls: ['acl_api_domain']
+            type: 'http-request_allow'
+
+        - name: Create header action for rate limiting
+          ansibleguy.opnsense.haproxy_action:
+            name: 'action_rate_header'
+            description: 'Add rate limit header'
+            test_type: 'if'
+            linked_acls: ['acl_rate_limit']
+            type: 'http-request_add-header'
+            http_request_add_header_name: 'X-Rate-Limited'
+            http_request_add_header_content: 'true'
+
+        - name: Create deny action for admin
+          ansibleguy.opnsense.haproxy_action:
+            name: 'action_deny_admin'
+            description: 'Deny admin access'
+            test_type: 'if'
+            linked_acls: ['acl_admin_path']
+            type: 'http-request_deny'
 
         # Deploy Lua scripts for custom logic
         - name: Create Lua scripts
