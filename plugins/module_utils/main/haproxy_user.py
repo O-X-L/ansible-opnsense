@@ -28,6 +28,8 @@ class HaproxyUser(BaseModule):
 
     FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys())
     FIELDS_ALL = FIELDS_CHANGE
+    
+    FIELDS_DIFF_NO_LOG = ['password']
 
     FIELDS_TYPING = {
         'bool': ['enabled'],
