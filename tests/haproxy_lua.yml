@@ -1,0 +1,258 @@
+---
+
+- name: Testing HAProxy Lua script management
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/ansibleguy.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    ansibleguy.opnsense.list:
+      target: 'haproxy_lua'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      ansibleguy.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid name
+      ansibleguy.opnsense.haproxy_lua:
+        name: ''
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Configuring - failing because of missing content
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Test Lua script 1'
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Creating HAProxy Lua script with ID filename
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Test Lua script for authentication'
+        enabled: true
+        preload: true
+        filename_scheme: 'id'
+        content: |
+          function auth_check(txn)
+            local headers = txn.http:req_get_headers()
+            if headers["authorization"] then
+              core.Info("Authorization header found")
+              return "AUTHORIZED"
+            else
+              core.Info("No authorization header")
+              return "UNAUTHORIZED"
+            end
+          end
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Creating HAProxy Lua script with name filename
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'ANSIBLE_TEST_1_2'
+        description: 'Test Lua script for logging'
+        enabled: true
+        preload: false
+        filename_scheme: 'name'
+        content: |
+          function request_logger(txn)
+            local method = txn.sf:method()
+            local path = txn.sf:path()
+            local src_ip = txn.sf:src()
+            core.Info("Request: " .. method .. " " .. path .. " from " .. src_ip)
+          end
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Creating HAProxy Lua script for rate limiting
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'ANSIBLE_TEST_1_3'
+        description: 'Test Lua script for rate limiting'
+        enabled: true
+        preload: true
+        filename_scheme: 'id'
+        content: |
+          local rate_limiter = {}
+
+          function rate_limit_check(txn)
+            local src_ip = txn.sf:src()
+            local current_time = core.now()
+
+            if not rate_limiter[src_ip] then
+              rate_limiter[src_ip] = {count = 1, timestamp = current_time}
+              return "ALLOWED"
+            end
+
+            local limit_data = rate_limiter[src_ip]
+            if current_time - limit_data.timestamp > 60 then
+              rate_limiter[src_ip] = {count = 1, timestamp = current_time}
+              return "ALLOWED"
+            end
+
+            if limit_data.count >= 100 then
+              return "RATE_LIMITED"
+            end
+
+            limit_data.count = limit_data.count + 1
+            return "ALLOWED"
+          end
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Changing Lua script settings
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test Lua script for authentication'
+        enabled: true
+        preload: false
+        filename_scheme: 'name'
+        content: |
+          function auth_check_v2(txn)
+            local headers = txn.http:req_get_headers()
+            local auth_header = headers["authorization"]
+            if auth_header and string.find(auth_header, "Bearer ") then
+              core.Info("Bearer token found")
+              return "AUTHORIZED"
+            else
+              core.Info("No valid bearer token")
+              return "UNAUTHORIZED"
+            end
+          end
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+
+    - name: Disabling HAProxy Lua script
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test Lua script for authentication'
+        enabled: false
+        preload: false
+        filename_scheme: 'name'
+        content: |
+          function auth_check_v2(txn)
+            local headers = txn.http:req_get_headers()
+            local auth_header = headers["authorization"]
+            if auth_header and string.find(auth_header, "Bearer ") then
+              core.Info("Bearer token found")
+              return "AUTHORIZED"
+            else
+              core.Info("No valid bearer token")
+              return "UNAUTHORIZED"
+            end
+          end
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Disabling HAProxy Lua script - nothing changed
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test Lua script for authentication'
+        enabled: false
+        preload: false
+        filename_scheme: 'name'
+        content: |
+          function auth_check_v2(txn)
+            local headers = txn.http:req_get_headers()
+            local auth_header = headers["authorization"]
+            if auth_header and string.find(auth_header, "Bearer ") then
+              core.Info("Bearer token found")
+              return "AUTHORIZED"
+            else
+              core.Info("No valid bearer token")
+              return "UNAUTHORIZED"
+            end
+          end
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: not ansible_check_mode
+
+    - name: Enabling HAProxy Lua script
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test Lua script for authentication'
+        enabled: true
+        preload: false
+        filename_scheme: 'name'
+        content: |
+          function auth_check_v2(txn)
+            local headers = txn.http:req_get_headers()
+            local auth_header = headers["authorization"]
+            if auth_header and string.find(auth_header, "Bearer ") then
+              core.Info("Bearer token found")
+              return "AUTHORIZED"
+            else
+              core.Info("No valid bearer token")
+              return "UNAUTHORIZED"
+            end
+          end
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test Lua script for authentication'
+        enabled: true
+        preload: false
+        filename_scheme: 'name'
+        content: |
+          function auth_check_v2(txn)
+            local headers = txn.http:req_get_headers()
+            local auth_header = headers["authorization"]
+            if auth_header and string.find(auth_header, "Bearer ") then
+              core.Info("Bearer token found")
+              return "AUTHORIZED"
+            else
+              core.Info("No valid bearer token")
+              return "UNAUTHORIZED"
+            end
+          end
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        opn8.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup Lua script 1
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Lua script 2
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'ANSIBLE_TEST_1_2'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Lua script 3
+      ansibleguy.opnsense.haproxy_lua:
+        name: 'ANSIBLE_TEST_1_3'
+        state: 'absent'
+      when: not ansible_check_mode

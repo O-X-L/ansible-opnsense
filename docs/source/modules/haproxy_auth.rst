@@ -152,7 +152,7 @@ Set up basic authentication for HAProxy services:
             add_userlist: true
             enabled: true
 
-Multi-Tenant authentication
+Multi-tenant authentication
 ----------------------------
 
 Configure authentication for multiple tenants:

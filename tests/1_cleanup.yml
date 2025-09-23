@@ -1075,3 +1075,55 @@
         - 'testgroup1'
         - 'testgroup2'
         - 'ansible_test_group'
+
+    - name: Cleanup HAProxy ACLs
+      ansibleguy.opnsense.haproxy_acl:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_ACL_1'
+
+    - name: Cleanup HAProxy Actions
+      ansibleguy.opnsense.haproxy_action:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_FCGI_ACTION_1'
+        - 'ANSIBLE_TEST_FCGI_ACTION_2'
+
+    - name: Cleanup HAProxy Lua scripts
+      ansibleguy.opnsense.haproxy_lua:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+
+    - name: Cleanup HAProxy FCGI applications
+      ansibleguy.opnsense.haproxy_fcgi:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+
+    - name: Cleanup HAProxy Error files
+      ansibleguy.opnsense.haproxy_errorfile:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'

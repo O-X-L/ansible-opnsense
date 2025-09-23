@@ -112,6 +112,23 @@ def run_module():
             type='str', required=False, default=None,
             description='HTTP request header name to delete'
         ),
+        # HTTP Request Header Replace
+        http_request_replace_header_name=dict(
+            type='str', required=False, default=None,
+            description='HTTP request header name to replace'
+        ),
+        http_request_replace_header_regex=dict(
+            type='str', required=False, default=None,
+            description='HTTP request header regex to replace'
+        ),
+        http_request_replace_value_name=dict(
+            type='str', required=False, default=None,
+            description='HTTP request value name to replace'
+        ),
+        http_request_replace_value_regex=dict(
+            type='str', required=False, default=None,
+            description='HTTP request value regex to replace'
+        ),
         # HTTP Request Set Path
         http_request_set_path=dict(
             type='str', required=False, default=None,
@@ -135,6 +152,46 @@ def run_module():
             type='str', required=False, default=None,
             description='HTTP response lua script'
         ),
+        # HTTP Response Header Add
+        http_response_add_header_name=dict(
+            type='str', required=False, default=None,
+            description='HTTP response header name to add'
+        ),
+        http_response_add_header_content=dict(
+            type='str', required=False, default=None,
+            description='HTTP response header content to add'
+        ),
+        # HTTP Response Header Set
+        http_response_set_header_name=dict(
+            type='str', required=False, default=None,
+            description='HTTP response header name to set'
+        ),
+        http_response_set_header_content=dict(
+            type='str', required=False, default=None,
+            description='HTTP response header content to set'
+        ),
+        # HTTP Response Header Delete
+        http_response_del_header_name=dict(
+            type='str', required=False, default=None,
+            description='HTTP response header name to delete'
+        ),
+        # HTTP Response Header Replace
+        http_response_replace_header_name=dict(
+            type='str', required=False, default=None,
+            description='HTTP response header name to replace'
+        ),
+        http_response_replace_header_regex=dict(
+            type='str', required=False, default=None,
+            description='HTTP response header regex to replace'
+        ),
+        http_response_replace_value_name=dict(
+            type='str', required=False, default=None,
+            description='HTTP response value name to replace'
+        ),
+        http_response_replace_value_regex=dict(
+            type='str', required=False, default=None,
+            description='HTTP response value regex to replace'
+        ),
         http_response_set_status_code=dict(
             type='int', required=False, default=None,
             description='HTTP response status code (100-999)'
@@ -143,10 +200,27 @@ def run_module():
             type='str', required=False, default=None,
             description='HTTP response status reason'
         ),
+        # HTTP Response Set Variable
+        http_response_set_var_scope=dict(
+            type='str', required=False, default=None,
+            description='HTTP response set-var scope (proc/sess/txn/req/res)'
+        ),
+        http_response_set_var_name=dict(
+            type='str', required=False, default=None,
+            description='HTTP response set-var name'
+        ),
+        http_response_set_var_expr=dict(
+            type='str', required=False, default=None,
+            description='HTTP response set-var expression'
+        ),
         # TCP fields
         tcp_request_content_lua=dict(
             type='str', required=False, default=None,
             description='TCP request content lua script'
+        ),
+        tcp_request_content_use_service=dict(
+            type='str', required=False, default=None,
+            description='TCP request content use-service'
         ),
         tcp_request_inspect_delay=dict(
             type='str', required=False, default=None,
