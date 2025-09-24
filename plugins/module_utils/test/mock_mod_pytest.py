@@ -38,8 +38,8 @@ class MockOPNsenseModule(BaseModule):
     FIELDS_ALL.extend(FIELDS_CHANGE)
     EXIST_ATTR = 'existing'
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None, multi: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail, multi=multi)
         self.existing = {}
         self.available_commands = []
 

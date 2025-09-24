@@ -180,7 +180,11 @@ class MultiModuleCallbacks(ABC):
         if not entry.exists and entry.p.get('state', 'present') == 'present':  # was just created
             entry_cnf = entry.p.copy()
             for opn_arg in OPN_MOD_ARGS:
-                entry_cnf.pop(opn_arg)
+                try:
+                    entry_cnf.pop(opn_arg)
+
+                except KeyError:
+                    continue
 
             cache['main'].append(entry_cnf)
 
@@ -487,7 +491,7 @@ class MultiModule:
         o = self.o(
             module=self.m,
             result=entry_result,
-            cnf=entry_cnf,
+            multi=entry_cnf,
             session=self.s,
             fail=dict(
                 verify=self.mc['fail_verify'],

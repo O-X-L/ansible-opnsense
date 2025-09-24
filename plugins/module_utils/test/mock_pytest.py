@@ -38,9 +38,38 @@ class MockAnsibleModule:
     def warn(self, msg: str):
         print(msg)
 
+
+class AnsibleWarning(Exception):
+    pass
+
+
+class MockAnsibleModuleWarnException(MockAnsibleModule):
+    def warn(self, msg: str):
+        raise AnsibleWarning(msg)
+
+
 DUMMY_MODULE = MockAnsibleModule()
 DUMMY_REQ = dict(
     module='dummy',
     controller='dummy',
     command='test',
 )
+def get_ansible_module_multi_params() -> dict:
+    return {
+        **MockAnsibleModule.PARAMS,
+        'multi': {},
+        'multi_purge': {},
+        'multi_control': {
+            'state': None,
+            'enabled': None,
+            'override': {},
+            'fail_verify': False,
+            'fail_process': True,
+            'output_info': False,
+            'purge_action': 'delete',
+            'purge_filter': {},
+            'purge_filter_invert': False,
+            'purge_filter_partial': False,
+            'purge_all': False,
+        },
+    }

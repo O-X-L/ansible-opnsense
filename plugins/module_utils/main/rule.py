@@ -80,11 +80,10 @@ class Rule(BaseModule):
     API_CMD_REL = 'apply'
 
     def __init__(
-            self, module: AnsibleModule, result: dict, cnf: dict = None,
+            self, module: AnsibleModule, result: dict, multi: dict = None,
             session: Session = None, fail: dict = None,
     ):
-        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
-        self.p = self.m.params if cnf is None else cnf  # to allow override by rule_multi
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail, multi=multi)
         self.rule = {}
         self.log_name = None
 

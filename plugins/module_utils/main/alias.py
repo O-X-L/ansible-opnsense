@@ -40,12 +40,11 @@ class Alias(BaseModule):
     MAX_ALIAS_LEN = 32
 
     def __init__(
-            self, module: AnsibleModule, result: dict, cnf: dict = None,
+            self, module: AnsibleModule, result: dict, multi: dict = None,
             session: Session = None, fail: dict = None,
     ):
-        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail, multi=multi)
         self.alias = {}
-        self.p = self.m.params if cnf is None else cnf  # to allow override by alias_multi
 
     def check(self) -> None:
         if self.p['type'] == 'urltable':

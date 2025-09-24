@@ -53,10 +53,14 @@ class BaseShared:
 
 
 class BaseModule(BaseShared):
-    def __init__(self, m: AnsibleModule, r: dict, s: Session = None, f: dict = None):
+    def __init__(self, m: AnsibleModule, r: dict, s: Session = None, f: dict = None, multi: dict = None):
         super().__init__(m, r, s)
         if f is None:
             f = {}
+
+        if multi is not None and len(multi) > 0:
+            # override params by MultiModule
+            self.p = multi
 
         self.fail_verify = f.get('verify', False)
         self.fail_process = f.get('process', False)

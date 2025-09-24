@@ -2,27 +2,7 @@ import pytest
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.mock_pytest import \
     pytest_mock_http_responses, MockAnsibleModule, MockOPNsenseModule, MOCK_RESPONSES, \
-    ANSIBLE_RESULT, AnsibleError
-
-
-ANSIBLE_MODULE_MULTI_PARAMS = {
-    **MockAnsibleModule.PARAMS,
-    'multi': {},
-    'multi_purge': {},
-    'multi_control': {
-        'state': None,
-        'enabled': None,
-        'override': {},
-        'fail_verify': False,
-        'fail_process': True,
-        'output_info': False,
-        'purge_action': 'delete',
-        'purge_filter': {},
-        'purge_filter_invert': False,
-        'purge_filter_partial': False,
-        'purge_all': False,
-    },
-}
+    ANSIBLE_RESULT, AnsibleError, MockAnsibleModuleWarnException, AnsibleWarning, get_ansible_module_multi_params
 
 
 def test_build_multi_mod_args():
@@ -89,11 +69,11 @@ def test_build_multi_mod_args():
         True,
     ),
     (
-        {'multi_control': {**ANSIBLE_MODULE_MULTI_PARAMS['multi_control'], 'purge_filter': {'test': 1}}},
+        {'multi_control': {**get_ansible_module_multi_params()['multi_control'], 'purge_filter': {'test': 1}}},
         True,
     ),
     (
-        {'multi_control': {**ANSIBLE_MODULE_MULTI_PARAMS['multi_control'], 'purge_all': True}},
+        {'multi_control': {**get_ansible_module_multi_params()['multi_control'], 'purge_all': True}},
         True,
     ),
 ])
@@ -107,7 +87,7 @@ def test_multi_module_is_multi_purge(mocker, params, result):
         MultiModule
 
     am = MockAnsibleModule()
-    am.params = {**ANSIBLE_MODULE_MULTI_PARAMS, **params}
+    am.params = {**get_ansible_module_multi_params(), **params}
 
     mm = MultiModule(
         module=am,
@@ -137,11 +117,11 @@ def test_multi_module_is_multi_purge(mocker, params, result):
         False,
     ),
     (
-        {'multi_control': {**ANSIBLE_MODULE_MULTI_PARAMS['multi_control'], 'purge_filter': {'test': 1}}},
+        {'multi_control': {**get_ansible_module_multi_params()['multi_control'], 'purge_filter': {'test': 1}}},
         False,
     ),
     (
-        {'multi_control': {**ANSIBLE_MODULE_MULTI_PARAMS['multi_control'], 'purge_all': True}},
+        {'multi_control': {**get_ansible_module_multi_params()['multi_control'], 'purge_all': True}},
         False,
     ),
 ])
@@ -155,7 +135,7 @@ def test_multi_module_is_multi_crud(mocker, params, result):
         MultiModule
 
     am = MockAnsibleModule()
-    am.params = {**ANSIBLE_MODULE_MULTI_PARAMS, **params}
+    am.params = {**get_ansible_module_multi_params(), **params}
 
     mm = MultiModule(
         module=am,
@@ -177,7 +157,7 @@ def test_multi_module_base(mocker):
         MultiModule
 
     am = MockAnsibleModule()
-    am.params = ANSIBLE_MODULE_MULTI_PARAMS.copy()
+    am.params = get_ansible_module_multi_params()
     res = ANSIBLE_RESULT
     mm = MultiModule(
         module=am,
@@ -295,7 +275,7 @@ def test_multi_module_purge_filter(mocker, purge_filter, entry, partial, invert,
         MultiModule
 
     am = MockAnsibleModule()
-    am.params = ANSIBLE_MODULE_MULTI_PARAMS.copy()
+    am.params = get_ansible_module_multi_params()
     am.params['multi_control']['purge_all'] = True
     am.params['multi_control']['purge_filter_partial'] = partial
     am.params['multi_control']['purge_filter_invert'] = invert
@@ -359,7 +339,7 @@ def test_multi_module_entry_matches(mocker, e1, e2, match_fields, result):
         MultiModule
 
     am = MockAnsibleModule()
-    am.params = ANSIBLE_MODULE_MULTI_PARAMS.copy()
+    am.params = get_ansible_module_multi_params()
     am.params['match_fields'] = match_fields
 
     mm = MultiModule(
@@ -372,4 +352,152 @@ def test_multi_module_entry_matches(mocker, e1, e2, match_fields, result):
     assert mm._entry_matches(e1, e2) == result
 
 
-# todo: add tests for create/update/partial-deletion & purge delete/disable
+@pytest.mark.parametrize('entry, entry_args, fail_verify, raises', [
+    (
+        {'name': 'test'},
+        dict(
+            name=dict(type='str', required=True),
+            value=dict(type='str', required=False),
+        ),
+        False,
+        None,
+    ),
+    (
+        {'name': 'test'},
+        dict(
+            name=dict(type='str', required=True),
+            value=dict(type='str', required=False),
+        ),
+        True,
+        None,
+    ),
+    (
+        {'name': 'test'},
+        dict(
+            name=dict(type='str', required=True),
+            value=dict(type='str', required=True),
+        ),
+        False,
+        AnsibleWarning,
+    ),
+    (
+        {'name': 'test'},
+        dict(
+            name=dict(type='str', required=True),
+            value=dict(type='str', required=True),
+        ),
+        True,
+        AnsibleError,
+    ),
+    (
+        {'name': 'test', 'value': 'any'},
+        dict(
+            name=dict(type='str', required=True),
+            value=dict(type='str', required=True),
+        ),
+        True,
+        None,
+    ),
+])
+def test_multi_validate_entry(mocker, entry, entry_args, fail_verify, raises):
+    pytest_mock_http_responses(
+        mocker=mocker,
+        responses=MOCK_RESPONSES
+    )
+
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+        MultiModule
+
+    am = MockAnsibleModuleWarnException()
+    am.params = get_ansible_module_multi_params()
+    am.params['multi_control']['fail_verify'] = fail_verify
+
+    mm = MultiModule(
+        module=am,
+        result=ANSIBLE_RESULT,
+        entry_args=entry_args,
+        kind='test',
+        obj=MockOPNsenseModule,
+    )
+    if raises is None:
+        assert mm._validate_entry(entry) is True
+
+    else:
+        with pytest.raises(raises):
+            mm._validate_entry(entry)
+
+
+@pytest.mark.parametrize('match_fields, debug, mc_state, mc_enabled, mc_overrides', [
+    (
+        ['p1'],
+        False,
+        None,
+        None,
+        {'p2': 'b'},
+    ),
+])
+def test_multi_build_entries(mocker, match_fields, debug, mc_state, mc_enabled, mc_overrides):
+    pytest_mock_http_responses(
+        mocker=mocker,
+        responses=MOCK_RESPONSES
+    )
+
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+        MultiModule
+
+    am = MockAnsibleModuleWarnException()
+    am.params = get_ansible_module_multi_params()
+
+    am.params['multi'] = [
+        {'p1': 'test1', 'p2': 'a'},
+        {'p1': 'test2'},
+        {'p1': 'test3', 'state': 'absent'},
+        {'p1': 'test4', 'state': 'present'},
+        {'p1': 'test5', 'enabled': True},
+        {'p1': 'test6', 'enabled': False},
+    ]
+
+    if match_fields is not None:
+        am.params['match_fields'] = match_fields
+
+    am.params['debug'] = debug
+    am.params['multi_control']['override'] = mc_overrides
+    am.params['multi_control']['state'] = mc_state
+    am.params['multi_control']['enabled'] = mc_enabled
+
+    mm = MultiModule(
+        module=am,
+        result=ANSIBLE_RESULT,
+        entry_args={},
+        kind='test',
+        obj=MockOPNsenseModule,
+        validation=False,  # covered in test_multi_validate_entry
+    )
+
+    for e in mm._build_entries():
+        assert e['debug'] == debug
+        assert e['reload'] == False
+
+        if match_fields is not None:
+            assert e['match_fields'] == match_fields
+
+        if mc_state is not None:
+            assert e['state'] == mc_state
+
+        if mc_enabled is not None:
+            assert e['enabled'] == mc_enabled
+
+        for k, v in mc_overrides.items():
+            assert e[k] == v
+
+        if e['p1'] == 'test3' and mc_state is None:
+            assert e['state'] == 'absent'
+
+        if e['p1'] == 'test4' and mc_state is None:
+            assert e['state'] == 'present'
+
+        if e['p1'] == 'test5' and mc_enabled is None:
+            assert e['enabled'] is True
+
+        if e['p1'] == 'test6' and mc_enabled is None:
+            assert e['enabled'] is False
