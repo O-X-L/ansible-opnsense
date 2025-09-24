@@ -14,6 +14,14 @@ That can improve the processing speed as it can improve the amount of API calls 
 
 This Multi-Handling needs to be supported by the module!
 
+.. warning::
+
+    Make sure to run a check-mode beforehand and manually verify the deletions!
+
+    You can use the :code:`ansible.builtin.pause` module to wait for your review of the changes.
+
+    We test the module behavior using `Unit-Tests <https://github.com/O-X-L/ansible-opnsense/actions/workflows/unit_test.yml>`_ AND `Functional-Tests <https://github.com/O-X-L/ansible-opnsense/tree/latest/tests>`_ - but there might be edge-case scenarios. This is especially true for newer OPNsense releases that had API-changes and were not fully tested yet.
+
 ----
 
 Module Arguments
@@ -48,11 +56,12 @@ Deleting Entries
     :header: "Parameter","Type","Required","Default","Aliases","Comment"
     :widths: 15 10 10 10 10 45
 
-    "multi_purge","list","false","\-","multi_control.multi_delete, multi_control.purge, multi_control.many_purge","The list of entries to delete"
-    "multi_control.purge_action","disable/delete","false","delete","\-","What to do with the matched items"
+    "multi_purge","list","false","\-","multi_control.multi_delete, multi_control.purge, multi_control.many_purge","The list of entries to purge (delete or disable)"
+    "multi_control.purge_action","disable/delete","false","delete","\-","What action to perform on the entries matched by the purge"
     "multi_control.purge_filter","dict","false","\-","multi_control.purge_filters","Field-value pairs to filter on - per example: {param1: test} - to only purge items that have 'param1' set to 'test'"
     "multi_control.purge_filter_invert","boolean","false","false","\-","If true - it will purge all but the filtered ones"
     "multi_control.purge_filter_partial","boolean","false","false","\-","If true - the filter will also match if it is just a partial value-match"
+    "multi_control.purge_unconfigured","boolean","false","false","multi_control.purge_orphaned, multi_control.purge_unknown","Usable if configured entries are supplied - will delete all entries NOT matched with the configured ones"
     "multi_control.purge_all","boolean","false","false","\-","If set to true and neither items, nor filters are provided - all items will be purged"
 
 ----

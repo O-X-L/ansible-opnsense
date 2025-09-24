@@ -70,6 +70,7 @@ def get_ansible_module_multi_params() -> dict:
             'purge_filter': {},
             'purge_filter_invert': False,
             'purge_filter_partial': False,
+            'purge_unconfigured': False,
             'purge_all': False,
         },
     }

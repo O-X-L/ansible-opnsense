@@ -95,24 +95,35 @@ def build_multi_mod_args(
                 output_info=dict(type='bool', required=False, default=False, aliases=['info']),
                 purge_action=dict(
                     type='str', required=False, default='delete', choices=['disable', 'delete'],
-                    description='What to do with the matched items'
+                    description='What action to perform on the entries matched by the purge'
                 ),
                 purge_filter=dict(
                     type='dict', required=False, default={}, aliases=['purge_filters'],
                     description='Field-value pairs to filter on - per example: {param1: test} '
-                                "- to only purge items that have 'param1' set to 'test'"
+                                "- to only purge entries that have 'param1' set to 'test'. WARNING: Make sure to run a "
+                                'check-mode beforehand and manually verify the deletions!'
                 ),
                 purge_filter_invert=dict(
                     type='bool', required=False, default=False,
-                    description='If true - it will purge all but the filtered ones'
+                    description='If true - it will purge all but the filtered ones. WARNING: Make sure to run a '
+                                'check-mode beforehand and manually verify the deletions!'
                 ),
                 purge_filter_partial=dict(
                     type='bool', required=False, default=False,
-                    description="If true - the filter will also match if it is just a partial value-match"
+                    description='If true - the filter will also match if it is just a partial value-match. WARNING: '
+                                'Make sure to run a check-mode beforehand and manually verify the deletions!'
                 ),
                 purge_all=dict(
                     type='bool', required=False, default=False,
-                    description='If set to true and neither items, nor filters are provided - all items will be purged'
+                    description='If set to true and neither entries, nor filters are provided - all entries will be '
+                                'purged. WARNING: Make sure to run a check-mode beforehand and manually '
+                                'verify the deletions!'
+                ),
+                purge_unconfigured=dict(
+                    type='bool', required=False, default=False, aliases=['purge_unknown', 'purge_orphaned'],
+                    description='Usable if configured entries are supplied - will delete all entries NOT matched with '
+                                'the configured ones. WARNING: Make sure to run a check-mode beforehand and manually '
+                                'verify the deletions!'
                 ),
             ),
         ),
@@ -151,7 +162,7 @@ class MultiModuleCallbacks(ABC):
 
         :param meta_entry: A dummy/meta-entry as BaseModule-instance that
                            is used to pull all existing entries from the API
-        :return: Result that will be used as cache
+        :return: Result that will be used as cache. The key 'main' is required to contain the primary entries processed
         """
         return {'main': meta_entry.get_existing()}
 
@@ -229,6 +240,7 @@ class MultiModule:
         self.mod_entry_args = entry_args
         self.validation = validation
         self.cache = {}
+        self._cache_original = {}
         self.cache_existing = cache_existing
         self.callbacks: MultiModuleCallbacks = callbacks
         if self.callbacks is None:
@@ -269,12 +281,14 @@ class MultiModule:
     def process(self) -> None:
         if self.cache_existing:
             self.cache = self.callbacks.get_existing(self.meta_entry)
+            self._cache_original = self.cache.copy()
 
         if self._is_multi_purge():
             self._purge()
 
         elif self._is_multi_crud():
             self._create_update()
+            self._purge_unconfigured()
 
         else:
             self.m.fail_json('Got invalid Mass-Management arguments!')
@@ -353,6 +367,9 @@ class MultiModule:
         return valid_entries
 
     def _create_update(self):
+        if not self._has_multi_crud_entries:
+            return
+
         for entry_cnf in self._build_entries():
             # process single entry like in the single-module
             entry_result = dict(
@@ -437,6 +454,13 @@ class MultiModule:
 
         return False
 
+    def _in_entries_configured(self, entry_cnf: dict) -> bool:
+        for configured_entry_cnf in self.p['multi']:
+            if self._entry_matches(entry_cnf, configured_entry_cnf):
+                return True
+
+        return False
+
     def _matches_purge_filter_partial(self, entry_cnf: dict) -> bool:
         matches = []
         for k, v in self.mc['purge_filter'].items():
@@ -468,15 +492,12 @@ class MultiModule:
         if not self.mc['purge_all'] and not self._has_multi_purge_entries and not self._has_multi_purge_filters:
             self.m.fail_json("You need to either provide entries via 'multi_purge' or 'multi_control.purge_filter'!")
 
-        if self._has_multi_purge_filters and not self.mc['purge_all'] and not self._has_multi_purge_entries:
-            self.m.fail_json("A purge_filter requires 'multi_control.purge_all' or items via 'multi_purge'!")
-
-        # checking if all entries should be purged
         for entry_cnf in self.cache['main']:
             if self.callbacks.purge_exclude(entry_cnf):
                 continue
 
-            if self.mc['purge_all'] or self._in_entries_to_purge(entry_cnf):
+            purge_filter_all = self._has_multi_purge_filters and not self._has_multi_purge_entries
+            if self.mc['purge_all'] or purge_filter_all or self._in_entries_to_purge(entry_cnf):
                 if self._has_multi_purge_filters and not self._matches_purge_filter(entry_cnf):
                     continue
 
@@ -484,6 +505,20 @@ class MultiModule:
                     self.m.warn(f"Existing {self.k} '{self._entry_id(entry_cnf)}' will be {self.mc['purge_action']}d!")
 
                 self._purge_entry(entry_cnf)
+
+    def _purge_unconfigured(self):
+        if not self.mc['purge_unconfigured']:
+            return
+
+        # checking if all entries should be purged
+        for entry_cnf in self._cache_original['main']:
+            if self.callbacks.purge_exclude(entry_cnf) or self._in_entries_configured(entry_cnf):
+                continue
+
+            if self.p['debug']:
+                self.m.warn(f"Existing {self.k} '{self._entry_id(entry_cnf)}' will be {self.mc['purge_action']}d!")
+
+            self._purge_entry(entry_cnf)
 
     # UTIL METHODS
     def _init_entry(self, entry_cnf: dict, entry_result: dict) -> BaseModule:
@@ -503,6 +538,9 @@ class MultiModule:
 
         return o
 
+    def _entry_in_result(self, entry: (dict, BaseModule), before_after: str) -> bool:
+        return self._entry_id(entry) in self.r['diff'][before_after]
+
     def _add_entry_result(self, entry: BaseModule, entry_result: dict):
         if entry_result['changed']:
             self.r['changed'] = True
@@ -515,6 +553,12 @@ class MultiModule:
 
             if 'after' in entry_result['diff']:
                 self.r['diff']['after'][entry_name] = entry_result['diff']['after']
+
+    def _purge_unconfigured_clean_diff(self, entry: (dict, BaseModule)):
+        # basically - nothing happened to this entry; so omit it from the diff
+        entry_name = self._entry_id(entry)
+        if entry_name in self.r['diff']['before'] and entry_name not in self.r['diff']['after']:
+            self.r['diff']['before'].pop(entry_name)
 
     def _entry_matches(self, e1: dict, e2: dict) -> bool:
         matches = []

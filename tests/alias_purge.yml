@@ -93,7 +93,6 @@
     - name: Filtered purge (single)
       ansibleguy.opnsense.alias:
         multi_control:
-          purge_all: true
           purge_filter:
             type: 'port'
       when: not ansible_check_mode
@@ -125,7 +124,6 @@
     - name: Filtered purge (single inverted)
       ansibleguy.opnsense.alias:
         multi_control:
-          purge_all: true
           purge_filter:
             type: 'port'
           purge_filter_invert: true
@@ -162,12 +160,6 @@
       failed_when: >
         opn11.failed or
         'warnings' not in opn11
-
-    - name: Purge using alias first
-      ansibleguy.opnsense.alias:
-        multi_purge:
-          - name: 'ANSIBLE_TEST_4_1'
-      when: not ansible_check_mode
 
     - name: Purge ALL
       ansibleguy.opnsense.alias:

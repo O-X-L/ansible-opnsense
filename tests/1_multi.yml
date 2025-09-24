@@ -46,8 +46,7 @@
     - name: Fail required args (3)
       ansibleguy.opnsense.alias:
         multi_control:
-          purge_filter:
-            type: 'port'
+          purge_unconfigured: true
       register: opn_fail3
       failed_when: not opn_fail3.failed
 
@@ -289,20 +288,292 @@
         opn11.data | length != 4
       when: not ansible_check_mode
 
-    - name: Purging all
+    - name: Recreating
       ansibleguy.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      when: not ansible_check_mode
+
+    - name: Removing unconfigured/orphaned
+      ansibleguy.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
         multi_control:
-          purge_all: true
-      register: opn12
+          purge_unconfigured: true
+      register: purge1
       failed_when: >
-        opn12.failed or
-        not opn12.changed
+        purge1.failed or
+        not purge1.changed
       when: not ansible_check_mode
 
     - name: Checking count
       ansibleguy.opnsense.list:
-      register: opn13
+      register: opn15
       failed_when: >
-        'data' not in opn13 or
-        opn13.data | length != 0
+        'data' not in opn15 or
+        opn15.data | length != 3
+      when: not ansible_check_mode
+
+    - name: Recreating
+      ansibleguy.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      when: not ansible_check_mode
+
+    - name: Simple purge
+      ansibleguy.opnsense.alias:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_0_1'
+      register: purge2
+      failed_when: >
+        purge2.failed or
+        not purge2.changed
+      when: not ansible_check_mode
+
+    - name: Listing aliases
+      ansibleguy.opnsense.list:
+      register: opn16
+      failed_when: >
+        'data' not in opn16 or
+        opn16.data | length != 5
+      when: not ansible_check_mode
+
+    - name: Simple disable-purge
+      ansibleguy.opnsense.alias:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_0_3'
+        multi_control:
+          purge_action: 'disable'
+      register: purge3
+      failed_when: >
+        purge3.failed or
+        not purge3.changed
+      when: not ansible_check_mode
+
+    - name: Simple disable-purge - nothing changed
+      ansibleguy.opnsense.alias:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_0_3'
+        multi_control:
+          purge_action: 'disable'
+      register: purge4
+      failed_when: >
+        purge4.failed or
+        purge4.changed
+      when: not ansible_check_mode
+
+    - name: Recreating
+      ansibleguy.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      when: not ansible_check_mode
+
+    - name: Filtered purge (single)
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_filter:
+            type: 'port'
+      when: not ansible_check_mode
+      register: purge5
+
+    - name: Listing entries
+      ansibleguy.opnsense.list:
+      register: opn17
+      failed_when: >
+        'data' not in opn17 or
+        opn17.data | length != 4
+      when: not ansible_check_mode
+
+    - name: Recreating
+      ansibleguy.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      when: not ansible_check_mode
+
+    - name: Filtered purge (single inverted)
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_filter:
+            type: 'port'
+          purge_filter_invert: true
+      when: not ansible_check_mode
+      register: purge6
+      failed_when: >
+        purge6.failed or
+        not purge6.changed
+
+    - name: Recreating
+      ansibleguy.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      when: not ansible_check_mode
+
+    - name: Filtered purge (partial match)
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_filter:
+            content: '192.168.1'
+          purge_filter_partial: true
+      when: not ansible_check_mode
+      register: purge7
+      failed_when: >
+        purge7.failed or
+        not purge7.changed
+
+    - name: Listing aliases
+      ansibleguy.opnsense.list:
+      register: opn19
+      failed_when: >
+        'data' not in opn19 or
+        opn19.data | length != 4
+      when: not ansible_check_mode
+
+    - name: Purging all
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_all: true
+      register: opn_clean1
+      failed_when: >
+        opn_clean1.failed or
+        not opn_clean1.changed
+      when: not ansible_check_mode
+
+    - name: Checking count
+      ansibleguy.opnsense.list:
+      register: opn_clean2
+      failed_when: >
+        'data' not in opn_clean2 or
+        opn_clean2.data | length != 0
       when: not ansible_check_mode

@@ -50,7 +50,6 @@
     - name: Filtered purge (single)
       ansibleguy.opnsense.rule:
         multi_control:
-          purge_all: true
           purge_filter:
             destination_net: '192.168.10.0/24'
           purge_action: 'disable'
@@ -113,7 +112,6 @@
     - name: Filtered purge (single)
       ansibleguy.opnsense.rule:
         multi_control:
-          purge_all: true
           purge_filter:
             destination_net: '192.168.10.0/24'
       when: not ansible_check_mode
@@ -153,7 +151,6 @@
     - name: Filtered purge (single inverted)
       ansibleguy.opnsense.rule:
         multi_control:
-          purge_all: true
           purge_filter:
             destination_net: '192.168.10.0/24'
           purge_filter_invert: true
@@ -201,7 +198,6 @@
     - name: Filtered purge (multiple)
       ansibleguy.opnsense.rule:
         multi_control:
-          purge_all: true
           purge_filter:
             ip_protocol: 'inet'
             action: 'block'

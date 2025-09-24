@@ -191,21 +191,12 @@ def test_multi_module_base(mocker):
     assert mm._is_multi_purge()
     mm.p['multi_purge'] = []
 
-    # purge filter without all/specific-list
+    # purge filter on all
     mm.p['multi_control']['purge_filter'] = {'name': 'abc'}
     mm._init_cases()
     assert not mm._is_multi_crud()
     assert mm._is_multi_purge()
-    with pytest.raises(AnsibleError):
-        mm.process()
-
-    # purge filter with all
-    mm.p['multi_control']['purge_all'] = True
-    mm._init_cases()
-    assert not mm._is_multi_crud()
-    assert mm._is_multi_purge()
     mm.process()
-    mm.p['multi_control']['purge_all'] = False
 
     # purge filter with specific-list
     mm.p['multi_purge'] = [{'test': 'a'}]
@@ -216,6 +207,16 @@ def test_multi_module_base(mocker):
     mm.p['multi_purge'] = []
 
     mm.p['multi_control']['purge_filter'] = {}
+
+    # purge unconfigured/orphaned
+    mm.p['multi'] = [{'test': 'a'}]
+    mm.p['multi_control']['purge_orphaned'] = True
+    mm._init_cases()
+    mm.process()
+    assert mm._is_multi_crud()
+    assert not mm._is_multi_purge()
+    mm.p['multi'] = []
+    mm.p['multi_control']['purge_orphaned'] = False
 
 
 @pytest.mark.parametrize('purge_filter, entry, partial, invert, result', [
