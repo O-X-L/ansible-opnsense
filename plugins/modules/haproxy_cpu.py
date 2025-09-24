@@ -33,10 +33,12 @@ def run_module():
         ),
         thread_id=dict(
             type='str', required=False, default=None,
-            description='Thread ID that should bind to a specific CPU set. Values: all, odd, even, x1, x2, etc.'
+            choices=['all', 'odd', 'even'] + [f'x{i}' for i in range(64)],
+            description='Thread ID that should bind to a specific CPU set'
         ),
         cpu_id=dict(
             type='list', elements='str', required=False, default=None,
+            choices=['all', 'odd', 'even'] + [f'x{i}' for i in range(64)],
             description='Bind the process/thread ID to this CPU'
         ),
         **STATE_MOD_ARG,
@@ -55,6 +57,9 @@ def run_module():
     module = AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
+        required_if=[
+            ('state', 'present', ('thread_id', 'cpu_id')),
+        ],
     )
 
     module_wrapper(Cpu(module=module, result=result))

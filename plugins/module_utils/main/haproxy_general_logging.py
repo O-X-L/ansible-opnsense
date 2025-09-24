@@ -16,14 +16,7 @@ class GeneralLogging(GeneralModule):
     API_CONT_REL = 'service'
     API_CMD_REL = 'reconfigure'
 
-    FIELDS_TRANSLATE = {
-        'host': 'host',
-        'facility': 'facility',
-        'level': 'level',
-        'length': 'length',
-    }
-
-    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys())
+    FIELDS_CHANGE = ['host', 'facility', 'level', 'length']
     FIELDS_ALL = FIELDS_CHANGE
 
     FIELDS_TYPING = {
@@ -39,3 +32,4 @@ class GeneralLogging(GeneralModule):
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
+    

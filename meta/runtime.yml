@@ -218,6 +218,7 @@ action_groups:
           - ansibleguy.opnsense.raw
           - ansibleguy.opnsense.access
           - ansibleguy.opnsense.dnsmasq
+          - ansibleguy.opnsense.haproxy
 
 plugin_routing:
   modules:
