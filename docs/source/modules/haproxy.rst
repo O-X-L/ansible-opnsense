@@ -50,7 +50,7 @@ All HAProxy modules support these **default** options:
 
 ----
 
-Modules Documentation
+Modules documentation
 *********************
 
 The HAProxy functionality is split into multiple modules organized by function:
@@ -62,20 +62,20 @@ The HAProxy functionality is split into multiple modules organized by function:
    haproxy_system
    haproxy_general
 
-Quick Overview
+Quick overview
 **************
 
-**Authentication & Access Control:**
+**Authentication & access control:**
 
 - :ref:`haproxy_user <haproxy_user>` - Manage HAProxy authentication users
 - :ref:`haproxy_group <haproxy_group>` - Manage HAProxy authentication groups
 
-**Performance & System:**
+**Performance & system:**
 
 - :ref:`haproxy_cpu <haproxy_cpu>` - Manage CPU affinity rules for HAProxy processes
 - :ref:`haproxy_maintenance <haproxy_maintenance>` - Manage HAProxy maintenance and monitoring settings
 
-**General Configuration:**
+**General configuration:**
 
 - :ref:`haproxy_general_settings <haproxy_general_settings>` - Manage general HAProxy configuration
 - :ref:`haproxy_general_stats <haproxy_general_stats>` - Manage HAProxy statistics and monitoring (with automatic name-to-UUID resolution)
@@ -87,10 +87,8 @@ Quick Overview
 
 ----
 
-Usage Examples
+Usage examples
 ***************
-
-Complete HAProxy setup with authentication and monitoring:
 
 .. code-block:: yaml
 
@@ -140,7 +138,6 @@ Complete HAProxy setup with authentication and monitoring:
         # Configure performance
         - name: Configure HAProxy performance tuning
           ansibleguy.opnsense.haproxy_general_tuning:
-            enabled: true
             max_connections: 2000
             nbthread: 4
             buffer_size: 32768
@@ -157,16 +154,15 @@ Complete HAProxy setup with authentication and monitoring:
         - name: Configure HAProxy maintenance
           ansibleguy.opnsense.haproxy_maintenance:
             sync_certs: true
-            sync_certs_cron: '0 2 * * *'
-            update_ocsp: true
-            update_ocsp_cron: '*/30 * * * *'
+            reload_service: false
+            restart_service: false
 
 ----
 
 Troubleshooting
 ***************
 
-**Name Resolution in Stats Module**
+**Name resolution in stats module**
 
 The HAProxy stats module automatically resolves user and group names to UUIDs. If you encounter errors like "User 'username' not found", ensure:
 
@@ -174,13 +170,13 @@ The HAProxy stats module automatically resolves user and group names to UUIDs. I
 2. The name spelling is exact (case-sensitive)
 3. The user/group is enabled
 
-**CPU Affinity Configuration**
+**CPU affinity configuration**
 
 - Use string values for thread_id and cpu_id (e.g., 'x1', 'x0')
 - Ensure CPU IDs don't exceed available CPU cores
 - Thread IDs should not exceed the configured nbthread value
 
-**Performance Tuning**
+**Performance tuning**
 
 For high-traffic scenarios:
 
