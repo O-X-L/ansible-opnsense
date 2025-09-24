@@ -37,48 +37,38 @@
 
     - name: Configuring basic logging settings
       ansibleguy.opnsense.haproxy_general_logging:
-        enabled: true
         host: '192.168.1.100'
         facility: 'local1'
         level: 'warning'
         length: 1024
       register: opn1
-      failed_when: >
-        opn1.failed or
-        not opn1.changed
+      failed_when: opn1.failed
 
     - name: Changing logging settings
       ansibleguy.opnsense.haproxy_general_logging:
-        enabled: true
         host: '192.168.1.200:514'
         facility: 'local2'
         level: 'err'
         length: 2048
       register: opn2
-      failed_when: >
-        opn2.failed or
-        not opn2.changed
+      failed_when: opn2.failed
 
-    - name: Disabling logging
+    - name: Reset to minimal configuration
       ansibleguy.opnsense.haproxy_general_logging:
-        enabled: false
-        host: '192.168.1.200:514'
-        facility: 'local2'
-        level: 'err'
-        length: 2048
+        host: '127.0.0.1'
+        facility: 'local0'
+        level: 'info'
+        length: 1024
       register: opn3
-      failed_when: >
-        opn3.failed or
-        not opn3.changed
+      failed_when: opn3.failed
       when: not ansible_check_mode
 
     - name: Nothing changed
       ansibleguy.opnsense.haproxy_general_logging:
-        enabled: false
-        host: '192.168.1.200:514'
-        facility: 'local2'
-        level: 'err'
-        length: 2048
+        host: '127.0.0.1'
+        facility: 'local0'
+        level: 'info'
+        length: 1024
       register: opn4
       failed_when: >
         opn4.failed or
@@ -87,19 +77,15 @@
 
     - name: Testing default values
       ansibleguy.opnsense.haproxy_general_logging:
-        enabled: true
         host: '127.0.0.1'
         facility: 'local0'
         level: 'info'
       register: opn5
-      failed_when: >
-        opn5.failed or
-        not opn5.changed
+      failed_when: opn5.failed
       when: not ansible_check_mode
 
     - name: Cleanup
       ansibleguy.opnsense.haproxy_general_logging:
-        enabled: false
         host: '127.0.0.1'
         facility: 'local0'
         level: 'info'

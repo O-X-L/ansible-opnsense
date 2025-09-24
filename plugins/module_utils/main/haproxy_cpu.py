@@ -5,6 +5,8 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 
 
 class Cpu(BaseModule):
+    FIELD_ID = 'name'
+
     CMDS = {
         'add': 'addCpu',
         'del': 'delCpu',
@@ -13,37 +15,27 @@ class Cpu(BaseModule):
         'toggle': 'toggleCpu',
     }
     API_KEY_PATH = 'haproxy.cpus.cpu'
-    API_KEY_PATH_REQ = 'cpu'
     API_MOD = 'haproxy'
     API_CONT = 'settings'
     API_CONT_REL = 'service'
     API_CMD_REL = 'reconfigure'
 
-    FIELDS_TRANSLATE = {
-        'enabled': 'enabled',
-        'name': 'name',
-        'thread_id': 'thread_id',
-        'cpu_id': 'cpu_id',
-    }
-
-    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys())
+    FIELDS_CHANGE = ['enabled', 'name', 'thread_id', 'cpu_id']
     FIELDS_ALL = FIELDS_CHANGE
 
-    FIELD_ID = 'name'
     EXIST_ATTR = 'cpu'
 
     FIELDS_TYPING = {
         'bool': ['enabled'],
-        'str': ['thread_id'],
+        'select': ['thread_id'],
         'list': ['cpu_id'],
     }
 
     STR_VALIDATIONS = {
-        'name': r'^[a-zA-Z0-9._-]{1,64}$',  # Name validation
-        'thread_id': r'^(all|odd|even|x[0-9]+)$'  # Thread ID validation
+        'name': r'^[0-9a-zA-Z._-]{1,255}$',  # Name validation from XML model
     }
 
-    TIMEOUT = 60.0
+    TIMEOUT = 20.0
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session)

@@ -37,7 +37,6 @@
 
     - name: Configuring basic tuning settings
       ansibleguy.opnsense.haproxy_general_tuning:
-        enabled: true
         root: false
         max_connections: 10000
         nbthread: 4
@@ -53,7 +52,6 @@
 
     - name: Changing tuning settings
       ansibleguy.opnsense.haproxy_general_tuning:
-        enabled: true
         root: false
         max_connections: 5000
         nbthread: 2
@@ -69,9 +67,8 @@
         opn2.failed or
         not opn2.changed
 
-    - name: Disabling tuning
+    - name: Nothing changed
       ansibleguy.opnsense.haproxy_general_tuning:
-        enabled: false
         root: false
         max_connections: 5000
         nbthread: 2
@@ -85,30 +82,12 @@
       register: opn3
       failed_when: >
         opn3.failed or
-        not opn3.changed
-      when: not ansible_check_mode
-
-    - name: Nothing changed
-      ansibleguy.opnsense.haproxy_general_tuning:
-        enabled: false
-        root: false
-        max_connections: 5000
-        nbthread: 2
-        resolvers_prefer: 'ipv6'
-        ssl_server_verify: 'none'
-        max_dh_size: 4096
-        buffer_size: 16384
-        spread_checks: 3
-        bogus_proxy_enabled: true
-        lua_max_mem: 100
-      register: opn4
-      failed_when: >
-        opn4.failed or
-        opn4.changed
+        opn3.changed
       when: not ansible_check_mode
 
     - name: Cleanup
       ansibleguy.opnsense.haproxy_general_tuning:
-        enabled: false
         root: false
+        max_connections: 2048
+        nbthread: 1
       when: not ansible_check_mode

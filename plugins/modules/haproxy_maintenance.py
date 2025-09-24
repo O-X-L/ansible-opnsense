@@ -14,7 +14,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler i
 try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-        OPN_MOD_ARGS, EN_ONLY_MOD_ARG, RELOAD_MOD_ARG
+        OPN_MOD_ARGS, EN_ONLY_MOD_ARG
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_maintenance import Maintenance
 
 except MODULE_EXCEPTIONS:
@@ -40,7 +40,6 @@ def run_module():
             description='Periodically perform a full restart of the HAProxy service. Causes notable service disruption. Required when reload doesn\'t work due to long-running connections'
         ),
         **EN_ONLY_MOD_ARG,
-        **RELOAD_MOD_ARG,
         **OPN_MOD_ARGS,
     )
 
