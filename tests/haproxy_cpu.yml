@@ -46,7 +46,7 @@
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
-    - name: Adding 1 - failing because of invalid thread_id
+    - name: Adding 1 - failing because of invalid thread_id (server-side)
       ansibleguy.opnsense.haproxy_cpu:
         name: 'ANSIBLE_TEST_1_1'
         thread_id: 'x100'
