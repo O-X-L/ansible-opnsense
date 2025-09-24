@@ -416,6 +416,8 @@ Adding new module
 
     Also add important module-specific information.
 
+  - Add new documentation-files to the `sitemap.xml <<COLLECTION>/docs/meta/sitemap.xml>`_ (*SEO*)
+
   - Optional: We should also add **inline module-documentation** `as standardized for Ansible <https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_documenting.html#documentation-block>`_
 
     To keep the main module file clean - the documentation should be placed in :code:`<COLLECTION>/plugins/module_utils/inline_docs/`

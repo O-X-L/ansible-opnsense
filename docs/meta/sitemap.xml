@@ -8,28 +8,37 @@
    <url><loc>https://ansible-opnsense.oxl.app/usage/4_develop.html</loc></url>
 
    <url><loc>https://ansible-opnsense.oxl.app/modules/1_basic.html</loc></url>
+   <url><loc>https://ansible-opnsense.oxl.app/modules/1_multi.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/2_list.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/2_reload.html</loc></url>
+   <url><loc>https://ansible-opnsense.oxl.app/modules/3_raw.html</loc></url>
 
+   <url><loc>https://ansible-opnsense.oxl.app/modules/access.html</loc></url>
+   <url><loc>https://ansible-opnsense.oxl.app/modules/acmeclient.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/alias.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/alias_multi.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/bind.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/cron.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/dhcp.html</loc></url>
+   <url><loc>https://ansible-opnsense.oxl.app/modules/dhcrelay_destination.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/dhcrelay_relay.html</loc></url>
+   <url><loc>https://ansible-opnsense.oxl.app/modules/dnsmasq.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/frr_bfd.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/frr_bgp.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/frr_diagnostic.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/frr_general.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/frr_ospf.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/frr_rip.html</loc></url>
+   <url><loc>https://ansible-opnsense.oxl.app/modules/hasync.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/ids.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/interface.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/ipsec.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/monit.html</loc></url>
+   <url><loc>https://ansible-opnsense.oxl.app/modules/neighbor.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/nginx.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/openvpn.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/package.html</loc></url>
+   <url><loc>https://ansible-opnsense.oxl.app/modules/postfix.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/route.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/rule.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/rule_interface_group.html</loc></url>
@@ -37,7 +46,7 @@
    <url><loc>https://ansible-opnsense.oxl.app/modules/savepoint.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/service.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/shaper.html</loc></url>
-   <url><loc>https://ansible-opnsense.oxl.app/modules/source_nat.html</loc></url>
+   <url><loc>https://ansible-opnsense.oxl.app/modules/snapshot.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/syslog.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/system.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/unbound_acl.html</loc></url>
