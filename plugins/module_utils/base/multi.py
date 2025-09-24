@@ -213,7 +213,7 @@ class MultiModuleCallbacks(ABC):
         return False
 
 
-# pylint: disable=R0913,R0915,R0917
+# pylint: disable=R0902,R0913,R0915,R0917
 class MultiModule:
     def __init__(
             self, module: AnsibleModule, result: dict, entry_args: dict, kind: str, obj: BaseModule,
