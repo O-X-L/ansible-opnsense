@@ -35,9 +35,9 @@ Manages HAProxy Lua scripts for custom logic and processing.
     "name","string","true","\-","\-","Name to identify this Lua script"
     "description","string","false","\-","\-","Description for this Lua script"
     "enabled","boolean","false","true","\-","Enable or disable this Lua script"
-    "preload","boolean","false","false","\-","Whether HAProxy should load and execute this Lua script on startup"
-    "filename_scheme","string","false","\-","\-","Filename generation strategy for Lua scripts"
-    "content","string","false","\-","\-","Paste the content of your Lua script here"
+    "preload","boolean","false","true","\-","Load on startup. Whether HAProxy should load and execute this Lua script on startup. Set to false when using require() function"
+    "filename_scheme","string","false","id","\-","Filename scheme. Specify the filename scheme for this Lua script. Usually using the ID is sufficient and most fail-safe. Use name when using require() function. Options: id, name"
+    "content","string","false","\-","\-","Lua script content. Paste the content of your Lua script here"
 
 Examples
 --------
@@ -77,15 +77,15 @@ Manages HAProxy FastCGI applications for dynamic content processing.
     "name","string","true","\-","\-","Name to identify this FastCGI application"
     "description","string","false","\-","\-","Description for this FastCGI application"
     "enabled","boolean","false","true","\-","Enable or disable this FastCGI application"
-    "docroot","string","false","\-","\-","Define the document root on the remote host"
-    "index","string","false","\-","\-","Define the script name that will be appended after a URI"
-    "path_info","string","false","\-","\-","Define a regular expression to extract script-name and path-info"
-    "log_stderr","boolean","false","false","\-","Enable logging of STDERR messages"
-    "keep_conn","boolean","false","false","\-","Instruct the FastCGI application to keep connection open"
-    "get_values","boolean","false","false","\-","Enable retrieval of connection management variables"
-    "mpxs_conns","boolean","false","false","\-","Enable support for connection multiplexing"
-    "max_reqs","integer","false","\-","\-","Define maximum number of concurrent requests (1-100000)"
-    "linked_actions","list","false","\-","\-","Choose rules to be included in this FastCGI application"
+    "docroot","string","false","\-","\-","Document root path. Define the document root on the remote host. Used to build SCRIPT_FILENAME and PATH_TRANSLATED parameters"
+    "index","string","false","\-","\-","Default script name. Define the script name that will be appended after a URI"
+    "path_info","string","false","\-","\-","Path info regex pattern. Define a regular expression to extract script-name and path-info from URL-decoded path"
+    "log_stderr","boolean","false","false","\-","Log STDERR messages. Enable logging of STDERR messages reported by the FastCGI application"
+    "keep_conn","boolean","false","true","\-","Keep connections open. Instruct the FastCGI application to keep connection open"
+    "get_values","boolean","false","false","\-","Get connection values. Enable retrieval of connection management variables by sending FCGI_GET_VALUES on connection"
+    "mpxs_conns","boolean","false","false","\-","Multiplex connections. Enable support for connection multiplexing"
+    "max_reqs","integer","false","\-","\-","Maximum concurrent requests. Define maximum number of concurrent requests (1-100000)"
+    "linked_actions","list","false","\-","\-","FastCGI rules to include. Choose FastCGI rules to be included in this FastCGI application"
 
 Examples
 --------
@@ -118,8 +118,8 @@ Manages HAProxy custom error pages for better user experience.
 
     "name","string","true","\-","\-","Name to identify this error message"
     "description","string","false","\-","\-","Description for this error message"
-    "code","string","false","\-","\-","HTTP status code for error handling"
-    "content","string","false","\-","\-","Paste the content of your error messages here"
+    "code","string","false","\-","\-","HTTP error status code. Select the HTTP status code this error file should handle. Options: x400, x403, x404, x405, x408, x410, x413, x425, x429, x500, x501, x502, x503, x504"
+    "content","string","false","\-","\-","Error page content. Paste the content of your error messages here"
 
 Examples
 --------
@@ -147,4 +147,4 @@ Examples
           </html>
 
 
-See also: :ref:`modules_haproxy_general` and :ref:`troubleshooting <troubleshooting>`
+See also: :ref:`modules_haproxy` and :ref:`troubleshooting <troubleshooting>`

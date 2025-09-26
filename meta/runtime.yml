@@ -183,6 +183,11 @@ action_groups:
     - ansibleguy.opnsense.haproxy_cpu
     - ansibleguy.opnsense.haproxy_user
     - ansibleguy.opnsense.haproxy_group
+    - ansibleguy.opnsense.haproxy_acl
+    - ansibleguy.opnsense.haproxy_action
+    - ansibleguy.opnsense.haproxy_lua
+    - ansibleguy.opnsense.haproxy_fcgi
+    - ansibleguy.opnsense.haproxy_errorfile
   raw:
     - ansibleguy.opnsense.raw
   access:

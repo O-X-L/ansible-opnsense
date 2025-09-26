@@ -110,13 +110,13 @@
         opn2.failed or
         not opn2.changed
 
-    - name: Creating HAProxy Error file for 404
+    - name: Creating HAProxy Error file for 400
       ansibleguy.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_3'
-        description: 'Custom 404 Not Found page'
-        code: 'x404'
+        description: 'Custom 400 Bad Request page'
+        code: 'x400'
         content: |
-          HTTP/1.0 404 Not Found
+          HTTP/1.0 400 Bad Request
           Content-Type: text/html
           Cache-Control: no-cache
           Connection: close
@@ -124,7 +124,7 @@
           <!DOCTYPE html>
           <html>
           <head>
-            <title>Page Not Found</title>
+            <title>Bad Request</title>
             <style>
               body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 0; height: 100vh; display: flex; align-items: center; justify-content: center; }
               .container { background: rgba(255,255,255,0.9); padding: 40px; border-radius: 15px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
@@ -136,9 +136,9 @@
           </head>
           <body>
             <div class="container">
-              <h1>404</h1>
-              <h2>Page Not Found</h2>
-              <p>The page you're looking for doesn't exist.</p>
+              <h1>400</h1>
+              <h2>Bad Request</h2>
+              <p>The request could not be understood by the server.</p>
               <p><a href="/">Return to homepage</a></p>
             </div>
           </body>

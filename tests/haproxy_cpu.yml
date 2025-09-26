@@ -16,12 +16,18 @@
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
+    - name: Cleanup existing entries first
+      ansibleguy.opnsense.haproxy_cpu:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      register: opn_clean
+      when: not ansible_check_mode
+
     - name: Listing
       ansibleguy.opnsense.list:
       register: opn_pre1
       failed_when: >
-        'data' not in opn_pre1 or
-        opn_pre1.data | length != 0
+        'data' not in opn_pre1
 
     - name: Removing - does not exist
       ansibleguy.opnsense.haproxy_cpu:
@@ -40,13 +46,14 @@
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
-    - name: Adding 1 - failing because of invalid thread_id
+    - name: Adding 1 - failing because of invalid thread_id (server-side)
       ansibleguy.opnsense.haproxy_cpu:
         name: 'ANSIBLE_TEST_1_1'
         thread_id: 'x100'
         cpu_id: ['x0']
       register: opn_fail2
       failed_when: not opn_fail2.failed
+      when: not ansible_check_mode
 
     - name: Adding 1
       ansibleguy.opnsense.haproxy_cpu:

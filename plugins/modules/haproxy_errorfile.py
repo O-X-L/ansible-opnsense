@@ -36,8 +36,9 @@ def run_module():
             description='Description for this error message'
         ),
         code=dict(
-            type='str', required=False, default=None,
-            description='HTTP status code for error handling'
+            type='str', required=False, default='x503',
+            choices=['x200', 'x400', 'x403', 'x405', 'x408', 'x429', 'x500', 'x502', 'x503', 'x504'],
+            description='HTTP error status code. Select the HTTP status code this error file should handle. Options: x200, x400, x403, x405, x408, x429, x500, x502, x503, x504'
         ),
         content=dict(
             type='str', required=False, default=None,
@@ -59,6 +60,9 @@ def run_module():
     module = AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
+        required_if=[
+            ('state', 'present', ('content',)),
+        ],
     )
 
     module_wrapper(HaproxyErrorfile(module=module, result=result))

@@ -32,32 +32,32 @@ def run_module():
             description='Name to identify this FastCGI application'
         ),
         description=dict(
-            type='str', required=False, default=None,
+            type='str', required=False, default='',
             description='Description for this FastCGI application'
         ),
         docroot=dict(
-            type='str', required=False, default=None,
-            description='Define the document root on the remote host'
+            type='str', required=False, default='',
+            description='Define the document root on the remote host. Used to build SCRIPT_FILENAME and PATH_TRANSLATED parameters'
         ),
         index=dict(
-            type='str', required=False, default=None,
+            type='str', required=False, default='',
             description='Define the script name that will be appended after a URI'
         ),
         path_info=dict(
-            type='str', required=False, default=None,
-            description='Define a regular expression to extract script-name and path-info'
+            type='str', required=False, default='',
+            description='Define a regular expression to extract script-name and path-info from URL-decoded path'
         ),
         log_stderr=dict(
             type='bool', required=False, default=False,
-            description='Enable logging of STDERR messages'
+            description='Enable logging of STDERR messages reported by the FastCGI application'
         ),
         keep_conn=dict(
-            type='bool', required=False, default=False,
+            type='bool', required=False, default=True,
             description='Instruct the FastCGI application to keep connection open'
         ),
         get_values=dict(
             type='bool', required=False, default=False,
-            description='Enable retrieval of connection management variables'
+            description='Enable retrieval of connection management variables by sending FCGI_GET_VALUES on connection'
         ),
         mpxs_conns=dict(
             type='bool', required=False, default=False,
@@ -68,8 +68,8 @@ def run_module():
             description='Define maximum number of concurrent requests (1-100000)'
         ),
         linked_actions=dict(
-            type='list', required=False, default=None,
-            description='Choose rules to be included in this FastCGI application'
+            type='list', elements='str', required=False, default=[],
+            description='Choose FastCGI rules to be included in this FastCGI application'
         ),
         **STATE_MOD_ARG,
         **RELOAD_MOD_ARG,

@@ -5,6 +5,8 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls impor
 
 
 class HaproxyErrorfile(BaseModule):
+    FIELD_ID = 'name'
+
     CMDS = {
         'add': 'addErrorfile',
         'del': 'delErrorfile',
@@ -13,29 +15,26 @@ class HaproxyErrorfile(BaseModule):
         'toggle': 'toggleErrorfile',
     }
     API_KEY_PATH = 'haproxy.errorfiles.errorfile'
-    API_KEY_PATH_REQ = 'errorfile'
     API_MOD = 'haproxy'
     API_CONT = 'settings'
     API_CONT_REL = 'service'
     API_CMD_REL = 'reconfigure'
 
-    FIELDS_TRANSLATE = {
-        'name': 'name',
-        'description': 'description',
-        'code': 'code',
-        'content': 'content'
-    }
-
-    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys())
+    FIELDS_CHANGE = ['name', 'description', 'code', 'content']
     FIELDS_ALL = FIELDS_CHANGE
 
+    EXIST_ATTR = 'haproxy_errorfile'
+
     FIELDS_TYPING = {
-        'str': ['name', 'description', 'code', 'content']
+        'select': ['code'],
     }
-    FIELD_ID = 'name'
-    EXIST_ATTR = 'errorfile'
-    TIMEOUT = 60.0
+
+    STR_VALIDATIONS = {
+        'name': r'^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$',
+    }
+
+    TIMEOUT = 20.0
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session)
-        self.errorfile = {}
+        self.haproxy_errorfile = {}

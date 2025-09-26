@@ -36,12 +36,13 @@ def run_module():
             description='Description for this Lua script'
         ),
         preload=dict(
-            type='bool', required=False, default=False,
-            description='Whether HAProxy should load and execute this Lua script on startup'
+            type='bool', required=False, default=True,
+            description='Whether HAProxy should load and execute this Lua script on startup. Set to false when using require() function'
         ),
         filename_scheme=dict(
-            type='str', required=False, default=None,
-            description='Filename generation strategy for Lua scripts'
+            type='str', required=False, default='id',
+            choices=['id', 'name'],
+            description='Specify the filename scheme for this Lua script. Usually using the ID is sufficient and most fail-safe. Use name when using require() function'
         ),
         content=dict(
             type='str', required=False, default=None,

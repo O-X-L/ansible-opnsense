@@ -61,6 +61,8 @@ The HAProxy functionality is split into multiple modules organized by function:
    haproxy_auth
    haproxy_system
    haproxy_general
+   haproxy_rules
+   haproxy_advanced
 
 Quick overview
 **************
@@ -84,6 +86,17 @@ Quick overview
 - :ref:`haproxy_general_logging <haproxy_general_logging>` - Manage HAProxy logging configuration
 - :ref:`haproxy_general_peers <haproxy_general_peers>` - Manage HAProxy peer synchronization
 - :ref:`haproxy_general_cache <haproxy_general_cache>` - Manage HAProxy caching configuration
+
+**Rules & traffic control:**
+
+- :ref:`haproxy_acl <haproxy_acl>` - Manage HAProxy Access Control Lists (ACLs) for traffic filtering and condition matching
+- :ref:`haproxy_action <haproxy_action>` - Manage HAProxy Actions that execute when ACL conditions are met
+
+**Advanced features:**
+
+- :ref:`haproxy_lua <haproxy_lua>` - Manage HAProxy Lua scripts for custom logic and processing
+- :ref:`haproxy_fcgi <haproxy_fcgi>` - Manage HAProxy FastCGI applications for dynamic content processing
+- :ref:`haproxy_errorfile <haproxy_errorfile>` - Manage HAProxy custom error pages for better user experience
 
 ----
 
@@ -156,6 +169,97 @@ Usage examples
             sync_certs: true
             reload_service: false
             restart_service: false
+
+Advanced HAProxy setup with ACLs, Actions, and custom features:
+
+.. code-block:: yaml
+
+    - name: Advanced HAProxy configuration with rules and custom features
+      hosts: opnsense_firewalls
+      tasks:
+        # Create ACLs for traffic filtering
+        - name: Create ACL for admin path
+          ansibleguy.opnsense.haproxy_acl:
+            name: 'admin_path_acl'
+            description: 'ACL to match admin paths'
+            expression: 'path_beg'
+            path_beg: '/admin'
+
+        - name: Create ACL for API endpoints
+          ansibleguy.opnsense.haproxy_acl:
+            name: 'api_path_acl'
+            description: 'ACL to match API paths'
+            expression: 'path_reg'
+            path_reg: '^/api/v[0-9]+/'
+
+        # Create actions based on ACLs
+        - name: Redirect admin traffic to secure backend
+          ansibleguy.opnsense.haproxy_action:
+            name: 'redirect_admin'
+            description: 'Redirect admin paths to secure backend'
+            type: 'use_backend'
+            use_backend: 'secure_backend'
+            test_type: 'if'
+            linked_acls:
+              - 'admin_path_acl'
+
+        - name: Add security headers for API
+          ansibleguy.opnsense.haproxy_action:
+            name: 'api_security_headers'
+            description: 'Add security headers to API responses'
+            type: 'http-response_add-header'
+            http_response_add_header_name: 'X-Content-Type-Options'
+            http_response_add_header_content: 'nosniff'
+            test_type: 'if'
+            linked_acls:
+              - 'api_path_acl'
+
+        # Configure Lua script for custom logic
+        - name: Create Lua script for request processing
+          ansibleguy.opnsense.haproxy_lua:
+            name: 'request_processor'
+            description: 'Custom request processing logic'
+            preload: true
+            filename_scheme: 'name'
+            content: |
+              function process_request(txn)
+                local path = txn.http:req_get_path()
+                if string.match(path, "^/internal/") then
+                  txn:Alert("Blocked internal path access: " .. path)
+                  txn:done(403)
+                end
+              end
+
+        # Configure FastCGI application
+        - name: Create FastCGI application for PHP
+          ansibleguy.opnsense.haproxy_fcgi:
+            name: 'php_app'
+            description: 'PHP FastCGI application'
+            docroot: '/var/www/html'
+            index: 'index.php'
+            max_reqs: 1000
+            keep_conn: true
+
+        # Configure custom error pages
+        - name: Create custom 503 error page
+          ansibleguy.opnsense.haproxy_errorfile:
+            name: 'maintenance_page'
+            description: 'Custom maintenance page for 503 errors'
+            code: '503'
+            content: |
+              HTTP/1.1 503 Service Unavailable
+              Content-Type: text/html
+              Cache-Control: no-cache
+              Connection: close
+
+              <!DOCTYPE html>
+              <html>
+              <head><title>Maintenance</title></head>
+              <body>
+                <h1>Service Temporarily Unavailable</h1>
+                <p>We are currently performing maintenance. Please try again later.</p>
+              </body>
+              </html>
 
 ----
 

@@ -80,4 +80,4 @@ Examples
 
 **Note**: For general HAProxy configuration like tuning, logging, cache, and other settings, see :ref:`modules_haproxy_general`.
 
-See also: :ref:`modules_haproxy_general` and :ref:`troubleshooting <troubleshooting>`
+See also: :ref:`modules_haproxy` and :ref:`troubleshooting <troubleshooting>`

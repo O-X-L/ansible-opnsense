@@ -54,7 +54,7 @@
         enabled: true
         port: 8823
         remote_enabled: true
-        remote_bind: ['192.168.1.10:8823', '*:8823']
+        remote_bind: ['0.0.0.0:8823']
         auth_enabled: true
         users: ['admin:password123', 'monitor:monitor123']
         allowed_users: ['stats_admin', 'stats_monitor']

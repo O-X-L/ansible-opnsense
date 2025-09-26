@@ -190,5 +190,6 @@
     - name: Cleanup test ACL
       ansibleguy.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_ACL_1'
+        expression: 'path_beg'
         state: 'absent'
       when: not ansible_check_mode

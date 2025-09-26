@@ -80,4 +80,4 @@ Examples
         enabled: true
 
 
-See also: :ref:`modules_haproxy_general` and :ref:`troubleshooting <troubleshooting>`
+See also: :ref:`modules_haproxy` and :ref:`troubleshooting <troubleshooting>`
