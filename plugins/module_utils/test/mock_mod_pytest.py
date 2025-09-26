@@ -5,25 +5,38 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main im
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+    OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
 
 
-MOCK_RESPONSES = {
-    'get-test/settings/get': {'test': {'tests': {'test': {}}}},
-}
+MOCK_MOD_ARGS = dict(
+    description=dict(type='str', required=True),
+    minutes=dict(type='str', required=False, default='0', aliases=['min', 'm']),
+    hours=dict(type='str', required=False, default='0', aliases=['hour', 'h']),
+    days=dict(type='str', required=False, default='*', aliases=['day', 'd']),
+    months=dict(type='str', required=False, default='*', aliases=['month', 'M']),
+    weekdays=dict(type='str', required=False, default='*', aliases=['wd']),
+    who=dict(type='str', required=False, default='root'),
+    command=dict(type='str', required=False, aliases=['cmd']),
+    parameters=dict(type='str', required=False, aliases=['params']),
+    **RELOAD_MOD_ARG,
+    **STATE_MOD_ARG,
+    **OPN_MOD_ARGS,
+)
 
 
 class MockOPNsenseModule(BaseModule):
     FIELD_ID = 'description'
     CMDS = {
-        'add': 'add_job',
-        'del': 'del_job',
-        'set': 'set_job',
+        'add': 'add_test',
+        'del': 'del_test',
+        'set': 'set_test',
         'search': 'get',
-        'toggle': 'toggle_job',
+        'toggle': 'toggle_test',
     }
     API_KEY_PATH = 'test.tests.test'
     API_MOD = 'test'
-    API_CONT = 'settings'
+    API_CONT = 'tests'
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
         'minutes', 'hours', 'days', 'months',

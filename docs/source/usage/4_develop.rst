@@ -505,7 +505,69 @@ Modes have to be set-up to support mass-management!
 ----
 
 Testing
-*******
+#######
+
+Unit Tests
+**********
+
+We use Pytest for Unit-Testing.
+
+Install dependencies:
+
+.. code-block:: bash
+
+    pip install -r requirements_unittest.txt
+
+To run:
+
+.. code-block:: bash
+
+    make unit-test
+    # OR
+    bash scripts/unit_test.sh
+
+Mocking HTTP Responses
+======================
+
+We have a way of mocking (faking) the HTTP-responses that would be sent from an OPNsense firewall.
+
+This can be used to test whole modules (:code:`module_utils/main/*.py`.
+
+There are some mock-components you should know about:
+
+* `module_utils/test/testdata/base_testdata.py - MockOPNsenseController <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/module_utils/test/testdata/base_testdata.py>`_ - the base-class for module-specific 'controllers' that generate the HTTP-responses
+
+* `module_utils/test/mock_http_pytest.py <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/module_utils/test/mock_http_pytest.py>`_ - mocking the httpx.Client
+
+**Usage**:
+
+* Create module-specific testdata in `module_utils/test/testdata/ <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/module_utils/test/testdata>`_
+
+  Please add the current OPNsense version in the class-name like so: :code:`Testdata_25_7_3`
+
+  This will be useful for multi-version testing later on! (*if the API changes*)
+
+* Create a pytest-file like: `module_utils/main/<module>_pytest.py <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/module_utils/main/>`_
+
+* A starting-point for utilizing the mocking:
+
+  .. code-block:: python3
+
+      from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.testdata.<module>_testdata import Testdata_25_7_3
+
+      def test_multi_validate_entry(mocker, entry, entry_args, fail_verify, raises):
+          testdata = Testdata_25_7_3()
+          pytest_mock_http_responses(
+              mocker=mocker,
+              handler=testdata,
+          )
+
+      # test go here
+
+
+
+Functional Tests
+****************
 
 Run the tests like this:
 

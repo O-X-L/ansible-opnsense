@@ -1,11 +1,15 @@
 import pytest
 
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.mock_pytest import \
-    pytest_mock_http_responses, MockAnsibleModule, MockOPNsenseModule, MOCK_RESPONSES, \
-    ANSIBLE_RESULT, AnsibleError, MockAnsibleModuleWarnException, AnsibleWarning, get_ansible_module_multi_params
+    pytest_mock_http_responses, MockAnsibleModule, MockOPNsenseModule, ANSIBLE_RESULT, AnsibleError, \
+    MockAnsibleModuleWarnException, AnsibleWarning, get_ansible_module_multi_params
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.util_pytest import log_test
+from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.testdata.base_testdata import GenericTestdata
 
 
 def test_build_multi_mod_args():
+    log_test('multi-parts')
+
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS
@@ -80,7 +84,7 @@ def test_build_multi_mod_args():
 def test_multi_module_is_multi_purge(mocker, params, result):
     pytest_mock_http_responses(
         mocker=mocker,
-        responses=MOCK_RESPONSES
+        handler=GenericTestdata(),
     )
 
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
@@ -128,7 +132,7 @@ def test_multi_module_is_multi_purge(mocker, params, result):
 def test_multi_module_is_multi_crud(mocker, params, result):
     pytest_mock_http_responses(
         mocker=mocker,
-        responses=MOCK_RESPONSES
+        handler=GenericTestdata(),
     )
 
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
@@ -150,7 +154,7 @@ def test_multi_module_is_multi_crud(mocker, params, result):
 def test_multi_module_base(mocker):
     pytest_mock_http_responses(
         mocker=mocker,
-        responses=MOCK_RESPONSES
+        handler=GenericTestdata(),
     )
 
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
@@ -269,7 +273,7 @@ def test_multi_module_base(mocker):
 def test_multi_module_purge_filter(mocker, purge_filter, entry, partial, invert, result):
     pytest_mock_http_responses(
         mocker=mocker,
-        responses=MOCK_RESPONSES
+        handler=GenericTestdata(),
     )
 
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
@@ -333,7 +337,7 @@ def test_multi_module_purge_filter(mocker, purge_filter, entry, partial, invert,
 def test_multi_module_entry_matches(mocker, e1, e2, match_fields, result):
     pytest_mock_http_responses(
         mocker=mocker,
-        responses=MOCK_RESPONSES
+        handler=GenericTestdata(),
     )
 
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
@@ -403,7 +407,7 @@ def test_multi_module_entry_matches(mocker, e1, e2, match_fields, result):
 def test_multi_validate_entry(mocker, entry, entry_args, fail_verify, raises):
     pytest_mock_http_responses(
         mocker=mocker,
-        responses=MOCK_RESPONSES
+        handler=GenericTestdata(),
     )
 
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
@@ -428,19 +432,28 @@ def test_multi_validate_entry(mocker, entry, entry_args, fail_verify, raises):
             mm._validate_entry(entry)
 
 
-@pytest.mark.parametrize('match_fields, debug, mc_state, mc_enabled, mc_overrides', [
+@pytest.mark.parametrize('match_fields, debug, profiling, mc_state, mc_enabled, mc_overrides', [
     (
         ['p1'],
+        False,
+        False,
+        None,
+        None,
+        {'p2': 'b'},
+    ),
+    (
+        ['p1'],
+        False,
         False,
         None,
         None,
         {'p2': 'b'},
     ),
 ])
-def test_multi_build_entries(mocker, match_fields, debug, mc_state, mc_enabled, mc_overrides):
+def test_multi_build_entries(mocker, match_fields, debug, profiling, mc_state, mc_enabled, mc_overrides):
     pytest_mock_http_responses(
         mocker=mocker,
-        responses=MOCK_RESPONSES
+        handler=GenericTestdata(),
     )
 
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
@@ -456,6 +469,9 @@ def test_multi_build_entries(mocker, match_fields, debug, mc_state, mc_enabled, 
         {'p1': 'test4', 'state': 'present'},
         {'p1': 'test5', 'enabled': True},
         {'p1': 'test6', 'enabled': False},
+        {'p1': 'test7', 'debug': True},
+        {'p1': 'test8', 'profiling': True},
+        {'p1': 'test9', 'debug': False},
     ]
 
     if match_fields is not None:
@@ -476,7 +492,6 @@ def test_multi_build_entries(mocker, match_fields, debug, mc_state, mc_enabled, 
     )
 
     for e in mm._build_entries():
-        assert e['debug'] == debug
         assert e['reload'] == False
 
         if match_fields is not None:
@@ -502,3 +517,18 @@ def test_multi_build_entries(mocker, match_fields, debug, mc_state, mc_enabled, 
 
         if e['p1'] == 'test6' and mc_enabled is None:
             assert e['enabled'] is False
+
+        if e['p1'] == 'test7':
+            assert e['debug'] is True
+
+        elif e['p1'] == 'test9':
+            assert e['debug'] is False
+
+        else:
+            assert e['debug'] == debug
+
+        if e['p1'] == 'test8':
+            assert e['profiling'] is True
+
+        else:
+            assert e['profiling'] == profiling

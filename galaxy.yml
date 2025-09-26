@@ -21,4 +21,4 @@ repository: 'https://github.com/O-X-L/ansible_opnsense'
 documentation: 'https://ansible-opnsense.oxl.app'
 homepage: 'https://www.OXL.at'
 issues: 'https://github.com/O-X-L/ansible_opnsense/issues'
-build_ignore: ['*_pytest.py']
+build_ignore: ['*_pytest.py', '*_testdata.py']

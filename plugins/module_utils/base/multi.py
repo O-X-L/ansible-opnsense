@@ -334,7 +334,6 @@ class MultiModule:
     def _build_entries(self) -> list:
         overrides = {
             'reload': False,
-            'debug': self.p['debug'],
             **self.mc['override'],  # user-defined overrides
         }
         if 'match_fields' in self.p:
@@ -355,14 +354,22 @@ class MultiModule:
                 **overrides,
             }
 
+            for f in ['debug', 'profiling']:
+                if f not in entry:
+                    entry[f] = self.p[f]
+
             entry = self.callbacks.build(entry)
 
-            if entry['debug']:
-                self.m.warn(f"Validating {self.k}: '{entry}'")
-
-            # (re-)validate the entry like ansible does on module-init
-            if not self.validation or self._validate_entry(entry):
+            if not self.validation:
                 valid_entries.append(entry)
+
+            else:
+                # (re-)validate the entry like ansible does on module-init
+                if entry['debug']:
+                    self.m.warn(f"Validating {self.k}: '{entry}'")
+
+                if self._validate_entry(entry):
+                    valid_entries.append(entry)
 
         return valid_entries
 
@@ -492,12 +499,15 @@ class MultiModule:
         if not self.mc['purge_all'] and not self._has_multi_purge_entries and not self._has_multi_purge_filters:
             self.m.fail_json("You need to either provide entries via 'multi_purge' or 'multi_control.purge_filter'!")
 
+        # checking all existing entries if they should be deleted
         for entry_cnf in self.cache['main']:
             if self.callbacks.purge_exclude(entry_cnf):
                 continue
 
+            # user chose to purge_all, use a purge_filter or has provided multi_purge-entries that contain this entry
             purge_filter_all = self._has_multi_purge_filters and not self._has_multi_purge_entries
             if self.mc['purge_all'] or purge_filter_all or self._in_entries_to_purge(entry_cnf):
+                # skip if purge_filters were provided, but do not match this entry
                 if self._has_multi_purge_filters and not self._matches_purge_filter(entry_cnf):
                     continue
 
@@ -510,7 +520,7 @@ class MultiModule:
         if not self.mc['purge_unconfigured']:
             return
 
-        # checking if all entries should be purged
+        # checking all pre-existing entries if they are contained in the user's config or should be deleted
         for entry_cnf in self._cache_original['main']:
             if self.callbacks.purge_exclude(entry_cnf) or self._in_entries_configured(entry_cnf):
                 continue
