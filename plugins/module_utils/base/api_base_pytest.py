@@ -80,7 +80,7 @@ def test_check_testdata(mocker):
         assert res == MockOPNsenseController.RES_ERROR
 
         # create entry
-        res = s.post({**cnf, 'command': 'add_test', 'data': {'test': 'a'}})
+        res = s.post({**cnf, 'command': 'add_test', 'data': {'p1': 'a'}})
         assert res == MockOPNsenseController.RES_SUCCESS
 
         # list should contain new entry in {'<uuid>': '<entry>'} format
@@ -90,25 +90,25 @@ def test_check_testdata(mocker):
         entry_key = list(entries.keys())[0]
 
         assert res == {'test': {'tests': {'test': {
-            entry_key: {'test': 'a'},
+            entry_key: {'p1': 'a'},
         }}}}
-        assert list(entries.values()) == [{'test': 'a'}]
+        assert list(entries.values()) == [{'p1': 'a'}]
 
         # update entry
         res = s.post({**cnf, 'command': 'set_test'})
         assert res == MockOPNsenseController.RES_ERROR
         res = s.post({**cnf, 'command': 'set_test', 'params': '<uuid>'})
         assert res == MockOPNsenseController.RES_ERROR
-        res = s.post({**cnf, 'command': 'set_test', 'params': '<uuid>', 'data': {'test': 'x'}})
+        res = s.post({**cnf, 'command': 'set_test', 'params': '<uuid>', 'data': {'p1': 'x'}})
         assert res == MockOPNsenseController.RES_ERROR
-        res = s.post({**cnf, 'command': 'set_test', 'params': entry_key, 'data': {'test': 'aa'}})
+        res = s.post({**cnf, 'command': 'set_test', 'params': entry_key, 'data': {'p1': 'aa'}})
         assert res == MockOPNsenseController.RES_SUCCESS
 
         # checking that entry was updated
         res = s.get({**cnf, 'command': 'get'})
         entries = testdata.unpack_data(res)
         assert len(entries) == 1
-        assert entries[entry_key] == {'test': 'aa'}
+        assert entries[entry_key] == {'p1': 'aa'}
 
         # deleting entry
         res = s.post({**cnf, 'command': 'del_test'})

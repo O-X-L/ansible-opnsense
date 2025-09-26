@@ -45,18 +45,32 @@ class MockOPNsenseController(ABC):
             self._reconfigure: [],
         }[method]
 
-    def pack_data(self, data) -> dict:
+    def pack_data(self, data: any) -> dict:
+        """
+        Pack 'data' inside the key_path 'keys' - example: "{'test': {'tests': {'test': <data> }}}"
+        :param data: any
+        :return: dict
+        """
         out = data.copy()
         for k in self.key_path:
             out = {k: out}
 
         return out
 
-    def unpack_data(self, data) -> dict:
-        out = data.copy()
+    def unpack_data(self, packed: dict) -> (dict, any):
+        """
+        Unpack some data nested under the key_path 'keys' - example: "{'test': {'tests': {'test': <data> }}}"
+        :param packed: dict
+        :return: any
+        """
+        out = packed.copy()
         key_path = self.key_path.copy()
         key_path.reverse()
         for k in key_path:
+            if k not in out:
+                # post only has the deepest key
+                break
+
             out = out[k]
 
         return out
@@ -65,11 +79,12 @@ class MockOPNsenseController(ABC):
         return self.pack_data(self.state)
 
     def _add(self, data: dict) -> dict:
-        self.state[self._new_uuid()] = data
+        self.state[self._new_uuid()] = self.unpack_data(data)
         return self.RES_SUCCESS
 
     def _set(self, uuid: str, data: dict):
         if uuid in self.state:
+            self.state[uuid] = self.unpack_data(data)
             return self.RES_SUCCESS
 
         else:
@@ -109,15 +124,3 @@ class GenericTestdata(MockOPNsenseController):
             'toggle_test': self._toggle,
             'reconfigure': self._reconfigure,
         }
-
-    def _add(self, data: dict) -> dict:
-        self.state[self._new_uuid()] = data
-        return self.RES_SUCCESS
-
-    def _set(self, uuid: str, data: dict) -> dict:
-        if uuid in self.state:
-            self.state[uuid] = data
-            return self.RES_SUCCESS
-
-        else:
-            return self.RES_ERROR

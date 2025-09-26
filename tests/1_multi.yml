@@ -3,7 +3,10 @@
 # these tests should cover the main functionality of the abstracted mass management
 #   module-specific logic should be tested by dedicated test-cases (<module>_multi.yml)
 
-# low-level checks should be done via unit-tests: module_utils/base/multi_base_pytest.py
+# low-level checks should be done via unit-tests:
+#   module_utils/base/multi_base_1_mod_args.py => testing the module-argument generator
+#   module_utils/base/multi_base_2_parts_pytest.py => testing multi-handling methods
+#   module_utils/base/multi_base_3_full_pytest.py => 'end-to-end'-like tests
 
 - name: Testing Mass Management
   hosts: localhost

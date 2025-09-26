@@ -31,6 +31,8 @@ class MockAnsibleModule:
 
     def __init__(self):
         self.params = self.PARAMS.copy()
+        self.check_mode = False
+        self.diff_mode = False
 
     def fail_json(self, msg: str):
         raise AnsibleError(msg)
