@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/service.html'
-# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/service.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/general/raw.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/general/raw.html'
 
 
 # pylint: disable=R0915

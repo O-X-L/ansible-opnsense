@@ -2,9 +2,9 @@
 
 .. include:: ../_include/head.rst
 
-========
-2 - List
-========
+====
+List
+====
 
 **STATE**: stable
 

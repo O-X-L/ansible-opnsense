@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/service.html'
-# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/service.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/general/service.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/general/service.html'
 
 # c = api-module, m = custom action-mapping, a = limited actions
 SERVICES = {

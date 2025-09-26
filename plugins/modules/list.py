@@ -19,8 +19,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/list.html'
-# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/list.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/general/list.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/general/list.html'
 
 TARGETS = [
     'alias', 'rule', 'rule_interface_group', 'route', 'gateway', 'syslog', 'package', 'unbound_host',

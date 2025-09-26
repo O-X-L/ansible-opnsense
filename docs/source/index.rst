@@ -12,6 +12,20 @@ Index
    usage/*
 
 .. toctree::
+   :caption: Basics
+   :glob:
+   :maxdepth: 1
+
+   basics/*
+
+.. toctree::
+   :caption: General Modules
+   :glob:
+   :maxdepth: 1
+
+   general/*
+
+.. toctree::
    :caption: Modules
    :glob:
    :maxdepth: 1

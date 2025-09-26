@@ -2,11 +2,11 @@
 
 .. include:: ../_include/head.rst
 
-===================
-1 - Mass Management
-===================
+===============
+Mass Management
+===============
 
-**Tests**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/1_multi.yml>`_
+**Tests**: `Functional <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/1_multi.yml>`_, `Unit <https://github.com/O-X-L/ansible-opnsense/tree/latest/plugins/module_utils/base>`_
 
 This Ansible Collection has the ability to mass-manage many entries at once.
 
@@ -35,7 +35,7 @@ General
     :widths: 15 10 10 10 10 45
 
     "multi_control.fail_verify","boolean","false","false","multi_control.fail_verification","Fail module if a single entry fails the verification"
-    "multi_control.fail_process","boolean","false","false","multi_control.fail_proc, multi_control.fail_processing","Fail module if a single entry fails to be processed. By default you will see a warning"
+    "multi_control.fail_process","boolean","false","true","multi_control.fail_proc, multi_control.fail_processing","Fail module if a single entry fails to be processed"
     "multi_control.output_info","boolean","false","false","multi_control.info","Increase output verbosity"
 
 Adding & Modifying
@@ -78,42 +78,76 @@ Examples
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
+        ansibleguy.opnsense.rule:
+          match_fields: ['description']  # name == description
+
       tasks:
         - name: Adding & Updating multiple Aliases
           ansibleguy.opnsense.alias:
             aliases:
               - name: 'ANSIBLE_TEST_2_2'
                 content: ['192.168.1.1', '192.168.1.3']
+
               - name: 'ANSIBLE_TEST_2_3'
                 type: 'network'
                 content: '192.168.10.0/24'
+
               - name: 'ANSIBLE_TEST_2_5'
                 type: 'port'
                 content: 81
+                state: absent
+
               - name: 'ANSIBLE_TEST_2_7'
                 type: 'url'
                 content: 'http://test.template.opnsense.oxl.app'
+
               - name: 'ANSIBLE_TEST_2_8'
                 type: 'urltable'
                 content: 'https://www.spamhaus.org/drop/dropv6.txt'
                 updatefreq_days: 2
+
               - name: 'ANSIBLE_TEST_2_9'
                 type: 'geoip'
                 content: 'DE'
+
               - name: 'ANSIBLE_TEST_2_11'
                 type: 'dynipv6host'
                 content:
                   - '::1000'
                   - '::f00d'
                 interface: 'lan'
-            reload: false  # geoip and urltable take LONG time
 
         - name: Removing all 'dynipv6host' aliases
           ansibleguy.opnsense.alias:
             multi_control:
-              purge_all: true
               purge_filter:
                 type: 'dynipv6host'
+
+        - name: Adding & Updating multiple Aliases
+          ansibleguy.opnsense.rule:
+            rules:
+              - name: 'ANSIBLE_TEST_2_1'
+                source_net: '192.168.1.0/24'
+                destination_invert: true
+                destination_net: '10.1.0.0/8'
+                action: 'block'
+
+              - name: 'ANSIBLE_TEST_2_2'
+                source_net: '192.168.0.0/24'
+                destination_net: '192.168.10.0/24'
+                destination_port: 8080
+                protocol: 'TCP'
+                interface: ['lan']
+
+              - name: 'ANSIBLE_TEST_2_3'
+                source_invert: true
+                source_net: 'bogons'
+                ip_protocol: 'inet6'
+                action: 'block'
+
+            multi_control:
+              purge_unconfigured: true  # remove all existing entries not found in the provided entries (unconfigured/orphaned)
+
 
 Troubleshooting
 ===============
@@ -131,10 +165,13 @@ To simplify troubleshooting of bad configuration there are some troubleshooting 
         rules: {...}
 
         multi_control:
-          # if the module should fail if one rule has a bad config (default behaviour)
+          # if the module should fail if one entry has a bad config (default behaviour)
           fail_verify: true
 
-          # to output information of processed rules
+          # if the module should fail if one entry fails to be processed
+          fail_process: true
+
+          # to output information of processed entries
           output_info: true
 
           # output verbose information about requests and processing

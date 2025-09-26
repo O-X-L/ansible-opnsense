@@ -2,9 +2,9 @@
 
 .. include:: ../_include/head.rst
 
-=======
-3 - Raw
-=======
+===
+Raw
+===
 
 **STATE**: unstable
 
