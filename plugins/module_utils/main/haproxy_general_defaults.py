@@ -23,13 +23,10 @@ class GeneralDefaults(GeneralModule):
         'timeout_connect': 'timeoutConnect',
         'timeout_check': 'timeoutCheck',
         'timeout_server': 'timeoutServer',
-        'retries': 'retries',
-        'redispatch': 'redispatch',
-        'init_addr': 'init_addr',
-        'custom_options': 'customOptions',
+        'custom_options': 'customOptions'
     }
 
-    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys())
+    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys()) + ['retries', 'redispatch', 'init_addr' ]
     FIELDS_ALL = FIELDS_CHANGE
 
     FIELDS_TYPING = {

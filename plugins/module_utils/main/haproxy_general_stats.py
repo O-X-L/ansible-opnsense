@@ -17,20 +17,16 @@ class GeneralStats(GeneralModule):
     API_CMD_REL = 'reconfigure'
 
     FIELDS_TRANSLATE = {
-        'port': 'port',
         'remote_enabled': 'remoteEnabled',
         'remote_bind': 'remoteBind',
         'auth_enabled': 'authEnabled',
-        'users': 'users',
         'allowed_users': 'allowedUsers',
         'allowed_groups': 'allowedGroups',
-        'custom_options': 'customOptions',
-        'prometheus_enabled': 'prometheus_enabled',
-        'prometheus_bind': 'prometheus_bind',
-        'prometheus_path': 'prometheus_path',
+        'custom_options': 'customOptions'
     }
 
-    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys()) + ['enabled']
+    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys()) + ['enabled', 'port', 'users', 'prometheus_enabled', 
+                                                     'prometheus_bind', 'prometheus_path']
     FIELDS_ALL = FIELDS_CHANGE
 
     FIELDS_TYPING = {
