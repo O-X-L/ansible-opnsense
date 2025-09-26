@@ -154,3 +154,9 @@ def test_validate_port_or_range(value, valid, params):
         error_func.assert_not_called()
     else:
         error_func.assert_called_once()
+
+
+def test_placeholder():
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+        is_valid_domain, is_valid_email, is_valid_url, validate_int_fields, validate_str_fields, \
+        is_ip4, is_ip6, is_ip_or_network, is_ip6_network, valid_hostname

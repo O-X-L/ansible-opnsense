@@ -37,7 +37,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | gateway        | string  | false    | -             | gw                                                                                                                            | IP address to use as gateway. Can only be used if you enable the 'disable_routes' option.                                                                                                                                                                                                        |
 | vip            | string  | false    | -             | vip_depend, carp, carp_depend                                                                                                 | The Virtual-CARP-IP (CARP VHID) to depend on.  When this virtual address is not in master state, then the instance will be shutdown                                                                                                                                                              |
 | link_peers     | boolean | false    | true          | -                                                                                                  | Whether you want to link peers by the server instance. If that is the case - you should disable 'link_servers' on your peer-entries. Will always be true if you supply any peers                                                                                                                 |
-| reload         | boolean | false    | true          | -                                                                                                                             | If the running config should be reloaded on change - this will take some time. For mass-managing items you might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html).                                    |
+| reload         | boolean | false    | true          | -                                                                                                                             | If the running config should be reloaded on change - this will take some time. For mass-managing items you might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html).                                    |
 
 ### ansibleguy.opnsense.wireguard_peer
 
@@ -54,7 +54,7 @@ Alias: :code:`wireguard_client`
 | port         | integer | false    | -             | -                                                                                                  | Optionally provide the port of the peer instance                                                                                                                                                                                                              |
 | keepalive    | integer | false    | -             | -                                                                                                  | Integer between 1 and 86400. Should be used if one of the connection-members is behind NAT                                                                                                                                                                    |
 | link_servers | boolean | false    | false         | -                                                                                                  | Whether you want to link servers instance by the peer. If that is the case - you should disable 'link_peers' on your server-entries. Will always be true if you supply any servers                                                                                                                         |
-| reload       | boolean | false    | true          | -                                                                                                  | If the running config should be reloaded on change - this will take some time. For mass-managing items you might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
+| reload       | boolean | false    | true          | -                                                                                                  | If the running config should be reloaded on change - this will take some time. For mass-managing items you might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
 ### ansibleguy.opnsense.wireguard_show
 
@@ -83,7 +83,7 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
   tasks:
@@ -103,7 +103,7 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
   tasks:
@@ -123,7 +123,7 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -148,7 +148,7 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
     - name: Adding peer
       ansibleguy.opnsense.wireguard_peer:
         name: 'test1'
-        endpoint: 'wg.template.ansibleguy.net'
+        endpoint: 'wg.template.opnsense.oxl.app'
         allowed_ips: ['10.200.0.1/32']
         public_key: 'gTuhGXA28/qRSLPnH3szr2+A4l3C4tKlUsOORV63+SE='
 
@@ -179,7 +179,7 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:

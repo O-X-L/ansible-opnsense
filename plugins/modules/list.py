@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright: (C) 2025, AnsibleGuy <guy@ansibleguy.net>
+# Copyright: (C) 2025, Pascal Rath <contact+opnsense@OXL.at>
 # GNU General Public License v3.0+ (see https://www.gnu.org/licenses/gpl-3.0.txt)
 
 # module to query running config
@@ -19,8 +19,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/list.html'
-# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/list.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/general/list.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/general/list.html'
 
 TARGETS = [
     'alias', 'rule', 'rule_interface_group', 'route', 'gateway', 'syslog', 'package', 'unbound_host',

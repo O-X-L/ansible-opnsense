@@ -16,6 +16,6 @@ class Auth(BaseAuth):
     }
     API_KEY_PATH = 'swanctl.locals.local'
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseAuth.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseAuth.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.auth = {}

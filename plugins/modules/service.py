@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright: (C) 2025, AnsibleGuy <guy@ansibleguy.net>
+# Copyright: (C) 2025, Pascal Rath <contact+opnsense@OXL.at>
 # GNU General Public License v3.0+ (see https://www.gnu.org/licenses/gpl-3.0.txt)
 
 # module to interact with system services
@@ -21,8 +21,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/service.html'
-# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/service.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/general/service.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/general/service.html'
 
 # c = api-module, m = custom action-mapping, a = limited actions
 SERVICES = {

@@ -2,9 +2,9 @@
 
 .. include:: ../_include/head.rst
 
-==========================
-1 - Basic module arguments
-==========================
+======================
+Basic module arguments
+======================
 
 All modules
 ***********

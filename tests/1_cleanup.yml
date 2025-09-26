@@ -14,14 +14,15 @@
 
   tasks:
     - name: Cleanup Rules
-      ansibleguy.opnsense.rule_purge:
-        force_all: true
+      ansibleguy.opnsense.rule:
+        multi_control:
+          purge_all: true
         match_fields: ['description']
-        key_field: 'description'
 
     - name: Cleanup Aliases
-      ansibleguy.opnsense.alias_purge:
-        force_all: true
+      ansibleguy.opnsense.alias:
+        multi_control:
+          purge_all: true
 
     - name: Cleanup packages
       ansibleguy.opnsense.package:
@@ -488,19 +489,9 @@
         enabled: false
 
     - name: Cleanup BIND Records
-      ansibleguy.opnsense.bind_record_multi:
-        records:
-          'test4.ansibleguy':
-            - 'test1'
-            - name: 'test1'
-              type: 'TXT'
-            - 'test2'
-            - name: 'test2'
-              type: 'TXT'
-            - 'test3'
-            - name: 'test4'
-              type: 'CNAME'
-        state: 'absent'
+      ansibleguy.opnsense.bind_record:
+        multi_control:
+          purge_all: true
       register: bind_cleanup1
       failed_when:
         - bind_cleanup1.failed

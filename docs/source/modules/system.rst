@@ -8,7 +8,7 @@ System
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/system.yml>`_
+**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/system.yml>`_
 
 **API Docs**: `Core - Firmware <https://docs.opnsense.org/development/api/core/firmware.html>`_
 
@@ -53,7 +53,7 @@ Examples
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:

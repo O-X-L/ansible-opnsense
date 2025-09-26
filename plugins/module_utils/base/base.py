@@ -67,6 +67,15 @@ class Base:
             if not hasattr(self.i, attr):
                 exit_bug(f"Module has no '{attr}' attribute set!")
 
+    def api_search_post(self, cnf: dict, data: dict = None) -> list:
+        if data is None:
+            data = {}
+
+        return self._api_post({
+            **cnf,
+            'data': {'current': 1, 'rowCount': self.QUERY_MAX_ENTRIES, **data},
+        })['rows']
+
     def search(self, match_fields: list = None) -> (dict, list):
         # workaround if 'get' needs to be performed using other api module/controller
         cont_get, mod_get = self.i.API_CONT, self.i.API_MOD
@@ -81,7 +90,7 @@ class Base:
         self.i.call_cnf['module'] = mod_get
 
         if self.i.CMDS['search'].startswith('search'):
-            # case for api-refactoring: https://github.com/O-X-L/ansible-opnsense/issues/51
+            # because of new OPNsense API: https://github.com/O-X-L/ansible-opnsense/issues/51
             if 'detail' not in self.i.CMDS:
                 exit_bug("To use the 'search' commands you need to also define the related 'detail' (get) command!")
 
@@ -89,14 +98,12 @@ class Base:
             # if we can - we only perform the 'detail' call for the already matched entry to save on needed requests
             base_match_fields = False
             base_match_fields_checked = False
-            force_details = False if not hasattr(self.i, self.ATTR_GET_DETAIL_ALL) else \
-                getattr(self.i, self.ATTR_GET_DETAIL_ALL)
+            force_details = getattr(self.i, self.ATTR_GET_DETAIL_ALL, False)
 
-            for base_entry in self._api_post({
+            for base_entry in self.api_search_post({
                 **self.i.call_cnf,
                 'command': self.i.CMDS['search'],
-                'data': {'current': 1, 'rowCount': self.QUERY_MAX_ENTRIES},
-            })['rows']:
+            }):
                 if not force_details and match_fields is not None and not base_match_fields_checked:
                     base_match_fields_checked = True
                     base_match_fields = all(field in base_entry for field in match_fields)
@@ -165,7 +172,12 @@ class Base:
         except KeyError:
             exit_bug(f"Got invalid API_KEY_PATH: '{ak_path}' not matching data '{data}'")
 
-    def get_existing(self, diff_filter: bool = False) -> list:
+    def get_existing(self, diff_filter: bool = False, details_all: bool = True) -> list:
+        if details_all:
+            # because of new OPNsense API: https://github.com/O-X-L/ansible-opnsense/issues/51
+            # we require all details even if that means we have to perform hundreds of api-calls.. :(
+            setattr(self.i, self.ATTR_GET_DETAIL_ALL, True)
+
         if diff_filter:
             # use already existing filtering to get 'clean' int/.. values
             return get_simple_existing(

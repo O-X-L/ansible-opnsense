@@ -8,7 +8,7 @@ Nginx
 
 **STATE**: unstable
 
-**TESTS**: `nginx_upstream_server <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/nginx_upstream_server.yml>`_
+**TESTS**: `nginx_upstream_server <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/nginx_upstream_server.yml>`_
 
 **API Docs**: `Plugins - Nginx <https://docs.opnsense.org/development/api/plugins/nginx.html>`_
 
@@ -88,7 +88,7 @@ ansibleguy.opnsense.nginx_upstream_server
       gather_facts: false
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
         ansibleguy.opnsense.list:

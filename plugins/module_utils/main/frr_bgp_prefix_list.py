@@ -39,8 +39,8 @@ class Prefix(BaseModule):
     }
     EXIST_ATTR = 'prefix_list'
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.prefix_list = {}
         self.existing_prefixes = None
         self.existing_maps = None

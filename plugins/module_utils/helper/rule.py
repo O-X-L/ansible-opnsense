@@ -1,10 +1,5 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
-    get_matching
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.rule import \
-     RULE_DEFAULTS
-
 
 def validate_values(error_func, module: AnsibleModule, cnf: dict, kind: str = 'filter') -> None:
     # error = "Value '%s' is invalid for the field '%s'!"
@@ -47,24 +42,3 @@ def validate_values(error_func, module: AnsibleModule, cnf: dict, kind: str = 'f
                 "Configuring allow-rules to 'any' destination "
                 "using 'all' ports is bad practice!"
             )
-
-
-def check_purge_configured(module: AnsibleModule, existing_rule: dict) -> bool:
-    configured_rules = []
-
-    for rule_key, rule_config in module.params['rules'].items():
-        if rule_config is None:
-            rule_config = {}
-
-        rule_config = {
-            **RULE_DEFAULTS,
-            **rule_config,
-        }
-
-        rule_config[module.params['key_field']] = rule_key
-        configured_rules.append(rule_config)
-
-    return get_matching(
-        module=module, existing_items=configured_rules,
-        compare_item=existing_rule, match_fields=module.params['match_fields'],
-    ) is None

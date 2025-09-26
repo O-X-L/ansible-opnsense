@@ -41,39 +41,8 @@ Multi
 Definition
 **********
 
-.. include:: ../_include/param_basic.rst
+See: :ref:`Mass Management Arguments <modules_multi>`
 
-ansibleguy.opnsense.alias_multi
-===============================
-
-..  csv-table:: Definition
-    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
-    :widths: 15 10 10 10 10 45
-
-    "aliases","dictionary","true","\-","\-","Dictionary of aliases to manage/configure"
-    "fail_verification","boolean","false","false","fail_verify","Fail module if single alias fails the verification"
-    "fail_processing","boolean","false","true","fail_proc","Fail module if single alias fails to be processed"
-    "state","string","false","'present'","\-","Options: 'present', 'absent'"
-    "enabled","boolean","false","true","\-","If all aliases should be en- or disabled"
-    "output_info","boolean","false","false","info","Enable to show some information on processing at runtime. Will be hidden if the tasks 'no_log' parameter is set to 'true'."
-    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
-
-ansibleguy.opnsense.alias_purge
-===============================
-
-..  csv-table:: Definition
-    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
-    :widths: 15 10 10 10 10 45
-
-    "aliases","dictionary","true","\-","\-","Configured aliases - to exclude from purging"
-    "output_info","boolean","false","false","info","Enable to show some information on processing at runtime. Will be hidden if the tasks 'no_log' parameter is set to 'true'."
-    "action","string","false","'delete'","\-","What to do with the matched aliases. One of: 'disable', 'delete'"
-    "filters","dictionary","false","\-","\-","Field-value pairs to filter on - per example: {type: port} - to only purge aliases of type 'port'"
-    "filter_invert","boolean","false","false","\-","If true - it will purge all but the filtered ones"
-    "filter_partial","boolean","false","false","\-","If true - the filter will also match if it is just a partial value-match"
-    "force_all","boolean","false","false","\-","If set to true and neither aliases, nor filters are provided - all non-builtin aliases will be purged"
-    "fail_all","boolean","false","false","fail","Fail module if single alias fails to be purged"
-    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 ----
 
@@ -86,50 +55,55 @@ Examples
       gather_facts: no
       module_defaults:
         group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
-
-        ansibleguy.opnsense.list:
-          target: 'alias'
 
       tasks:
         - name: Creation
-          ansibleguy.opnsense.alias_multi:
-            fail_verification: true  # default = false; Fail module if single alias fails the verification
+          ansibleguy.opnsense.alias:
             aliases:
-              test1:
+              - name: 'test1'
                 content: '1.1.1.1'
-              test2:
+
+              - name: 'test2'
                 content: ['1.1.1.1', '1.1.1.2']
                 description: 'to be deleted'
-              test3:
+
+              - name: 'test3'
                 type: 'network'
                 content: '10.0.0.0/24'
                 description: 'to be disabled'
-            # fail_processing: false
-            # output_info: false
+
+            multi_control:
+              fail_verify: true
+              # fail_processing: false
+              # output_info: false
 
         - name: Changes
-          ansibleguy.opnsense.alias_multi:
+          ansibleguy.opnsense.alias:
             aliases:
-              test1:
+              - name: 'test1'
                 content: ['1.1.1.3']
-              test2:
+
+              - name: 'test2'
                 state: 'absent'
-              test3:
+
+              - name: 'test3'
                 enabled: false
 
         - name: Change state of all
-          ansibleguy.opnsense.alias_multi:
+          ansibleguy.opnsense.alias:
             aliases:
-              test1:
-              test3:
-            state: 'absent'
-            # enabled: true
+              - name: 'test1'
+              - name: 'test3'
+
+            multi_control:
+              state: 'absent'
+              # enabled: true
 
         - name: Listing
           ansibleguy.opnsense.list:
-          #  target: 'alias'
+            target: 'alias'
           register: existing_entries
 
         - name: Printing aliases
@@ -137,12 +111,18 @@ Examples
             var: existing_entries.data
 
         - name: Purging all non-configured aliases
-          ansibleguy.opnsense.alias_purge:
+          ansibleguy.opnsense.alias:
             aliases: {...}
-            # action: 'disable'  # default = remove
+
+            multi_control:
+              purge_all: true
+              # action: 'disable'  # default = delete
 
         - name: Purging all port aliases
-          ansibleguy.opnsense.alias_purge:
-            filters:  # filtering aliases to purge by alias-parameters
-              type: 'port'
-            # filter_invert: true  # purge all non-port aliases
+          ansibleguy.opnsense.alias:
+            multi_control:
+              purge_all: true
+              filters:  # filtering aliases to purge by alias-parameters
+                type: 'port'
+
+              # filter_invert: true

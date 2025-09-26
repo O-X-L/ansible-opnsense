@@ -81,7 +81,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -90,7 +90,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   tasks:
     - name: Example      
       ansibleguy.opnsense.monit_alert:
-        recipient: 'monit-alert@template.ansibleguy.net'
+        recipient: 'monit-alert@template.opnsense.oxl.app'
         # not_on: false
         # events: []
         # format: ''
@@ -102,14 +102,14 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 
     - name: Adding simple
       ansibleguy.opnsense.monit_alert:
-        recipient: 'monit-alert@template.ansibleguy.net'
+        recipient: 'monit-alert@template.opnsense.oxl.app'
 
     - name: Changing
       ansibleguy.opnsense.monit_alert:
-        recipient: 'monit-alert@template.ansibleguy.net'
+        recipient: 'monit-alert@template.opnsense.oxl.app'
         format: |
-          From: monit-alert@template.ansibleguy.net
-          Reply-To: netmaster@template.ansibleguy.net
+          From: monit-alert@template.opnsense.oxl.app
+          Reply-To: netmaster@template.opnsense.oxl.app
           Subject: $SERVICE at $HOST failed
         not_on: true
         events: ['timestamp']
@@ -118,10 +118,10 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 
     - name: Disabling
       ansibleguy.opnsense.monit_alert:
-        recipient: 'monit-alert@template.ansibleguy.net'
+        recipient: 'monit-alert@template.opnsense.oxl.app'
         format: |
-          From: monit-alert@template.ansibleguy.net
-          Reply-To: netmaster@template.ansibleguy.net
+          From: monit-alert@template.opnsense.oxl.app
+          Reply-To: netmaster@template.opnsense.oxl.app
           Subject: $SERVICE at $HOST failed
         not_on: true
         events: ['timestamp']
@@ -131,7 +131,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 
     - name: Removing
       ansibleguy.opnsense.monit_alert:
-        recipient: 'monit-alert@template.ansibleguy.net'
+        recipient: 'monit-alert@template.opnsense.oxl.app'
         state: 'absent'
 
     - name: Listing
@@ -151,7 +151,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -220,7 +220,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
     ansibleguy.opnsense.list:
@@ -299,7 +299,7 @@ Mail notification on IDS alert: see [documentation](https://docs.opnsense.org/ma
   gather_facts: no
   module_defaults:
     group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
   tasks:
