@@ -38,6 +38,81 @@ class MockOPNsenseModuleMulti(MockOPNsenseModule):
     FIELDS_ALL.extend(FIELDS_CHANGE)
 
 
+def test_multi_module_base(mocker):
+    pytest_mock_http_responses(
+        mocker=mocker,
+        handler=GenericTestdata(),
+    )
+
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+        MultiModule
+
+    am = MockAnsibleModuleWarnException()
+    am.params = get_ansible_module_multi_params()
+    res = ANSIBLE_RESULT
+    entry_args = BASE_PARAMS.copy()
+    entry_args.pop('p1')
+    entry_args['test'] = dict(type='str')
+    mm = MultiModule(
+        module=am,
+        result=res,
+        entry_args=entry_args,
+        kind='test',
+        obj=MockOPNsenseModuleMulti,
+    )
+
+    with pytest.raises(AnsibleError):
+        # invalid multi-module parameters
+        mm.process()
+
+    # basic multi-entries
+    mm.p['multi'] = [{'test': 'a'}]
+    mm._init_cases()
+    mm.process()
+    assert mm._is_multi_crud()
+    assert not mm._is_multi_purge()
+    mm.p['multi'] = []
+
+    # assert not res['changed']
+    # assert len(res['diff']['before']) == 0
+    # assert len(res['diff']['after']) == 0
+
+    # purge multi-entries
+    mm.p['multi_purge'] = [{'test': 'a'}]
+    mm._init_cases()
+    mm.process()
+    assert not mm._is_multi_crud()
+    assert mm._is_multi_purge()
+    mm.p['multi_purge'] = []
+
+    # purge filter on all
+    mm.p['multi_control']['purge_filter'] = {'name': 'abc'}
+    mm._init_cases()
+    assert not mm._is_multi_crud()
+    assert mm._is_multi_purge()
+    mm.process()
+
+    # purge filter with specific-list
+    mm.p['multi_purge'] = [{'test': 'a'}]
+    assert not mm._is_multi_crud()
+    assert mm._is_multi_purge()
+    mm._init_cases()
+    mm.process()
+    mm.p['multi_purge'] = []
+
+    mm.p['multi_control']['purge_filter'] = {}
+
+    # purge unconfigured/orphaned
+    mm.p['multi'] = [{'test': 'a'}]
+    mm.p['multi_control']['purge_orphaned'] = True
+    mm._init_cases()
+    mm.process()
+    assert mm._is_multi_crud()
+    assert not mm._is_multi_purge()
+    mm.p['multi'] = []
+    mm.p['multi_control']['purge_orphaned'] = False
+
+
 @pytest.mark.parametrize('mc, entry_args, raises', [
     (
         {},
