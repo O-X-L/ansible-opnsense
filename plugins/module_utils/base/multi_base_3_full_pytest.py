@@ -49,14 +49,13 @@ def test_multi_module_base(mocker):
 
     am = MockAnsibleModuleWarnException()
     am.params = get_ansible_module_multi_params()
+    am.params = {**PARAM_DEFAULTS, **am.params}
+
     res = ANSIBLE_RESULT
-    entry_args = BASE_PARAMS.copy()
-    entry_args.pop('p1')
-    entry_args['test'] = dict(type='str')
     mm = MultiModule(
         module=am,
         result=res,
-        entry_args=entry_args,
+        entry_args=BASE_PARAMS,
         kind='test',
         obj=MockOPNsenseModuleMulti,
     )
@@ -66,7 +65,7 @@ def test_multi_module_base(mocker):
         mm.process()
 
     # basic multi-entries
-    mm.p['multi'] = [{'test': 'a'}]
+    mm.p['multi'] = [{'p1': 'a'}]
     mm._init_cases()
     mm.process()
     assert mm._is_multi_crud()
@@ -78,7 +77,7 @@ def test_multi_module_base(mocker):
     # assert len(res['diff']['after']) == 0
 
     # purge multi-entries
-    mm.p['multi_purge'] = [{'test': 'a'}]
+    mm.p['multi_purge'] = [{'p1': 'a'}]
     mm._init_cases()
     mm.process()
     assert not mm._is_multi_crud()
@@ -93,7 +92,7 @@ def test_multi_module_base(mocker):
     mm.process()
 
     # purge filter with specific-list
-    mm.p['multi_purge'] = [{'test': 'a'}]
+    mm.p['multi_purge'] = [{'p1': 'a'}]
     assert not mm._is_multi_crud()
     assert mm._is_multi_purge()
     mm._init_cases()
@@ -103,7 +102,7 @@ def test_multi_module_base(mocker):
     mm.p['multi_control']['purge_filter'] = {}
 
     # purge unconfigured/orphaned
-    mm.p['multi'] = [{'test': 'a'}]
+    mm.p['multi'] = [{'p1': 'a'}]
     mm.p['multi_control']['purge_orphaned'] = True
     mm._init_cases()
     mm.process()
