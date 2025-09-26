@@ -15,3 +15,6 @@ skip_list:
   - 'fqcn[canonical]'  # module aliases
   - 'args[module]'
   - 'complexity[play]'
+
+exclude_paths:
+  - 'tests/'
