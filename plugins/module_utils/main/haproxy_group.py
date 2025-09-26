@@ -48,4 +48,5 @@ class HaproxyGroup(BaseModule):
             self.b.find_multiple_links(
                 field='members',
                 existing=self.existing_users,
+                existing_field_id='name',
             )
