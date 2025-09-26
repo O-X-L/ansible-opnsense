@@ -16,16 +16,7 @@ class GeneralPeers(GeneralModule):
     API_CONT_REL = 'service'
     API_CMD_REL = 'reconfigure'
 
-    FIELDS_TRANSLATE = {
-        'name1': 'name1',
-        'listen1': 'listen1',
-        'port1': 'port1',
-        'name2': 'name2',
-        'listen2': 'listen2',
-        'port2': 'port2',
-    }
-
-    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys()) + ['enabled']
+    FIELDS_CHANGE = ['enabled', 'name1', 'listen1', 'port1', 'name2', 'listen2', 'port2']
     FIELDS_ALL = FIELDS_CHANGE
 
     FIELDS_TYPING = {

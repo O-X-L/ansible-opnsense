@@ -43,65 +43,28 @@ class GeneralStats(GeneralModule):
         'port': {'min': 1024, 'max': 65535},
     }
 
+    SEARCH_ADDITIONAL = {
+        'existing_users': 'haproxy.users.user',
+        'existing_groups': 'haproxy.groups.group',
+    }
+
     TIMEOUT = 60.0
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        # Resolve user and group names to UUIDs before calling parent __init__
-        self._resolve_names_to_uuids(module)
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
+        self.existing_users = {}
+        self.existing_groups = {}
 
-    def _resolve_names_to_uuids(self, module: AnsibleModule):
-        """Resolve user and group names to UUIDs in module parameters"""
-        if not any(param in module.params for param in ['allowed_users', 'allowed_groups']):
-            return
+    def check(self) -> None:
+        self._base_check()
 
-        # Create temporary session to get HAProxy configuration
-        temp_session = Session(
-            module=module,
-            timeout=self.TIMEOUT if hasattr(self, 'TIMEOUT') else 60.0
+        self.b.find_multiple_links(
+            field='allowed_users',
+            existing=self.existing_users,
+            existing_field_id='name',
         )
-
-        # Get current HAProxy configuration
-        current_config = temp_session.get(cnf={
-            'module': self.API_MOD,
-            'controller': self.API_CONT,
-            'command': 'get'
-        })
-
-        # Resolve user names
-        if 'allowed_users' in module.params and module.params['allowed_users']:
-            users_config = current_config.get('haproxy', {}).get('users', {}).get('user', {})
-            resolved_users = []
-
-            for user_name in module.params['allowed_users']:
-                user_uuid = None
-                for uuid, user_data in users_config.items():
-                    if user_data.get('name') == user_name:
-                        user_uuid = uuid
-                        break
-
-                if user_uuid:
-                    resolved_users.append(user_uuid)
-                else:
-                    module.fail_json(msg=f"User '{user_name}' not found in HAProxy users configuration")
-
-            module.params['allowed_users'] = resolved_users
-
-        # Resolve group names
-        if 'allowed_groups' in module.params and module.params['allowed_groups']:
-            groups_config = current_config.get('haproxy', {}).get('groups', {}).get('group', {})
-            resolved_groups = []
-
-            for group_name in module.params['allowed_groups']:
-                group_uuid = None
-                for uuid, group_data in groups_config.items():
-                    if group_data.get('name') == group_name:
-                        group_uuid = uuid
-                        break
-
-                if group_uuid:
-                    resolved_groups.append(group_uuid)
-                else:
-                    module.fail_json(msg=f"Group '{group_name}' not found in HAProxy groups configuration")
-
-            module.params['allowed_groups'] = resolved_groups
+        self.b.find_multiple_links(
+            field='allowed_groups',
+            existing=self.existing_groups,
+            existing_field_id='name',
+            )

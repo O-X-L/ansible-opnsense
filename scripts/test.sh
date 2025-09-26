@@ -225,6 +225,17 @@ run_test_soft 'dnsmasq_range' 1
 run_test_soft 'dnsmasq_option' 1
 run_test_soft 'dnsmasq_boot' 1
 run_test_soft 'dnsmasq_tag' 1
+run_test_soft 'haproxy_cpu' 1
+run_test_soft 'haproxy_user' 1
+run_test_soft 'haproxy_group' 1
+run_test_soft 'haproxy_general_stats' 1
+run_test_soft 'haproxy_maintenance' 1
+run_test_soft 'haproxy_general_cache' 1
+run_test_soft 'haproxy_general_defaults' 1
+run_test_soft 'haproxy_general_logging' 1
+run_test_soft 'haproxy_general_peers' 1
+run_test_soft 'haproxy_general_settings' 1
+run_test_soft 'haproxy_general_tuning' 1
 
 echo ''
 echo '##############################'

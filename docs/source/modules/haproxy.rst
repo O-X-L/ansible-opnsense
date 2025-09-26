@@ -61,8 +61,6 @@ The HAProxy functionality is split into multiple modules organized by function:
    haproxy_auth
    haproxy_system
    haproxy_general
-   haproxy_rules
-   haproxy_advanced
 
 Quick overview
 **************
@@ -87,23 +85,10 @@ Quick overview
 - :ref:`haproxy_general_peers <haproxy_general_peers>` - Manage HAProxy peer synchronization
 - :ref:`haproxy_general_cache <haproxy_general_cache>` - Manage HAProxy caching configuration
 
-**Rules & traffic control:**
-
-- :ref:`haproxy_acl <haproxy_acl>` - Manage HAProxy Access Control Lists (ACLs) for traffic filtering and condition matching
-- :ref:`haproxy_action <haproxy_action>` - Manage HAProxy Actions that execute when ACL conditions are met
-
-**Advanced features:**
-
-- :ref:`haproxy_lua <haproxy_lua>` - Manage HAProxy Lua scripts for custom logic and processing
-- :ref:`haproxy_fcgi <haproxy_fcgi>` - Manage HAProxy FastCGI applications for dynamic content processing
-- :ref:`haproxy_errorfile <haproxy_errorfile>` - Manage HAProxy custom error pages for better user experience
-
 ----
 
 Usage examples
 ***************
-
-Complete HAProxy setup with authentication and monitoring:
 
 .. code-block:: yaml
 
@@ -172,117 +157,6 @@ Complete HAProxy setup with authentication and monitoring:
             reload_service: false
             restart_service: false
 
-Advanced HAProxy setup with ACLs, Actions, and custom pages:
-
-.. code-block:: yaml
-
-    - name: Advanced HAProxy configuration with rules and custom features
-      hosts: opnsense_firewalls
-      tasks:
-        # Create ACLs for traffic filtering
-        - name: Create ACL for API domain
-          ansibleguy.opnsense.haproxy_acl:
-            name: 'acl_api_domain'
-            description: 'API domain filter'
-            expression: 'hdr'
-            hdr: 'api.example.com'
-
-        - name: Create ACL for rate limiting
-          ansibleguy.opnsense.haproxy_acl:
-            name: 'acl_rate_limit'
-            description: 'Rate limiting'
-            expression: 'src_conn_rate'
-            src_conn_rate_comparison: 'gt'
-            src_conn_rate: 100
-
-        - name: Create ACL for admin paths
-          ansibleguy.opnsense.haproxy_acl:
-            name: 'acl_admin_path'
-            description: 'Admin paths'
-            expression: 'path_beg'
-            path_beg: '/admin'
-
-        # Create Actions for rule enforcement
-        - name: Create allow action for API
-          ansibleguy.opnsense.haproxy_action:
-            name: 'action_allow_api'
-            description: 'Allow API access'
-            test_type: 'if'
-            linked_acls: ['acl_api_domain']
-            type: 'http-request_allow'
-
-        - name: Create header action for rate limiting
-          ansibleguy.opnsense.haproxy_action:
-            name: 'action_rate_header'
-            description: 'Add rate limit header'
-            test_type: 'if'
-            linked_acls: ['acl_rate_limit']
-            type: 'http-request_add-header'
-            http_request_add_header_name: 'X-Rate-Limited'
-            http_request_add_header_content: 'true'
-
-        - name: Create deny action for admin
-          ansibleguy.opnsense.haproxy_action:
-            name: 'action_deny_admin'
-            description: 'Deny admin access'
-            test_type: 'if'
-            linked_acls: ['acl_admin_path']
-            type: 'http-request_deny'
-
-        # Deploy Lua scripts for custom logic
-        - name: Create Lua scripts
-          ansibleguy.opnsense.haproxy_lua:
-            name: 'auth_script'
-            description: 'JWT authentication script'
-            enabled: true
-            preload: true
-            filename_scheme: 'id'
-            content: |
-              function authenticate_jwt(txn)
-                local headers = txn.http:req_get_headers()
-                local auth_header = headers["authorization"]
-                if auth_header and string.find(auth_header, "Bearer ") then
-                  core.Info("Valid JWT token found")
-                  return "AUTHORIZED"
-                else
-                  core.Info("No valid JWT token")
-                  return "UNAUTHORIZED"
-                end
-              end
-
-        # Configure FastCGI for PHP applications
-        - name: Create FastCGI applications
-          ansibleguy.opnsense.haproxy_fcgi:
-            name: 'php_api_app'
-            description: 'PHP API application'
-            enabled: true
-            docroot: '/var/www/api'
-            index: 'api.php'
-            path_info: '^(/.+\.php)(/.*)?$'
-            log_stderr: true
-            max_reqs: 50
-
-        # Create custom error pages
-        - name: Create custom error pages
-          ansibleguy.opnsense.haproxy_errorfile:
-            name: 'maintenance_503'
-            description: 'Maintenance mode page'
-            code: 'x503'
-            content: |
-              HTTP/1.0 503 Service Unavailable
-              Content-Type: text/html
-              Cache-Control: no-cache
-              Connection: close
-
-              <!DOCTYPE html>
-              <html>
-              <head><title>Maintenance Mode</title></head>
-              <body>
-                <h1>🔧 We'll be right back!</h1>
-                <p>We're performing scheduled maintenance.</p>
-              </body>
-              </html>
-
 ----
 
 Troubleshooting
@@ -295,22 +169,6 @@ The HAProxy stats module automatically resolves user and group names to UUIDs. I
 1. The user/group exists in HAProxy configuration
 2. The name spelling is exact (case-sensitive)
 3. The user/group is enabled
-
-**ACL and action UUID resolution**
-
-The HAProxy action module automatically resolves ACL names to UUIDs. If you encounter errors like "Related ACL item not found":
-
-1. Ensure the ACL exists before creating the action
-2. Check ACL name spelling (case-sensitive)
-3. Verify the ACL is properly configured
-
-**FCGI action resolution**
-
-The HAProxy FCGI module automatically resolves action names to UUIDs. If you encounter errors like "Related action item not found":
-
-1. Create actions before linking them to FCGI applications
-2. Ensure action names match exactly
-3. Verify actions are of compatible types (fcgi_pass_header, fcgi_set_param)
 
 **CPU affinity configuration**
 
