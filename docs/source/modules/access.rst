@@ -32,7 +32,7 @@ Definition
 **********
 
 ansibleguy.opnsense.user
-===================================
+========================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
