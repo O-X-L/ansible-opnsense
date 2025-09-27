@@ -16,7 +16,11 @@
     ansibleguy.opnsense.list:
       target: 'gateway'
 
+    ansibleguy.opnsense.gateway:
+      match_fields: ['name']
+
   vars:
+    pre_existing_gws: 2
     gw:
       ip1: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL_GW1') | default('172.17.1.69', true) }}"
       ip2: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL_GW2') | default('172.17.1.70', true) }}"
@@ -100,7 +104,7 @@
       register: opn1
       failed_when: >
         'data' not in opn1 or
-        opn1.data | length != 4
+        opn1.data | length != (pre_existing_gws + 2)
       when: not ansible_check_mode
 
     - name: Cleanup
@@ -116,4 +120,4 @@
       register: opn2
       failed_when: >
         'data' not in opn2 or
-        opn2.data | length != 2
+        opn2.data | length != pre_existing_gws
