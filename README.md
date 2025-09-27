@@ -31,7 +31,7 @@ Then - install the collection itself:
 ansible-galaxy collection install git+https://github.com/O-X-L/ansible_opnsense.git
 
 # stable/tested version:
-ansible-galaxy collection install git+https://github.com/O-X-L/ansible_opnsense.git,1.2.15
+ansible-galaxy collection install git+https://github.com/O-X-L/ansible_opnsense.git,1.2.16
 ## OR
 ansible-galaxy collection install ansibleguy.opnsense
 ```
