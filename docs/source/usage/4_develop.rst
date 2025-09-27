@@ -3,7 +3,7 @@
 .. include:: ../_include/head.rst
 
 .. |img_module_abstraction| image:: ../_static/img/module_abstraction.svg
-   :class: wiki-img
+   :class: wiki-img-sm
 
 .. |img_module_abstraction_actions| image:: ../_static/img/module_abstraction_actions.svg
    :class: wiki-img
@@ -50,12 +50,12 @@ Abstraction
 
 * **Module Abstraction**
 
-   |img_module_abstraction|
+  |img_module_abstraction|
 
 
 * **Module Action-Abstraction**
 
-   |img_module_abstraction_actions|
+  |img_module_abstraction_actions|
 
 ----
 
@@ -75,303 +75,304 @@ There are some required attributes:
 
 * :code:`API_KEY_PATH`
 
-    OPNSense puts the actual API-data inside a nested-dict.
+  OPNSense puts the actual API-data inside a nested-dict.
 
-    This attribute is used to dynamically extract the data we need.
+  This attribute is used to dynamically extract the data we need.
 
-    Example - we want to handle the syslog-destinations:
+  Example - we want to handle the syslog-destinations:
 
-    .. code-block:: python3
+  .. code-block:: python3
 
-        # API response:
-        # {
-        #   "syslog": {
-        #     "general": {...},
-        #     "destinations": {
-        #       "destination": [...]
-        #     }
-        #   }
-        # }
+      # API response:
+      # {
+      #   "syslog": {
+      #     "general": {...},
+      #     "destinations": {
+      #       "destination": [...]
+      #     }
+      #   }
+      # }
 
-        API_KEY_PATH: 'syslog.destinations.destination'
+      API_KEY_PATH: 'syslog.destinations.destination'
 
-    You can see the raw API-data when adding :ref:`the debug module-argument <usage_develop_debug>`.
+  You can see the raw API-data when adding :ref:`the debug module-argument <usage_develop_debug>`.
 
 * :code:`FIELDS_TYPING`
 
-    Type-casting for values of fields.
+  Type-casting for values of fields.
 
-    This also handles the extraction of selected values from a :code:`select` list.
+  This also handles the extraction of selected values from a :code:`select` list.
 
-    .. code-block:: python3
+  .. code-block:: python3
 
-        FIELDS_TYPING = {
-            'int': ['id'],
-            'bool': ['enabled'],
+      FIELDS_TYPING = {
+          'int': ['id'],
+          'bool': ['enabled'],
 
-            # select with multiple-choice
-            'list': ['as_path_list', 'prefix_list', 'community_list'],
+          # select with multiple-choice
+          'list': ['as_path_list', 'prefix_list', 'community_list'],
 
-            # select with multiple-choice but get the 'pretty-value'
-            'list_value': ['member'],
+          # select with multiple-choice but get the 'pretty-value'
+          'list_value': ['member'],
 
-            # select with single-choice
-            'select': ['action'],
+          # select with single-choice
+          'select': ['action'],
 
-            # only for edge-cases
-            ## handle selection not in dict-format (php array handling)
-            'select_opt_list': [],
+          # only for edge-cases
+          ## handle selection not in dict-format (php array handling)
+          'select_opt_list': [],
 
-            ## get index of selected entry
-            'select_opt_list_idx': [],
-        }
+          ## get index of selected entry
+          'select_opt_list_idx': [],
+      }
 
 * :code:`API_MOD`
 
-    The OPNSense API-Module to call.
+  The OPNSense API-Module to call.
 
 * :code:`API_CONT`
 
-    The OPNSense API-Controller to call.
+  The OPNSense API-Controller to call.
 
 * :code:`FIELDS_ALL`
 
-    Fields that are parsed from API-responses and added to outbound API-calls.
+  Fields that are parsed from API-responses and added to outbound API-calls.
 
-    If the API-response has fields/values inside a nested-dict - you currently have to handle them manually. In that case do not add the nested-field inside this config-attribute. To handle them manually add the :code:`_search_call` and :code:`_build_request` methods. Per example see: `webproxy_general <https://github.com/O-X-L/ansible_opnsense/blob/latest/plugins/module_utils/main/webproxy_general.py>`_.
+  If the API-response has fields/values inside a nested-dict - you need to add them as tuple to :code:`FIELDS_TRANSLATE`
 
 * :code:`FIELDS_CHANGE`
 
-    The fields that should be checked for changes.
+  The fields that should be checked for changes.
 
-    They will appear in the :code:`diff` if not specifically excluded via :code:`FIELDS_DIFF_EXCLUDE`
+  They will appear in the :code:`diff` if not specifically excluded via :code:`FIELDS_DIFF_EXCLUDE`
 
 * :code:`CMDS`
 
-    This attribute configures the OPNSense API-commands we need to execute.
+  This attribute configures the OPNSense API-commands we need to execute.
 
-    Note: There is `a current/old and new API-handling <https://github.com/O-X-L/ansible_opnsense/issues/51>`_.
+  Note: There is `a current/old and new API-handling <https://github.com/O-X-L/ansible_opnsense/issues/51>`_.
 
-    .. code-block:: python3
+  .. code-block:: python3
 
-        # default module
-        CMDS = {
-            'add': 'addRecord',  # add entry
-            'set': 'setRecord',  # modify entry
-            'del': 'delRecord',  # delete entry
-            'search': 'get',  # get list of all existing entries
-            'toggle': 'toggleRecord',  # only en- or disable entry
-        }
+      # default module
+      CMDS = {
+          'add': 'addRecord',  # add entry
+          'set': 'setRecord',  # modify entry
+          'del': 'delRecord',  # delete entry
+          'search': 'get',  # get list of all existing entries
+          'toggle': 'toggleRecord',  # only en- or disable entry
+      }
 
-        # default module with new API-search (more API-calls needed)
-        CMDS = {
-            'add': 'addReservation',
-            'set': 'setReservation',
-            'del': 'delReservation',
-            'search': 'searchReservation',  # get minimal list of all existing entries
-            'detail': 'getReservation',  # get details of a single entry
-        }
+      # default module with new API-search (more API-calls needed)
+      CMDS = {
+          'add': 'addReservation',
+          'set': 'setReservation',
+          'del': 'delReservation',
+          'search': 'searchReservation',  # get minimal list of all existing entries
+          'detail': 'getReservation',  # get details of a single entry
+      }
 
-        # general module
-        CMDS = {
-            'search': 'get',  # read
-            'set': 'set',  # write
-        }
+      # general module
+      CMDS = {
+          'search': 'get',  # read
+          'set': 'set',  # write
+      }
 
 * :code:`FIELD_ID`
 
-    If the ansible-module has no :code:`match_fields` defined, we are matching a single field to relate the current entry to an existing one.
+  If the ansible-module has no :code:`match_fields` defined, we are matching a single field to relate the current entry to an existing one.
 
-    By convention this may be the :code:`name` field.
+  By convention this may be the :code:`name` field.
 
 Optional
 ========
 
 * :code:`API_CONT_REL`
 
-    Call a different API-controller to reload.
+  Call a different API-controller to reload.
 
-    Often this needs to be the :code:`service` controller.
+  Often this needs to be the :code:`service` controller.
 
 * :code:`API_CMD_REL`
 
-    Call a specific API-command to reload. Default: :code:`reconfigure`
+  Call a specific API-command to reload. Default: :code:`reconfigure`
 
 * :code:`FIELDS_TRANSLATE`
 
-    Translate ansible-module fields to API-fields.
+  Translate ansible-module fields to API-fields.
 
-    Ansible-fields should be written in :code:`snake_case` while the API uses a random mix of snake_case, CamelCase, PascalCase, all-lowercase, ... :'(
+  Ansible-fields should be written in :code:`snake_case` while the API uses a random mix of snake_case, CamelCase, PascalCase, all-lowercase, ... :'(
 
-    When referencing fields by other config-attributes, we always reference the ansible-field-naming!
+  When referencing fields by other config-attributes, we always reference the ansible-field-naming!
 
-    Example:
+  Example:
 
-    .. code-block:: python3
+  .. code-block:: python3
 
-        FIELDS_TRANSLATE = {
-            # ansible-field <=> api-field
-            'errors': 'error_pages',
-            'icp_port': 'icpPort',
-            'connect_timeout': 'connecttimeout',
-        }
+      FIELDS_TRANSLATE = {
+          # ansible-field <=> api-field
+          'errors': 'error_pages',
+          'icp_port': 'icpPort',
+          'connect_timeout': 'connecttimeout',
+      }
 
-    If the API-fields have additional hierarchical depth, they can be translated by providing a tuple as the api-field.
+  If the API-fields have additional hierarchical depth, they can be translated by providing a tuple as the api-field.
 
-    .. code-block:: python3
+  .. code-block:: python3
 
-        FIELDS_TRANSLATE = {
-            # ansible-field <=> api-field
-            'log_target': ('logging', 'target'),
-        }
+      FIELDS_TRANSLATE = {
+          # ansible-field <=> api-field
+          'log_target': ('logging', 'target'),
+      }
 
 * :code:`TIMEOUT`
 
-    Change the maximum time in seconds the API calls are allowed to last.
+  Change the maximum time in seconds the API calls are allowed to last.
 
-    We ran into timeouts with reload/enable/disable actions before as the firewall is blocking the response while performing some long-running task.
+  We ran into timeouts with reload/enable/disable actions before as the firewall is blocking the response while performing some long-running task.
 
 * :code:`INT_VALIDATIONS`
 
-    Can be used to validate integer values provided by the user.
+  Can be used to validate integer values provided by the user.
 
-    Client-side validation should **only be used if necessary**! It leads to maintenance-effort whenever the server-side values change.
+  Client-side validation should **only be used if necessary**! It leads to maintenance-effort whenever the server-side values change.
 
-    Example:
+  Example:
 
-    .. code-block:: python3
+  .. code-block:: python3
 
-        INT_VALIDATIONS = {
-            'connect_timeout': {'min': 1, 'max': 120},
-            'icp_port': {'min': 1, 'max': 65535},
-        }
+      INT_VALIDATIONS = {
+          'connect_timeout': {'min': 1, 'max': 120},
+          'icp_port': {'min': 1, 'max': 65535},
+      }
 
 * :code:`STR_VALIDATIONS` and :code:`STR_LEN_VALIDATIONS`
 
-    Can be used to validate string values provided by the user.
+  Can be used to validate string values provided by the user.
 
-    Client-side validation should **only be used if necessary**! It leads to maintenance-effort whenever the server-side values change.
+  Client-side validation should **only be used if necessary**! It leads to maintenance-effort whenever the server-side values change.
 
-    Example:
+  Example:
 
-    .. code-block:: python3
+  .. code-block:: python3
 
-        STR_VALIDATIONS = {
-            'name': r'^[a-zA-Z0-9._-]{1,64}$'  # regex
-        }
-        STR_LEN_VALIDATIONS = {
-            'prompt': {'min': 0, 'max': 255}
-        }
+      STR_VALIDATIONS = {
+          'name': r'^[a-zA-Z0-9._-]{1,64}$'  # regex
+      }
+      STR_LEN_VALIDATIONS = {
+          'prompt': {'min': 0, 'max': 255}
+      }
 
 * :code:`EXIST_ATTR`
 
-    The instance-attribute that is used to save the matching existing entry.
+  The instance-attribute that is used to save the matching existing entry.
 
-    Example:
+  Example:
 
-    .. code-block:: python3
+  .. code-block:: python3
 
-        EXIST_ATTR = 'stuff'  # <=
+      EXIST_ATTR = 'stuff'  # <=
 
-        def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-            BaseModule.__init__(self=self, m=module, r=result, s=session)
-            self.stuff = {}  # <=
+      def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
+          BaseModule.__init__(self=self, m=module, r=result, s=session)
+          self.stuff = {}  # <=
 
 * :code:`SEARCH_ADDITIONAL`
 
-    This can be used when we the entry has to be linked to some other entry-category.
+  This can be used when we the entry has to be linked to some other entry-category.
 
-    Example - the shaper-rule needs to be linked to shaper-pipes and shaper-queues:
+  Example - the shaper-rule needs to be linked to shaper-pipes and shaper-queues:
 
-    .. code-block:: python3
+  .. code-block:: python3
 
-        # API-response:
-        # {
-        #   "ts": {
-        #     "pipes": {
-        #       "pipe": [...]
-        #     },
-        #     "queues": {
-        #       "queue": [...]
-        #     },
-        #     "rules": {
-        #       "rule": [...]
-        #     }
-        #   }
-        # }
+      # API-response:
+      # {
+      #   "ts": {
+      #     "pipes": {
+      #       "pipe": [...]
+      #     },
+      #     "queues": {
+      #       "queue": [...]
+      #     },
+      #     "rules": {
+      #       "rule": [...]
+      #     }
+      #   }
+      # }
 
-        SEARCH_ADDITIONAL = {
-            # instance-attribute <=> api-key-path
-            'existing_pipes': 'ts.pipes.pipe',
-            'existing_queues': 'ts.queues.queue',
-        }
+      SEARCH_ADDITIONAL = {
+          # instance-attribute <=> api-key-path
+          'existing_pipes': 'ts.pipes.pipe',
+          'existing_queues': 'ts.queues.queue',
+      }
 
-        def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-            BaseModule.__init__(self=self, m=module, r=result, s=session)
-            self.rule = {}
-            self.existing_queues = None  # <=
-            self.existing_pipes = None  # <=
+      def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
+          BaseModule.__init__(self=self, m=module, r=result, s=session)
+          self.rule = {}
+          self.existing_queues = None  # <=
+          self.existing_pipes = None  # <=
 
-    Afterwards we may need to link the configured linked-entries to the existing ones.
+  Afterwards we may need to link the configured linked-entries to the existing ones.
 
-    This can be done either:
+  This can be done either:
 
-    * Using the :code:`self.b.find_single_link` / :code:`self.b.find_multiple_links`
-    * Or manually inside the :code:`check`, :code:`get_existing` or :code:`_search_call` method
+  * Using the :code:`self.b.find_single_link` / :code:`self.b.find_multiple_links`
+  * Or manually inside the :code:`check`, :code:`get_existing` or :code:`_search_call` method
 
-    **Warning**: This can only be used if the endpoint has `the current/old API-behavior <https://github.com/O-X-L/ansible_opnsense/issues/51>`_.
-    If this is not possible we need to do it manually inside the :code:`get_existing` or :code:`_search_call` method. Per example see: :code:`bind_domain`
+  **Warning**: This can only be used if the endpoint has `the current/old API-behavior <https://github.com/O-X-L/ansible_opnsense/issues/51>`_.
+
+  If this is not possible we need to do it manually inside the :code:`get_existing` or :code:`_search_call` method. Per example see: :code:`bind_domain`
 
 * :code:`FIELDS_BOOL_INVERT`
 
-    Boolean fields that should be inverted.
+  Boolean fields that should be inverted.
 
-    Can be used to make module-arguments more user-friendly.
+  Can be used to make module-arguments more user-friendly.
 
-    We would not want to have a boolean argument that has :code:`not` in its name..
+  We would not want to have a boolean argument that has :code:`not` in its name..
 
 * :code:`FIELDS_DIFF_NO_LOG`
 
-    If we have API-fields that contain secret values, we can hide their content from the :code:`diff`.
+  If we have API-fields that contain secret values, we can hide their content from the :code:`diff`.
 
 * :code:`FIELDS_VALUE_MAPPING` and :code:`FIELDS_VALUE_MAPPING_RCV`
 
-    This is basically a workaround for `the OPNSense-API having inconsistent GET/POST values <https://github.com/O-X-L/ansible_opnsense/discussions/37>`_.
+  This is basically a workaround for `the OPNSense-API having inconsistent GET/POST values <https://github.com/O-X-L/ansible_opnsense/discussions/37>`_.
 
-    It maps the user-friendly ansible-values to the generic API-values.
+  It maps the user-friendly ansible-values to the generic API-values.
 
-    Example:
+  Example:
 
-    .. code-block:: python3
+  .. code-block:: python3
 
-        FIELDS_VALUE_MAPPING = {  # sending
-            'version': {
-                # ansible-value <=> api-value
-                'ikev1+2': 0,
-                'ikev1': 1,
-                'ikev2': 2,
-            },
-        }
-        FIELDS_VALUE_MAPPING_RCV = {  # receiving
-            'version': {
-                # ansible-value <=> api-value
-                'ikev1+2': 'IKEv1+IKEv2',
-                'ikev1': 'IKEv1',
-                'ikev2': 'IKEv2',
-            }
-        }
+      FIELDS_VALUE_MAPPING = {  # sending
+          'version': {
+              # ansible-value <=> api-value
+              'ikev1+2': 0,
+              'ikev1': 1,
+              'ikev2': 2,
+          },
+      }
+      FIELDS_VALUE_MAPPING_RCV = {  # receiving
+          'version': {
+              # ansible-value <=> api-value
+              'ikev1+2': 'IKEv1+IKEv2',
+              'ikev1': 'IKEv1',
+              'ikev2': 'IKEv2',
+          }
+      }
 
 * :code:`SEARCH_DETAIL_ALL`
 
-    This will pull the details for each existing entry when restricted to the `new API-behavior <https://github.com/O-X-L/ansible_opnsense/issues/51>`_.
+  This will pull the details for each existing entry when restricted to the `new API-behavior <https://github.com/O-X-L/ansible_opnsense/issues/51>`_.
 
-    **WARNING**: This does not scale well as the API-calls take a long time. Parallel async calls still need to be implemented.
+  **WARNING**: This does not scale well as the API-calls take a long time. Parallel async calls still need to be implemented.
 
 * :code:`JOIN_CHAR`
 
-    Edge-case for inconsistent API-behavior.
+  Edge-case for inconsistent API-behavior.
 
-    Override the character used to join/split lists for API-interaction. Default: :code:`,`
+  Override the character used to join/split lists for API-interaction. Default: :code:`,`
 
 ----
 
@@ -416,7 +417,7 @@ Adding new module
 
     Also add important module-specific information.
 
-  - Add new documentation-files to the `sitemap.xml <<COLLECTION>/docs/meta/sitemap.xml>`_ (*SEO*)
+  - Add new documentation-files to the `sitemap.xml <https://github.com/O-X-L/ansible-opnsense/tree/latest/docs/meta/sitemap.xml>`_ (*SEO*)
 
   - Optional: We should also add **inline module-documentation** `as standardized for Ansible <https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_documenting.html#documentation-block>`_
 
@@ -456,15 +457,19 @@ This Ansible Collection has built-in handling for mass-management of entries. We
 You can find the abstracted logic in:
 
 * `module_utils/base/multi.py <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/module_utils/base/multi.py>`_
+
 * `module_utils/helper/wrapper.py <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/module_utils/helper/wrapper.py>`_
 
-Modes have to be set-up to support mass-management!
+Modules have to be set-up to support mass-management!
 
-1. There is some initialization needed inside the :code:`module/<NAME>.py` file!
+* Inside the :code:`module/<NAME>.py` file you need to add the multi-module parameters and optionally callback-functions.
 
   For an implementation-example see: `modules/alias.py <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/modules/alias.py>`_
 
-2. The abstracted logic uses callback-functions to allow for module-specific handling. All of these are optional!
+
+* The abstracted logic uses callback-functions to allow for module-specific handling. All of these are optional!
+
+  For the full class-template of the callbacks see: `module_utils/base/multi.py - MultiModuleCallbacks <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/module_utils/base/multi.py>`_
 
   * **Build Callback**:
 
@@ -494,9 +499,9 @@ Modes have to be set-up to support mass-management!
 
     This should only be used if there are built-in entries that should be protected.
 
-3. The result-difference will use the :code:`FIELD_ID` or :code:`MULTI_DIFF_KEY` as key. As fallback the first field inside :code:`match_fields` is used - but this is discouraged.
+* The result-difference will use the :code:`FIELD_ID` or :code:`MULTI_DIFF_KEY` as key. As fallback the first field inside :code:`match_fields` is used - but this is discouraged.
 
-4. You have to validate the API-calls that are actually performed by enabling the :code:`debug: true` mode!
+* You have to validate the API-calls that are actually performed by enabling the :code:`debug: true` mode!
 
   If the module uses custom logic you have to ensure the 'existing_entries' cache if used correctly!
 
