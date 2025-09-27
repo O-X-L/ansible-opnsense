@@ -10,3 +10,5 @@ echo ''
 
 rm -f ansibleguy-opnsense-*.tar.gz
 ansible-galaxy collection build
+
+echo "CHECK CONTENT: 'tar --list -f ansibleguy-opnsense-*.tar.gz'"
