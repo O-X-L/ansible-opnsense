@@ -16,10 +16,11 @@ class Gw(BaseModule):
         'add': 'add_gateway',
         'del': 'del_gateway',
         'set': 'set_gateway',
-        'search': 'get',
+        'search': 'search_gateway',
+        'detail': 'get_gateway',
         'toggle': 'toggle_gateway',
     }
-    API_KEY_PATH = 'gateways.gateway_item'
+    API_KEY_PATH = 'gateway_item'
     API_MOD = 'routing'
     API_CONT = 'settings'
     FIELDS_CHANGE = [
