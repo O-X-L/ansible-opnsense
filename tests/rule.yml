@@ -589,28 +589,29 @@
         opn3.changed
       when: not ansible_check_mode
 
-    - name: Updating Source Routing firewall
-      ansibleguy.opnsense.rule:
-        gateway: TEST-GW
-        replyto: TEST-GW
-        disable_replyto: true
-        description: 'ANSIBLE_TEST_4_1'
-      register: opn4
-      failed_when: >
-        opn4.failed or
-        not opn4.changed
+    # see issue: https://github.com/O-X-L/ansible-opnsense/issues/306
+    # - name: Updating Source Routing firewall
+    #   ansibleguy.opnsense.rule:
+    #     gateway: TEST-GW
+    #     replyto: TEST-GW
+    #     disable_replyto: true
+    #     description: 'ANSIBLE_TEST_4_1'
+    #   register: opn4
+    #   failed_when: >
+    #     opn4.failed or
+    #     not opn4.changed
 
-    - name: Updating Source Routing - nothing changed
-      ansibleguy.opnsense.rule:
-        gateway: TEST-GW
-        replyto: TEST-GW
-        disable_replyto: true
-        description: 'ANSIBLE_TEST_4_1'
-      register: opn5
-      failed_when: >
-        opn5.failed or
-        opn5.changed
-      when: not ansible_check_mode
+    # - name: Updating Source Routing - nothing changed
+    #   ansibleguy.opnsense.rule:
+    #     gateway: TEST-GW
+    #     replyto: TEST-GW
+    #     disable_replyto: true
+    #     description: 'ANSIBLE_TEST_4_1'
+    #   register: opn5
+    #   failed_when: >
+    #     opn5.failed or
+    #     opn5.changed
+    #   when: not ansible_check_mode
 
     - name: Updating Internal tagging
       ansibleguy.opnsense.rule:
