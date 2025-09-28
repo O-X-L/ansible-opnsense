@@ -17,10 +17,10 @@ tags:
   - 'security'
   - 'filter'
 dependencies: {}
-repository: 'https://github.com/O-X-L/ansible_opnsense'
+repository: 'https://github.com/O-X-L/ansible-opnsense'
 documentation: 'https://ansible-opnsense.oxl.app'
 homepage: 'https://www.OXL.at'
-issues: 'https://github.com/O-X-L/ansible_opnsense/issues'
+issues: 'https://github.com/O-X-L/ansible-opnsense/issues'
 build_ignore: [
   '*_pytest.py', '*_testdata.py', '*pytest_cache', '*/_tmpl.py',
   '.**', 'pytest.ini', 'requirements_*.txt',

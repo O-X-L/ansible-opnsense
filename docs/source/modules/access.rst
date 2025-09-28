@@ -8,7 +8,7 @@ Access / User Management
 
 **STATE**: unstable
 
-**TESTS**: `user <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/user.yml>`_ |
+**TESTS**: `user <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/user.yml>`_ |
 `group <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/group.yml>`_ |
 `privilege <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/privilege.yml>`_
 

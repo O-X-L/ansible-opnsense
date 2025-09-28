@@ -6,7 +6,7 @@
 Mass Management
 ===============
 
-**Tests**: `Functional <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/1_multi.yml>`_, `Unit <https://github.com/O-X-L/ansible-opnsense/tree/latest/plugins/module_utils/base>`_
+**Tests**: `Functional <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/1_multi.yml>`_, `Unit <https://github.com/O-X-L/ansible-opnsense/tree/latest/plugins/module_utils/base>`_
 
 This Ansible Collection has the ability to mass-manage many entries at once.
 

@@ -8,7 +8,7 @@ Alias
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/alias.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/alias.yml>`_
 
 **API Docs**: `Core - Firewall <https://docs.opnsense.org/development/api/core/firewall.html>`_
 

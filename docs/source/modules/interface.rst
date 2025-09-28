@@ -9,14 +9,14 @@ Interface
 
 **STATE**: stable
 
-**TESTS**: `vlan <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_vlan.yml>`_ |
-`vxlan <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_vxlan.yml>`_ |
-`vip <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_vip.yml>`_ |
-`lagg <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_lagg.yml>`_ |
-`loopback <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_loopback.yml>`_ |
-`gre <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_gre.yml>`_ |
-`bridge <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_bridge.yml>`_ |
-`gif <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/interface_gif.yml>`_
+**TESTS**: `vlan <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_vlan.yml>`_ |
+`vxlan <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_vxlan.yml>`_ |
+`vip <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_vip.yml>`_ |
+`lagg <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_lagg.yml>`_ |
+`loopback <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_loopback.yml>`_ |
+`gre <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_gre.yml>`_ |
+`bridge <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_bridge.yml>`_ |
+`gif <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_gif.yml>`_
 
 **API Docs**: `Core - Interfaces <https://docs.opnsense.org/development/api/core/interfaces.html>`_
 

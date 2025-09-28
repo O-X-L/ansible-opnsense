@@ -8,13 +8,13 @@ Dnsmasq
 
 **STATE**: unstable
 
-**TESTS**: `General <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_general.yml>`_ |
-`Domain <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_domain.yml>`_ |
-`Host <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_host.yml>`_ |
-`Range <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_range.yml>`_ |
-`Option <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_option.yml>`_ |
-`Boot <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_boot.yml>`_ |
-`Tag <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dnsmasq_tag.yml>`_
+**TESTS**: `General <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dnsmasq_general.yml>`_ |
+`Domain <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dnsmasq_domain.yml>`_ |
+`Host <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dnsmasq_host.yml>`_ |
+`Range <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dnsmasq_range.yml>`_ |
+`Option <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dnsmasq_option.yml>`_ |
+`Boot <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dnsmasq_boot.yml>`_ |
+`Tag <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dnsmasq_tag.yml>`_
 
 **API Docs**: `Core - Dnsmasq <https://docs.opnsense.org/development/api/core/dnsmasq.html>`_
 

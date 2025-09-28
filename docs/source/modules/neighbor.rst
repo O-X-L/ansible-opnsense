@@ -8,7 +8,7 @@ Neighbors
 
 **STATE**: unstable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/neighbor.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/neighbor.yml>`_
 
 **API Docs**: `neighbor <https://docs.opnsense.org/development/api/core/interfaces.html>`_
 

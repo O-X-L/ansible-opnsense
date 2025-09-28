@@ -8,18 +8,18 @@ Web Proxy
 
 **STATE**: stable
 
-**TESTS**: `webproxy_general <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/webproxy_general.yml>`_ |
-`webproxy_cache <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/webproxy_cache.yml>`_ |
-`webproxy_parent <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/webproxy_parent.yml>`_ |
-`webproxy_traffic <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/webproxy_traffic.yml>`_ |
-`webproxy_forward <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/webproxy_forward.yml>`_ |
-`webproxy_acl <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_acl.yml>`_ |
-`webproxy_icap <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_icap.yml>`_ |
-`webproxy_auth <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_auth.yml>`_ |
-`webproxy_remote_acl <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_remote_acl.yml>`_ |
-`webproxy_pac_proxy <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_pac_proxy.yml>`_ |
-`webproxy_pac_match <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_pac_match.yml>`_ |
-`webproxy_pac_rule <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_pac_rule.yml>`_
+**TESTS**: `webproxy_general <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/webproxy_general.yml>`_ |
+`webproxy_cache <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/webproxy_cache.yml>`_ |
+`webproxy_parent <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/webproxy_parent.yml>`_ |
+`webproxy_traffic <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/webproxy_traffic.yml>`_ |
+`webproxy_forward <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/webproxy_forward.yml>`_ |
+`webproxy_acl <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_acl.yml>`_ |
+`webproxy_icap <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_icap.yml>`_ |
+`webproxy_auth <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_auth.yml>`_ |
+`webproxy_remote_acl <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_remote_acl.yml>`_ |
+`webproxy_pac_proxy <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_pac_proxy.yml>`_ |
+`webproxy_pac_match <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_pac_match.yml>`_ |
+`webproxy_pac_rule <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_pac_rule.yml>`_
 
 **API Docs**: `Plugins - Proxy <https://docs.opnsense.org/development/api/plugins/proxy.html>`_
 
