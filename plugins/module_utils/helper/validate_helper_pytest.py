@@ -103,7 +103,7 @@ def test_is_valid_network(value, result):
     ('!1.2.4.5', True),
     ('1.2.4.5', True),
     ('1.2.400.5', False),
-    ('oxlorgnet', True),
+    ('oxl.at', True),
     ('2001:0db8:85a3:08d3:1319:8a2e:0370:7344', True),
     ('2001::85a3:08d3:1319::0370:7344', False),
 ])
