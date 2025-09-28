@@ -8,7 +8,7 @@ Intrusion Prevention System
 
 **STATE**: stable
 
-**TESTS**: `oxlorg.opnsense.ids_general <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/ids_general.yml>`_ |
+**TESTS**: `oxlorg.opnsense.ids_general <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/ids_general.yml>`_ |
 `oxlorg.opnsense.ids_action <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/ids_action.yml>`_ |
 `oxlorg.opnsense.ids_policy <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/ids_policy.yml>`_ |
 `oxlorg.opnsense.ids_policy_rule <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/ids_policy_rule.yml>`_ |

@@ -24,7 +24,7 @@ You can install the collection to a specific directory for easier testing.
 .. code-block:: bash
 
     cd $PLAYBOOK_DIR
-    ansible-galaxy collection install git+https://github.com/O-X-L/ansible_opnsense.git,<RELEASE/BRANCH/COMMIT> -p ./collections
+    ansible-galaxy collection install git+https://github.com/O-X-L/ansible-opnsense.git,<RELEASE/BRANCH/COMMIT> -p ./collections
 
 Of course you can always place the repository at :code:`${PLAYBOOK_DIR}/collections/ansible_collections/oxlorg/opnsense` so it gets picked-up by Ansible.
 
@@ -41,7 +41,7 @@ As XML isn't the most readable format - I would recommend translating it to YAML
 
 Here is a nice online-tool to do so: `XML-to-YAML <https://codebeautify.org/xml-to-yaml>`_ | `XML-to-JSON <https://codebeautify.org/xml-to-json>`_
 
-Note: There is `a current/old and new API-handling <https://github.com/O-X-L/ansible_opnsense/issues/51>`_.
+Note: There is `a current/old and new API-handling <https://github.com/O-X-L/ansible-opnsense/issues/51>`_.
 
 ----
 
@@ -62,9 +62,9 @@ Abstraction
 Abstraction Features
 ********************
 
-The `base class <https://github.com/O-X-L/ansible_opnsense/blob/latest/plugins/module_utils/base/base.py>`_ handles most of the logic.
+The `base class <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/module_utils/base/base.py>`_ handles most of the logic.
 
-Single modules, `placed in the main directory <https://github.com/O-X-L/ansible_opnsense/blob/latest/plugins/module_utils/main/>`_ can utilize class-attributes to configure this logic.
+Single modules, `placed in the main directory <https://github.com/O-X-L/ansible-opnsense/blob/latest/plugins/module_utils/main/>`_ can utilize class-attributes to configure this logic.
 
 Here we list these config-attributes and describe their functionalities:
 
@@ -150,7 +150,7 @@ There are some required attributes:
 
   This attribute configures the OPNSense API-commands we need to execute.
 
-  Note: There is `a current/old and new API-handling <https://github.com/O-X-L/ansible_opnsense/issues/51>`_.
+  Note: There is `a current/old and new API-handling <https://github.com/O-X-L/ansible-opnsense/issues/51>`_.
 
   .. code-block:: python3
 
@@ -319,7 +319,7 @@ Optional
   * Using the :code:`self.b.find_single_link` / :code:`self.b.find_multiple_links`
   * Or manually inside the :code:`check`, :code:`get_existing` or :code:`_search_call` method
 
-  **Warning**: This can only be used if the endpoint has `the current/old API-behavior <https://github.com/O-X-L/ansible_opnsense/issues/51>`_.
+  **Warning**: This can only be used if the endpoint has `the current/old API-behavior <https://github.com/O-X-L/ansible-opnsense/issues/51>`_.
 
   If this is not possible we need to do it manually inside the :code:`get_existing` or :code:`_search_call` method. Per example see: :code:`bind_domain`
 
@@ -337,7 +337,7 @@ Optional
 
 * :code:`FIELDS_VALUE_MAPPING` and :code:`FIELDS_VALUE_MAPPING_RCV`
 
-  This is basically a workaround for `the OPNSense-API having inconsistent GET/POST values <https://github.com/O-X-L/ansible_opnsense/discussions/37>`_.
+  This is basically a workaround for `the OPNSense-API having inconsistent GET/POST values <https://github.com/O-X-L/ansible-opnsense/discussions/37>`_.
 
   It maps the user-friendly ansible-values to the generic API-values.
 
@@ -364,7 +364,7 @@ Optional
 
 * :code:`SEARCH_DETAIL_ALL`
 
-  This will pull the details for each existing entry when restricted to the `new API-behavior <https://github.com/O-X-L/ansible_opnsense/issues/51>`_.
+  This will pull the details for each existing entry when restricted to the `new API-behavior <https://github.com/O-X-L/ansible-opnsense/issues/51>`_.
 
   **WARNING**: This does not scale well as the API-calls take a long time. Parallel async calls still need to be implemented.
 

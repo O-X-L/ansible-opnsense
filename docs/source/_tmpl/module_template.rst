@@ -8,7 +8,7 @@ MODULE TITLE
 
 **STATE**: unstable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/<module>.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/<module>.yml>`_
 
 **API Docs**: `<module> <https://docs.opnsense.org/development/api/core/<module>.html>`_
 

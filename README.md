@@ -1,16 +1,16 @@
 # Ansible Collection to manage OPNsense Firewalls
 
-[![Lint Python](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint-python.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint-python.yml)
-[![Lint Ansible](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint-ansible.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/lint-ansible.yml)
-[![Unit Test Status](https://github.com/O-X-L/ansible_opnsense/actions/workflows/unit_test.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/unit_test.yml)
+[![Lint Python](https://github.com/O-X-L/ansible-opnsense/actions/workflows/lint-python.yml/badge.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/lint-python.yml)
+[![Lint Ansible](https://github.com/O-X-L/ansible-opnsense/actions/workflows/lint-ansible.yml/badge.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/lint-ansible.yml)
+[![Unit Test Status](https://github.com/O-X-L/ansible-opnsense/actions/workflows/unit_test.yml/badge.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/unit_test.yml)
 [![Ansible Galaxy](https://badges.ansibleguy.net/galaxy.badge.svg)](https://galaxy.ansible.com/ui/repo/published/oxlorg/opnsense)
 
 **Functional Tests**: 
 
 * Status: [![Functional Test Status](https://badges.ansibleguy.net/opnsense.collection.test.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/functional_test_result.yml) |
-[![Functional-Tests](https://github.com/O-X-L/ansible_opnsense/actions/workflows/functional_test_result.yml/badge.svg)](https://github.com/O-X-L/ansible_opnsense/actions/workflows/functional_test_result.yml)
+[![Functional-Tests](https://github.com/O-X-L/ansible-opnsense/actions/workflows/functional_test_result.yml/badge.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/functional_test_result.yml)
 * Logs: [API](https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000) |
-[Daily Archive](https://github.com/O-X-L/ansible_opnsense/actions/workflows/functional_test_result.yml)
+[Daily Archive](https://github.com/O-X-L/ansible-opnsense/actions/workflows/functional_test_result.yml)
 
 Internal CI: [Tester Role](https://github.com/O-X-L/ansible-role-oxl-cicd) | [Jobs API](https://github.com/O-X-L/github-self-hosted-jobs-systemd)
 
@@ -28,10 +28,10 @@ Then - install the collection itself:
 
 ```bash
 # latest version:
-ansible-galaxy collection install git+https://github.com/O-X-L/ansible_opnsense.git
+ansible-galaxy collection install git+https://github.com/O-X-L/ansible-opnsense.git
 
 # stable/tested version:
-ansible-galaxy collection install git+https://github.com/O-X-L/ansible_opnsense.git,25.3.7
+ansible-galaxy collection install git+https://github.com/O-X-L/ansible-opnsense.git,25.3.7
 ## OR
 ansible-galaxy collection install oxlorg.opnsense
 ```
@@ -50,11 +50,11 @@ If you DO NOT want to use Ansible - [this fork](https://github.com/O-X-L/opnsens
 
 ## Contribute
 
-Feel free to contribute to this project using [pull-requests](https://github.com/O-X-L/ansible_opnsense/pulls), [issues](https://github.com/O-X-L/ansible_opnsense/issues) and [discussions](https://github.com/O-X-L/ansible_opnsense/discussions)!
+Feel free to contribute to this project using [pull-requests](https://github.com/O-X-L/ansible-opnsense/pulls), [issues](https://github.com/O-X-L/ansible-opnsense/issues) and [discussions](https://github.com/O-X-L/ansible-opnsense/discussions)!
 
-See also: [Contributing](https://github.com/O-X-L/ansible_opnsense/blob/latest/CONTRIBUTING.md)
+See also: [Contributing](https://github.com/O-X-L/ansible-opnsense/blob/latest/CONTRIBUTING.md)
 
-<img src="https://contrib.rocks/image?repo=O-X-L/ansible_opnsense&max=7" />
+<img src="https://contrib.rocks/image?repo=O-X-L/ansible-opnsense&max=7" />
 
 ----
 
@@ -64,7 +64,7 @@ We try that the `oxlorg.opnsense` modules always support the latest version of O
 
 If an API changed, the current module-implementation might fail for firewalls running an older firmware.
 
-As [this project is unfunded](https://github.com/O-X-L/ansible_opnsense/discussions/199) we do not actively check for API-changes - if you find missing functionalities you need/want to have please [report it](https://github.com/O-X-L/ansible_opnsense/issues)!
+As [this project is unfunded](https://github.com/O-X-L/ansible-opnsense/discussions/199) we do not actively check for API-changes - if you find missing functionalities you need/want to have please [report it](https://github.com/O-X-L/ansible-opnsense/issues)!
 
 ----
 
@@ -73,7 +73,7 @@ As [this project is unfunded](https://github.com/O-X-L/ansible_opnsense/discussi
 
 **Development States**:
 
-not implemented => development => [testing](https://github.com/O-X-L/ansible_opnsense/tree/latest/tests) => [unstable (_practical testing_)](https://github.com/O-X-L/ansible-opnsense/discussions/85) => stable
+not implemented => development => [testing](https://github.com/O-X-L/ansible-opnsense/tree/latest/tests) => [unstable (_practical testing_)](https://github.com/O-X-L/ansible-opnsense/discussions/85) => stable
 
 ### Implemented
 
@@ -229,4 +229,4 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible_opn
 
 ### Roadmap
 
-See: [Feature Requests](https://github.com/O-X-L/ansible_opnsense/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
+See: [Feature Requests](https://github.com/O-X-L/ansible-opnsense/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)

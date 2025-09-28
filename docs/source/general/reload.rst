@@ -8,7 +8,7 @@ Reload
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/reload.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/reload.yml>`_
 
 Contribution
 ************

@@ -20,7 +20,7 @@ except MODULE_EXCEPTIONS:
 
 
 # DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/alias.html'
-# EXAMPLES = 'https://github.com/O-X-L/ansible_opnsense/blob/latest/docs/tests/alias.yml'
+# EXAMPLES = 'https://github.com/O-X-L/ansible-opnsense/blob/latest/docs/tests/alias.yml'
 
 
 def run_module():
