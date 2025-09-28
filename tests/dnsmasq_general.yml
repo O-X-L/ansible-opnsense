@@ -4,14 +4,14 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: 'dnsmasq_general'
       register: opn_pre1
       failed_when: >
@@ -19,7 +19,7 @@
         opn_pre1.data | length == 0
 
     - name: Enable and configure all dnsmasq options
-      ansibleguy.opnsense.dnsmasq_general:
+      oxlorg.opnsense.dnsmasq_general:
         enabled: true
         interfaces: ['opt1', 'opt2']
         strictbind: true
@@ -58,7 +58,7 @@
         not opn1.changed
 
     - name: Nothing changed
-      ansibleguy.opnsense.dnsmasq_general:
+      oxlorg.opnsense.dnsmasq_general:
         enabled: true
         interfaces: ['TEST', 'TEST2']
         strictbind: true
@@ -98,7 +98,7 @@
       when: not ansible_check_mode
 
     - name: Changing
-      ansibleguy.opnsense.dnsmasq_general:
+      oxlorg.opnsense.dnsmasq_general:
         enabled: true
         interfaces: ['opt1']
         strictbind: true
@@ -121,5 +121,5 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.dnsmasq_general:
+      oxlorg.opnsense.dnsmasq_general:
         enabled: false

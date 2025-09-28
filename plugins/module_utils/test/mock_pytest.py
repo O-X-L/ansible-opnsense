@@ -1,6 +1,6 @@
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.mock_http_pytest import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.mock_http_pytest import \
     pytest_mock_http_responses
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.mock_mod_pytest import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.mock_mod_pytest import \
     MockOPNsenseModule, MOCK_MOD_ARGS
 
 ANSIBLE_RESULT = {'changed': False, 'diff': {'before': {}, 'after': {}}}

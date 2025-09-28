@@ -30,7 +30,7 @@ Collection
 .. code-block:: bash
 
     # stable version:
-    ansible-galaxy collection install ansibleguy.opnsense
+    ansible-galaxy collection install oxlorg.opnsense
 
     # latest version:
     ansible-galaxy collection install git+https://github.com/O-X-L/ansible_opnsense.git

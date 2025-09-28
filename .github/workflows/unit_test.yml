@@ -38,8 +38,8 @@ jobs:
 
       - name: Preparing collection for Unit-Tests
         run: |
-          mkdir -p /tmp/ansible_pytest/collections/ansible_collections/ansibleguy
-          ln -s ${{ github.workspace }} /tmp/ansible_pytest/collections/ansible_collections/ansibleguy/opnsense
+          mkdir -p /tmp/ansible_pytest/collections/ansible_collections/oxlorg
+          ln -s ${{ github.workspace }} /tmp/ansible_pytest/collections/ansible_collections/oxlorg/opnsense
         shell: bash
 
       - name: Running Tests

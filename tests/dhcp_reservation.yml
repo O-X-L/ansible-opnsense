@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'dhcp_reservation'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.dhcp_reservation:
+      oxlorg.opnsense.dhcp_reservation:
         subnet: '192.168.69.0/24'
         ip: '192.168.69.78'
         state: 'absent'
@@ -34,28 +34,28 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of non-existent subnet
-      ansibleguy.opnsense.dhcp_reservation:
+      oxlorg.opnsense.dhcp_reservation:
         subnet: '192.168.59.0/24'
         ip: '192.168.59.76'
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of IP-address
-      ansibleguy.opnsense.dhcp_reservation:
+      oxlorg.opnsense.dhcp_reservation:
         subnet: '192.168.69.0/24'
         ip: '192.168.69.7x'
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Adding 1 - failing because of missing mac-address
-      ansibleguy.opnsense.dhcp_reservation:
+      oxlorg.opnsense.dhcp_reservation:
         subnet: '192.168.69.0/24'
         ip: '192.168.69.7x'
       register: opn_fail3
       failed_when: not opn_fail3.failed
 
     - name: Adding 1 - failing because of ip outside subnet (server-side)
-      ansibleguy.opnsense.dhcp_reservation:
+      oxlorg.opnsense.dhcp_reservation:
         subnet: '192.168.69.0/24'
         ip: '192.168.70.7'
       register: opn_fail4
@@ -63,12 +63,12 @@
       when: not ansible_check_mode
 
     - name: Adding dummy DHCP-subnet
-      ansibleguy.opnsense.dhcp_subnet:
+      oxlorg.opnsense.dhcp_subnet:
         subnet: '192.168.69.0/24'
       check_mode: false
 
     - name: Adding 1
-      ansibleguy.opnsense.dhcp_reservation:
+      oxlorg.opnsense.dhcp_reservation:
         subnet: '192.168.69.0/24'
         ip: '192.168.69.76'
         mac: 'aa:aa:aa:aa:aa:aa'
@@ -78,7 +78,7 @@
         not opn1.changed
 
     - name: Adding 1 - failing because of duplicate mac-address (server-side)
-      ansibleguy.opnsense.dhcp_reservation:
+      oxlorg.opnsense.dhcp_reservation:
         subnet: '192.168.69.0/24'
         ip: '192.168.69.77'
         mac: 'aa:aa:aa:aa:aa:aa'
@@ -87,7 +87,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.dhcp_reservation:
+      oxlorg.opnsense.dhcp_reservation:
         subnet: '192.168.69.0/24'
         ip: '192.168.69.86'
         mac: 'aa:aa:aa:aa:aa:bb'
@@ -97,7 +97,7 @@
         not opn2.changed
 
     - name: Changing 2
-      ansibleguy.opnsense.dhcp_reservation:
+      oxlorg.opnsense.dhcp_reservation:
         subnet: '192.168.69.0/24'
         ip: '192.168.69.86'
         mac: 'aa:aa:aa:aa:aa:cc'
@@ -108,7 +108,7 @@
       when: not ansible_check_mode
 
     - name: Changing 2 - Nothing changed
-      ansibleguy.opnsense.dhcp_reservation:
+      oxlorg.opnsense.dhcp_reservation:
         subnet: '192.168.69.0/24'
         ip: '192.168.69.86'
         mac: 'aa:aa:aa:aa:aa:cc'
@@ -119,7 +119,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -127,7 +127,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.dhcp_reservation:
+      oxlorg.opnsense.dhcp_reservation:
         ip: '192.168.69.86'
         state: absent
       register: opn5
@@ -137,7 +137,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.dhcp_reservation:
+      oxlorg.opnsense.dhcp_reservation:
         ip: "{{ item }}"
         state: 'absent'
       loop:
@@ -146,13 +146,13 @@
       when: not ansible_check_mode
 
     - name: Cleanup dummy DHCP-subnet
-      ansibleguy.opnsense.dhcp_subnet:
+      oxlorg.opnsense.dhcp_subnet:
         subnet: '192.168.69.0/24'
         state: 'absent'
       check_mode: false
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

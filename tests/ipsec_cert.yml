@@ -4,15 +4,15 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.ipsec_cert:
+    oxlorg.opnsense.ipsec_cert:
       reload: true
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'ipsec_cert'
 
   vars:
@@ -80,14 +80,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn2
       failed_when: >
         'data' not in opn2 or
         opn2.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.ipsec_cert:
+      oxlorg.opnsense.ipsec_cert:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn1
@@ -96,7 +96,7 @@
         opn1.changed
 
     - name: Validation - failing because of invalid pub-key
-      ansibleguy.opnsense.ipsec_cert:
+      oxlorg.opnsense.ipsec_cert:
         name: 'ANSIBLE_TEST_1_1'
         public_key: 'not-a-pubkey'
         private_key: "{{ test1.priv }}"
@@ -104,7 +104,7 @@
       failed_when: not opn3.failed
 
     - name: Validation - failing because of invalid priv-key
-      ansibleguy.opnsense.ipsec_cert:
+      oxlorg.opnsense.ipsec_cert:
         name: 'ANSIBLE_TEST_1_1'
         public_key: "{{ test1.pub }}"
         private_key: 'not-a-privkey'
@@ -112,7 +112,7 @@
       failed_when: not opn4.failed
 
     - name: Validation - failing because of key-mismatch (server-side)
-      ansibleguy.opnsense.ipsec_cert:
+      oxlorg.opnsense.ipsec_cert:
         name: 'ANSIBLE_TEST_1_1'
         public_key: "{{ test2_mismatch.pub }}"
         private_key: "{{ test2.priv }}"
@@ -121,7 +121,7 @@
       when: not ansible_check_mode
 
     - name: Adding 1
-      ansibleguy.opnsense.ipsec_cert:
+      oxlorg.opnsense.ipsec_cert:
         name: 'ANSIBLE_TEST_1_1'
         public_key: "{{ test1.pub }}"
         private_key: "{{ test1.priv }}"
@@ -131,7 +131,7 @@
         not opn6.changed
 
     - name: Adding 1 - nothing changed
-      ansibleguy.opnsense.ipsec_cert:
+      oxlorg.opnsense.ipsec_cert:
         name: 'ANSIBLE_TEST_1_1'
         public_key: "{{ test1.pub }}"
         private_key: "{{ test1.priv }}"
@@ -142,7 +142,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.ipsec_cert:
+      oxlorg.opnsense.ipsec_cert:
         name: 'ANSIBLE_TEST_1_2'
         public_key: "{{ test2.pub }}"
         private_key: "{{ test2.priv }}"
@@ -153,7 +153,7 @@
         not opn7.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.ipsec_cert:
+      oxlorg.opnsense.ipsec_cert:
         name: 'ANSIBLE_TEST_1_1'
         public_key: "{{ test2.pub }}"
         private_key: "{{ test2.priv }}"
@@ -165,7 +165,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         'data' not in opn10 or
@@ -173,7 +173,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.ipsec_cert:
+      oxlorg.opnsense.ipsec_cert:
         name: "{{ item }}"
         state: 'absent'
       loop:
@@ -182,7 +182,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn2
       failed_when: >
         'data' not in opn2 or

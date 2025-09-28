@@ -12,7 +12,7 @@
 4 - Develop
 ===========
 
-The basic API interaction is handled in :code:`ansibleguy.opnsense.plugins.module_utils.base.api`.
+The basic API interaction is handled in :code:`oxlorg.opnsense.plugins.module_utils.base.api`.
 
 It is a generic abstraction layer for interacting with the api - therefore all plugins should be able to function with it!
 
@@ -26,7 +26,7 @@ You can install the collection to a specific directory for easier testing.
     cd $PLAYBOOK_DIR
     ansible-galaxy collection install git+https://github.com/O-X-L/ansible_opnsense.git,<RELEASE/BRANCH/COMMIT> -p ./collections
 
-Of course you can always place the repository at :code:`${PLAYBOOK_DIR}/collections/ansible_collections/ansibleguy/opnsense` so it gets picked-up by Ansible.
+Of course you can always place the repository at :code:`${PLAYBOOK_DIR}/collections/ansible_collections/oxlorg/opnsense` so it gets picked-up by Ansible.
 
 ----
 
@@ -431,19 +431,19 @@ Adding new module
 - Add the module to :code:`<COLLECTION>/meta/runtime.yml`
 
 
-- Add the module as option to the :code:`ansibleguy.opnsense.list` module:
+- Add the module as option to the :code:`oxlorg.opnsense.list` module:
 
   :code:`<COLLECTION>/plugins/modules/list.py`
 
 
-- Add the module as option to the :code:`ansibleguy.opnsense.reload` module:
+- Add the module as option to the :code:`oxlorg.opnsense.reload` module:
 
   :code:`<COLLECTION>/plugins/modules/reload.py`
 
 
 - If you are implementing a new service:
 
-  Add the service as option to the :code:`ansibleguy.opnsense.service` module:
+  Add the service as option to the :code:`oxlorg.opnsense.service` module:
 
   :code:`<COLLECTION>/plugins/modules/service.py`
 
@@ -558,7 +558,7 @@ There are some mock-components you should know about:
 
   .. code-block:: python3
 
-      from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.testdata.<module>_testdata import Testdata_25_7_3
+      from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.testdata.<module>_testdata import Testdata_25_7_3
 
       def test_multi_validate_entry(mocker, entry, entry_args, fail_verify, raises):
           testdata = Testdata_25_7_3()
@@ -580,7 +580,7 @@ Run the tests like this:
 
     # set these variables:
     COL='name-of-new-collection'
-    COL_PATH="$(pwd)/../collections/ansible_collections/ansibleguy/opnsense"  # path to your local collection
+    COL_PATH="$(pwd)/../collections/ansible_collections/oxlorg/opnsense"  # path to your local collection
     TEST_FIREWALL='192.168.0.1'  # ip of your test-firewall
     TEST_API_KEY="$(pwd)/opn.txt"  # api credentials-file for your test-firewall
     export ANSIBLE_DIFF_ALWAYS=yes  # enable diff-mode for debugging
@@ -601,7 +601,7 @@ Most modules will use a session to perform multiple API calls:
 
 .. code-block:: python3
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import Session
 
     session = Session(module=module)
     session.get(cnf={'controller': 'alias', 'command': 'addItem', 'data': {'name': 'dummy', ...}})
@@ -615,7 +615,7 @@ Most modules will use a session to perform multiple API calls:
 
     # only perform a single API call
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import single_get, single_post
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import single_get, single_post
     single_get(module=module, cnf={'module': 'wireguard', 'controller': 'service', 'command': 'show'})
 
 For the controller/command/params/data definition - check the `OPNSense API Docs <https://docs.opnsense.org/development/api.html#core-api>`_!
@@ -643,16 +643,16 @@ You can also use the :code:`debug` argument to enable verbose output of the api 
 .. code-block:: yaml
 
     - name: Example
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         debug: true
 
 'Multi' modules also support the :code:`debug` parameter on a per-item basis - so you don't get flooded.
 
-When the debug-mode is enabled some useful log files are created in the directory :code:`/tmp/ansibleguy.opnsense`
+When the debug-mode is enabled some useful log files are created in the directory :code:`/tmp/oxlorg.opnsense`
 
 .. code-block:: bash
 
-    guy$ ls -l /tmp/ansibleguy.opnsense/
+    guy$ ls -l /tmp/oxlorg.opnsense/
     alias.log  # time consumption profiling for the executed module: https://docs.python.org/3/library/profile.html
     api_calls.log  # a list api calls that were executed by the debugged module
 
@@ -669,8 +669,8 @@ The profiler will wrap around this function call and analyze it.
 
 .. code-block:: python3
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.utils import profiler
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.target_module import process
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.utils import profiler
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.target_module import process
 
     if module.params['profiling']:
         profiler(

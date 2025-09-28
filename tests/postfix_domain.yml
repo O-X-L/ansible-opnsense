@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'postfix_domain'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.postfix_domain:
+      oxlorg.opnsense.postfix_domain:
         domainname: 'ANSIBLE_TEST_99_9'
         state: 'absent'
       register: opn_pre2
@@ -33,7 +33,7 @@
         opn_pre2.changed
 
     - name: Adding 1
-      ansibleguy.opnsense.postfix_domain:
+      oxlorg.opnsense.postfix_domain:
         domainname: example.com
         destination: 192.168.100.2
       register: opn1
@@ -42,7 +42,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.postfix_domain:
+      oxlorg.opnsense.postfix_domain:
         domainname: example.com
         destination: 192.168.100.3
       register: opn2
@@ -51,7 +51,7 @@
         not opn2.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.postfix_domain:
+      oxlorg.opnsense.postfix_domain:
         domainname: example.com
         destination: 192.168.100.3
         enabled: false
@@ -62,7 +62,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.postfix_domain:
+      oxlorg.opnsense.postfix_domain:
         domainname: example.com
         destination: 192.168.100.3
         enabled: false
@@ -73,7 +73,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.postfix_domain:
+      oxlorg.opnsense.postfix_domain:
         domainname: example.com
         destination: 192.168.100.3
       register: opn5
@@ -83,7 +83,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.postfix_domain:
+      oxlorg.opnsense.postfix_domain:
         domainname: example.net
       register: opn6
       failed_when: >
@@ -91,7 +91,7 @@
         not opn6.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.postfix_domain:
+      oxlorg.opnsense.postfix_domain:
         domainname: example.net
       register: opn7
       failed_when: >
@@ -100,7 +100,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.postfix_domain:
+      oxlorg.opnsense.postfix_domain:
         domainname: example.net
         state: 'absent'
       register: opn8
@@ -110,7 +110,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn9
       failed_when: >
         'data' not in opn9 or
@@ -118,13 +118,13 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.postfix_domain:
+      oxlorg.opnsense.postfix_domain:
         domainname: example.com
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

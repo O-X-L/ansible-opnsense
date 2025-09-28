@@ -40,7 +40,7 @@ OPN_MOD_ARGS = dict(
     profiling=dict(
         type='bool', required=False, default=False,
         description="Used to en-/disable the profiling mode. "
-                    "Time consumption of the module will be logged to '/tmp/ansibleguy.opnsense'"
+                    "Time consumption of the module will be logged to '/tmp/oxlorg.opnsense'"
     ),
     api_timeout=dict(
         type='float', required=False, aliases=['timeout'],
@@ -88,7 +88,7 @@ RELOAD_MOD_ARG_DEF_FALSE = dict(
 )
 
 DEBUG_CONFIG = dict(
-    path_log='/tmp/ansibleguy.opnsense',
+    path_log='/tmp/oxlorg.opnsense',
     log_api_calls='api_calls.log',
 )
 

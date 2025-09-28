@@ -1,4 +1,4 @@
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.testdata.base_testdata import MockOPNsenseController
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.testdata.base_testdata import MockOPNsenseController
 
 
 class Testdata_25_7_3(MockOPNsenseController):

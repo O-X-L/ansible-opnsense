@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'acme_certificate'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         description: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -33,22 +33,22 @@
         opn_pre2.changed
 
     - name: Adding dummy account
-      ansibleguy.opnsense.acme_account:
+      oxlorg.opnsense.acme_account:
         name: 'ANSIBLE_TEST_DUMMY_1_1'
         ca: letsencrypt_test
 
     - name: Adding dummy validation
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_DUMMY_1_1'
         method: http01
 
     - name: Adding dummy action
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_DUMMY_1_1'
         type: configd_restart_gui
 
     - name: Adding 1 - failing because of missing name
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         description: 'ANSIBLE_TEST_1_1'
         account: 'ANSIBLE_TEST_DUMMY_1_1'
         validation: 'ANSIBLE_TEST_DUMMY_1_1'
@@ -56,7 +56,7 @@
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of missing account
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         description: 'ANSIBLE_TEST_1_1'
         validation: 'ANSIBLE_TEST_DUMMY_1_1'
@@ -64,7 +64,7 @@
       failed_when: not opn_fail2.failed
 
     - name: Adding 1 - failing because of unknown account
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         description: 'ANSIBLE_TEST_1_1'
         account: 'DOES_NOT_EXIST'
@@ -73,7 +73,7 @@
       failed_when: not opn_fail3.failed
 
     - name: Adding 1 - failing because of missing validation
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         description: 'ANSIBLE_TEST_1_1'
         account: 'ANSIBLE_TEST_DUMMY_1_1'
@@ -81,7 +81,7 @@
       failed_when: not opn_fail4.failed
 
     - name: Adding 1 - failing because of unknown validation
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         description: 'ANSIBLE_TEST_1_1'
         account: 'ANSIBLE_TEST_DUMMY_1_1'
@@ -90,7 +90,7 @@
       failed_when: not opn_fail5.failed
 
     - name: Adding 1 - failing because of unknown restart_actions
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         description: 'ANSIBLE_TEST_1_1'
         account: 'ANSIBLE_TEST_DUMMY_1_1'
@@ -101,7 +101,7 @@
       failed_when: not opn_fail6.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         description: 'ANSIBLE_TEST_1_1'
         account: 'ANSIBLE_TEST_DUMMY_1_1'
@@ -112,7 +112,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         alt_names:
           - 'sub.example.com'
@@ -131,7 +131,7 @@
         not opn2.changed
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         alt_names:
           - 'sub.example.com'
@@ -150,7 +150,7 @@
         opn3.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         alt_names:
           - 'sub.example.com'
@@ -171,7 +171,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         alt_names:
           - 'sub.example.com'
@@ -192,7 +192,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         alt_names:
           - 'sub.example.com'
@@ -212,7 +212,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         description: 'ANSIBLE_TEST_1_2'
         account: 'ANSIBLE_TEST_DUMMY_1_1'
@@ -225,7 +225,7 @@
         not opn7.changed
 
     - name: Changing 2
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         description: 'ANSIBLE_TEST_1_2'
         account: 'ANSIBLE_TEST_DUMMY_1_1'
@@ -238,7 +238,7 @@
         not opn8.changed
 
     - name: Changing 2 - nothing changed
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         description: 'ANSIBLE_TEST_1_2'
         account: 'ANSIBLE_TEST_DUMMY_1_1'
@@ -251,7 +251,7 @@
         opn9.changed
 
     - name: Adding 3
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         description: 'ANSIBLE_TEST_1_3'
         account: 'ANSIBLE_TEST_DUMMY_1_1'
@@ -264,7 +264,7 @@
         not opn10.changed
 
     - name: Changing 3
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         description: 'ANSIBLE_TEST_1_3'
         account: 'ANSIBLE_TEST_DUMMY_1_1'
@@ -277,7 +277,7 @@
         not opn11.changed
 
     - name: Changing 3 - nothing changed
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         name: 'example.com'
         description: 'ANSIBLE_TEST_1_3'
         account: 'ANSIBLE_TEST_DUMMY_1_1'
@@ -290,7 +290,7 @@
         opn12.changed
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -298,7 +298,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.acme_certificate:
+      oxlorg.opnsense.acme_certificate:
         description: '{{ item }}'
         state: 'absent'
       loop:
@@ -308,7 +308,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or
@@ -316,19 +316,19 @@
       when: not ansible_check_mode
 
     - name: Cleanup Dummy Account
-      ansibleguy.opnsense.acme_account:
+      oxlorg.opnsense.acme_account:
         name: 'ANSIBLE_TEST_DUMMY_1_1'
         state: 'absent'
       diff: false
 
     - name: Cleanup Dummy Validation
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_DUMMY_1_1'
         state: 'absent'
       diff: false
 
     - name: Cleanup Dummy Action
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_DUMMY_1_1'
         state: 'absent'
       diff: false

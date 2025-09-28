@@ -8,7 +8,7 @@ Service
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/service.yml>`_
+**TESTS**: `Playbook <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/service.yml>`_
 
 Contribution
 ************
@@ -44,18 +44,18 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Restarting IPSec service
-          ansibleguy.opnsense.service:
+          oxlorg.opnsense.service:
             name: 'ipsec'
             action: 'restart'
 
         - name: Get status of FRR service
-          ansibleguy.opnsense.service:
+          oxlorg.opnsense.service:
             name: 'frr'
             action: 'status'
           register: frr_svc
@@ -65,6 +65,6 @@ Examples
             var: frr_svc.data
 
         - name: Stopping Tor service
-          ansibleguy.opnsense.service:
+          oxlorg.opnsense.service:
             name: 'tor'
             action: 'stop'

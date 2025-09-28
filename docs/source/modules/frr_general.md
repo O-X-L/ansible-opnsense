@@ -2,7 +2,7 @@
 
 **STATE**: stable
 
-**TESTS**: [frr_general](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_general.yml)
+**TESTS**: [frr_general](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_general.yml)
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
 
@@ -35,7 +35,7 @@ You can also install it using the [package module](https://ansible-opnsense.oxl.
 
 For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basic.html)
 
-### ansibleguy.opnsense.frr_general
+### oxlorg.opnsense.frr_general
 
 | Parameter | Type   | Required | Default value               | Aliases       | Comment                                                                                                                                      |
 |:----------|:-------|:---------|:----------------------------|:--------------|:---------------------------------------------------------------------------------------------------------------------------------------------|
@@ -50,19 +50,19 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 
 ## Examples
 
-### ansibleguy.opnsense.frr_general
+### oxlorg.opnsense.frr_general
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_general:
+      oxlorg.opnsense.frr_general:
         # enabled: true
         # profile: 'traditional'
         # log: true
@@ -71,7 +71,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # carp: false
 
     - name: Enabling FRR
-      ansibleguy.opnsense.frr_general:
+      oxlorg.opnsense.frr_general:
         enabled: true
         profile: 'traditional'
         log: true

@@ -8,13 +8,13 @@ Intrusion Prevention System
 
 **STATE**: stable
 
-**TESTS**: `ansibleguy.opnsense.ids_general <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/ids_general.yml>`_ |
-`ansibleguy.opnsense.ids_action <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_action.yml>`_ |
-`ansibleguy.opnsense.ids_policy <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_policy.yml>`_ |
-`ansibleguy.opnsense.ids_policy_rule <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_policy_rule.yml>`_ |
-`ansibleguy.opnsense.ids_rule <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_rule.yml>`_ |
-`ansibleguy.opnsense.ids_ruleset <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_ruleset.yml>`_ |
-`ansibleguy.opnsense.ids_user_rule <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/ids_user_rule.yml>`_
+**TESTS**: `oxlorg.opnsense.ids_general <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/ids_general.yml>`_ |
+`oxlorg.opnsense.ids_action <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/ids_action.yml>`_ |
+`oxlorg.opnsense.ids_policy <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/ids_policy.yml>`_ |
+`oxlorg.opnsense.ids_policy_rule <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/ids_policy_rule.yml>`_ |
+`oxlorg.opnsense.ids_rule <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/ids_rule.yml>`_ |
+`oxlorg.opnsense.ids_ruleset <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/ids_ruleset.yml>`_ |
+`oxlorg.opnsense.ids_user_rule <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/ids_user_rule.yml>`_
 
 **API Docs**: `IDS <https://docs.opnsense.org/development/api/core/ids.html>`_
 
@@ -32,7 +32,7 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
-ansibleguy.opnsense.ids_action
+oxlorg.opnsense.ids_action
 ==============================
 
 ..  csv-table:: Definition
@@ -42,7 +42,7 @@ ansibleguy.opnsense.ids_action
     "action","string","true","\-","do, a","Action to execute. One of: 'get_alert_info', 'get_alert_logs', 'query_alerts', 'status', 'reconfigure', 'restart', 'start', 'stop', 'drop_alert_log', 'reload_rules', 'update_rules'. These ones return information: 'get_alert_info', 'get_alert_logs', 'query_alerts', 'status'"
     "alert_id","string","false","\-","alert","Parameter Alert-ID needed for 'get_alert_info'"
 
-ansibleguy.opnsense.ids_general
+oxlorg.opnsense.ids_general
 ===============================
 
 Interfaces for 'ids_general' must be provided as used in the network config (*p.e. 'opt1' instead of 'DMZ'*)
@@ -70,7 +70,7 @@ Interfaces for 'ids_general' must be provided as used in the network config (*p.
     "log_rotate","string","false","weekly","\-","One of: 'weekly', 'daily'. Rotate alert logs at provided interval"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.ids_ruleset
+oxlorg.opnsense.ids_ruleset
 ===============================
 
 The :code:`reload` action will download/update the rulesets. If modifying multiple ones in a loop you might want to disable it on single calls.
@@ -84,7 +84,7 @@ The :code:`reload` action will download/update the rulesets. If modifying multip
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.ids_rule
+oxlorg.opnsense.ids_rule
 ============================
 
 ..  csv-table:: Definition
@@ -97,7 +97,7 @@ ansibleguy.opnsense.ids_rule
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.ids_user_rule
+oxlorg.opnsense.ids_user_rule
 =================================
 
 ..  csv-table:: Definition
@@ -114,7 +114,7 @@ ansibleguy.opnsense.ids_user_rule
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.ids_policy
+oxlorg.opnsense.ids_policy
 ==============================
 
 ..  csv-table:: Definition
@@ -130,7 +130,7 @@ ansibleguy.opnsense.ids_policy
     "enabled","boolean","false","true","\-","En- or disable the Policy"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.ids_policy_rule
+oxlorg.opnsense.ids_policy_rule
 ===================================
 
 ..  csv-table:: Definition
@@ -156,7 +156,7 @@ Info
 Examples
 ********
 
-ansibleguy.opnsense.ids_action
+oxlorg.opnsense.ids_action
 ==============================
 
 .. code-block:: yaml
@@ -164,19 +164,19 @@ ansibleguy.opnsense.ids_action
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.ids_action:
+          oxlorg.opnsense.ids_action:
             action: 'status'
             # alert_id: ''
             # debug: false
 
         - name: Pull Alert Logs
-          ansibleguy.opnsense.ids_action:
+          oxlorg.opnsense.ids_action:
             action: 'get_alert_logs'
           register: ids_logs
 
@@ -185,15 +185,15 @@ ansibleguy.opnsense.ids_action
             var: ids_logs.data
 
         - name: Reload Rules
-          ansibleguy.opnsense.ids_action:
+          oxlorg.opnsense.ids_action:
             action: 'reload_rules'
 
         - name: Update Rules
-          ansibleguy.opnsense.ids_action:
+          oxlorg.opnsense.ids_action:
             action: 'update_rules'
 
         - name: Pull Alert Information
-          ansibleguy.opnsense.ids_action:
+          oxlorg.opnsense.ids_action:
             action: 'get_alert_info'
             alert_id: 1337
           register: ids_alert
@@ -203,7 +203,7 @@ ansibleguy.opnsense.ids_action
             var: ids_alert.data
 
 
-ansibleguy.opnsense.ids_general
+oxlorg.opnsense.ids_general
 ===============================
 
 .. code-block:: yaml
@@ -211,16 +211,16 @@ ansibleguy.opnsense.ids_general
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'ids_general'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.ids_general:
+          oxlorg.opnsense.ids_general:
             interfaces: ['opt1']
             # enabled: true
             # block: true
@@ -242,7 +242,7 @@ ansibleguy.opnsense.ids_general
             # debug: false
 
         - name: Enabling IDS (learning mode)
-          ansibleguy.opnsense.ids_general:
+          oxlorg.opnsense.ids_general:
             interfaces: ['opt1']
             enabled: true
             pattern_matcher: 'ac'
@@ -254,7 +254,7 @@ ansibleguy.opnsense.ids_general
             log_level: 'info'
 
         - name: Enabling IPS (blocking)
-          ansibleguy.opnsense.ids_general:
+          oxlorg.opnsense.ids_general:
             interfaces: ['opt1']
             enabled: true
             block: true
@@ -267,7 +267,7 @@ ansibleguy.opnsense.ids_general
             log_level: 'info'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'ids_general'
           register: existing_settings
 
@@ -275,7 +275,7 @@ ansibleguy.opnsense.ids_general
           ansible.builtin.debug:
             var: existing_settings.data
 
-ansibleguy.opnsense.ids_ruleset
+oxlorg.opnsense.ids_ruleset
 ===============================
 
 .. code-block:: yaml
@@ -283,33 +283,33 @@ ansibleguy.opnsense.ids_ruleset
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'ids_ruleset'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.ids_ruleset:
+          oxlorg.opnsense.ids_ruleset:
             name: 'ET open/drop'
             # enabled: true
             # reload: true
             # debug: false
 
         - name: Enabling & downloading ruleset 'ET open/drop'
-          ansibleguy.opnsense.ids_ruleset:
+          oxlorg.opnsense.ids_ruleset:
             name: 'ET open/compromised'
             reload: true
 
         - name: Disabling ruleset 'ET open/compromised'
-          ansibleguy.opnsense.ids_ruleset:
+          oxlorg.opnsense.ids_ruleset:
             name: 'ET open/compromised'
             enabled: false
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'ids_ruleset'
           register: existing_rulesets
 
@@ -317,7 +317,7 @@ ansibleguy.opnsense.ids_ruleset
           ansible.builtin.debug:
             var: existing_rulesets.data
 
-ansibleguy.opnsense.ids_rule
+oxlorg.opnsense.ids_rule
 ============================
 
 .. code-block:: yaml
@@ -325,16 +325,16 @@ ansibleguy.opnsense.ids_rule
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'ids_rule'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.ids_rule:
+          oxlorg.opnsense.ids_rule:
             sid: 2400000
             # enabled: true
             # action: 'alert'
@@ -342,17 +342,17 @@ ansibleguy.opnsense.ids_rule
             # debug: false
 
         - name: Setting rule with ID 2400000 to drop
-          ansibleguy.opnsense.ids_rule:
+          oxlorg.opnsense.ids_rule:
             sid: 2400000
             action: 'drop'
 
         - name: Disabling rule with ID 2400011
-          ansibleguy.opnsense.ids_rule:
+          oxlorg.opnsense.ids_rule:
             sid: 2400011
             enabled: false
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'ids_rule'
           register: existing_rules
 
@@ -361,7 +361,7 @@ ansibleguy.opnsense.ids_rule
             var: existing_rules.data
 
 
-ansibleguy.opnsense.ids_user_rule
+oxlorg.opnsense.ids_user_rule
 =================================
 
 .. code-block:: yaml
@@ -369,16 +369,16 @@ ansibleguy.opnsense.ids_user_rule
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'ids_user_rule'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.ids_user_rule:
+          oxlorg.opnsense.ids_user_rule:
             name: 'Example'
             # source_ip: ''
             # destination_ip: ''
@@ -390,7 +390,7 @@ ansibleguy.opnsense.ids_user_rule
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.ids_user_rule:
+          oxlorg.opnsense.ids_user_rule:
             name: 'ANSIBLE_TEST_1_1'
             source_ip: '192.168.10.1'
             destination_ip: '1.1.1.1'
@@ -398,7 +398,7 @@ ansibleguy.opnsense.ids_user_rule
             bypass: false
 
         - name: Disabling
-          ansibleguy.opnsense.ids_user_rule:
+          oxlorg.opnsense.ids_user_rule:
             name: 'ANSIBLE_TEST_1_1'
             source_ip: '192.168.10.1'
             destination_ip: '1.1.1.1'
@@ -407,12 +407,12 @@ ansibleguy.opnsense.ids_user_rule
             enabled: false
 
         - name: Removing
-          ansibleguy.opnsense.ids_user_rule:
+          oxlorg.opnsense.ids_user_rule:
             name: 'ANSIBLE_TEST_1_1'
             state: 'absent'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'ids_user_rule'
           register: existing_rules
 
@@ -420,7 +420,7 @@ ansibleguy.opnsense.ids_user_rule
           ansible.builtin.debug:
             var: existing_rules.data
 
-ansibleguy.opnsense.ids_policy
+oxlorg.opnsense.ids_policy
 ==============================
 
 .. code-block:: yaml
@@ -428,16 +428,16 @@ ansibleguy.opnsense.ids_policy
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'ids_policy'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.ids_policy:
+          oxlorg.opnsense.ids_policy:
             name: 'Example'
             # priority: 0
             # rulesets: []
@@ -449,7 +449,7 @@ ansibleguy.opnsense.ids_policy
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.ids_policy:
+          oxlorg.opnsense.ids_policy:
             name: 'ANSIBLE_TEST_1_1'
             priority: 1
             rulesets: 'ET open/drop'
@@ -460,7 +460,7 @@ ansibleguy.opnsense.ids_policy
               signature_severity: 'Minor'
 
         - name: Disabling
-          ansibleguy.opnsense.ids_policy:
+          oxlorg.opnsense.ids_policy:
             name: 'ANSIBLE_TEST_1_1'
             priority: 1
             rulesets: 'ET open/drop'
@@ -472,12 +472,12 @@ ansibleguy.opnsense.ids_policy
             enabled: false
 
         - name: Removing
-          ansibleguy.opnsense.ids_policy:
+          oxlorg.opnsense.ids_policy:
             name: 'ANSIBLE_TEST_1_1'
             state: 'absent'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'ids_policy'
           register: existing_policies
 
@@ -485,7 +485,7 @@ ansibleguy.opnsense.ids_policy
           ansible.builtin.debug:
             var: existing_policies.data
 
-ansibleguy.opnsense.ids_policy_rule
+oxlorg.opnsense.ids_policy_rule
 ===================================
 
 .. code-block:: yaml
@@ -493,16 +493,16 @@ ansibleguy.opnsense.ids_policy_rule
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'ids_policy_rule'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.ids_policy_rule:
+          oxlorg.opnsense.ids_policy_rule:
             sid: 2400000
             # action: 'alert'
             # enabled: true
@@ -510,23 +510,23 @@ ansibleguy.opnsense.ids_policy_rule
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.ids_policy_rule:
+          oxlorg.opnsense.ids_policy_rule:
             sid: 2400000
             action: 'alert'
 
         - name: Disabling
-          ansibleguy.opnsense.ids_policy_rule:
+          oxlorg.opnsense.ids_policy_rule:
             sid: 2400000
             action: 'alert'
             enabled: false
 
         - name: Removing
-          ansibleguy.opnsense.ids_policy_rule:
+          oxlorg.opnsense.ids_policy_rule:
             sid: 2400000
             state: 'absent'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'ids_policy_rule'
           register: existing_rules
 

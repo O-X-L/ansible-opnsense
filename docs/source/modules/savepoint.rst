@@ -32,9 +32,9 @@ Here is the basic process:
 
 It currently just works with the 'Firewall' plugin:
 
-- :ref:`ansibleguy.opnsense.rule <modules_rule>`
-- :ref:`ansibleguy.opnsense.nat_source <modules_nat_source>`
-- :ref:`ansibleguy.opnsense.nat_one_to_one <modules_nat_one_to_one>`
+- :ref:`oxlorg.opnsense.rule <modules_rule>`
+- :ref:`oxlorg.opnsense.nat_source <modules_nat_source>`
+- :ref:`oxlorg.opnsense.nat_one_to_one <modules_nat_one_to_one>`
 
 ----
 
@@ -62,35 +62,35 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Create a savepoint for firewall filters
-          ansibleguy.opnsense.savepoint:
+          oxlorg.opnsense.savepoint:
             action: 'create'
             controller: 'filter'  # default
           register: filter_savepoint
 
         - name: Apply savepoint
-          ansibleguy.opnsense.savepoint:
+          oxlorg.opnsense.savepoint:
             action: 'apply'
             revision: "{{ filter_savepoint.revision }}"
 
         - name: Revert savepoint
-          ansibleguy.opnsense.savepoint:
+          oxlorg.opnsense.savepoint:
             action: 'revert'
             revision: "{{ filter_savepoint.revision }}"
 
         - name: Create a savepoint for firewall source-nat
-          ansibleguy.opnsense.savepoint:
+          oxlorg.opnsense.savepoint:
             action: 'create'
             controller: 'source_nat'
           register: snat_savepoint
 
         - name: Remove source-nat savepoint (else it will be reverted automatically)
-          ansibleguy.opnsense.savepoint:
+          oxlorg.opnsense.savepoint:
             action: 'cancel_rollback'
             controller: 'source_nat'
             revision: "{{ snat_savepoint.revision }}"

@@ -9,18 +9,18 @@
 from ansible.module_utils.basic import AnsibleModule
 
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.wrapper import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import \
         module_wrapper, is_multi_module_call, module_multi_wrapper
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import \
         build_multi_mod_args
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.rule import RULE_MOD_ARGS
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.rule import Rule
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.rule import RULE_MOD_ARGS
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.rule import Rule
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()

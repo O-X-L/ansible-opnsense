@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'hasync_general'
 
   environment:
@@ -17,17 +17,17 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Default Setting
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
 
     - name: Default Setting - nothing changed
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
       register: opn1
       failed_when: >
         opn1.failed or
@@ -35,7 +35,7 @@
       when: not ansible_check_mode
 
     - name: Setting General
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
         preempt: true
         disconnect_ppps: true
         pfsync_interface: 'lan'
@@ -46,7 +46,7 @@
         not opn2.changed
 
     - name: Changing General
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
         preempt: true
         disconnect_ppps: true
         pfsync_interface: 'lan'
@@ -57,7 +57,7 @@
         not opn3.changed
 
     - name: Changing General - nothing changed
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
         preempt: true
         disconnect_ppps: true
         pfsync_interface: 'lan'
@@ -69,11 +69,11 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
       when: not ansible_check_mode
 
     - name: Setting Config Sync
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
         synchronize_to_ip: '4.4.4.4'
         username: 'alice'
         password: 'secret'
@@ -85,7 +85,7 @@
         not opn5.changed
 
     - name: Changing Config Sync
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
         synchronize_to_ip: '4.4.4.5'
         username: 'alice'
         password: 'secret2'
@@ -98,7 +98,7 @@
         not opn6.changed
 
     - name: Changing Config Sync - nothing changed
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
         synchronize_to_ip: '4.4.4.5'
         username: 'alice'
         password: 'secret2'
@@ -112,7 +112,7 @@
       when: not ansible_check_mode
 
     - name: Setting Config Sync - update password
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
         synchronize_to_ip: '4.4.4.5'
         username: 'alice'
         password: 'secret3'
@@ -126,7 +126,7 @@
       when: not ansible_check_mode
 
     - name: Setting Config Sync - do not update password
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
         synchronize_to_ip: '4.4.4.5'
         username: 'alice'
         password: 'secret'
@@ -141,5 +141,5 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
       when: not ansible_check_mode

@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'ipsec_general'
 
   environment:
@@ -17,13 +17,13 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1
 
     - name: Configuring - General
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
         prefer_old_sa: true
         disable_vpn_rules: true
         passthrough_networks:
@@ -37,7 +37,7 @@
         not opn1.changed
 
     - name: Configuring - General - nothing changed
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
         prefer_old_sa: true
         disable_vpn_rules: true
         passthrough_networks:
@@ -52,7 +52,7 @@
       when: not ansible_check_mode
 
     - name: Configuring - eap-radius
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
         radius_accounting: true
         radius_class_group: true
       register: opn3
@@ -61,7 +61,7 @@
         not opn3.changed
 
     - name: Configuring - eap-radius - nothing changed
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
         radius_accounting: true
         radius_class_group: true
       register: opn4
@@ -71,7 +71,7 @@
       when: not ansible_check_mode
 
     - name: Configuring - xauth-pam
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
         pam_service: ansible
         pam_session: true
         pam_trim_email: false
@@ -81,7 +81,7 @@
         not opn5.changed
 
     - name: Configuring - xauth-pam - nothing changed
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
         pam_service: ansible
         pam_session: true
         pam_trim_email: false
@@ -92,7 +92,7 @@
       when: not ansible_check_mode
 
     - name: Configuring - Charon
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
         charon_max_ikev1_exchanges: 4
         charon_threads: 8
         charon_ikesa_table_size: 16
@@ -112,7 +112,7 @@
         not opn7.changed
 
     - name: Configuring - Charon - nothing changed
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
         charon_max_ikev1_exchanges: 4
         charon_threads: 8
         charon_ikesa_table_size: 16
@@ -133,7 +133,7 @@
       when: not ansible_check_mode
 
     - name: Configuring - Syslog
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
         syslog_log_name: false
         syslog_log_level: true
         syslog_app: 0
@@ -160,7 +160,7 @@
         not opn9.changed
 
     - name: Configuring - Syslog - nothing changed
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
         syslog_log_name: false
         syslog_log_level: true
         syslog_app: 0
@@ -188,7 +188,7 @@
       when: not ansible_check_mode
 
     - name: Configuring - Attr
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
         attr_subnet:
           - 172.16.0.0/24
           - 172.16.1.0/24
@@ -212,7 +212,7 @@
         not opn11.changed
 
     - name: Configuring - Attr - nothing changed
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
         attr_subnet:
           - 172.16.0.0/24
           - 172.16.1.0/24
@@ -237,5 +237,5 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.ipsec_general:
+      oxlorg.opnsense.ipsec_general:
       when: not ansible_check_mode

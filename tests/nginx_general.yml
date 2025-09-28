@@ -4,7 +4,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -14,14 +14,14 @@
 
   tasks:
     - name: Enabling - should work
-      ansibleguy.opnsense.nginx_general:
+      oxlorg.opnsense.nginx_general:
         enabled: true
       register: opn_enb1
       failed_when: >
         opn_enb1.failed
 
     - name: Re-enable - should work and do nothing
-      ansibleguy.opnsense.nginx_general:
+      oxlorg.opnsense.nginx_general:
         enabled: true
       register: opn_enb2
       failed_when: >
@@ -29,7 +29,7 @@
       when: not ansible_check_mode
 
     - name: Re-enable with new ban_ttl - should work and do something
-      ansibleguy.opnsense.nginx_general:
+      oxlorg.opnsense.nginx_general:
         enabled: true
         ban_ttl: 10
       register: opn_enb3
@@ -38,7 +38,7 @@
       when: not ansible_check_mode
 
     - name: Disabling - should work and do something
-      ansibleguy.opnsense.nginx_general:
+      oxlorg.opnsense.nginx_general:
         enabled: false
       register: opn_dsb1
       failed_when: >
@@ -46,7 +46,7 @@
       when: not ansible_check_mode
 
     - name: Re-disable - should work and do nothing
-      ansibleguy.opnsense.nginx_general:
+      oxlorg.opnsense.nginx_general:
         enabled: false
       register: opn_dsb2
       failed_when: >

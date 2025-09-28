@@ -29,7 +29,7 @@ Interfaces for 'monit_services' must be provided as used in the network config (
 
 For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basic.html)
 
-### ansibleguy.opnsense.monit_alert
+### oxlorg.opnsense.monit_alert
 
 | Parameter    | Type    | Required | Default value | Aliases        | Comment                                                                                                                                                                                                                                                                                                                                                                                                   |
 |:-------------|:--------|:---------|:--------------|:---------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -41,7 +41,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | description            | string     | false    | -             | desc              | Send a reminder after some cycles                                                                                                                                                                                                                                                                                                                                                                         |
 | match_fields            | string     | false    | ['recipient'] | -          | Fields that are used to match configured alerts with the running config - if any of those fields are changed, the module will think it's a new entry. At least one of: 'recipient', 'not_on', 'events', 'reminder', 'description'                                                                                                                                                                         |
 
-### ansibleguy.opnsense.monit_test
+### oxlorg.opnsense.monit_test
 
 | Parameter    | Type    | Required                                    | Default value | Aliases | Comment                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 |:-------------|:--------|:--------------------------------------------|:--------------|:--------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -51,7 +51,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | action            | string  | false for state changes, else true            | 'alert'        | -       | One of: 'alert', 'restart', 'start', 'stop', 'exec', 'unmonitor'                                                                                                                                                                                                                                                                                                                                                                                               |
 | path            | path  | false, true if present and type is 'execute' | -             | -       | The absolute path to the script to execute - if action is set to 'execute'. Make sure the script is executable by the Monit service                                                                                                                                                                                                                                                                                                                                                                                   |
 
-### ansibleguy.opnsense.monit_service
+### oxlorg.opnsense.monit_service
 
 | Parameter | Type   | Required                                        | Default value | Aliases     | Comment                                                                                                                                                                                   |
 |:----------|:-------|:------------------------------------------------|:--------------|:------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -80,16 +80,16 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'monit_alert'
 
   tasks:
     - name: Example      
-      ansibleguy.opnsense.monit_alert:
+      oxlorg.opnsense.monit_alert:
         recipient: 'monit-alert@template.opnsense.oxl.app'
         # not_on: false
         # events: []
@@ -101,11 +101,11 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # reload: true
 
     - name: Adding simple
-      ansibleguy.opnsense.monit_alert:
+      oxlorg.opnsense.monit_alert:
         recipient: 'monit-alert@template.opnsense.oxl.app'
 
     - name: Changing
-      ansibleguy.opnsense.monit_alert:
+      oxlorg.opnsense.monit_alert:
         recipient: 'monit-alert@template.opnsense.oxl.app'
         format: |
           From: monit-alert@template.opnsense.oxl.app
@@ -117,7 +117,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         reminder: 500
 
     - name: Disabling
-      ansibleguy.opnsense.monit_alert:
+      oxlorg.opnsense.monit_alert:
         recipient: 'monit-alert@template.opnsense.oxl.app'
         format: |
           From: monit-alert@template.opnsense.oxl.app
@@ -130,12 +130,12 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Removing
-      ansibleguy.opnsense.monit_alert:
+      oxlorg.opnsense.monit_alert:
         recipient: 'monit-alert@template.opnsense.oxl.app'
         state: 'absent'
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         # target: 'monit_alert'
       register: existing_entries
 
@@ -150,16 +150,16 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'monit_test'
 
   tasks:
     - name: Example      
-      ansibleguy.opnsense.monit_test:
+      oxlorg.opnsense.monit_test:
         name: 'example'
         # type: ''
         # condition: ''
@@ -169,14 +169,14 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # reload: true
 
     - name: Adding memory tests
-      ansibleguy.opnsense.monit_test:
+      oxlorg.opnsense.monit_test:
         name: 'test1'
         condition: 'memory usage is greater than 90%'
         type: 'SystemResource'
         action: 'alert'
 
     - name: Changing
-      ansibleguy.opnsense.monit_test:
+      oxlorg.opnsense.monit_test:
         name: 'test1'
         condition: 'memory usage is greater than 90%'
         type: 'SystemResource'
@@ -184,7 +184,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         path: '/usr/local/bin/test1.sh'
 
     - name: Disabling
-      ansibleguy.opnsense.monit_test:
+      oxlorg.opnsense.monit_test:
         name: 'test1'
         condition: 'memory usage is greater than 90%'
         type: 'SystemResource'
@@ -193,18 +193,18 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Removing
-      ansibleguy.opnsense.monit_test:
+      oxlorg.opnsense.monit_test:
         name: 'test1'
         state: 'absent'
 
     - name: Adding connection tests
-      ansibleguy.opnsense.monit_test:
+      oxlorg.opnsense.monit_test:
         name: 'test2'
         condition: 'failed host 127.0.0.1 port 22 protocol ssh'
         type: 'Connection'
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         # target: 'monit_test'
       register: existing_entries
 
@@ -219,16 +219,16 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'monit_service'
 
   tasks:
     - name: Example      
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'example'
         # type: ''
         # pidfile: ''
@@ -247,13 +247,13 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # reload: true
 
     - name: Adding simple
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'service1'
         type: 'custom'
         start: '/usr/local/bin/test1_start.sh'
 
     - name: Changing
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'service1'
         type: 'custom'
         start: '/usr/local/bin/service1_start.sh'
@@ -261,14 +261,14 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         tests: ['test1']
 
     - name: Adding another
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'service2'
         type: 'network'
         interface: 'opt2'
         depends: ['service1']
 
     - name: Disabling
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'service2'
         type: 'network'
         interface: 'opt2'
@@ -276,12 +276,12 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Removing
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'service2'
         state: 'absent'
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         # target: 'monit_service'
       register: existing_entries
 
@@ -298,20 +298,20 @@ Mail notification on IDS alert: see [documentation](https://docs.opnsense.org/ma
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
   tasks:
     - name: Adding test
-      ansibleguy.opnsense.monit_test:
+      oxlorg.opnsense.monit_test:
         name: 'SURICATA_EVE'
         condition: 'content = "blocked"'
         type: 'FileContent'
         action: 'alert'
 
     - name: Adding service
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'SURICATA_ALERT'
         type: 'file'
         path: '/var/log/suricata/eve.json'

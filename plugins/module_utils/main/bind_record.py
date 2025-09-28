@@ -1,15 +1,15 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     ModuleSoftError
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import \
     get_multiple_matching
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_ip4, is_ip6, is_unset
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.bind_domain import Domain
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.bind_domain import Domain
 
 
 class Record(BaseModule):

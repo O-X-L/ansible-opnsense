@@ -6,12 +6,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'dhcrelay_destination'
 
   environment:
@@ -19,14 +19,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn1
       failed_when: >
         'data' not in opn1 or
         opn1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.dhcrelay_destination:
+      oxlorg.opnsense.dhcrelay_destination:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
         reload: false
@@ -36,7 +36,7 @@
         opn2.changed
 
     - name: Adding - failing because of invalid values
-      ansibleguy.opnsense.dhcrelay_destination:
+      oxlorg.opnsense.dhcrelay_destination:
         name: 'ANSIBLE_TEST_1_1'
         server: '{{ item }}'
         reload: false
@@ -48,7 +48,7 @@
       when: not ansible_check_mode
 
     - name: Adding 1
-      ansibleguy.opnsense.dhcrelay_destination:
+      oxlorg.opnsense.dhcrelay_destination:
         name: 'ANSIBLE_TEST_1_1'
         server:
           - '192.168.254.254'
@@ -58,7 +58,7 @@
         not opn3.changed
 
     - name: Adding 2
-      ansibleguy.opnsense.dhcrelay_destination:
+      oxlorg.opnsense.dhcrelay_destination:
         name: 'ANSIBLE_TEST_1_2'
         server:
           - '192.168.254.252'
@@ -69,7 +69,7 @@
         not opn4.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.dhcrelay_destination:
+      oxlorg.opnsense.dhcrelay_destination:
         name: 'ANSIBLE_TEST_1_2'
         server:
           - '192.168.254.252'
@@ -81,7 +81,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.dhcrelay_destination:
+      oxlorg.opnsense.dhcrelay_destination:
         name: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn6
@@ -91,7 +91,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn7
       failed_when: >
         'data' not in opn7 or
@@ -99,13 +99,13 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.dhcrelay_destination:
+      oxlorg.opnsense.dhcrelay_destination:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or

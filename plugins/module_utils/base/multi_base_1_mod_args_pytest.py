@@ -1,6 +1,6 @@
 def test_build_multi_mod_args():
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import build_multi_mod_args
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS
 
     mod_args = {

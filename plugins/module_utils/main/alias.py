@@ -1,14 +1,14 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     ModuleSoftError
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.alias import \
     validate_values, filter_builtin_alias, build_updatefreq
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import \
     get_simple_existing, simplify_translate, is_unset
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
 class Alias(BaseModule):

@@ -4,7 +4,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    ansibleguy.opnsense.system:
+    oxlorg.opnsense.system:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -14,11 +14,11 @@
 
   tasks:
     - name: Fetching updates
-      ansibleguy.opnsense.system:
+      oxlorg.opnsense.system:
         action: 'update'
 
     - name: Upgrade with wait - failing because not forced
-      ansibleguy.opnsense.system:
+      oxlorg.opnsense.system:
         action: 'upgrade'
         wait: true
         timeout: 120
@@ -27,7 +27,7 @@
       failed_when: not opn_up1.failed
 
     - name: Upgrade with wait
-      ansibleguy.opnsense.system:
+      oxlorg.opnsense.system:
         action: 'upgrade'
         force_upgrade: true
         wait: true
@@ -40,7 +40,7 @@
       when: not ansible_check_mode
 
     - name: Rebooting with wait
-      ansibleguy.opnsense.system:
+      oxlorg.opnsense.system:
         action: 'reboot'
         wait: true
         timeout: 90

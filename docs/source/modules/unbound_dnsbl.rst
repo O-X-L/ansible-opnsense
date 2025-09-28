@@ -62,11 +62,11 @@ Examples
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'unbound_dnsbl'
 
       tasks:
@@ -74,7 +74,7 @@ Examples
         # required ones normally
         # add their default values to get a brief overview of how the module works
         - name: Example
-          ansibleguy.opnsense.unbound_dnsbl:
+          oxlorg.opnsense.unbound_dnsbl:
             type: atl
             # safesearch: false
             # lists: ['https://example.com/dns.blocklist']
@@ -88,12 +88,12 @@ Examples
             # debug: false
 
         - name: Configuring DNS Blocklists
-          ansibleguy.opnsense.unbound_dnsbl:
+          oxlorg.opnsense.unbound_dnsbl:
             type: atl
             enable: true
 
         - name: Listing current config
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'unbound_dnsbl'
           register: dnsbl_config
 

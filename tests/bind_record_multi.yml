@@ -4,15 +4,15 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'bind_record'
 
-    ansibleguy.opnsense.bind_record:
+    oxlorg.opnsense.bind_record:
       multi_control:
         fail_verify: true
         fail_process: true
@@ -24,44 +24,44 @@
 
 
     - name: Adding dummy domain
-      ansibleguy.opnsense.bind_domain:
-        name: 'test4.ansibleguy'
+      oxlorg.opnsense.bind_domain:
+        name: 'test4.oxlorg'
       when: not ansible_check_mode
 
     - name: Adding 1
-      ansibleguy.opnsense.bind_record:
+      oxlorg.opnsense.bind_record:
         records:
           - name: 'test1'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             value: '192.168.1.1'
             type: 'A'
 
           - name: 'test1'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'TXT'
             value: 'random'
 
           - name: 'test2'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             value: '192.168.2.1'
 
           - name: 'test3'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             value: '192.168.3.1'
 
           - name: 'test4'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'CNAME'
-            value: 'test1.test3.ansibleguy'
+            value: 'test1.test3.oxlorg'
 
           - name: 'test5'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'AAAA'
             value: '2001:db8::1'
             round_robin: true
 
           - name: 'test5'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'AAAA'
             value: '2001:db8::2'
             round_robin: true
@@ -72,7 +72,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn12
       failed_when: >
         'data' not in opn12 or
@@ -80,41 +80,41 @@
       when: not ansible_check_mode
 
     - name: Removing single
-      ansibleguy.opnsense.bind_record:
+      oxlorg.opnsense.bind_record:
         records:
           - name: 'test1'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             value: '192.168.1.2'
             type: 'A'
 
           - name: 'test1'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'TXT'
             value: 'random_new'
 
           - name: 'test2'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             value: '192.168.2.1'
             enabled: false
 
           - name: 'test3'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             state: 'absent'
 
           - name: 'test4'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'CNAME'
-            value: 'test2.test3.ansibleguy'
+            value: 'test2.test3.oxlorg'
           # round-robin
 
           - name: 'test5'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'AAAA'
             value: '2001:db8::1'
             round_robin: true
 
           - name: 'test5'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'AAAA'
             value: '2001:db8::2'
             round_robin: true
@@ -125,41 +125,41 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.bind_record:
+      oxlorg.opnsense.bind_record:
         records:
           - name: 'test1'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             value: '192.168.1.2'
             type: 'A'
 
           - name: 'test1'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'TXT'
             value: 'random_new'
 
           - name: 'test2'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             value: '192.168.2.1'
             enabled: false
 
           - name: 'test3'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             state: 'absent'
 
           - name: 'test4'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'CNAME'
-            value: 'test2.test3.ansibleguy'
+            value: 'test2.test3.oxlorg'
           # round-robin
 
           - name: 'test5'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'AAAA'
             value: '2001:db8::1'
             round_robin: true
 
           - name: 'test5'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'AAAA'
             value: '2001:db8::2'
             round_robin: true
@@ -170,7 +170,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -178,15 +178,15 @@
       when: not ansible_check_mode
 
     - name: Removing - round robin
-      ansibleguy.opnsense.bind_record:
+      oxlorg.opnsense.bind_record:
         records:
           - name: 'test5'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'AAAA'
             round_robin: true
 
           - name: 'test5'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'AAAA'
             round_robin: true
 
@@ -195,7 +195,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn9
       failed_when: >
         'data' not in opn9 or
@@ -203,24 +203,24 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.bind_record:
+      oxlorg.opnsense.bind_record:
         records:
           - name: 'test1'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'A'
 
           - name: 'test1'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'TXT'
 
           - name: 'test2'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
 
           - name: 'test3'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
 
           - name: 'test4'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             type: 'CNAME'
 
         multi_control:
@@ -228,7 +228,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean2
       failed_when: >
         'data' not in opn_clean2 or
@@ -236,10 +236,10 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.bind_record:
+      oxlorg.opnsense.bind_record:
         records:
           - name: 'test1'
-            domain: 'test4.ansibleguy'
+            domain: 'test4.oxlorg'
             value: '192.168.1.1'
       register: opn11
       failed_when: >
@@ -248,7 +248,7 @@
       when: not ansible_check_mode
 
     - name: Purging all
-      ansibleguy.opnsense.bind_record:
+      oxlorg.opnsense.bind_record:
         multi_control:
           purge_all: true
       register: opn10
@@ -258,13 +258,13 @@
       when: not ansible_check_mode
 
     - name: Cleanup domain
-      ansibleguy.opnsense.bind_domain:
-        name: 'test4.ansibleguy'
+      oxlorg.opnsense.bind_domain:
+        name: 'test4.oxlorg'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

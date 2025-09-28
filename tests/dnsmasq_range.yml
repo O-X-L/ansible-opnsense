@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'dnsmasq_range'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.dnsmasq_range:
+      oxlorg.opnsense.dnsmasq_range:
         description: ANSIBLE_TEST_1_1
         state: 'absent'
       register: opn_pre2
@@ -33,7 +33,7 @@
         opn_pre2.changed
 
     - name: Adding 1
-      ansibleguy.opnsense.dnsmasq_range:
+      oxlorg.opnsense.dnsmasq_range:
         description: 'ANSIBLE_TEST_1_1'
         interface: 'TEST'
         start_addr: '192.168.1.100'
@@ -47,7 +47,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.dnsmasq_range:
+      oxlorg.opnsense.dnsmasq_range:
         description: 'ANSIBLE_TEST_1_1'
         interface: 'TEST'
         start_addr: '192.168.1.100'
@@ -61,7 +61,7 @@
         not opn2.changed
 
     - name: Adding 2
-      ansibleguy.opnsense.dnsmasq_range:
+      oxlorg.opnsense.dnsmasq_range:
         description: 'ANSIBLE_TEST_1_2'
         interface: 'TEST'
         start_addr: '::1'
@@ -78,7 +78,7 @@
         not opn3.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.dnsmasq_range:
+      oxlorg.opnsense.dnsmasq_range:
         description: 'ANSIBLE_TEST_1_2'
         interface: 'TEST'
         start_addr: '::1'
@@ -96,7 +96,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.dnsmasq_range:
+      oxlorg.opnsense.dnsmasq_range:
         description: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn5
@@ -106,7 +106,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn6
       failed_when: >
         'data' not in opn6 or
@@ -114,7 +114,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.dnsmasq_range:
+      oxlorg.opnsense.dnsmasq_range:
         description: '{{ item }}'
         state: 'absent'
       loop:
@@ -123,7 +123,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

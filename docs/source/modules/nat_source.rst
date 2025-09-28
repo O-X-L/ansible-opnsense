@@ -8,7 +8,7 @@ NAT Source
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/nat_source.yml>`_
+**TESTS**: `Playbook <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/nat_source.yml>`_
 
 **API Docs**: `Core - Firewall <https://docs.opnsense.org/development/api/core/firewall.html>`_
 
@@ -49,7 +49,7 @@ Savepoint
 
 You can prevent lockout-situations using the savepoint systems:
 
-- :ref:`ansibleguy.opnsense.savepoint <modules_savepoint>`
+- :ref:`oxlorg.opnsense.savepoint <modules_savepoint>`
 
 Web-UI
 ======
@@ -61,7 +61,7 @@ Menu: 'Firewall - Automation - Source NAT'
 Definition
 **********
 
-Module alias: ansibleguy.opnsense.snat
+Module alias: oxlorg.opnsense.snat
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -114,19 +114,19 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.nat_source:
+        oxlorg.opnsense.nat_source:
           match_fields: ['description']
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'nat_source'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.nat_source:
+          oxlorg.opnsense.nat_source:
             description: 'example'
             match_fields: ['description']
             target: '192.168.0.1'
@@ -150,7 +150,7 @@ Examples
             # reload: true
 
         - name: Adding rule
-          ansibleguy.opnsense.nat_source:
+          oxlorg.opnsense.nat_source:
             description: 'test1'
             source: '192.168.0.0/24'
             destination: '10.0.0.0/24'
@@ -159,7 +159,7 @@ Examples
             # match_fields: ['description']
 
         - name: Disabling rule
-          ansibleguy.opnsense.nat_source:
+          oxlorg.opnsense.nat_source:
             description: 'test1'
             source: '192.168.0.0/24'
             destination: '10.0.0.0/24'
@@ -169,7 +169,7 @@ Examples
             # match_fields: ['description']
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'nat_source'
           register: existing_entries
 
@@ -178,7 +178,7 @@ Examples
             var: existing_entries.data
 
         - name: Removing rule
-          ansibleguy.opnsense.nat_source:
+          oxlorg.opnsense.nat_source:
             description: 'test1'
             state: 'absent'
             # match_fields: ['description']

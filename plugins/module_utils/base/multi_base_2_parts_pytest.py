@@ -1,17 +1,17 @@
 import pytest
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.mock_pytest import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.mock_pytest import \
     pytest_mock_http_responses, MockAnsibleModule, MockOPNsenseModule, ANSIBLE_RESULT, AnsibleError, \
     MockAnsibleModuleWarnException, AnsibleWarning, get_ansible_module_multi_params
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.util_pytest import log_test
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.testdata.base_testdata import GenericTestdata
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.util_pytest import log_test
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.testdata.base_testdata import GenericTestdata
 
 
 def test_build_multi_mod_args():
     log_test('multi-parts')
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import build_multi_mod_args
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS
 
     mod_args = {
@@ -87,7 +87,7 @@ def test_multi_module_is_multi_purge(mocker, params, result):
         handler=GenericTestdata(),
     )
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
         MultiModule
 
     am = MockAnsibleModule()
@@ -135,7 +135,7 @@ def test_multi_module_is_multi_crud(mocker, params, result):
         handler=GenericTestdata(),
     )
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
         MultiModule
 
     am = MockAnsibleModule()
@@ -204,7 +204,7 @@ def test_multi_module_purge_filter(mocker, purge_filter, entry, partial, invert,
         handler=GenericTestdata(),
     )
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
         MultiModule
 
     am = MockAnsibleModule()
@@ -268,7 +268,7 @@ def test_multi_module_entry_matches(mocker, e1, e2, match_fields, result):
         handler=GenericTestdata(),
     )
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
         MultiModule
 
     am = MockAnsibleModule()
@@ -338,7 +338,7 @@ def test_multi_validate_entry(mocker, entry, entry_args, fail_verify, raises):
         handler=GenericTestdata(),
     )
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
         MultiModule
 
     am = MockAnsibleModuleWarnException()
@@ -384,7 +384,7 @@ def test_multi_build_entries(mocker, match_fields, debug, profiling, mc_state, m
         handler=GenericTestdata(),
     )
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
         MultiModule
 
     am = MockAnsibleModuleWarnException()

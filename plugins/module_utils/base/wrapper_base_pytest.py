@@ -1,9 +1,9 @@
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.mock_pytest import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.mock_pytest import \
     MockAnsibleModule
 
 
 def test_is_multi_module_call():
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.wrapper import is_multi_module_call
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import is_multi_module_call
 
     am = MockAnsibleModule()
     am.params['multi'] = {}

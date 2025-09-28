@@ -6,15 +6,15 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.unbound_forward:
+    oxlorg.opnsense.unbound_forward:
       timeout: 60
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'unbound_forward'
 
   environment:
@@ -22,15 +22,15 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         'data' not in opn10 or
         opn10.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.unbound_forward:
-        domain: 'fwd.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_forward:
+        domain: 'fwd.opnsense.test.oxlorg.net'
         target: '1.1.1.1'
         state: 'absent'
         reload: false
@@ -40,8 +40,8 @@
         opn1.changed
 
     - name: Adding 1
-      ansibleguy.opnsense.unbound_forward:
-        domain: 'fwd.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_forward:
+        domain: 'fwd.opnsense.test.oxlorg.net'
         target: '1.1.1.1'
         reload: false  # speed
       register: opn4
@@ -50,8 +50,8 @@
         not opn4.changed
 
     - name: Adding 2
-      ansibleguy.opnsense.unbound_forward:
-        domain: 'fwd.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_forward:
+        domain: 'fwd.opnsense.test.oxlorg.net'
         target: '1.1.1.2'
         reload: false  # speed
       register: opn5
@@ -60,7 +60,7 @@
         not opn5.changed
 
     - name: Adding 3 - catch-all
-      ansibleguy.opnsense.unbound_forward:
+      oxlorg.opnsense.unbound_forward:
         target: '1.1.1.3'
         reload: false  # speed
       register: opn11
@@ -69,8 +69,8 @@
         not opn11.changed
 
     - name: Disabling 2
-      ansibleguy.opnsense.unbound_forward:
-        domain: 'fwd.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_forward:
+        domain: 'fwd.opnsense.test.oxlorg.net'
         target: '1.1.1.2'
         enabled: false
         reload: false
@@ -81,8 +81,8 @@
       when: not ansible_check_mode
 
     - name: Disabling 2 - nothing changed
-      ansibleguy.opnsense.unbound_forward:
-        domain: 'fwd.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_forward:
+        domain: 'fwd.opnsense.test.oxlorg.net'
         target: '1.1.1.2'
         enabled: false
         reload: false  # speed
@@ -93,8 +93,8 @@
       when: not ansible_check_mode
 
     - name: Enabling 2
-      ansibleguy.opnsense.unbound_forward:
-        domain: 'fwd.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_forward:
+        domain: 'fwd.opnsense.test.oxlorg.net'
         target: '1.1.1.2'
         reload: false  # speed
       register: opn7
@@ -104,8 +104,8 @@
       when: not ansible_check_mode
 
     - name: Channging 2 - tcp-forward
-      ansibleguy.opnsense.unbound_forward:
-        domain: 'fwd.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_forward:
+        domain: 'fwd.opnsense.test.oxlorg.net'
         target: '1.1.1.2'
         forward_tcp: true
         reload: false  # speed
@@ -116,8 +116,8 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.unbound_forward:
-        domain: 'fwd.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_forward:
+        domain: 'fwd.opnsense.test.oxlorg.net'
         target: '1.1.1.2'
         state: 'absent'
         reload: false  # speed
@@ -128,7 +128,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn3
       failed_when: >
         'data' not in opn3 or
@@ -136,7 +136,7 @@
       when: not ansible_check_mode
 
     - name: Adding 4 - description
-      ansibleguy.opnsense.unbound_forward:
+      oxlorg.opnsense.unbound_forward:
         target: '1.1.1.4'
         reload: false  # speed
         description: 'Deny access'
@@ -146,7 +146,7 @@
         not opn1.changed
 
     - name: Adding - failing because of an invalid description was provided
-      ansibleguy.opnsense.unbound_forward:
+      oxlorg.opnsense.unbound_forward:
         target: '1.1.1.4'
         reload: false  # speed
         description: >-
@@ -158,20 +158,20 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.unbound_forward:
+      oxlorg.opnsense.unbound_forward:
         domain: "{{ item.d }}"
         target: "{{ item.t }}"
         state: 'absent'
         reload: false
       loop:
-        - {d: 'fwd.opnsense.test.ansibleguy.net', t: '1.1.1.1'}
-        - {d: 'fwd.opnsense.test.ansibleguy.net', t: '1.1.1.2'}
+        - {d: 'fwd.opnsense.test.oxlorg.net', t: '1.1.1.1'}
+        - {d: 'fwd.opnsense.test.oxlorg.net', t: '1.1.1.2'}
         - {d: '', t: '1.1.1.3'}
         - {d: '', t: '1.1.1.4'}
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn2
       failed_when: >
         'data' not in opn2 or

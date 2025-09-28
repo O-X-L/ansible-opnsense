@@ -43,7 +43,7 @@ Info
 
 This module manages DHCRelay relays. Each interface can be assigned a single relay.
 
-Note: You can also use the shortform module name: :code:`ansibleguy.opnsense.dhcrelay`
+Note: You can also use the shortform module name: :code:`oxlorg.opnsense.dhcrelay`
 
 ----
 
@@ -55,16 +55,16 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'dhcrelay_relay'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.dhcrelay_relay:
+          oxlorg.opnsense.dhcrelay_relay:
             interface: 'lan'
             destination: mydhcp
             # enabled: false
@@ -74,18 +74,18 @@ Examples
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.dhcrelay_relay:
+          oxlorg.opnsense.dhcrelay_relay:
             interface: 'lan'
             destination: mydhcp
 
         - name: Removing
-          ansibleguy.opnsense.dhcrelay_relay:
+          oxlorg.opnsense.dhcrelay_relay:
             interface: 'lan'
             destination: mydhcp
             state: 'absent'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'dhcrelay_relay'
           register: existing_entries
 

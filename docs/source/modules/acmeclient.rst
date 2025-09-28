@@ -8,11 +8,11 @@ ACME Client
 
 **STATE**: stable
 
-**TESTS**: `acme_account <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_account.yml>`_ |
-`acme_action <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_action.yml>`_ |
-`acme_certificate <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_certificate.yml>`_ |
-`acme_general <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_general.yml>`_ |
-`acme_validation <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/acme_validation.yml>`_
+**TESTS**: `acme_account <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/acme_account.yml>`_ |
+`acme_action <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/acme_action.yml>`_ |
+`acme_certificate <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/acme_certificate.yml>`_ |
+`acme_general <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/acme_general.yml>`_ |
+`acme_validation <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/acme_validation.yml>`_
 
 
 **API Docs**: `Plugins - Acmeclient <https://docs.opnsense.org/development/api/plugins/acmeclient.html>`_
@@ -43,7 +43,7 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
-ansibleguy.opnsense.acme_general
+oxlorg.opnsense.acme_general
 ================================
 
 ..  csv-table:: Definition
@@ -61,7 +61,7 @@ ansibleguy.opnsense.acme_general
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.acme_account
+oxlorg.opnsense.acme_account
 ================================
 
 ..  csv-table:: Definition
@@ -80,7 +80,7 @@ ansibleguy.opnsense.acme_account
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.acme_validation
+oxlorg.opnsense.acme_validation
 ===================================
 
 ..  csv-table:: Definition
@@ -326,7 +326,7 @@ ansibleguy.opnsense.acme_validation
     "dns_rage4_token","string","false","\-","\-","Paramater token for dns_service 'dns_rage4'"
     "dns_rage4_user","string","false","\-","\-","Paramater user for dns_service 'dns_rage4'"
 
-ansibleguy.opnsense.acme_action
+oxlorg.opnsense.acme_action
 ===============================
 
 ..  csv-table:: Definition
@@ -387,7 +387,7 @@ ansibleguy.opnsense.acme_action
     "acme_truenas_scheme","string","false","http","\-","Connection scheme that will be used when uploading certificates to TrueNAS Core Server. One of: 'http', 'https' For type: 'acme_truenas'"
     "acme_unifi_keystore","string","false","/usr/local/share/java/unifi/data/keystore","\-","Path to the Unifi keystore file in the local filesystem, i.e. /usr/local/share/java/unifi/data/keystore. For type: 'acme_unifi'"
 
-ansibleguy.opnsense.acme_certificate
+oxlorg.opnsense.acme_certificate
 ====================================
 
 ..  csv-table:: Definition
@@ -435,13 +435,13 @@ Examples
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Activate ACME Client
-          ansibleguy.opnsense.acme_general:
+          oxlorg.opnsense.acme_general:
             enable: true
             # auto_renewal: true
             # challenge_port: 43580
@@ -453,7 +453,7 @@ Examples
             # debug: false
 
         - name: Adding ACME Account
-          ansibleguy.opnsense.acme_account:
+          oxlorg.opnsense.acme_account:
             name: LE opnsense
             # description:
             # email:
@@ -464,7 +464,7 @@ Examples
             # enable: true
 
         - name: Adding ACME Validation
-          ansibleguy.opnsense.acme_validation:
+          oxlorg.opnsense.acme_validation:
             name: HTTP
             description: Default HTTP-01 Validation
             method: http01
@@ -474,7 +474,7 @@ Examples
             # http_opn_ipaddresses: ['1.2.3.4']
 
         - name: Adding ACME Validation DNS
-          ansibleguy.opnsense.acme_validation:
+          oxlorg.opnsense.acme_validation:
             name: DNS FreeDNS
             description: DNS Validation w/ FreeDNS
             # method: dns01
@@ -483,16 +483,16 @@ Examples
             dns_freedns_password: SECRET
 
         - name: Adding ACME Action
-          ansibleguy.opnsense.acme_action:
+          oxlorg.opnsense.acme_action:
             name: Restart GUI
             description: Restart OPNsense GUI
             type: configd_restart_gui
 
         - name: Adding ACME Certificate
-          ansibleguy.opnsense.acme_certificate:
+          oxlorg.opnsense.acme_certificate:
             name: opnsense.oxl.app
             description: LE opnsense.oxl.app
-            alt_names: ['ansibleguy.com']
+            alt_names: ['oxlorg.com']
             account: LE opnsense
             validation: HTTP
             # auto_renew: true
@@ -503,7 +503,7 @@ Examples
             # aliasmode: none
 
         - name: Listing jobs
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             target: 'acme_certificate'
           register: existing_certificates
 

@@ -34,7 +34,7 @@ set -u
 
 source "$(dirname "$0")/test_prep.sh"  # shared
 
-cd "$TMP_COL_DIR/ansible_collections/ansibleguy/opnsense"
+cd "$TMP_COL_DIR/ansible_collections/oxlorg/opnsense"
 
 echo ''
 echo 'RUNNING CLEANUP'

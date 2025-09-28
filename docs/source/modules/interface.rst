@@ -32,42 +32,42 @@ Interface
 Info
 ****
 
-ansibleguy.opnsense.interface_vlan
+oxlorg.opnsense.interface_vlan
 ==================================
 
 This module manages VLAN configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - VLAN'
 
-ansibleguy.opnsense.interface_vxlan
+oxlorg.opnsense.interface_vxlan
 ===================================
 
 This module manages VXLAN configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - VXLAN'
 
-ansibleguy.opnsense.interface_vip
+oxlorg.opnsense.interface_vip
 =================================
 
 This module manages VIP configuration that can be found in the WEB-UI menu: 'Interfaces - Virtual IPs - Settings'
 
-ansibleguy.opnsense.interface_lagg
+oxlorg.opnsense.interface_lagg
 ==================================
 
 This module manages LAGG configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - LAGG'
 
-ansibleguy.opnsense.interface_loopback
+oxlorg.opnsense.interface_loopback
 ======================================
 
 This module manages Loopback configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - Loopback'
 
-ansibleguy.opnsense.interface_gre
+oxlorg.opnsense.interface_gre
 =================================
 
 This module manages GRE Tunnel configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - GRE'
 
-ansibleguy.opnsense.interface_bridge
+oxlorg.opnsense.interface_bridge
 ====================================
 
 This module manages Bridge configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - Bridge'
 
-ansibleguy.opnsense.interface_gif
+oxlorg.opnsense.interface_gif
 =================================
 
 This module manages GIF Tunnel configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - GIF'
@@ -87,7 +87,7 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
-ansibleguy.opnsense.interface_vlan
+oxlorg.opnsense.interface_vlan
 ==================================
 
 ..  csv-table:: Definition
@@ -101,7 +101,7 @@ ansibleguy.opnsense.interface_vlan
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.interface_vxlan
+oxlorg.opnsense.interface_vxlan
 ===================================
 
 ..  csv-table:: Definition
@@ -118,7 +118,7 @@ ansibleguy.opnsense.interface_vxlan
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.interface_vip
+oxlorg.opnsense.interface_vip
 =================================
 
 ..  csv-table:: Definition
@@ -140,7 +140,7 @@ ansibleguy.opnsense.interface_vip
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.interface_lagg
+oxlorg.opnsense.interface_lagg
 ==================================
 
 .. warning::
@@ -164,7 +164,7 @@ ansibleguy.opnsense.interface_lagg
     "description","string","true","\-","desc, name","The description used to match the configured entries to the existing ones"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.interface_loopback
+oxlorg.opnsense.interface_loopback
 ======================================
 
 ..  csv-table:: Definition
@@ -174,7 +174,7 @@ ansibleguy.opnsense.interface_loopback
     "description","string","true","\-","desc, name","The unique description used to match the configured entries to the existing ones"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.interface_gre
+oxlorg.opnsense.interface_gre
 =================================
 
 ..  csv-table:: Definition
@@ -189,7 +189,7 @@ ansibleguy.opnsense.interface_gre
     "tunnel_remote_net","integer","false","32","\-","Netmask `ipv4` or prefix `ipv6` to use for this tunnel "
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.interface_bridge
+oxlorg.opnsense.interface_bridge
 ====================================
 
 ..  csv-table:: Definition
@@ -216,7 +216,7 @@ ansibleguy.opnsense.interface_bridge
     "private_interfaces","list","false","\-","private_ports, private_ints","Mark interfaces as a 'private' interface"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.interface_gif
+oxlorg.opnsense.interface_gif
 =================================
 
 ..  csv-table:: Definition
@@ -238,7 +238,7 @@ ansibleguy.opnsense.interface_gif
 Examples
 ********
 
-ansibleguy.opnsense.interface_vlan
+oxlorg.opnsense.interface_vlan
 ==================================
 
 .. code-block:: yaml
@@ -246,16 +246,16 @@ ansibleguy.opnsense.interface_vlan
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'interface_vlan'
     
       tasks:
         - name: Example
-          ansibleguy.opnsense.interface_vlan:
+          oxlorg.opnsense.interface_vlan:
             description: 'example'
             interface: 'vtnet0'
             vlan: 100
@@ -265,13 +265,13 @@ ansibleguy.opnsense.interface_vlan
             # reload: true
     
         - name: Adding VLAN
-          ansibleguy.opnsense.interface_vlan:
+          oxlorg.opnsense.interface_vlan:
             description: 'test1'
             interface: 'vtnet0'
             vlan: 100
     
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'interface_vlan'
           register: existing_entries
     
@@ -280,11 +280,11 @@ ansibleguy.opnsense.interface_vlan
             var: existing_entries.data
     
         - name: Removing VLAN
-          ansibleguy.opnsense.interface_vlan:
+          oxlorg.opnsense.interface_vlan:
             description: 'test1'
             state: 'absent'
 
-ansibleguy.opnsense.interface_vxlan
+oxlorg.opnsense.interface_vxlan
 ===================================
 
 .. code-block:: yaml
@@ -292,16 +292,16 @@ ansibleguy.opnsense.interface_vxlan
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'interface_vxlan'
     
       tasks:
         - name: Example
-          ansibleguy.opnsense.interface_vxlan:
+          oxlorg.opnsense.interface_vxlan:
             id: 100
             local: '192.168.0.1'
             # remote: ''
@@ -312,13 +312,13 @@ ansibleguy.opnsense.interface_vxlan
             # reload: true
     
         - name: Adding VxLAN
-          ansibleguy.opnsense.interface_vxlan:
+          oxlorg.opnsense.interface_vxlan:
             id: 100
             local: '192.168.0.1'
             interface: 'lan'
     
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'interface_vxlan'
           register: existing_entries
     
@@ -327,11 +327,11 @@ ansibleguy.opnsense.interface_vxlan
             var: existing_entries.data
     
         - name: Removing VxLAN
-          ansibleguy.opnsense.interface_vxlan:
+          oxlorg.opnsense.interface_vxlan:
             id: 100
             state: 'absent'
 
-ansibleguy.opnsense.interface_vip
+oxlorg.opnsense.interface_vip
 =================================
 
 .. code-block:: yaml
@@ -339,16 +339,16 @@ ansibleguy.opnsense.interface_vip
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'interface_vip'
     
       tasks:
         - name: Example
-          ansibleguy.opnsense.interface_vip:
+          oxlorg.opnsense.interface_vip:
             interface: 'opt1'
             address: '192.168.0.100/24'
             # match_fields: ['address', 'interface]
@@ -366,7 +366,7 @@ ansibleguy.opnsense.interface_vip
             # reload: true
     
         - name: Adding VIP
-          ansibleguy.opnsense.interface_vip:
+          oxlorg.opnsense.interface_vip:
             interface: 'opt1'
             address: '192.168.0.100/24'
             mode: 'carp'
@@ -374,7 +374,7 @@ ansibleguy.opnsense.interface_vip
             password: 'secret'
     
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'interface_vip'
           register: existing_entries
     
@@ -383,12 +383,12 @@ ansibleguy.opnsense.interface_vip
             var: existing_entries.data
     
         - name: Removing VIP
-          ansibleguy.opnsense.interface_vip:
+          oxlorg.opnsense.interface_vip:
             interface: 'opt1'
             address: '192.168.0.100/24'
             state: 'absent'
 
-ansibleguy.opnsense.interface_lagg
+oxlorg.opnsense.interface_lagg
 ==================================
 
 .. code-block:: yaml
@@ -396,16 +396,16 @@ ansibleguy.opnsense.interface_lagg
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'interface_lagg'
     
       tasks:
         - name: Example
-          ansibleguy.opnsense.interface_lagg:
+          oxlorg.opnsense.interface_lagg:
             # device: lagg0
             # description: LACP ax0/1
             members:
@@ -421,13 +421,13 @@ ansibleguy.opnsense.interface_lagg
             # match_fields: ['members']
     
         - name: Adding LAGG
-          ansibleguy.opnsense.interface_lagg:
+          oxlorg.opnsense.interface_lagg:
             members:
               - ax0
               - ax1
     
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'interface_lagg'
           register: existing_entries
     
@@ -436,12 +436,12 @@ ansibleguy.opnsense.interface_lagg
             var: existing_entries.data
     
         - name: Removing LAGG
-          ansibleguy.opnsense.interface_lagg:
+          oxlorg.opnsense.interface_lagg:
             device: lagg0
             match_fields: ['device']
             state: 'absent'
 
-ansibleguy.opnsense.interface_loopback
+oxlorg.opnsense.interface_loopback
 ======================================
 
 .. code-block:: yaml
@@ -449,27 +449,27 @@ ansibleguy.opnsense.interface_loopback
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'interface_loopback'
     
       tasks:
         - name: Example
-          ansibleguy.opnsense.interface_loopback:
+          oxlorg.opnsense.interface_loopback:
             description: 'MyLoopback'
             # debug: false
             # state: 'present'
             # reload: true
     
         - name: Adding Loopback
-          ansibleguy.opnsense.interface_loopback:
+          oxlorg.opnsense.interface_loopback:
             description: 'MyLoopback'
     
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'interface_loopback'
           register: existing_entries
     
@@ -478,11 +478,11 @@ ansibleguy.opnsense.interface_loopback
             var: existing_entries.data
     
         - name: Removing Loopback
-          ansibleguy.opnsense.interface_loopback:
+          oxlorg.opnsense.interface_loopback:
             description: 'MyLoopback'
             state: 'absent'
 
-ansibleguy.opnsense.interface_gre
+oxlorg.opnsense.interface_gre
 =================================
 
 .. code-block:: yaml
@@ -490,16 +490,16 @@ ansibleguy.opnsense.interface_gre
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'interface_gre'
     
       tasks:
         - name: Example
-          ansibleguy.opnsense.interface_gre:
+          oxlorg.opnsense.interface_gre:
             description: 'MyGRETunnel'
             local: 'lan'
             remote: '192.168.100.1'
@@ -511,7 +511,7 @@ ansibleguy.opnsense.interface_gre
             # reload: true
     
         - name: Adding GRE Tunnel
-          ansibleguy.opnsense.interface_gre:
+          oxlorg.opnsense.interface_gre:
             description: 'MyGRETunnel'
             local: 'lan'
             remote: '192.168.100.1'
@@ -519,7 +519,7 @@ ansibleguy.opnsense.interface_gre
             tunnel_remote: '10.0.0.2'
     
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'interface_gre'
           register: existing_entries
     
@@ -528,11 +528,11 @@ ansibleguy.opnsense.interface_gre
             var: existing_entries.data
     
         - name: Removing GRE Tunnel 
-          ansibleguy.opnsense.interface_gre:
+          oxlorg.opnsense.interface_gre:
             description: 'MyGRETunnel'
             state: 'absent'
 
-ansibleguy.opnsense.interface_bridge
+oxlorg.opnsense.interface_bridge
 ====================================
 
 .. code-block:: yaml
@@ -540,16 +540,16 @@ ansibleguy.opnsense.interface_bridge
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'interface_bridge'
     
       tasks:
         - name: Example
-          ansibleguy.opnsense.interface_bridge:
+          oxlorg.opnsense.interface_bridge:
             description: 'MyBridge'
             members: 'lan'
             # link_local: false
@@ -573,12 +573,12 @@ ansibleguy.opnsense.interface_bridge
             # reload: true
     
         - name: Adding Bridge
-          ansibleguy.opnsense.interface_bridge:
+          oxlorg.opnsense.interface_bridge:
             description: 'MyBridge'
             members: 'lan'
     
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'interface_bridge'
           register: existing_entries
     
@@ -587,11 +587,11 @@ ansibleguy.opnsense.interface_bridge
             var: existing_entries.data
     
         - name: Removing Bridge
-          ansibleguy.opnsense.interface_bridge:
+          oxlorg.opnsense.interface_bridge:
             description: 'MyBridge'
             state: 'absent'
 
-ansibleguy.opnsense.interface_gif
+oxlorg.opnsense.interface_gif
 =================================
 
 .. code-block:: yaml
@@ -599,16 +599,16 @@ ansibleguy.opnsense.interface_gif
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
     
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'interface_gif'
     
       tasks:
         - name: Example
-          ansibleguy.opnsense.interface_gif:
+          oxlorg.opnsense.interface_gif:
             description: 'MyGIFTunnel'
             local: 'lan'
             remote: '192.168.100.1'
@@ -622,7 +622,7 @@ ansibleguy.opnsense.interface_gif
             # reload: true
     
         - name: Adding GIF Tunnel
-          ansibleguy.opnsense.interface_gif:
+          oxlorg.opnsense.interface_gif:
             description: 'MyGIFTunnel'
             local: 'lan'
             remote: '192.168.100.1'
@@ -630,7 +630,7 @@ ansibleguy.opnsense.interface_gif
             tunnel_remote: '10.0.0.2'
     
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'interface_gif'
           register: existing_entries
     
@@ -639,6 +639,6 @@ ansibleguy.opnsense.interface_gif
             var: existing_entries.data
     
         - name: Removing GIF Tunnel 
-          ansibleguy.opnsense.interface_gif:
+          oxlorg.opnsense.interface_gif:
             description: 'MyGIFTunnel'
             state: 'absent'

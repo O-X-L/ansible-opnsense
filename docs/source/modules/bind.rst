@@ -9,12 +9,12 @@ DNS - BIND
 
 **STATE**: stable
 
-**TESTS**: `bind_general <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/bind_general.yml>`_ |
-`bind_blocklist <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/bind_blocklist.yml>`_ |
-`bind_acl <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/bind_acl.yml>`_ |
-`bind_domain <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/bind_domain.yml>`_ |
-`bind_record <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/bind_record.yml>`_ |
-`bind_record <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/bind_record.yml>`_
+**TESTS**: `bind_general <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/bind_general.yml>`_ |
+`bind_blocklist <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/bind_blocklist.yml>`_ |
+`bind_acl <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/bind_acl.yml>`_ |
+`bind_domain <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/bind_domain.yml>`_ |
+`bind_record <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/bind_record.yml>`_ |
+`bind_record <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/bind_record.yml>`_
 
 **API Docs**: `Plugins - Bind <https://docs.opnsense.org/development/api/plugins/bind.html>`_
 
@@ -41,14 +41,14 @@ You need to install the BIND plugin:
 
     os-bind
 
-You can also install it using the :ref:`ansibleguy.opnsense.package <modules_package>` module.
+You can also install it using the :ref:`oxlorg.opnsense.package <modules_package>` module.
 
 Definition
 **********
 
 .. include:: ../_include/param_basic.rst
 
-ansibleguy.opnsense.bind_general
+oxlorg.opnsense.bind_general
 ================================
 
 ..  csv-table:: Definition
@@ -82,7 +82,7 @@ ansibleguy.opnsense.bind_general
     "ratelimit_except","list","false","['127.0.0.1', '::1']","\-","Except a list of IPs from rate-limiting"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.bind_blocklist
+oxlorg.opnsense.bind_blocklist
 ==================================
 
 ..  csv-table:: Definition
@@ -98,7 +98,7 @@ ansibleguy.opnsense.bind_blocklist
     "safe_bing","boolean","false","\-","safe_search_bing","\-"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.bind_acl
+oxlorg.opnsense.bind_acl
 ============================
 
 ..  csv-table:: Definition
@@ -109,7 +109,7 @@ ansibleguy.opnsense.bind_acl
     "networks","list","false for state changes, else true","\-","nets","List of networks to add to the ACL"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.bind_domain
+oxlorg.opnsense.bind_domain
 ===============================
 
 ..  csv-table:: Definition
@@ -143,7 +143,7 @@ Else it will leave the configuration in a state where you'll have to edit the ba
 It seems the plugin lacks validation in that case.
 
 
-ansibleguy.opnsense.bind_record
+oxlorg.opnsense.bind_record
 ===============================
 
 ..  csv-table:: Definition
@@ -158,7 +158,7 @@ ansibleguy.opnsense.bind_record
     "round_robin","boolean","false","false","\-","If multiple records with the same domain/name/type combination exist - the module will only execute 'state=absent' if set to 'false'. To create multiple ones set this to 'true'. Records will only be created, NOT UPDATED! (no matching is done)"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.bind_record (multi)
+oxlorg.opnsense.bind_record (multi)
 =======================================
 
 See: :ref:`Mass Management Arguments <modules_multi>`
@@ -171,7 +171,7 @@ Info
 Mass-Manage
 ===========
 
-If you want to mass-manage DNS records - use the ansibleguy.opnsense.bind_record module. It scales better for that use-case!
+If you want to mass-manage DNS records - use the oxlorg.opnsense.bind_record module. It scales better for that use-case!
 
 For other modules:
 
@@ -179,7 +179,7 @@ For other modules:
 
 * This takes a long time, as the service gets reloaded every time!
 
-* You might want to reload it 'manually' after all changes are done => using the :ref:`ansibleguy.opnsense.reload <modules_reload>` module.
+* You might want to reload it 'manually' after all changes are done => using the :ref:`oxlorg.opnsense.reload <modules_reload>` module.
 
 Round-Robin
 ===========
@@ -217,7 +217,7 @@ If a change is needed, you will have to run the module using 'state=absent' firs
 Examples
 ********
 
-ansibleguy.opnsense.bind_general
+oxlorg.opnsense.bind_general
 ================================
 
 .. code-block:: yaml
@@ -225,16 +225,16 @@ ansibleguy.opnsense.bind_general
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'bind_general'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.bind_general:
+          oxlorg.opnsense.bind_general:
             # enabled: true
             # ipv6: true
             # response_policy_zones: true
@@ -264,7 +264,7 @@ ansibleguy.opnsense.bind_general
             # reload: true
 
         - name: Configuring BIND
-          ansibleguy.opnsense.bind_general:
+          oxlorg.opnsense.bind_general:
             enabled: true
             listen_ipv4: ['127.0.0.1', '192.168.0.1']
             query_source_ipv4: '192.168.0.1'
@@ -282,7 +282,7 @@ ansibleguy.opnsense.bind_general
             ipv6: false
 
         - name: Pulling settings
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'bind_general'
           register: existing_entries
 
@@ -290,7 +290,7 @@ ansibleguy.opnsense.bind_general
           ansible.builtin.debug:
             var: existing_entries.data
 
-ansibleguy.opnsense.bind_blocklist
+oxlorg.opnsense.bind_blocklist
 ==================================
 
 .. code-block:: yaml
@@ -298,16 +298,16 @@ ansibleguy.opnsense.bind_blocklist
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'bind_blocklist'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.bind_blocklist:
+          oxlorg.opnsense.bind_blocklist:
             # enabled: true
             # block: []
             # exclude: []
@@ -318,14 +318,14 @@ ansibleguy.opnsense.bind_blocklist
             # reload: true
 
         - name: Configuring blocklists
-          ansibleguy.opnsense.bind_blocklist:
+          oxlorg.opnsense.bind_blocklist:
             block: ['Steven Black List', 'NoCoin List', 'Blocklist.site Phishing', 'AdGuard List']
             exclude: ['test.opnsense.oxl.app', 'opnsense.oxl.app']
             safe_google: true
             safe_youtube: true
 
         - name: Disabling blocklists
-          ansibleguy.opnsense.bind_blocklist:
+          oxlorg.opnsense.bind_blocklist:
             enabled: false
             block: ['Steven Black List', 'NoCoin List', 'Blocklist.site Phishing', 'AdGuard List']
             exclude: ['test.opnsense.oxl.app', 'opnsense.oxl.app']
@@ -333,7 +333,7 @@ ansibleguy.opnsense.bind_blocklist
             safe_youtube: true
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'bind_blocklist'
           register: existing_entries
 
@@ -341,7 +341,7 @@ ansibleguy.opnsense.bind_blocklist
           ansible.builtin.debug:
             var: existing_entries.data
 
-ansibleguy.opnsense.bind_acl
+oxlorg.opnsense.bind_acl
 ============================
 
 .. code-block:: yaml
@@ -349,39 +349,39 @@ ansibleguy.opnsense.bind_acl
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'bind_acl'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.bind_acl:
+          oxlorg.opnsense.bind_acl:
             name: 'example'
             # enabled: true
             # networks: []
             # reload: true
 
         - name: Adding
-          ansibleguy.opnsense.bind_acl:
+          oxlorg.opnsense.bind_acl:
             name: 'test1'
             networks: ['192.168.0.0/24']
 
         - name: Changing
-          ansibleguy.opnsense.bind_acl:
+          oxlorg.opnsense.bind_acl:
             name: 'test1'
             networks: ['192.168.1.0/25']
 
         - name: Disabling
-          ansibleguy.opnsense.bind_acl:
+          oxlorg.opnsense.bind_acl:
             name: 'test1'
             networks: ['192.168.1.0/25']
             enabled: false
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             # target: 'bind_acl'
           register: existing_entries
 
@@ -390,12 +390,12 @@ ansibleguy.opnsense.bind_acl
             var: existing_entries.data
 
         - name: Removing
-          ansibleguy.opnsense.bind_acl:
+          oxlorg.opnsense.bind_acl:
             name: 'test1'
             state: 'absent'
 
 
-ansibleguy.opnsense.bind_domain
+oxlorg.opnsense.bind_domain
 ===============================
 
 .. code-block:: yaml
@@ -403,16 +403,16 @@ ansibleguy.opnsense.bind_domain
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'bind_domain'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.bind_domain:
+          oxlorg.opnsense.bind_domain:
             name: 'example.opnsense.oxl.app'
             # enabled: true
             # mode: 'primary'
@@ -432,7 +432,7 @@ ansibleguy.opnsense.bind_domain
             # reload: true
 
         - name: Adding
-          ansibleguy.opnsense.bind_domain:
+          oxlorg.opnsense.bind_domain:
             name: 'test1.opnsense.oxl.app'
             transfer_key_algo: 'hmac-sha512'
             transfer_key_name: 'test'
@@ -441,7 +441,7 @@ ansibleguy.opnsense.bind_domain
             retry: 1800
 
         - name: Changing
-          ansibleguy.opnsense.bind_domain:
+          oxlorg.opnsense.bind_domain:
             name: 'test1.opnsense.oxl.app'
             transfer_key_algo: 'hmac-sha512'
             transfer_key_name: 'test'
@@ -451,12 +451,12 @@ ansibleguy.opnsense.bind_domain
             transfer_acl: 'test1_acl'
 
         - name: Disabling
-          ansibleguy.opnsense.bind_domain:
+          oxlorg.opnsense.bind_domain:
             name: 'test1.opnsense.oxl.app'
             enabled: false
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             # target: 'bind_domain'
           register: existing_entries
 
@@ -465,11 +465,11 @@ ansibleguy.opnsense.bind_domain
             var: existing_entries.data
 
         - name: Removing
-          ansibleguy.opnsense.bind_domain:
+          oxlorg.opnsense.bind_domain:
             name: 'test1.opnsense.oxl.app'
             state: 'absent'
 
-ansibleguy.opnsense.bind_record
+oxlorg.opnsense.bind_record
 ===============================
 
 .. code-block:: yaml
@@ -477,16 +477,16 @@ ansibleguy.opnsense.bind_record
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'bind_record'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.bind_record:
+          oxlorg.opnsense.bind_record:
             domain: 'template.opnsense.oxl.app'
             name: 'example'
             # value: ''
@@ -497,26 +497,26 @@ ansibleguy.opnsense.bind_record
             # reload: true
 
         - name: Adding
-          ansibleguy.opnsense.bind_record:
+          oxlorg.opnsense.bind_record:
             domain: 'template.opnsense.oxl.app'
             name: 'test1'
             value: '192.168.0.1'
 
         - name: Changing
-          ansibleguy.opnsense.bind_record:
+          oxlorg.opnsense.bind_record:
             domain: 'template.opnsense.oxl.app'
             name: 'test1'
             value: '192.168.1.1'
 
         - name: Disabling
-          ansibleguy.opnsense.bind_record:
+          oxlorg.opnsense.bind_record:
             domain: 'template.opnsense.oxl.app'
             name: 'test1'
             value: '192.168.1.1'
             enabled: false
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             # target: 'bind_record'
           register: existing_entries
 
@@ -525,12 +525,12 @@ ansibleguy.opnsense.bind_record
             var: existing_entries.data
 
         - name: Removing
-          ansibleguy.opnsense.bind_record:
+          oxlorg.opnsense.bind_record:
             domain: 'template.opnsense.oxl.app'
             name: 'test1'
             state: 'absent'
 
-ansibleguy.opnsense.bind_record (multi)
+oxlorg.opnsense.bind_record (multi)
 =======================================
 
 .. code-block:: yaml
@@ -538,16 +538,16 @@ ansibleguy.opnsense.bind_record (multi)
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.bind_record:
+        oxlorg.opnsense.bind_record:
           match_fields: ['domain', 'name', 'type']
   
       tasks:
         - name: Example
-          ansibleguy.opnsense.bind_record:
+          oxlorg.opnsense.bind_record:
             records:
               - name: 'example'
                 domain: 'template.opnsense.oxl.app'
@@ -563,7 +563,7 @@ ansibleguy.opnsense.bind_record (multi)
             # reload: true
 
         - name: Adding
-          ansibleguy.opnsense.bind_record:
+          oxlorg.opnsense.bind_record:
             records:
               - name: 'test1'
                 domain: 'template.opnsense.oxl.app'
@@ -588,7 +588,7 @@ ansibleguy.opnsense.bind_record (multi)
                 value: 'test1.test3.opnsense.oxl.app'
 
         - name: Changing
-          ansibleguy.opnsense.bind_record:
+          oxlorg.opnsense.bind_record:
             records:
               - name: 'test1'
                 domain: 'template.opnsense.oxl.app'
@@ -614,7 +614,7 @@ ansibleguy.opnsense.bind_record (multi)
                 value: 'test2.test3.opnsense.oxl.app'
 
         - name: Disabling all
-          ansibleguy.opnsense.bind_record:
+          oxlorg.opnsense.bind_record:
             records:
               - name: 'test1'
                 domain: 'template.opnsense.oxl.app'
@@ -642,7 +642,7 @@ ansibleguy.opnsense.bind_record (multi)
               enabled: false
 
         - name: Removing all
-          ansibleguy.opnsense.bind_record:
+          oxlorg.opnsense.bind_record:
             records:
               - name: 'test1'
                 domain: 'template.opnsense.oxl.app'

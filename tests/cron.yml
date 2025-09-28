@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'cron'
 
   environment:
@@ -18,14 +18,14 @@
   tasks:
     # NOTE: one exists because of IDS
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn7
       failed_when: >
         'data' not in opn7 or
         opn7.data | length != 1
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.cron:
+      oxlorg.opnsense.cron:
         description: 'ANSIBLE_TEST_1'
         state: 'absent'
       register: opn6
@@ -34,7 +34,7 @@
         opn6.changed
 
     - name: Adding daily firmware update check
-      ansibleguy.opnsense.cron:
+      oxlorg.opnsense.cron:
         description: 'ANSIBLE_TEST_1'
         command: 'firmware poll'
         minutes: '0'
@@ -42,7 +42,7 @@
         days: '*'
 
     - name: Adding 2
-      ansibleguy.opnsense.cron:
+      oxlorg.opnsense.cron:
         description: 'ANSIBLE_TEST_2'
         command: 'system remote backup'
         minutes: '26'
@@ -57,7 +57,7 @@
         not opn5.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.cron:
+      oxlorg.opnsense.cron:
         description: 'ANSIBLE_TEST_2'
         command: 'system remote backup'
         minutes: '26'
@@ -73,7 +73,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 2
-      ansibleguy.opnsense.cron:
+      oxlorg.opnsense.cron:
         description: 'ANSIBLE_TEST_2'
         command: 'system remote backup'
         minutes: '26'
@@ -90,7 +90,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 2 - nothing changed
-      ansibleguy.opnsense.cron:
+      oxlorg.opnsense.cron:
         description: 'ANSIBLE_TEST_2'
         command: 'system remote backup'
         minutes: '26'
@@ -107,7 +107,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 2
-      ansibleguy.opnsense.cron:
+      oxlorg.opnsense.cron:
         description: 'ANSIBLE_TEST_2'
         command: 'system remote backup'
         minutes: '26'
@@ -123,7 +123,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -131,7 +131,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.cron:
+      oxlorg.opnsense.cron:
         description: "{{ item }}"
         state: 'absent'
       loop:

@@ -1,4 +1,4 @@
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import STATE_MOD_ARG
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import STATE_MOD_ARG
 
 RULE_DEFAULTS = {
     'sequence': 1,

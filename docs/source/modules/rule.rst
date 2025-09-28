@@ -8,7 +8,7 @@ Rule
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/rule.yml>`_
+**TESTS**: `Playbook <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/rule.yml>`_
 
 **API Docs**: `Core - Firewall <https://docs.opnsense.org/development/api/core/firewall.html>`_
 
@@ -56,12 +56,12 @@ Savepoint
 
 You can prevent lockout-situations using the savepoint systems:
 
-- :ref:`ansibleguy.opnsense.savepoint <modules_savepoint>`
+- :ref:`oxlorg.opnsense.savepoint <modules_savepoint>`
 
 Mass-Manage
 ===========
 
-If you want to mass-manage rules - take a look at the :ref:`ansibleguy.opnsense.rule_multi <modules_rule_multi>` module. It scales better for that use-case!
+If you want to mass-manage rules - take a look at the :ref:`oxlorg.opnsense.rule_multi <modules_rule_multi>` module. It scales better for that use-case!
 
 Web-UI
 ======
@@ -155,16 +155,16 @@ Basic
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'rule'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.rule:
+          oxlorg.opnsense.rule:
             source_net: '192.168.0.0/24'  # host, network, alias or 'any'
             destination_net: '192.168.10.0/24'
             destination_port: 443  # alias not supported, leave unset for 'any'
@@ -215,7 +215,7 @@ Basic
             # reload: true
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'rule'
           register: existing_entries
 
@@ -231,11 +231,11 @@ With inventory config
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.rule:
+        oxlorg.opnsense.rule:
           match_fields: ['description']  # setting description as unique-id field
 
       # you may want to configure your rules inside the inventory
@@ -271,7 +271,7 @@ With inventory config
 
       tasks:
         - name: Test
-          ansibleguy.opnsense.rule:
+          oxlorg.opnsense.rule:
             description: "{{ rule_id }}"
 
             action: "{{ rule.action | default(omit) }}"
@@ -308,21 +308,21 @@ Purging
 
 If you want to delete all existing rules that are **NOT CONFIGURED**.
 
-You can also use the :ref:`ansibleguy.opnsense.rule_purge <modules_rule_multi>` module to do this in a cleaner way.
+You can also use the :ref:`oxlorg.opnsense.rule_purge <modules_rule_multi>` module to do this in a cleaner way.
 
 .. code-block:: yaml
 
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'rule'
 
-        ansibleguy.opnsense.rule:
+        oxlorg.opnsense.rule:
           match_fields: ['description']
 
       vars:
@@ -330,12 +330,12 @@ You can also use the :ref:`ansibleguy.opnsense.rule_purge <modules_rule_multi>` 
 
       tasks:
         - name: Pulling existing rules
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'rule'
           register: existing_entries
 
         - name: Purging unconfigured rules
-          ansibleguy.opnsense.rule:
+          oxlorg.opnsense.rule:
             state: 'absent'
             description: "{{ existing_rule_id }}"
 
