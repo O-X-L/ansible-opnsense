@@ -1,10 +1,10 @@
 import pytest
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.mock_pytest import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.mock_pytest import \
     pytest_mock_http_responses, MockAnsibleModuleWarnException, get_ansible_module_multi_params, ANSIBLE_RESULT, \
     MockOPNsenseModule, AnsibleWarning, AnsibleError
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.util_pytest import log_test
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.testdata.base_testdata import GenericTestdata
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.util_pytest import log_test
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.testdata.base_testdata import GenericTestdata
 
 
 # todo: add tests for create/update/partial-deletion & purge delete/disable
@@ -44,7 +44,7 @@ def test_multi_module_base(mocker):
         handler=GenericTestdata(),
     )
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
         MultiModule
 
     am = MockAnsibleModuleWarnException()
@@ -137,7 +137,7 @@ def test_multi_full_create_minimal(mocker, mc, entry_args, raises):
         handler=GenericTestdata(),
     )
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
         MultiModule
 
     am = MockAnsibleModuleWarnException()
@@ -193,7 +193,7 @@ def test_multi_full_create(mocker, mc, entry_args):
         handler=testdata,
     )
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import build_multi_mod_args, \
         MultiModule
 
     ### CREATE ###

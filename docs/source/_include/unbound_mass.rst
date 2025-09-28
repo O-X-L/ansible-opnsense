@@ -5,4 +5,4 @@ If you are mass-managing DNS records or using DNS-Blocklists - you might want to
 
 This takes a long time, as the service gets reloaded every time!
 
-You might want to reload it 'manually' after all changes are done => using the :ref:`ansibleguy.opnsense.reload <modules_reload>` module
+You might want to reload it 'manually' after all changes are done => using the :ref:`oxlorg.opnsense.reload <modules_reload>` module

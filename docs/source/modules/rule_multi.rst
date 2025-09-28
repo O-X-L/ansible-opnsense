@@ -25,12 +25,12 @@ Thanks to `@Rath <https://github.com/superstes>`_ for developing these modules!
 Info
 ****
 
-For basic info, limitations and must-know to the rule-handling see the :ref:`ansibleguy.opnsense.rule <modules_rule>` module!
+For basic info, limitations and must-know to the rule-handling see the :ref:`oxlorg.opnsense.rule <modules_rule>` module!
 
 Multi
 *****
 
-- Each rule has the attributes as defined in the :ref:`'single' ansibleguy.opnsense.rule <modules_rule>` module
+- Each rule has the attributes as defined in the :ref:`'single' oxlorg.opnsense.rule <modules_rule>` module
 
 - To ensure valid configuration - the attributes of each rule get verified using ansible's built-in verifier
 
@@ -64,16 +64,16 @@ Basics
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.rule:
+        oxlorg.opnsense.rule:
           match_fields: ['description']
 
       tasks:
         - name: Changing
-          ansibleguy.opnsense.rule:
+          oxlorg.opnsense.rule:
             rules:
               - name: 'test1'
                 source_net: '192.168.1.0/24'
@@ -109,7 +109,7 @@ Basics
               # output_info: false
 
         - name: Pulling existing rules
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             target: 'rule'
           register: existing_entries
 
@@ -118,7 +118,7 @@ Basics
             var: existing_entries.data
 
         - name: Purging all non-configured rules
-          ansibleguy.opnsense.rule:
+          oxlorg.opnsense.rule:
             rules: {...}
 
             match_fields: ['description']
@@ -127,7 +127,7 @@ Basics
               # action: 'disable'  # default = delete
 
         - name: Purging allow-rules on interface opt2 that use IPv4
-          ansibleguy.opnsense.rule:
+          oxlorg.opnsense.rule:
             multi_control:
               purge_all: true
               filters:  # filtering rules to purge by rule-parameters
@@ -145,7 +145,7 @@ You can also override all rule parameters as needed.
 .. code-block:: yaml
 
     - name: Changing
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         rules: {...}
 
         multi_control:
@@ -164,7 +164,7 @@ To simplify the modules usage and config - you can also use shorter parameter al
 .. code-block:: yaml
 
     - name: Changing
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         rules:
           - name: 'test1'
             src: 'ALIAS_URLTABLE_TOR_EXIT_NODES'

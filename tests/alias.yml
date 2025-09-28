@@ -4,7 +4,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    ansibleguy.opnsense.alias:
+    oxlorg.opnsense.alias:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -14,21 +14,21 @@
 
   tasks:
     - name: Removing - does not exist
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn1
       failed_when: opn1.changed
 
     - name: Failing because alias name is too long (>32 char)
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1_TOOOOOOOOOOO_LONG'
         content: '1.1.1.1'
       register: opn13
       failed_when: not opn13.failed
 
     - name: Adding
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
         content: '1.1.1.1'
       register: opn2
@@ -37,7 +37,7 @@
         opn2.failed
 
     - name: Nothing changed
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
         content: '1.1.1.1'
       register: opn3
@@ -47,7 +47,7 @@
       when: not ansible_check_mode
 
     - name: Changing
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
         content: ['1.1.1.2', '1.1.1.3']
       register: opn4
@@ -56,16 +56,16 @@
         opn4.failed
 
     - name: Changing to other type - invalid
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
         type: 'url'
-        content: 'https://test.ansibleguy.net'
+        content: 'https://test.oxlorg.net'
       register: opn9
       failed_when: not opn9.failed
       when: not ansible_check_mode
 
     - name: Disabling
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
         enabled: false
         content: ['1.1.1.2', '1.1.1.3']
@@ -76,7 +76,7 @@
       when: not ansible_check_mode
 
     - name: Disabling - nothing changed
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
         enabled: false
         content: ['1.1.1.2', '1.1.1.3']
@@ -87,7 +87,7 @@
       when: not ansible_check_mode
 
     - name: Enabling
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
         content: ['1.1.1.2', '1.1.1.3']
       register: opn6
@@ -97,7 +97,7 @@
       when: not ansible_check_mode
 
     - name: Enabling - nothing changed
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
         content: ['1.1.1.2', '1.1.1.3']
       register: opn7
@@ -107,7 +107,7 @@
       when: not ansible_check_mode
 
     - name: Removing
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn4
@@ -120,7 +120,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    ansibleguy.opnsense.alias:
+    oxlorg.opnsense.alias:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -132,19 +132,19 @@
     # hosts
 
     - name: Adding single host
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_HOST1'
         type: 'host'
         content: '1.1.1.1'
 
     - name: Adding multiple hosts
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_HOST2'
         type: 'host'
         content: ['1.1.1.1', '1.1.1.2']
 
     - name: Adding nested host
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_HOST3'
         type: 'host'
         content: ['ANSIBLE_TEST_1_2_HOST2', 'ANSIBLE_TEST_1_2_HOST1']
@@ -152,19 +152,19 @@
       failed_when: opnhost2.failed != ansible_check_mode
 
     - name: Adding ip range
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_HOST4'
         type: 'host'
         content: '1.1.1.1-1.1.1.4'
 
     - name: Adding exclusion
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_HOST5'
         type: 'host'
         content: '!1.1.1.1'
 
     - name: Adding invalid host
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_HOST3'
         type: 'host'
         content: "{{ item }}"
@@ -176,19 +176,19 @@
     # networks
 
     - name: Adding network
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_NET1'
         type: 'network'
         content: '192.168.0.0/24'
 
     - name: Adding multiple networks
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_NET2'
         type: 'network'
         content: ['192.168.0.0/24', '192.168.1.0/24']
 
     - name: Adding invalid network
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_NET3'
         type: 'network'
         content: "{{ item }}"
@@ -198,7 +198,7 @@
         - ['192.168.0.0/240']
 
     - name: Adding nested network
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_NET3'
         type: 'network'
         content: ['ANSIBLE_TEST_1_2_NET1', 'ANSIBLE_TEST_1_2_NET2']
@@ -208,19 +208,19 @@
     # ports
 
     - name: Adding port
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_PORT1'
         type: 'port'
         content: 9000
 
     - name: Adding multiple ports
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_PORT2'
         type: 'port'
         content: ['80', 443]
 
     - name: Adding invalid port
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_PORT3'
         type: 'port'
         content: "{{ item }}"
@@ -230,13 +230,13 @@
         - ['70000']
 
     - name: Adding port range
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_PORT4'
         type: 'port'
         content: '9000:9500'
 
     - name: Adding nested ports
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_PORT5'
         type: 'port'
         content:
@@ -246,7 +246,7 @@
       failed_when: opnport2.failed != ansible_check_mode
 
     - name: Adding port service name
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_PORT6'
         type: 'port'
         content: 'smtp'
@@ -254,25 +254,25 @@
     # mac
 
     - name: Adding mac
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_MAC1'
         type: 'mac'
         content: f4:90:ea:00:00:01
 
     - name: Adding multiple macs
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_MAC2'
         type: 'mac'
         content: ['f4:90:ea:00:00:01', 'f4:90:ea:00:00:02']
 
     - name: Adding partial mac
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_MAC3'
         type: 'mac'
         content: f4:90:ea:00
 
     - name: Adding invalid mac
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_MAC4'
         type: 'mac'
         content: "{{ item }}"
@@ -289,39 +289,39 @@
     # urls
 
     - name: Adding url
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URL1'
         type: 'url'
-        content: 'https://ansibleguy.net'
+        content: 'https://oxlorg.net'
 
     - name: Adding multiple urls
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URL2'
         type: 'url'
-        content: ['https://template.ansibleguy.net', 'http://test.ansibleguy.net']
+        content: ['https://template.oxlorg.net', 'http://test.oxlorg.net']
 
     - name: Adding invalid url
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URL3'
         type: 'url'
         content: "{{ item }}"
       register: opnurl1
       failed_when: not opnurl1.failed
       loop:
-        - ['httks://test.ansibleguy.net']
-        - ['test.ansibleguy.net']
+        - ['httks://test.oxlorg.net']
+        - ['test.oxlorg.net']
 
     # urltable
 
     - name: Adding urltable
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URLTABLE1'
         type: 'urltable'
         updatefreq_days: 2
         content: 'https://www.spamhaus.org/drop/drop.txt'
 
     - name: Adding urltable - nothing changed
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URLTABLE1'
         type: 'urltable'
         updatefreq_days: 2
@@ -333,7 +333,7 @@
       when: not ansible_check_mode
 
     - name: Updating urltable update-frequency
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URLTABLE1'
         type: 'urltable'
         updatefreq_days: 6.5
@@ -345,26 +345,26 @@
       when: not ansible_check_mode
 
     - name: Adding multiple urltables
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URLTABLE2'
         type: 'urltable'
         content: ['https://www.spamhaus.org/drop/drop.txt']
 
     - name: Adding invalid urltable
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URLTABLE3'
         type: 'urltable'
         content: "{{ item }}"
       register: opnurltable1
       failed_when: not opnurltable1.failed
       loop:
-        - ['httks://test.ansibleguy.net']
-        #        - ['https://ansibleguy.net']  # not an urltable
+        - ['httks://test.oxlorg.net']
+        #        - ['https://oxlorg.net']  # not an urltable
 
     # urljson
 
     - name: Adding urljson
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URLJSON1'
         type: 'urltable'
         updatefreq_days: 2
@@ -372,7 +372,7 @@
         path_expression: .web + .api + .git | .[]
 
     - name: Adding urljson - nothing changed
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URLJSON1'
         type: 'urltable'
         updatefreq_days: 2
@@ -387,19 +387,19 @@
     # geoip
 
     - name: Adding geoip
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_GEOIP1'
         type: 'geoip'
         content: 'AT'
 
     - name: Adding multiple geoips
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_GEOIP2'
         type: 'geoip'
         content: ['AT', 'DE', 'CH']
 
     - name: Adding invalid geoip
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_GEOIP3'
         type: 'geoip'
         content: "{{ item }}"
@@ -412,7 +412,7 @@
     # dynipv6host
 
     - name: Adding dynipv6host
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_DYNIPV6HOST1'
         type: 'dynipv6host'
         content:
@@ -423,7 +423,7 @@
     # cleanup
 
     - name: Cleanup
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: "{{ item }}"
         state: 'absent'
       diff: false
@@ -463,12 +463,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'alias'
 
   environment:
@@ -476,20 +476,20 @@
 
   tasks:
     - name: Listing aliases (none)
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         'data' not in opn10 or
         opn10.data | length != 0
 
     - name: Adding dummy alias
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_3_1'
-        content: 'test.ansibleguy.net'
+        content: 'test.oxlorg.net'
       when: not ansible_check_mode
 
     - name: Listing aliases
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn11
       failed_when: >
         'data' not in opn11 or
@@ -497,13 +497,13 @@
       when: not ansible_check_mode
 
     - name: Adding dummy alias 2
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_3_2'
-        content: 'template.ansibleguy.net'
+        content: 'template.oxlorg.net'
       when: not ansible_check_mode
 
     - name: Listing aliases
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn12
       failed_when: >
         'data' not in opn12 or
@@ -511,7 +511,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         name: "{{ item }}"
         state: 'absent'
       diff: false

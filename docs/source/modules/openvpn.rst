@@ -8,11 +8,11 @@ OpenVPN
 
 **STATE**: stable
 
-**TESTS**: `ansibleguy.opnsense.openvpn_client <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_client.yml>`_ |
-`ansibleguy.opnsense.openvpn_server <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_server.yml>`_ |
-`ansibleguy.opnsense.openvpn_static_key <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_static_key.yml>`_ |
-`ansibleguy.opnsense.openvpn_client_override <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_client_override.yml>`_ |
-`ansibleguy.opnsense.openvpn_status <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_status.yml>`_
+**TESTS**: `oxlorg.opnsense.openvpn_client <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_client.yml>`_ |
+`oxlorg.opnsense.openvpn_server <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_server.yml>`_ |
+`oxlorg.opnsense.openvpn_static_key <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_static_key.yml>`_ |
+`oxlorg.opnsense.openvpn_client_override <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_client_override.yml>`_ |
+`oxlorg.opnsense.openvpn_status <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/openvpn_status.yml>`_
 
 **API Docs**: `Core - OpenVPN <https://docs.opnsense.org/development/api/core/openvpn.html>`_
 
@@ -28,7 +28,7 @@ Thanks to `@Rath <https://github.com/superstes>`_ for developing these modules!
 Info
 ****
 
-You can use the :ref:`ansibleguy.opnsense.service <modules_service>` module to interact with the OpenVPN service.
+You can use the :ref:`oxlorg.opnsense.service <modules_service>` module to interact with the OpenVPN service.
 
 ----
 
@@ -37,7 +37,7 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
-ansibleguy.opnsense.openvpn_server
+oxlorg.opnsense.openvpn_server
 ==================================
 
 ..  csv-table:: Definition
@@ -95,7 +95,7 @@ ansibleguy.opnsense.openvpn_server
     "persist_address_pool","boolean","false","false","\-","Save ip address pool to disk."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.openvpn_client
+oxlorg.opnsense.openvpn_client
 ==================================
 
 ..  csv-table:: Definition
@@ -129,7 +129,7 @@ ansibleguy.opnsense.openvpn_client
     "http_proxy","string","false","\-","proxy","Use a http proxy to connect to the selected server, define as host:port."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.openvpn_static_key
+oxlorg.opnsense.openvpn_static_key
 ======================================
 
 ..  csv-table:: Definition
@@ -141,7 +141,7 @@ ansibleguy.opnsense.openvpn_static_key
     "key","string","false","\-","\-","OpenVPN Static key. If empty - it will be auto-generated."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.openvpn_client_override
+oxlorg.opnsense.openvpn_client_override
 ===========================================
 
 ..  csv-table:: Definition
@@ -167,7 +167,7 @@ ansibleguy.opnsense.openvpn_client_override
     "wins_servers","list","false","\-","wins","Set primary WINS server address (NetBIOS over TCP/IP Name Server). Repeat this option to set secondary WINS server addresses."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.openvpn_status
+oxlorg.opnsense.openvpn_status
 ==================================
 
 ..  csv-table:: Definition
@@ -193,7 +193,7 @@ Use can create an manage certificates `using the OPNSense WebUI <https://docs.op
 Examples
 ********
 
-ansibleguy.opnsense.openvpn_server
+oxlorg.opnsense.openvpn_server
 ==================================
 
 .. code-block:: yaml
@@ -201,16 +201,16 @@ ansibleguy.opnsense.openvpn_server
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'openvpn_instance'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.openvpn_server:
+          oxlorg.opnsense.openvpn_server:
             name: 'example'
             server_ip4: ''
             server_ip6: ''
@@ -263,7 +263,7 @@ ansibleguy.opnsense.openvpn_server
             # enabled: true
 
         - name: Adding
-          ansibleguy.opnsense.openvpn_server:
+          oxlorg.opnsense.openvpn_server:
             name: 'ANSIBLE_TEST_1_1'
             port: 20000
             protocol: 'udp'
@@ -274,7 +274,7 @@ ansibleguy.opnsense.openvpn_server
             certificate: 'OpenVPN Server'
 
         - name: Changing
-          ansibleguy.opnsense.openvpn_server:
+          oxlorg.opnsense.openvpn_server:
             name: 'ANSIBLE_TEST_1_1'
             port: 20000
             protocol: 'udp'
@@ -292,7 +292,7 @@ ansibleguy.opnsense.openvpn_server
             mtu: 1420
 
         - name: Disabling
-          ansibleguy.opnsense.openvpn_server:
+          oxlorg.opnsense.openvpn_server:
             name: 'ANSIBLE_TEST_1_1'
             port: 20000
             protocol: 'udp'
@@ -311,7 +311,7 @@ ansibleguy.opnsense.openvpn_server
             enabled: false
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             # target: 'openvpn_instance'
           register: existing_entries
 
@@ -320,13 +320,13 @@ ansibleguy.opnsense.openvpn_server
             var: existing_entries.data
 
         - name: Removing
-          ansibleguy.opnsense.openvpn_server:
+          oxlorg.opnsense.openvpn_server:
             name: 'test1'
             state: 'absent'
 
 ----
 
-ansibleguy.opnsense.openvpn_client
+oxlorg.opnsense.openvpn_client
 ==================================
 
 .. code-block:: yaml
@@ -334,16 +334,16 @@ ansibleguy.opnsense.openvpn_client
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'openvpn_instance'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.openvpn_client:
+          oxlorg.opnsense.openvpn_client:
             name: 'example'
             remote: 'example.ovpn.opnsense.oxl.app:10000'
             certificate: ''
@@ -373,7 +373,7 @@ ansibleguy.opnsense.openvpn_client
             # enabled: true
 
         - name: Adding
-          ansibleguy.opnsense.openvpn_client:
+          oxlorg.opnsense.openvpn_client:
             name: 'test1'
             remote: 'openvpn.test.opnsense.oxl.app:20000'
             protocol: 'udp'
@@ -385,7 +385,7 @@ ansibleguy.opnsense.openvpn_client
             mtu: 1400
 
         - name: Changing
-          ansibleguy.opnsense.openvpn_client:
+          oxlorg.opnsense.openvpn_client:
             name: 'test1'
             remote: 'openvpn.test.opnsense.oxl.app:10000'
             protocol: 'tcp'
@@ -397,7 +397,7 @@ ansibleguy.opnsense.openvpn_client
             mtu: 1400
 
         - name: Disabling
-          ansibleguy.opnsense.openvpn_client:
+          oxlorg.opnsense.openvpn_client:
             name: 'test1'
             remote: 'openvpn.test.opnsense.oxl.app:10000'
             protocol: 'tcp'
@@ -410,7 +410,7 @@ ansibleguy.opnsense.openvpn_client
             enabled: false
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             # target: 'openvpn_instance'
           register: existing_entries
 
@@ -419,13 +419,13 @@ ansibleguy.opnsense.openvpn_client
             var: existing_entries.data
 
         - name: Removing
-          ansibleguy.opnsense.openvpn_client:
+          oxlorg.opnsense.openvpn_client:
             name: 'test1'
             state: 'absent'
 
 ----
 
-ansibleguy.opnsense.openvpn_static_key
+oxlorg.opnsense.openvpn_static_key
 ======================================
 
 .. code-block:: yaml
@@ -433,27 +433,27 @@ ansibleguy.opnsense.openvpn_static_key
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'openvpn_static_key'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.openvpn_static_key:
+          oxlorg.opnsense.openvpn_static_key:
             name: 'example'
             # mode: 'crypt'
             # key: ''
 
         - name: Adding
-          ansibleguy.opnsense.openvpn_static_key:
+          oxlorg.opnsense.openvpn_static_key:
             name: 'test1'
             # key: => will be auto-generated
 
         - name: Changing
-          ansibleguy.opnsense.openvpn_static_key:
+          oxlorg.opnsense.openvpn_static_key:
             name: 'test1'
             key: '#\n# 2048 bit OpenVPN static key\n#\n
               -----BEGIN OpenVPN Static key V1-----\n
@@ -476,7 +476,7 @@ ansibleguy.opnsense.openvpn_static_key
               -----END OpenVPN Static key V1-----'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             # target: 'openvpn_static_key'
           register: existing_entries
 
@@ -485,12 +485,12 @@ ansibleguy.opnsense.openvpn_static_key
             var: existing_entries.data
 
         - name: Removing
-          ansibleguy.opnsense.openvpn_static_key:
+          oxlorg.opnsense.openvpn_static_key:
             name: 'test1'
             state: 'absent'
 
         - name: Linking key to OpenVPN-client
-          ansibleguy.opnsense.openvpn_client:
+          oxlorg.opnsense.openvpn_client:
             name: 'test-client'
             remote: 'openvpn.test.opnsense.oxl.app'
             ca: 'OpenVPN'
@@ -498,7 +498,7 @@ ansibleguy.opnsense.openvpn_static_key
 
 ----
 
-ansibleguy.opnsense.openvpn_client_override
+oxlorg.opnsense.openvpn_client_override
 ===========================================
 
 .. code-block:: yaml
@@ -506,13 +506,13 @@ ansibleguy.opnsense.openvpn_client_override
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.openvpn_client_override:
+          oxlorg.opnsense.openvpn_client_override:
             name: 'example'
             # servers: []
             # description: ''
@@ -534,7 +534,7 @@ ansibleguy.opnsense.openvpn_client_override
             # enabled: true
 
         - name: Adding
-          ansibleguy.opnsense.openvpn_client_override:
+          oxlorg.opnsense.openvpn_client_override:
             name: 'test1'
             servers: 'test-server'
             network_tunnel_ip4: '192.168.77.3/29'
@@ -543,12 +543,12 @@ ansibleguy.opnsense.openvpn_client_override
             dns_servers: ['1.1.1.1', '8.8.8.8']
 
         - name: Blocking client
-          ansibleguy.opnsense.openvpn_client_override:
+          oxlorg.opnsense.openvpn_client_override:
             name: 'test2'
             block: true
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             # target: 'openvpn_client_override'
           register: existing_entries
 
@@ -557,13 +557,13 @@ ansibleguy.opnsense.openvpn_client_override
             var: existing_entries.data
 
         - name: Removing
-          ansibleguy.opnsense.openvpn_client_override:
+          oxlorg.opnsense.openvpn_client_override:
             name: 'test1'
             state: 'absent'
 
 ----
 
-ansibleguy.opnsense.openvpn_status
+oxlorg.opnsense.openvpn_status
 ==================================
 
 .. code-block:: yaml
@@ -571,13 +571,13 @@ ansibleguy.opnsense.openvpn_status
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Querying OpenVPN Sessions
-          ansibleguy.opnsense.openvpn_status:
+          oxlorg.opnsense.openvpn_status:
             target: 'sessions'
           register: ovpn_sessions
 
@@ -586,7 +586,7 @@ ansibleguy.opnsense.openvpn_status
             var: ovpn_sessions.data
 
         - name: Querying OpenVPN Routes
-          ansibleguy.opnsense.openvpn_status:
+          oxlorg.opnsense.openvpn_status:
             target: 'routes'
           register: ovpn_routes
 

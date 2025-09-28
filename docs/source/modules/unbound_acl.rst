@@ -8,7 +8,7 @@ DNS - Unbound - ACL
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/unbound_acl.yml>`_
+**TESTS**: `Playbook <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/unbound_acl.yml>`_
 
 **API Docs**: `Core - Unbound <https://docs.opnsense.org/development/api/core/unbound.html>`_
 
@@ -61,16 +61,16 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'unbound_acl'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.unbound_acl:
+          oxlorg.opnsense.unbound_acl:
             name: 'example'
             # action: ''
             # networks: []
@@ -79,26 +79,26 @@ Examples
             # enabled: true
 
         - name: Adding
-          ansibleguy.opnsense.unbound_acl:
+          oxlorg.opnsense.unbound_acl:
             name: 'test1'
             action: 'allow'
             networks: ['192.168.0.0/24']
 
         - name: Changing
-          ansibleguy.opnsense.unbound_acl:
+          oxlorg.opnsense.unbound_acl:
             name: 'test1'
             action: 'deny'
             networks: ['192.168.1.0/25']
 
         - name: Disabling
-          ansibleguy.opnsense.unbound_acl:
+          oxlorg.opnsense.unbound_acl:
             name: 'test1'
             action: 'deny'
             networks: ['192.168.1.0/25']
             enabled: false
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             # target: 'unbound_acl'
           register: existing_entries
 
@@ -107,6 +107,6 @@ Examples
             var: existing_entries.data
 
         - name: Removing
-          ansibleguy.opnsense.unbound_acl:
+          oxlorg.opnsense.unbound_acl:
             name: 'test1'
             state: 'absent'

@@ -4,12 +4,12 @@
 
 **TESTS**: [frr_bgp_general](https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/frr_bgp_general.yml) | 
 [frr_bgp_neighbor](https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/frr_bgp_neighbor.yml) | 
-[frr_bgp_prefix_list](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_prefix_list.yml) | 
-[frr_bgp_route_map](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_route_map.yml) | 
-[frr_bgp_community_list](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_community_list.yml) | 
-[frr_bgp_as_path](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_as_path.yml) |
-[frr_bgp_redistribution](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_redistribution.yml) |
-[frr_bgp_peer_group](https://github.com/ansibleguy/collection_opnsense/blob/latest/tests/frr_bgp_peer_group.yml)
+[frr_bgp_prefix_list](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_bgp_prefix_list.yml) | 
+[frr_bgp_route_map](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_bgp_route_map.yml) | 
+[frr_bgp_community_list](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_bgp_community_list.yml) | 
+[frr_bgp_as_path](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_bgp_as_path.yml) |
+[frr_bgp_redistribution](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_bgp_redistribution.yml) |
+[frr_bgp_peer_group](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_bgp_peer_group.yml)
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
 
@@ -42,7 +42,7 @@ You can also install it using the [package module](https://ansible-opnsense.oxl.
 
 For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basic.html)
 
-### ansibleguy.opnsense.frr_bgp_general
+### oxlorg.opnsense.frr_bgp_general
 
 | Parameter            | Type    | Required | Default value | Aliases       | Comment                                                                                                                                                                                                                                                                                                                                                                 |
 |:---------------------|:--------|:---------|:--------------|:--------------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -56,7 +56,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | reload               | boolean | false    | true          | -             | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html).                                                                                                                                   |
 | enabled              | boolean | false    | true          | -             | En- or disable the service                                                                                                                                                                                                                                                                                                                                              |
 
-### ansibleguy.opnsense.frr_bgp_neighbor
+### oxlorg.opnsense.frr_bgp_neighbor
 
 | Parameter           | Type    | Required                           | Default value | Aliases                                | Comment                                                                                                                                                                                                                                                                                                                                                               |
 |:--------------------|:--------|:-----------------------------------|:--------------|:---------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -87,7 +87,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | route_map_out                    | string  | false                              | -             | map_out, rm_out                        | Route-Map for outbound direction                                                                                                                                                                                                                                                                                                                                      |
 | reload       | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
-### ansibleguy.opnsense.frr_bgp_prefix_list
+### oxlorg.opnsense.frr_bgp_prefix_list
 
 | Parameter    | Type    | Required                             | Default value | Aliases              | Comment                                                                                                                                                                                                                                                          |
 |:-------------|:--------|:-------------------------------------|:--------------|:---------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -99,7 +99,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | version  | string  | false                                | IPv4          | ipv                  | IP-version to use. One of: IPv4, IPv6                                                                                                                                                                                                                            |                                                                                                                                                  |
 | reload       | boolean | false                                | true          | -                    | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
-### ansibleguy.opnsense.frr_bgp_route_map
+### oxlorg.opnsense.frr_bgp_route_map
 
 | Parameter    | Type    | Required | Default value | Aliases     | Comment                                                                                                                                                                                                                                                                                                                                      |
 |:-------------|:--------|:---------|:--------------|:------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -113,7 +113,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | set  | string  | false    | -             | -           | Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)                                                                                                                                  |                                                                                                                                                  |
 | reload       | boolean | false    | true          | -           | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html).                                                                             |
 
-### ansibleguy.opnsense.frr_bgp_community_list
+### oxlorg.opnsense.frr_bgp_community_list
 
 | Parameter      | Type    | Required | Default value | Aliases  | Comment                                                                                                                                                                                                                                                        |
 |:---------------|:--------|:---------|:--------------|:---------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -124,7 +124,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | community         | string  | false for state changes, else true    | -             | comm     | The community you want to match. You can also regex and it is not validated so please be careful                                                                                                                                                                                          |                                                                                                                                                  |
 | reload         | boolean | false    | true          | -        | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
-### ansibleguy.opnsense.frr_bgp_as_path
+### oxlorg.opnsense.frr_bgp_as_path
 
 | Parameter      | Type    | Required | Default value | Aliases | Comment                                                                                                                                                                                                                                                        |
 |:---------------|:--------|:---------|:--------------|:--------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -134,7 +134,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | as_pattern         | string  | false for state changes, else true    | -             | as      | The AS pattern you want to match, regexp allowed (e.g. .$ or _1$). It's not validated so please be careful!  |
 | reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
-### ansibleguy.opnsense.frr_bgp_redistribution
+### oxlorg.opnsense.frr_bgp_redistribution
 
 | Parameter      | Type    | Required | Default value | Aliases | Comment |
 |:---------------|:--------|:---------|:--------------|:--------|:--------|
@@ -143,7 +143,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | route_map      | string  | false    | -             | map, rm | Optional Route-map to apply to this redistribution. |
 | reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
-### ansibleguy.opnsense.frr_bgp_peer_group
+### oxlorg.opnsense.frr_bgp_peer_group
 
 | Parameter          | Type    | Required                           | Default value | Aliases                            | Comment                                                                                                                                                                                                          |
 |:-------------------|:--------|:-----------------------------------|:--------------|:-----------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -163,22 +163,22 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 
 ## Examples
 
-### ansibleguy.opnsense.frr_bgp_general
+### oxlorg.opnsense.frr_bgp_general
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_general'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_bgp_general:
+      oxlorg.opnsense.frr_bgp_general:
         as_number: 1337
         # id: '10.0.0.1'
         # graceful: false
@@ -187,14 +187,14 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # reload: true
 
     - name: Configuring general settings
-      ansibleguy.opnsense.frr_bgp_general:
+      oxlorg.opnsense.frr_bgp_general:
         as_number: 1337
         id: '10.0.0.1'
         graceful: true
         networks: ['10.0.10.0/24']
 
     - name: Disabling BGP
-      ansibleguy.opnsense.frr_bgp_general:
+      oxlorg.opnsense.frr_bgp_general:
         as_number: 1337
         id: '10.0.0.1'
         graceful: true
@@ -202,7 +202,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Pulling settings
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_bgp_general'
       register: existing_entries
 
@@ -211,25 +211,25 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 ```
 
-### ansibleguy.opnsense.frr_bgp_neighbor
+### oxlorg.opnsense.frr_bgp_neighbor
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.frr_bgp_neighbor:
+    oxlorg.opnsense.frr_bgp_neighbor:
       match_fields: ['ip']
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_neighbor'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         as_number: 1337
         ip: '10.0.0.1'
         # password: "{{ 'random' | hash('md5') }}"
@@ -259,7 +259,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # match_fields: ['ip', 'description']
 
     - name: Creating neighbor
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'test2'
         as_number: 1337
         ip: '10.0.0.1'
@@ -272,7 +272,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # match_fields: ['ip']
 
     - name: Disabling neighbor
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'test2'
         as_number: 1337
         ip: '10.0.0.1'
@@ -286,7 +286,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # match_fields: ['ip']
 
     - name: Pulling neighbors
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_bgp_neighbor'
       register: existing_entries
 
@@ -295,27 +295,27 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing neighbor
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         ip: '10.0.0.1'
         state: 'absent'
 ```
 
-### ansibleguy.opnsense.frr_bgp_prefix_list
+### oxlorg.opnsense.frr_bgp_prefix_list
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_prefix_list'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'test1'
         network: '10.0.0.0/24'
         seq: 10
@@ -325,14 +325,14 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # reload: true
 
     - name: Creating prefix-list
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'test2'
         network: '10.0.10.0/24'
         seq: 55
         action: 'permit'
 
     - name: Disabling prefix-list
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'test2'
         network: '10.0.10.0/24'
         seq: 55
@@ -340,7 +340,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Pulling prefix-lists
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_bgp_prefix_list'
       register: existing_entries
 
@@ -349,27 +349,27 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing prefix-list
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'test2'
         state: 'absent'
 ```
 
-### ansibleguy.opnsense.frr_bgp_route_map
+### oxlorg.opnsense.frr_bgp_route_map
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_route_map'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_bgp_route_map:
+      oxlorg.opnsense.frr_bgp_route_map:
         name: 'test1'
         id: 55
         action: 'permit'
@@ -382,14 +382,14 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # reload: true
 
     - name: Creating route-map
-      ansibleguy.opnsense.frr_bgp_route_map:
+      oxlorg.opnsense.frr_bgp_route_map:
         name: 'test2'
         prefix_list: {'test_prefix': 50}
         id: 55
         action: 'permit'
 
     - name: Disabling route-map
-      ansibleguy.opnsense.frr_bgp_route_map:
+      oxlorg.opnsense.frr_bgp_route_map:
         name: 'test2'
         prefix_list: {'test_prefix': 50}
         id: 55
@@ -397,7 +397,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Pulling route-maps
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_bgp_route_map'
       register: existing_entries
 
@@ -406,27 +406,27 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing route-map
-      ansibleguy.opnsense.frr_bgp_route_map:
+      oxlorg.opnsense.frr_bgp_route_map:
         name: 'test2'
         state: 'absent'
 ```
 
-### ansibleguy.opnsense.frr_bgp_community_list
+### oxlorg.opnsense.frr_bgp_community_list
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_community_list'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'test1'
         number: 55
         seq: 55
@@ -436,7 +436,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # reload: true
 
     - name: Creating community-list
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'test2'
         number: 20
         seq: 25
@@ -444,7 +444,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         community: 'test_community'
 
     - name: Disabling community-list
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'test2'
         number: 20
         seq: 25
@@ -453,7 +453,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Pulling community-lists
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_bgp_community_list'
       register: existing_entries
 
@@ -462,27 +462,27 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing community-list
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'test2'
         state: 'absent'
 ```
 
-### ansibleguy.opnsense.frr_bgp_as_path
+### oxlorg.opnsense.frr_bgp_as_path
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_as_path'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_bgp_as_path:
+      oxlorg.opnsense.frr_bgp_as_path:
         description: 'test1'
         number: 55
         action: 'permit'
@@ -491,14 +491,14 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # reload: true
 
     - name: Creating as-path
-      ansibleguy.opnsense.frr_bgp_as_path:
+      oxlorg.opnsense.frr_bgp_as_path:
         description: 'test2'
         number: 20
         action: 'permit'
         as_pattern: 'test_as'
 
     - name: Disabling as-path
-      ansibleguy.opnsense.frr_bgp_as_path:
+      oxlorg.opnsense.frr_bgp_as_path:
         description: 'test2'
         number: 20
         action: 'permit'
@@ -506,7 +506,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Pulling as-paths
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_bgp_as_path'
       register: existing_entries
 
@@ -515,45 +515,45 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing as-path
-      ansibleguy.opnsense.frr_bgp_as_path:
+      oxlorg.opnsense.frr_bgp_as_path:
         description: 'test2'
         state: 'absent'
 ```
 
-### ansibleguy.opnsense.frr_bgp_redistribution
+### oxlorg.opnsense.frr_bgp_redistribution
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_redistribution'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'test1'
         redistribution: ospf
         # enabled: true
         # reload: true
 
     - name: Creating redistribution
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'test2'
         redistribution: ospf
 
     - name: Disabling redistribution
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'test2'
         redistribution: ospf
         enabled: false
 
     - name: Pulling redistributions
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_bgp_redistribution'
       register: existing_entries
 
@@ -562,27 +562,27 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing redistribution
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'test2'
         state: 'absent'
 ```
 
-### ansibleguy.opnsense.frr_bgp_peer_group
+### oxlorg.opnsense.frr_bgp_peer_group
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_peer_group'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_bgp_peer_group:
+      oxlorg.opnsense.frr_bgp_peer_group:
         name: 'test1'
         # as_mode:
         as_number: 1337
@@ -597,20 +597,20 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # reload: true
 
     - name: Creating peer group
-      ansibleguy.opnsense.frr_bgp_peer_group:
+      oxlorg.opnsense.frr_bgp_peer_group:
         name: 'test2'
         as_number: 1337
         source_int: 'opt1'
 
     - name: Disabling peer group
-      ansibleguy.opnsense.frr_bgp_peer_group:
+      oxlorg.opnsense.frr_bgp_peer_group:
         name: 'test2'
         as_number: 1337
         source_int: 'opt1'
         enabled: false
 
     - name: Pulling peer groups
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_bgp_peer_group'
       register: existing_entries
 
@@ -619,7 +619,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing peer group
-      ansibleguy.opnsense.frr_bgp_peer_group:
+      oxlorg.opnsense.frr_bgp_peer_group:
         name: 'test2'
         state: 'absent'
 ```

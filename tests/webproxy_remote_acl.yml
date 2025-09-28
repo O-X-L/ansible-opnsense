@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'webproxy_remote_acl'
 
   environment:
@@ -17,7 +17,7 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
@@ -25,14 +25,14 @@
         opn_pre1.data | length != 0
 
     - name: Adding 1 - failing because of missing URL
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         file: 'ANSIBLETEST1'
         description: 'test'
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of incomplete credentials
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         file: 'ANSIBLETEST1'
         url: 'https://test.lan/rac1'
         username: 'random'
@@ -41,7 +41,7 @@
       failed_when: not opn_fail2.failed
 
     - name: Adding 1 - failing because of missing description
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         file: 'ANSIBLETEST1'
         url: 'https://test.lan/rac1'
         username: 'random'
@@ -49,7 +49,7 @@
       failed_when: not opn_fail3.failed
 
     - name: Adding 1 - failing because of invalid file-name
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         file: 'ANSIBLE_TEST_1'
         url: 'https://test.lan/rac1'
         username: 'random'
@@ -58,7 +58,7 @@
       failed_when: not opn_fail4.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         file: 'ANSIBLETEST1'
         url: 'https://test.lan/rac1'
         username: 'random'
@@ -71,7 +71,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         file: 'ANSIBLETEST1'
         url: 'https://test.lan/rac2'
         username: 'random'
@@ -85,7 +85,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         file: 'ANSIBLETEST1'
         url: 'https://test.lan/rac2'
         username: 'random'
@@ -99,7 +99,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         file: 'ANSIBLETEST1'
         url: 'https://test.lan/rac2'
         username: 'random'
@@ -114,7 +114,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         file: 'ANSIBLETEST1'
         url: 'https://test.lan/rac2'
         username: 'random'
@@ -129,7 +129,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         file: 'ANSIBLETEST2'
         url: 'https://test.lan/rac2'
         description: 'test'
@@ -140,7 +140,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn7
       failed_when: >
         opn7.failed or
@@ -148,7 +148,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         file: 'ANSIBLETEST2'
         state: 'absent'
       register: opn8
@@ -158,7 +158,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         opn10.failed or
@@ -166,7 +166,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         file: "{{ item }}"
         state: 'absent'
       loop:
@@ -175,7 +175,7 @@
       when: not ansible_check_mode
 
     - name: Checking cleanup
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn9
       failed_when: >
         opn9.failed or

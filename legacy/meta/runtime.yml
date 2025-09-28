@@ -1,0 +1,559 @@
+---
+
+requires_ansible: ">=2.14"
+
+action_groups:
+  alias:
+    - ansibleguy.opnsense.alias
+    - ansibleguy.opnsense.alias_multi
+    - ansibleguy.opnsense.alias_purge
+  rule:
+    - ansibleguy.opnsense.rule
+    - ansibleguy.opnsense.rule_multi
+    - ansibleguy.opnsense.rule_purge
+    - ansibleguy.opnsense.rule_interface_group
+  unbound:
+    - ansibleguy.opnsense.unbound_general
+    - ansibleguy.opnsense.unbound_acl
+    - ansibleguy.opnsense.unbound_forward
+    - ansibleguy.opnsense.unbound_dot
+    - ansibleguy.opnsense.unbound_host
+    - ansibleguy.opnsense.unbound_host_alias
+    - ansibleguy.opnsense.unbound_dnsbl
+  ipsec:
+    - ansibleguy.opnsense.ipsec_auth_local
+    - ansibleguy.opnsense.ipsec_auth_remote
+    - ansibleguy.opnsense.ipsec_child
+    - ansibleguy.opnsense.ipsec_vti
+    - ansibleguy.opnsense.ipsec_cert
+    - ansibleguy.opnsense.ipsec_psk
+    - ansibleguy.opnsense.ipsec_connection
+    - ansibleguy.opnsense.ipsec_pool
+    - ansibleguy.opnsense.ipsec_manual_spd
+    - ansibleguy.opnsense.ipsec_general
+  shaper:
+    - ansibleguy.opnsense.shaper_pipe
+    - ansibleguy.opnsense.shaper_queue
+    - ansibleguy.opnsense.shaper_rule
+  monit:
+    - ansibleguy.opnsense.monit_service
+    - ansibleguy.opnsense.monit_alert
+    - ansibleguy.opnsense.monit_test
+  wireguard:
+    - ansibleguy.opnsense.wireguard_server
+    - ansibleguy.opnsense.wireguard_peer
+    - ansibleguy.opnsense.wireguard_show
+    - ansibleguy.opnsense.wireguard_general
+  interface:
+    - ansibleguy.opnsense.interface_vlan
+    - ansibleguy.opnsense.interface_vxlan
+    - ansibleguy.opnsense.interface_vip
+    - ansibleguy.opnsense.interface_lagg
+    - ansibleguy.opnsense.interface_loopback
+    - ansibleguy.opnsense.interface_gre
+    - ansibleguy.opnsense.interface_bridge
+    - ansibleguy.opnsense.interface_gif
+    - ansibleguy.opnsense.neighbor
+  frr:
+    - ansibleguy.opnsense.frr_diagnostic
+    - ansibleguy.opnsense.frr_general
+    - ansibleguy.opnsense.frr_bfd_general
+    - ansibleguy.opnsense.frr_bfd_neighbor
+    - ansibleguy.opnsense.frr_bgp_general
+    - ansibleguy.opnsense.frr_bgp_prefix_list
+    - ansibleguy.opnsense.frr_bgp_community_list
+    - ansibleguy.opnsense.frr_bgp_as_path
+    - ansibleguy.opnsense.frr_bgp_redistribution
+    - ansibleguy.opnsense.frr_bgp_route_map
+    - ansibleguy.opnsense.frr_bgp_neighbor
+    - ansibleguy.opnsense.frr_bgp_peer_group
+    - ansibleguy.opnsense.frr_ospf_general
+    - ansibleguy.opnsense.frr_ospf_prefix_list
+    - ansibleguy.opnsense.frr_ospf_interface
+    - ansibleguy.opnsense.frr_ospf_redistribution
+    - ansibleguy.opnsense.frr_ospf_route_map
+    - ansibleguy.opnsense.frr_ospf_network
+    - ansibleguy.opnsense.frr_ospf3_general
+    - ansibleguy.opnsense.frr_ospf3_prefix_list
+    - ansibleguy.opnsense.frr_ospf3_interface
+    - ansibleguy.opnsense.frr_ospf3_redistribution
+    - ansibleguy.opnsense.frr_ospf3_route_map
+    - ansibleguy.opnsense.frr_ospf3_network
+    - ansibleguy.opnsense.frr_rip
+  bind:
+    - ansibleguy.opnsense.bind_general
+    - ansibleguy.opnsense.bind_acl
+    - ansibleguy.opnsense.bind_blocklist
+    - ansibleguy.opnsense.bind_domain
+    - ansibleguy.opnsense.bind_record
+    - ansibleguy.opnsense.bind_record_multi
+  webproxy:
+    - ansibleguy.opnsense.webproxy_general
+    - ansibleguy.opnsense.webproxy_cache
+    - ansibleguy.opnsense.webproxy_parent
+    - ansibleguy.opnsense.webproxy_traffic
+    - ansibleguy.opnsense.webproxy_forward
+    - ansibleguy.opnsense.webproxy_acl
+    - ansibleguy.opnsense.webproxy_icap
+    - ansibleguy.opnsense.webproxy_auth
+    - ansibleguy.opnsense.webproxy_remote_acl
+    - ansibleguy.opnsense.webproxy_pac_proxy
+    - ansibleguy.opnsense.webproxy_pac_match
+    - ansibleguy.opnsense.webproxy_pac_rule
+  nginx:
+    - ansibleguy.opnsense.nginx_general
+    - ansibleguy.opnsense.nginx_upstream_server
+  route:
+    - ansibleguy.opnsense.route
+    - ansibleguy.opnsense.gateway
+  nat:
+    - ansibleguy.opnsense.nat_source
+    - ansibleguy.opnsense.nat_one_to_one
+  system:
+    - ansibleguy.opnsense.list
+    - ansibleguy.opnsense.reload
+    - ansibleguy.opnsense.service
+    - ansibleguy.opnsense.savepoint
+    - ansibleguy.opnsense.package
+    - ansibleguy.opnsense.system
+    - ansibleguy.opnsense.cron
+    - ansibleguy.opnsense.syslog
+    - ansibleguy.opnsense.snapshot
+  ids:
+    - ansibleguy.opnsense.ids_action
+    - ansibleguy.opnsense.ids_general
+    - ansibleguy.opnsense.ids_policy
+    - ansibleguy.opnsense.ids_policy_rule
+    - ansibleguy.opnsense.ids_rule
+    - ansibleguy.opnsense.ids_ruleset
+    - ansibleguy.opnsense.ids_ruleset_properties
+    - ansibleguy.opnsense.ids_user_rule
+  openvpn:
+    - ansibleguy.opnsense.openvpn_client
+    - ansibleguy.opnsense.openvpn_server
+    - ansibleguy.opnsense.openvpn_static_key
+    - ansibleguy.opnsense.openvpn_status
+    - ansibleguy.opnsense.openvpn_client_override
+    - ansibleguy.opnsense.openvpn_client_template
+    - ansibleguy.opnsense.openvpn_client_export
+  dnsmasq:
+    - ansibleguy.opnsense.dnsmasq_general
+    - ansibleguy.opnsense.dnsmasq_domain
+    - ansibleguy.opnsense.dnsmasq_host
+    - ansibleguy.opnsense.dnsmasq_range
+    - ansibleguy.opnsense.dnsmasq_option
+    - ansibleguy.opnsense.dnsmasq_boot
+    - ansibleguy.opnsense.dnsmasq_tag
+  dhcrelay:
+    - ansibleguy.opnsense.dhcrelay_destination
+    - ansibleguy.opnsense.dhcrelay_relay
+  dhcp:
+    - ansibleguy.opnsense.dhcp_reservation
+    - ansibleguy.opnsense.dhcp_controlagent
+    - ansibleguy.opnsense.dhcp_general
+    - ansibleguy.opnsense.dhcp_subnet
+  acme:
+    - ansibleguy.opnsense.acme_general
+    - ansibleguy.opnsense.acme_account
+    - ansibleguy.opnsense.acme_validation
+    - ansibleguy.opnsense.acme_action
+    - ansibleguy.opnsense.acme_certificate
+  postfix:
+    - ansibleguy.opnsense.postfix_general
+    - ansibleguy.opnsense.postfix_domain
+    - ansibleguy.opnsense.postfix_recipient
+    - ansibleguy.opnsense.postfix_recipientbcc
+    - ansibleguy.opnsense.postfix_sender
+    - ansibleguy.opnsense.postfix_senderbcc
+    - ansibleguy.opnsense.postfix_sendercanonical
+    - ansibleguy.opnsense.postfix_headercheck
+    - ansibleguy.opnsense.postfix_address
+  hasync:
+    - ansibleguy.opnsense.hasync_general
+    - ansibleguy.opnsense.hasync_service
+  raw:
+    - ansibleguy.opnsense.raw
+  access:
+    - ansibleguy.opnsense.user
+    - ansibleguy.opnsense.group
+    - ansibleguy.opnsense.privilege
+  all:
+    - metadata:
+        extend_group:
+          - ansibleguy.opnsense.alias
+          - ansibleguy.opnsense.rule
+          - ansibleguy.opnsense.unbound
+          - ansibleguy.opnsense.ipsec
+          - ansibleguy.opnsense.shaper
+          - ansibleguy.opnsense.monit
+          - ansibleguy.opnsense.wireguard
+          - ansibleguy.opnsense.interface
+          - ansibleguy.opnsense.frr
+          - ansibleguy.opnsense.bind
+          - ansibleguy.opnsense.webproxy
+          - ansibleguy.opnsense.nginx
+          - ansibleguy.opnsense.route
+          - ansibleguy.opnsense.gateway
+          - ansibleguy.opnsense.nat
+          - ansibleguy.opnsense.system
+          - ansibleguy.opnsense.ids
+          - ansibleguy.opnsense.openvpn
+          - ansibleguy.opnsense.dhcrelay
+          - ansibleguy.opnsense.dhcp
+          - ansibleguy.opnsense.acme
+          - ansibleguy.opnsense.postfix
+          - ansibleguy.opnsense.hasync
+          - ansibleguy.opnsense.raw
+          - ansibleguy.opnsense.access
+          - ansibleguy.opnsense.dnsmasq
+
+plugin_routing:
+  modules:
+    # redirect all modules to new oxlorg namespace
+    acme_account:
+      redirect: oxlorg.opnsense.acme_account
+    acme_action:
+      redirect: oxlorg.opnsense.acme_action
+    acme_certificate:
+      redirect: oxlorg.opnsense.acme_certificate
+    acme_general:
+      redirect: oxlorg.opnsense.acme_general
+    acme_validation:
+      redirect: oxlorg.opnsense.acme_validation
+    alias:
+      redirect: oxlorg.opnsense.alias
+    alias_multi:
+      redirect: oxlorg.opnsense.alias_multi
+    alias_purge:
+      redirect: oxlorg.opnsense.alias_purge
+    bind_acl:
+      redirect: oxlorg.opnsense.bind_acl
+    bind_blocklist:
+      redirect: oxlorg.opnsense.bind_blocklist
+    bind_domain:
+      redirect: oxlorg.opnsense.bind_domain
+    bind_general:
+      redirect: oxlorg.opnsense.bind_general
+    bind_record:
+      redirect: oxlorg.opnsense.bind_record
+    bind_record_multi:
+      redirect: oxlorg.opnsense.bind_record_multi
+    cron:
+      redirect: oxlorg.opnsense.cron
+    dhcp_controlagent:
+      redirect: oxlorg.opnsense.dhcp_controlagent
+    dhcp_general:
+      redirect: oxlorg.opnsense.dhcp_general
+    dhcp_reservation:
+      redirect: oxlorg.opnsense.dhcp_reservation
+    dhcp_subnet:
+      redirect: oxlorg.opnsense.dhcp_subnet
+    dhcrelay_destination:
+      redirect: oxlorg.opnsense.dhcrelay_destination
+    dhcrelay_relay:
+      redirect: oxlorg.opnsense.dhcrelay_relay
+    dnsmasq_boot:
+      redirect: oxlorg.opnsense.dnsmasq_boot
+    dnsmasq_domain:
+      redirect: oxlorg.opnsense.dnsmasq_domain
+    dnsmasq_general:
+      redirect: oxlorg.opnsense.dnsmasq_general
+    dnsmasq_host:
+      redirect: oxlorg.opnsense.dnsmasq_host
+    dnsmasq_option:
+      redirect: oxlorg.opnsense.dnsmasq_option
+    dnsmasq_range:
+      redirect: oxlorg.opnsense.dnsmasq_range
+    dnsmasq_tag:
+      redirect: oxlorg.opnsense.dnsmasq_tag
+    frr_bfd_general:
+      redirect: oxlorg.opnsense.frr_bfd_general
+    frr_bfd_neighbor:
+      redirect: oxlorg.opnsense.frr_bfd_neighbor
+    frr_bgp_as_path:
+      redirect: oxlorg.opnsense.frr_bgp_as_path
+    frr_bgp_community_list:
+      redirect: oxlorg.opnsense.frr_bgp_community_list
+    frr_bgp_general:
+      redirect: oxlorg.opnsense.frr_bgp_general
+    frr_bgp_neighbor:
+      redirect: oxlorg.opnsense.frr_bgp_neighbor
+    frr_bgp_peer_group:
+      redirect: oxlorg.opnsense.frr_bgp_peer_group
+    frr_bgp_prefix_list:
+      redirect: oxlorg.opnsense.frr_bgp_prefix_list
+    frr_bgp_redistribution:
+      redirect: oxlorg.opnsense.frr_bgp_redistribution
+    frr_bgp_route_map:
+      redirect: oxlorg.opnsense.frr_bgp_route_map
+    frr_diagnostic:
+      redirect: oxlorg.opnsense.frr_diagnostic
+    frr_general:
+      redirect: oxlorg.opnsense.frr_general
+    frr_ospf3_general:
+      redirect: oxlorg.opnsense.frr_ospf3_general
+    frr_ospf3_interface:
+      redirect: oxlorg.opnsense.frr_ospf3_interface
+    frr_ospf3_network:
+      redirect: oxlorg.opnsense.frr_ospf3_network
+    frr_ospf3_prefix_list:
+      redirect: oxlorg.opnsense.frr_ospf3_prefix_list
+    frr_ospf3_redistribution:
+      redirect: oxlorg.opnsense.frr_ospf3_redistribution
+    frr_ospf3_route_map:
+      redirect: oxlorg.opnsense.frr_ospf3_route_map
+    frr_ospf_general:
+      redirect: oxlorg.opnsense.frr_ospf_general
+    frr_ospf_interface:
+      redirect: oxlorg.opnsense.frr_ospf_interface
+    frr_ospf_network:
+      redirect: oxlorg.opnsense.frr_ospf_network
+    frr_ospf_prefix_list:
+      redirect: oxlorg.opnsense.frr_ospf_prefix_list
+    frr_ospf_redistribution:
+      redirect: oxlorg.opnsense.frr_ospf_redistribution
+    frr_ospf_route_map:
+      redirect: oxlorg.opnsense.frr_ospf_route_map
+    frr_rip:
+      redirect: oxlorg.opnsense.frr_rip
+    gateway:
+      redirect: oxlorg.opnsense.gateway
+    group:
+      redirect: oxlorg.opnsense.group
+    hasync_general:
+      redirect: oxlorg.opnsense.hasync_general
+    hasync_service:
+      redirect: oxlorg.opnsense.hasync_service
+    ids_action:
+      redirect: oxlorg.opnsense.ids_action
+    ids_general:
+      redirect: oxlorg.opnsense.ids_general
+    ids_policy:
+      redirect: oxlorg.opnsense.ids_policy
+    ids_policy_rule:
+      redirect: oxlorg.opnsense.ids_policy_rule
+    ids_rule:
+      redirect: oxlorg.opnsense.ids_rule
+    ids_ruleset:
+      redirect: oxlorg.opnsense.ids_ruleset
+    ids_user_rule:
+      redirect: oxlorg.opnsense.ids_user_rule
+    interface_bridge:
+      redirect: oxlorg.opnsense.interface_bridge
+    interface_gif:
+      redirect: oxlorg.opnsense.interface_gif
+    interface_gre:
+      redirect: oxlorg.opnsense.interface_gre
+    interface_lagg:
+      redirect: oxlorg.opnsense.interface_lagg
+    interface_loopback:
+      redirect: oxlorg.opnsense.interface_loopback
+    interface_vip:
+      redirect: oxlorg.opnsense.interface_vip
+    interface_vlan:
+      redirect: oxlorg.opnsense.interface_vlan
+    interface_vxlan:
+      redirect: oxlorg.opnsense.interface_vxlan
+    ipsec_auth_local:
+      redirect: oxlorg.opnsense.ipsec_auth_local
+    ipsec_auth_remote:
+      redirect: oxlorg.opnsense.ipsec_auth_remote
+    ipsec_cert:
+      redirect: oxlorg.opnsense.ipsec_cert
+    ipsec_child:
+      redirect: oxlorg.opnsense.ipsec_child
+    ipsec_connection:
+      redirect: oxlorg.opnsense.ipsec_connection
+    ipsec_general:
+      redirect: oxlorg.opnsense.ipsec_general
+    ipsec_manual_spd:
+      redirect: oxlorg.opnsense.ipsec_manual_spd
+    ipsec_pool:
+      redirect: oxlorg.opnsense.ipsec_pool
+    ipsec_psk:
+      redirect: oxlorg.opnsense.ipsec_psk
+    ipsec_vti:
+      redirect: oxlorg.opnsense.ipsec_vti
+    list:
+      redirect: oxlorg.opnsense.list
+    monit_alert:
+      redirect: oxlorg.opnsense.monit_alert
+    monit_service:
+      redirect: oxlorg.opnsense.monit_service
+    monit_test:
+      redirect: oxlorg.opnsense.monit_test
+    nat_one_to_one:
+      redirect: oxlorg.opnsense.nat_one_to_one
+    nat_source:
+      redirect: oxlorg.opnsense.nat_source
+    neighbor:
+      redirect: oxlorg.opnsense.neighbor
+    nginx_general:
+      redirect: oxlorg.opnsense.nginx_general
+    nginx_upstream_server:
+      redirect: oxlorg.opnsense.nginx_upstream_server
+    openvpn_client:
+      redirect: oxlorg.opnsense.openvpn_client
+    openvpn_client_override:
+      redirect: oxlorg.opnsense.openvpn_client_override
+    openvpn_server:
+      redirect: oxlorg.opnsense.openvpn_server
+    openvpn_static_key:
+      redirect: oxlorg.opnsense.openvpn_static_key
+    openvpn_status:
+      redirect: oxlorg.opnsense.openvpn_status
+    package:
+      redirect: oxlorg.opnsense.package
+    postfix_address:
+      redirect: oxlorg.opnsense.postfix_address
+    postfix_domain:
+      redirect: oxlorg.opnsense.postfix_domain
+    postfix_general:
+      redirect: oxlorg.opnsense.postfix_general
+    postfix_headercheck:
+      redirect: oxlorg.opnsense.postfix_headercheck
+    postfix_recipient:
+      redirect: oxlorg.opnsense.postfix_recipient
+    postfix_recipientbcc:
+      redirect: oxlorg.opnsense.postfix_recipientbcc
+    postfix_sender:
+      redirect: oxlorg.opnsense.postfix_sender
+    postfix_senderbcc:
+      redirect: oxlorg.opnsense.postfix_senderbcc
+    postfix_sendercanonical:
+      redirect: oxlorg.opnsense.postfix_sendercanonical
+    privilege:
+      redirect: oxlorg.opnsense.privilege
+    raw:
+      redirect: oxlorg.opnsense.raw
+    reload:
+      redirect: oxlorg.opnsense.reload
+    route:
+      redirect: oxlorg.opnsense.route
+    rule:
+      redirect: oxlorg.opnsense.rule
+    rule_interface_group:
+      redirect: oxlorg.opnsense.rule_interface_group
+    rule_multi:
+      redirect: oxlorg.opnsense.rule_multi
+    rule_purge:
+      redirect: oxlorg.opnsense.rule_purge
+    savepoint:
+      redirect: oxlorg.opnsense.savepoint
+    service:
+      redirect: oxlorg.opnsense.service
+    shaper_pipe:
+      redirect: oxlorg.opnsense.shaper_pipe
+    shaper_queue:
+      redirect: oxlorg.opnsense.shaper_queue
+    shaper_rule:
+      redirect: oxlorg.opnsense.shaper_rule
+    snapshot:
+      redirect: oxlorg.opnsense.snapshot
+    syslog:
+      redirect: oxlorg.opnsense.syslog
+    system:
+      redirect: oxlorg.opnsense.system
+    unbound_acl:
+      redirect: oxlorg.opnsense.unbound_acl
+    unbound_dnsbl:
+      redirect: oxlorg.opnsense.unbound_dnsbl
+    unbound_dot:
+      redirect: oxlorg.opnsense.unbound_dot
+    unbound_forward:
+      redirect: oxlorg.opnsense.unbound_forward
+    unbound_general:
+      redirect: oxlorg.opnsense.unbound_general
+    unbound_host:
+      redirect: oxlorg.opnsense.unbound_host
+    unbound_host_alias:
+      redirect: oxlorg.opnsense.unbound_host_alias
+    user:
+      redirect: oxlorg.opnsense.user
+    webproxy_acl:
+      redirect: oxlorg.opnsense.webproxy_acl
+    webproxy_auth:
+      redirect: oxlorg.opnsense.webproxy_auth
+    webproxy_cache:
+      redirect: oxlorg.opnsense.webproxy_cache
+    webproxy_forward:
+      redirect: oxlorg.opnsense.webproxy_forward
+    webproxy_general:
+      redirect: oxlorg.opnsense.webproxy_general
+    webproxy_icap:
+      redirect: oxlorg.opnsense.webproxy_icap
+    webproxy_pac_match:
+      redirect: oxlorg.opnsense.webproxy_pac_match
+    webproxy_pac_proxy:
+      redirect: oxlorg.opnsense.webproxy_pac_proxy
+    webproxy_pac_rule:
+      redirect: oxlorg.opnsense.webproxy_pac_rule
+    webproxy_parent:
+      redirect: oxlorg.opnsense.webproxy_parent
+    webproxy_remote_acl:
+      redirect: oxlorg.opnsense.webproxy_remote_acl
+    webproxy_traffic:
+      redirect: oxlorg.opnsense.webproxy_traffic
+    wireguard_general:
+      redirect: oxlorg.opnsense.wireguard_general
+    wireguard_peer:
+      redirect: oxlorg.opnsense.wireguard_peer
+    wireguard_server:
+      redirect: oxlorg.opnsense.wireguard_server
+    wireguard_show:
+      redirect: oxlorg.opnsense.wireguard_show
+    # actual redirects
+    ipsec_tunnel:
+      redirect: oxlorg.opnsense.ipsec_connection
+    ipsec_network:
+      redirect: oxlorg.opnsense.ipsec_pool
+    snat:
+      redirect: oxlorg.opnsense.source_nat
+    proxy_general:
+      redirect: oxlorg.opnsense.webproxy_general
+    proxy_cache:
+      redirect: oxlorg.opnsense.webproxy_cache
+    proxy_parent:
+      redirect: oxlorg.opnsense.webproxy_parent
+    proxy_traffic:
+      redirect: oxlorg.opnsense.webproxy_traffic
+    proxy_forward:
+      redirect: oxlorg.opnsense.webproxy_forward
+    proxy_acl:
+      redirect: oxlorg.opnsense.webproxy_acl
+    proxy_icap:
+      redirect: oxlorg.opnsense.webproxy_icap
+    proxy_auth:
+      redirect: oxlorg.opnsense.webproxy_auth
+    proxy_remote_acl:
+      redirect: oxlorg.opnsense.webproxy_remote_acl
+    proxy_pac_proxy:
+      redirect: oxlorg.opnsense.webproxy_pac_proxy
+    proxy_pac_match:
+      redirect: oxlorg.opnsense.webproxy_pac_match
+    proxy_pac_rule:
+      redirect: oxlorg.opnsense.webproxy_pac_rule
+    openvpn_client_overwrite:
+      redirect: oxlorg.opnsense.openvpn_client_override
+    routing:
+      redirect: oxlorg.opnsense.gateway
+    gw:
+      redirect: oxlorg.opnsense.gateway
+    rule_if_group:
+      redirect: oxlorg.opnsense.rule_interface_group
+    dhcrelay:
+      redirect: oxlorg.opnsense.dhcrelay_relay
+    dhcrelay_dst:
+      redirect: oxlorg.opnsense.dhcrelay_destination
+    unbound_domain:
+      redirect: oxlorg.opnsense.unbound_forward
+    acme_challenge:
+      redirect: oxlorg.opnsense.acme_validation
+    acme_automation:
+      redirect: oxlorg.opnsense.acme_action
+    source_nat:
+      redirect: oxlorg.opnsense.nat_source
+    one_to_one:
+      redirect: oxlorg.opnsense.nat_one_to_one
+    wireguard_client:
+      redirect: oxlorg.opnsense.wireguard_peer

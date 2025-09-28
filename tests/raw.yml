@@ -4,7 +4,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -14,7 +14,7 @@
 
   tasks:
     - name: Query interfaces
-      ansibleguy.opnsense.raw:
+      oxlorg.opnsense.raw:
         url: 'interfaces/overview/interfacesInfo'
       register: opn1
       failed_when: >
@@ -23,7 +23,7 @@
         opn1.response.rows | length == 0
 
     - name: Query interfaces 2
-      ansibleguy.opnsense.raw:
+      oxlorg.opnsense.raw:
         module: 'interfaces'
         controller: 'overview'
         command: 'interfacesInfo'
@@ -34,7 +34,7 @@
         opn2.response.rows | length == 0
 
     - name: Execute action
-      ansibleguy.opnsense.raw:
+      oxlorg.opnsense.raw:
         module: 'syslog'
         controller: 'service'
         command: 'restart'

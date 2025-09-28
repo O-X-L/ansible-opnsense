@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'ids_ruleset'
 
   environment:
@@ -17,21 +17,21 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Adding 1 - failing because of non-existing ruleset
-      ansibleguy.opnsense.ids_ruleset:
+      oxlorg.opnsense.ids_ruleset:
         name: 'DOES-NOT-EXIST'
         enabled: true
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Enabling 1 (used by other tests)
-      ansibleguy.opnsense.ids_ruleset:
+      oxlorg.opnsense.ids_ruleset:
         name: "{{ item }}"
         timeout: 60  # download
       loop:
@@ -39,7 +39,7 @@
         - 'OPNsense-App-detect/test'
 
     - name: Enabling 2
-      ansibleguy.opnsense.ids_ruleset:
+      oxlorg.opnsense.ids_ruleset:
         name: 'ET open/compromised'
       register: opn1
       failed_when: >
@@ -47,7 +47,7 @@
         not opn1.changed
 
     - name: Enabling 2 - nothing changed
-      ansibleguy.opnsense.ids_ruleset:
+      oxlorg.opnsense.ids_ruleset:
         name: 'ET open/compromised'
       register: opn3
       failed_when: >
@@ -56,7 +56,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 2
-      ansibleguy.opnsense.ids_ruleset:
+      oxlorg.opnsense.ids_ruleset:
         name: 'ET open/compromised'
         enabled: false
       register: opn2

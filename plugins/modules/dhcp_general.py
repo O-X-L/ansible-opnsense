@@ -8,14 +8,14 @@
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     module_dependency_error, MODULE_EXCEPTIONS
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.wrapper import module_wrapper
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         EN_ONLY_MOD_ARG, OPN_MOD_ARGS, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dhcp_general import General
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.dhcp_general import General
 
 
 except MODULE_EXCEPTIONS:

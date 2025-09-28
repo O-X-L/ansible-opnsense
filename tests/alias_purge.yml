@@ -4,15 +4,15 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'alias'
 
-    ansibleguy.opnsense.alias:
+    oxlorg.opnsense.alias:
       multi_control:
         fail_verify: true
         fail_process: true
@@ -22,7 +22,7 @@
 
   tasks:
     - name: Adding 1
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi:
           - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
@@ -37,7 +37,7 @@
       when: not ansible_check_mode
 
     - name: Simple purge
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_purge:
           - name: 'ANSIBLE_TEST_4_1'
       when: not ansible_check_mode
@@ -47,7 +47,7 @@
         not opn2.changed
 
     - name: Listing aliases
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn3
       failed_when: >
         'data' not in opn3 or
@@ -55,7 +55,7 @@
       when: not ansible_check_mode
 
     - name: Simple disable-purge
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_purge:
           - name: 'ANSIBLE_TEST_4_2'
         multi_control:
@@ -67,7 +67,7 @@
       when: not ansible_check_mode
 
     - name: Simple disable-purge - nothing changed
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_purge:
           - name: 'ANSIBLE_TEST_4_2'
         multi_control:
@@ -76,7 +76,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi:
           - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
@@ -91,7 +91,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single)
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_control:
           purge_filter:
             type: 'port'
@@ -99,7 +99,7 @@
       register: opn4
 
     - name: Listing aliases
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn5
       failed_when: >
         'data' not in opn5 or
@@ -107,7 +107,7 @@
       when: not ansible_check_mode
 
     - name: Adding 3
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi:
           - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
@@ -122,7 +122,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single inverted)
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_control:
           purge_filter:
             type: 'port'
@@ -134,7 +134,7 @@
         not opn6.changed
 
     - name: Listing aliases
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn7
       failed_when: >
         'data' not in opn7 or
@@ -142,7 +142,7 @@
       when: not ansible_check_mode
 
     - name: Adding 4
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi:
           - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
@@ -152,7 +152,7 @@
       when: not ansible_check_mode
 
     - name: Purge used alias
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_purge:
           - name: 'ANSIBLE_TEST_4_2'
       when: not ansible_check_mode
@@ -162,7 +162,7 @@
         'warnings' not in opn11
 
     - name: Purge ALL
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_control:
           purge_all: true
       when: not ansible_check_mode
@@ -172,7 +172,7 @@
         not opn9.changed
 
     - name: Checking cleanup
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         'data' not in opn10 or

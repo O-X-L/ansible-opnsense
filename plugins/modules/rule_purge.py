@@ -8,15 +8,15 @@
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.legacy_multi import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.legacy_multi import \
         PURGE_MOD_ARGS, INFO_MOD_ARG, RULE_MOD_ARG_KEY_FIELD
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.rule import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.rule import \
         RULE_MATCH_FIELDS_ARG
 
 except MODULE_EXCEPTIONS:

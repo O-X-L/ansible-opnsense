@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'dnsmasq_host'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.dnsmasq_host:
+      oxlorg.opnsense.dnsmasq_host:
         description: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -33,7 +33,7 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of invalid domain
-      ansibleguy.opnsense.dnsmasq_host:
+      oxlorg.opnsense.dnsmasq_host:
         description: 'ANSIBLE_TEST_1_2'
         host: server
         domain: example:com
@@ -41,7 +41,7 @@
       failed_when: not opn_fail1.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.dnsmasq_host:
+      oxlorg.opnsense.dnsmasq_host:
         description: 'ANSIBLE_TEST_1_1'
         ip: '192.168.1.99'
         hardware_addr: '00:11:22:33:44:55'
@@ -52,7 +52,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.dnsmasq_host:
+      oxlorg.opnsense.dnsmasq_host:
         description: 'ANSIBLE_TEST_1_1'
         ip: '192.168.1.99'
         hardware_addr: '00:11:22:33:44:55'
@@ -64,7 +64,7 @@
         not opn2.changed
 
     - name: Adding 2
-      ansibleguy.opnsense.dnsmasq_host:
+      oxlorg.opnsense.dnsmasq_host:
         description: 'ANSIBLE_TEST_1_2'
         host: server
         domain: example.com
@@ -78,7 +78,7 @@
         not opn3.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.dnsmasq_host:
+      oxlorg.opnsense.dnsmasq_host:
         description: 'ANSIBLE_TEST_1_2'
         host: server
         domain: example.com
@@ -93,7 +93,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.dnsmasq_host:
+      oxlorg.opnsense.dnsmasq_host:
         description: 'ANSIBLE_TEST_1_2'
         host: server
         state: 'absent'
@@ -104,7 +104,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn6
       failed_when: >
         'data' not in opn6 or
@@ -112,7 +112,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.dnsmasq_host:
+      oxlorg.opnsense.dnsmasq_host:
         description: '{{ item }}'
         state: 'absent'
       loop:
@@ -121,7 +121,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

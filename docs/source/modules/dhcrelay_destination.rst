@@ -41,7 +41,7 @@ Info
 
 This module manages DHCRelay destinations. A destination can contain multiple IP addresses.
 
-Note: You can also use the shortform module name: :code:`ansibleguy.opnsense.dhcrelay_dst`
+Note: You can also use the shortform module name: :code:`oxlorg.opnsense.dhcrelay_dst`
 
 ----
 
@@ -53,16 +53,16 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'dhcrelay_destination'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.dhcrelay_destination:
+          oxlorg.opnsense.dhcrelay_destination:
             name: 'mydhcp'
             server:
               - '192.168.0.1'
@@ -71,20 +71,20 @@ Examples
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.dhcrelay_destination:
+          oxlorg.opnsense.dhcrelay_destination:
             name: 'mydhcp'
             server:
               - '192.168.0.1'
 
         - name: Removing
-          ansibleguy.opnsense.dhcrelay_destination:
+          oxlorg.opnsense.dhcrelay_destination:
             name: 'mydhcp'
             server:
               - '192.168.0.1'
             state: 'absent'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'dhcrelay_destination'
           register: existing_entries
 

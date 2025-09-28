@@ -1,8 +1,8 @@
 ---
 
-namespace: 'ansibleguy'
+namespace: 'oxlorg'
 name: 'opnsense'
-version: 1.2.16
+version: 25.7.3
 readme: 'README.md'
 authors:
   - 'OXL IT Services <contact+opnsense@OXL.at>'
@@ -24,5 +24,5 @@ issues: 'https://github.com/O-X-L/ansible_opnsense/issues'
 build_ignore: [
   '*_pytest.py', '*_testdata.py', '*pytest_cache', '*/_tmpl.py',
   '.**', 'pytest.ini', 'requirements_*.txt',
-  'docs**', 'scripts**', 'venv**', 'Makefile',
+  'docs**', 'scripts**', 'venv**', 'Makefile', 'legacy**',
 ]

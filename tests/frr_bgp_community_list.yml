@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_community_list'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -33,7 +33,7 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of invalid sequence-number
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'ANSIBLE_TEST_1_1'
         number: 20
         seq: 1000
@@ -43,7 +43,7 @@
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of invalid number
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'ANSIBLE_TEST_1_1'
         number: 1000
         seq: 20
@@ -53,7 +53,7 @@
       failed_when: not opn_fail2.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'ANSIBLE_TEST_1_1'
         number: 20
         seq: 20
@@ -65,7 +65,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'ANSIBLE_TEST_1_1'
         number: 25
         seq: 25
@@ -77,7 +77,7 @@
         not opn9.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'ANSIBLE_TEST_1_1'
         number: 25
         seq: 25
@@ -91,7 +91,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'ANSIBLE_TEST_1_1'
         number: 25
         seq: 25
@@ -105,7 +105,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'ANSIBLE_TEST_1_1'
         number: 25
         seq: 25
@@ -118,7 +118,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'ANSIBLE_TEST_1_2'
         number: 40
         seq: 30
@@ -130,7 +130,7 @@
         not opn5.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'ANSIBLE_TEST_1_2'
         number: 40
         seq: 30
@@ -143,7 +143,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn7
@@ -153,7 +153,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -161,7 +161,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.frr_bgp_community_list:
+      oxlorg.opnsense.frr_bgp_community_list:
         description: "{{ item }}"
         state: 'absent'
       loop:
@@ -170,7 +170,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

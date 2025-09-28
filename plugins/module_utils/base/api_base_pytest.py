@@ -1,18 +1,18 @@
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.mock_pytest import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.mock_pytest import \
     pytest_mock_http_responses, DUMMY_MODULE
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.util_pytest import log_test
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.test.testdata.base_testdata import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.util_pytest import log_test
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.testdata.base_testdata import \
     MockOPNsenseController, GenericTestdata
 
 
 def test_session_creation():
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import Session
     s = Session(module=DUMMY_MODULE)
     s.close()
 
 
 def test_session_contextmanager():
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import Session
     with Session(module=DUMMY_MODULE):
         pass
 
@@ -35,7 +35,7 @@ def test_requests(mocker):
         handler=Testdata()
     )
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session, single_get, single_post
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import Session, single_get, single_post
     with Session(module=DUMMY_MODULE) as s:
         res = s.get({**cnf, 'command': 'get'})
         assert len(res) == 0
@@ -58,7 +58,7 @@ def test_check_testdata(mocker):
         handler=testdata,
     )
 
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session, single_get, single_post
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import Session, single_get, single_post
     with Session(module=DUMMY_MODULE) as s:
         res_empty = {'test': {'tests': {'test': {}}}}
 

@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'bind_general'
 
   environment:
@@ -17,38 +17,38 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid rate-limit
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         ratelimit_count: 1010
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring - failing because of invalid cache_size
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         cache_size: 100
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Configuring - failing because of non-existent recursion-acl
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         recursion_acl: 'DOES-NOT-EXIST'
       register: opn_fail3
       failed_when: not opn_fail3.failed
 
     - name: Configuring - failing because of non-existent transfer-acl
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         transfer_acl: 'DOES-NOT-EXIST'
       register: opn_fail4
       failed_when: not opn_fail4.failed
 
     - name: Configuring - failing because of invalid ip addresses
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         listen_ipv4: "{{ item.l4 | default(omit) }}"
         query_source_ipv4: "{{ item.q4 | default(omit) }}"
         transfer_source_ipv4: "{{ item.t4 | default(omit) }}"
@@ -67,19 +67,19 @@
         - {'t6': ['NOT-VALID']}
 
     - name: Configuring - failing because of empty listen-address
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         listen_ipv4: []
       register: opn_fail6
       failed_when: not opn_fail6.failed
 
     - name: Configuring - failing because of non-existent query-acl
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         query_acl: 'DOES-NOT-EXIST'
       register: opn_fail7
       failed_when: not opn_fail7.failed
 
     - name: Configuring
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         listen_ipv4: ['127.0.0.1', '192.168.0.1']
         query_source_ipv4: '192.168.0.1'
         transfer_source_ipv4: '192.168.0.1'
@@ -94,7 +94,7 @@
         not opn1.changed
 
     - name: Changing
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         listen_ipv4: ['127.0.0.1', '192.168.0.1']
         query_source_ipv4: '192.168.0.1'
         transfer_source_ipv4: '192.168.0.1'
@@ -109,7 +109,7 @@
         not opn9.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         listen_ipv4: ['127.0.0.1', '192.168.0.1']
         query_source_ipv4: '192.168.0.1'
         transfer_source_ipv4: '192.168.0.1'
@@ -125,7 +125,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         listen_ipv4: ['127.0.0.1', '192.168.0.1']
         query_source_ipv4: '192.168.0.1'
         transfer_source_ipv4: '192.168.0.1'
@@ -141,7 +141,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         listen_ipv4: ['127.0.0.1', '192.168.0.1']
         query_source_ipv4: '192.168.0.1'
         transfer_source_ipv4: '192.168.0.1'
@@ -156,7 +156,7 @@
       when: not ansible_check_mode
 
     - name: Changing more
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         listen_ipv4: ['127.0.0.1', '192.168.0.1']
         query_source_ipv4: '192.168.0.1'
         transfer_source_ipv4: '192.168.0.1'
@@ -178,7 +178,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         listen_ipv4: ['127.0.0.1', '192.168.0.1']
         query_source_ipv4: '192.168.0.1'
         transfer_source_ipv4: '192.168.0.1'
@@ -200,7 +200,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         enabled: false
         ratelimit_count:
         transfer_source_ipv4: ''
@@ -210,7 +210,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -220,7 +220,7 @@
 
   tasks:
     - name: Adding dummy acl's
-      ansibleguy.opnsense.bind_acl:
+      oxlorg.opnsense.bind_acl:
         name: "{{ item.name }}"
         networks: "{{ item.net }}"
       loop:
@@ -229,7 +229,7 @@
       when: not ansible_check_mode
 
     - name: Configuring - setting ACLs
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         recursion_acl: 'ANSIBLE_TEST_2_1'
         transfer_acl: 'ANSIBLE_TEST_2_2'
         ratelimit_count: 50
@@ -240,7 +240,7 @@
       when: not ansible_check_mode
 
     - name: Configuring - nothing changed
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         recursion_acl: 'ANSIBLE_TEST_2_1'
         transfer_acl: 'ANSIBLE_TEST_2_2'
         ratelimit_count: 50
@@ -251,12 +251,12 @@
       when: not ansible_check_mode
 
     - name: Cleanup general settings
-      ansibleguy.opnsense.bind_general:
+      oxlorg.opnsense.bind_general:
         enabled: false
       when: not ansible_check_mode
 
     - name: Cleanup ACLs
-      ansibleguy.opnsense.bind_acl:
+      oxlorg.opnsense.bind_acl:
         name: "{{ item }}"
         state: 'absent'
       loop:

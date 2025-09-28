@@ -8,13 +8,13 @@
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.utils import profiler
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.package_main import process
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import OPN_MOD_ARGS
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.utils import profiler
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.package_main import process
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import OPN_MOD_ARGS
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()

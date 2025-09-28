@@ -39,7 +39,7 @@ If you are running the modules over hosts in your inventory - you would do it li
       gather_facts: no
       tasks:
         - name: Example
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             firewall: "{{ ansible_host }}"  # or use a per-host variable to store the FQDN..
 
 
@@ -90,7 +90,7 @@ If some parameters will be the same every time - use 'module_defaults':
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        ansibleguy.opnsense.alias:
+        oxlorg.opnsense.alias:
             firewall: 'opnsense.template.opnsense.oxl.app'
             api_credential_file: '/home/guy/.secret/opn.key'
             # if you use an internal certificate:
@@ -100,7 +100,7 @@ If some parameters will be the same every time - use 'module_defaults':
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             name: 'ANSIBLE_TEST1'
             content: ['1.1.1.1']
 
@@ -139,7 +139,7 @@ And refer to it in the module calls or module-defaults:
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        ansibleguy.opnsense.route:
+        oxlorg.opnsense.route:
           firewall: '...'
           api_key: "{{ firewall.key }}"
           api_secret: "{{ firewall.secret }}"

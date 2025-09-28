@@ -8,21 +8,21 @@
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.wrapper import module_wrapper
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.frr_bgp_community_list import Community
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.frr_bgp_community_list import Community
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
 # DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/frr_bgp.html
-#                  #ansibleguy-opnsense-frr-bgp-community-list'
+#                  #oxlorg-opnsense-frr-bgp-community-list'
 # EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/frr_bgp.html#id5'
 
 

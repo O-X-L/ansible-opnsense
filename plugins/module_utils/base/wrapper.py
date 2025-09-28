@@ -3,11 +3,11 @@ from inspect import getfile as inspect_getfile
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.multi import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import \
     MultiModule, MultiModuleCallbacks
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.utils import profiler
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import diff_remove_empty
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.utils import profiler
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import diff_remove_empty
 
 
 def _single_module_process(instance: BaseModule):

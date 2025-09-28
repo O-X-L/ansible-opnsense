@@ -622,7 +622,7 @@ copy of the Program in return for a fee.
 
 
     Ansible Collection to manage OPNSense firewalls using its API.
-    Copyright (C) 2025 OXL IT Services / AnsibleGuy
+    Copyright (C) 2025 OXL IT Services
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -637,5 +637,5 @@ copy of the Program in return for a fee.
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-    E-Mail: contact@OXL.at
+    E-Mail: contact+opnsense@OXL.at
     Web: https://www.OXL.at

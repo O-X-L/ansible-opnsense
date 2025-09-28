@@ -83,19 +83,19 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.unbound_host_alias:
+        oxlorg.opnsense.unbound_host_alias:
           match_fields: ['description']
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'unbound_host_alias'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.unbound_host_alias:
+          oxlorg.opnsense.unbound_host_alias:
             alias: 'test'
             domain: 'opnsense.template.opnsense.oxl.app'
             target: 'host.opnsense.template.opnsense.oxl.app'
@@ -107,7 +107,7 @@ Examples
             # debug: false
 
         - name: Adding alias 'test1.local' for record 'test.local'
-          ansibleguy.opnsense.unbound_host_alias:
+          oxlorg.opnsense.unbound_host_alias:
             alias: 'test1'
             domain: 'local'
             target: 'test.local'
@@ -115,7 +115,7 @@ Examples
             # match_fields: ['description']
 
         - name: Disabling
-          ansibleguy.opnsense.unbound_host_alias:
+          oxlorg.opnsense.unbound_host_alias:
             alias: 'test1'
             domain: 'local'
             target: 'test.local'
@@ -124,7 +124,7 @@ Examples
             # match_fields: ['description']
 
         - name: Removing
-          ansibleguy.opnsense.unbound_host_alias:
+          oxlorg.opnsense.unbound_host_alias:
             alias: 'test1'
             domain: 'local'
             target: 'test.local'
@@ -133,7 +133,7 @@ Examples
             # match_fields: ['description']
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'unbound_host_alias'
           register: existing_entries
 

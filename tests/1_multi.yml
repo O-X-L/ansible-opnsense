@@ -12,15 +12,15 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'alias'
 
-    ansibleguy.opnsense.alias:
+    oxlorg.opnsense.alias:
       multi_control:
         fail_verify: true
         fail_process: true
@@ -30,31 +30,31 @@
 
   tasks:
     - name: Purging all
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_control:
           purge_all: true
 
     - name: Fail required args (1)
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Fail required args (2)
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_control:
           purge_action: 'disable'
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Fail required args (3)
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_control:
           purge_unconfigured: true
       register: opn_fail3
       failed_when: not opn_fail3.failed
 
     - name: Removing - do not exist
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
         multi_control:
@@ -65,7 +65,7 @@
         opn1.changed
 
     - name: Adding
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -96,7 +96,7 @@
         not opn2.changed
 
     - name: Changing
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -128,7 +128,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -160,7 +160,7 @@
       when: not ansible_check_mode
 
     - name: Changing few
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_4'
             type: 'network'
@@ -176,7 +176,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -208,7 +208,7 @@
       when: not ansible_check_mode
 
     - name: Disabling some
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -229,7 +229,7 @@
       when: not ansible_check_mode
 
     - name: Checking count
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -237,7 +237,7 @@
       when: not ansible_check_mode
 
     - name: Checking disabled-state
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -271,7 +271,7 @@
       when: not ansible_check_mode
 
     - name: Removing some
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
           - name: 'ANSIBLE_TEST_0_2'
@@ -284,7 +284,7 @@
       when: not ansible_check_mode
 
     - name: Checking count
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn11
       failed_when: >
         'data' not in opn11 or
@@ -292,7 +292,7 @@
       when: not ansible_check_mode
 
     - name: Recreating
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -322,7 +322,7 @@
       when: not ansible_check_mode
 
     - name: Removing unconfigured/orphaned
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -346,7 +346,7 @@
       when: not ansible_check_mode
 
     - name: Checking count
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn15
       failed_when: >
         'data' not in opn15 or
@@ -354,7 +354,7 @@
       when: not ansible_check_mode
 
     - name: Recreating
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -384,7 +384,7 @@
       when: not ansible_check_mode
 
     - name: Simple purge
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_purge:
           - name: 'ANSIBLE_TEST_0_1'
       register: purge2
@@ -394,7 +394,7 @@
       when: not ansible_check_mode
 
     - name: Listing aliases
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn16
       failed_when: >
         'data' not in opn16 or
@@ -402,7 +402,7 @@
       when: not ansible_check_mode
 
     - name: Simple disable-purge
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_purge:
           - name: 'ANSIBLE_TEST_0_3'
         multi_control:
@@ -414,7 +414,7 @@
       when: not ansible_check_mode
 
     - name: Simple disable-purge - nothing changed
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_purge:
           - name: 'ANSIBLE_TEST_0_3'
         multi_control:
@@ -426,7 +426,7 @@
       when: not ansible_check_mode
 
     - name: Recreating
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -456,7 +456,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single)
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_control:
           purge_filter:
             type: 'port'
@@ -464,7 +464,7 @@
       register: purge5
 
     - name: Listing entries
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn17
       failed_when: >
         'data' not in opn17 or
@@ -472,7 +472,7 @@
       when: not ansible_check_mode
 
     - name: Recreating
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -502,7 +502,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single inverted)
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_control:
           purge_filter:
             type: 'port'
@@ -514,7 +514,7 @@
         not purge6.changed
 
     - name: Recreating
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -544,7 +544,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (partial match)
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_control:
           purge_filter:
             content: '192.168.1'
@@ -556,7 +556,7 @@
         not purge7.changed
 
     - name: Listing aliases
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn19
       failed_when: >
         'data' not in opn19 or
@@ -564,7 +564,7 @@
       when: not ansible_check_mode
 
     - name: Purging all
-      ansibleguy.opnsense.alias:
+      oxlorg.opnsense.alias:
         multi_control:
           purge_all: true
       register: opn_clean1
@@ -574,7 +574,7 @@
       when: not ansible_check_mode
 
     - name: Checking count
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean2
       failed_when: >
         'data' not in opn_clean2 or

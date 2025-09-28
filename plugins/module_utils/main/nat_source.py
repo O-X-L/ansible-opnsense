@@ -1,12 +1,12 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_unset
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.rule import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.rule import \
     validate_values
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
 class SNat(BaseModule):

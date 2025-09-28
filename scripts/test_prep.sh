@@ -14,8 +14,8 @@ else
   if [ -d "$LOCAL_COLLECTION" ]
   then
     echo "### TESTING COLLECTION: '$LOCAL_COLLECTION' ###"
-    mkdir -p "$TMP_COL_DIR/ansible_collections/ansibleguy/"
-    ln -s "$LOCAL_COLLECTION" "$TMP_COL_DIR/ansible_collections/ansibleguy/opnsense"
+    mkdir -p "$TMP_COL_DIR/ansible_collections/oxlorg/"
+    ln -s "$LOCAL_COLLECTION" "$TMP_COL_DIR/ansible_collections/oxlorg/opnsense"
   else
     echo "Provided collection path does not exist: '$LOCAL_COLLECTION'"
     exit 1

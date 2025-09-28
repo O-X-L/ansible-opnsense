@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'unbound_dnsbl'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid type
-      ansibleguy.opnsense.unbound_dnsbl:
+      oxlorg.opnsense.unbound_dnsbl:
         type:
           - ANSIBLE_TEST_1
       register: opn_fail1
@@ -32,24 +32,24 @@
       when: not ansible_check_mode
 
     - name: Configuring - failing because of invalid address
-      ansibleguy.opnsense.unbound_dnsbl:
+      oxlorg.opnsense.unbound_dnsbl:
         address: INVALID
       register: opn_fail2
       failed_when: not opn_fail2.failed
       when: not ansible_check_mode
 
     - name: Reset Configuring
-      ansibleguy.opnsense.unbound_dnsbl:
+      oxlorg.opnsense.unbound_dnsbl:
       when: not ansible_check_mode
 
     - name: Configuring
-      ansibleguy.opnsense.unbound_dnsbl:
+      oxlorg.opnsense.unbound_dnsbl:
         type:
           - atf
         lists: ['https://example.com/dns.blocklist']
         whitelists:
           - opnsense.org
-          - ansibleguy.net
+          - oxlorg.net
         blocklists:
           - example.tor
         wildcards:
@@ -63,12 +63,12 @@
         not opn1.changed
 
     - name: Changing
-      ansibleguy.opnsense.unbound_dnsbl:
+      oxlorg.opnsense.unbound_dnsbl:
         type:
           - atf
         whitelists:
           - opnsense.org
-          - ansibleguy.net
+          - oxlorg.net
         blocklists:
           - example.tor
         wildcards:
@@ -81,12 +81,12 @@
         not opn2.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.unbound_dnsbl:
+      oxlorg.opnsense.unbound_dnsbl:
         type:
           - atf
         whitelists:
           - opnsense.org
-          - ansibleguy.net
+          - oxlorg.net
         blocklists:
           - example.tor
         wildcards:
@@ -101,12 +101,12 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.unbound_dnsbl:
+      oxlorg.opnsense.unbound_dnsbl:
         type:
           - atf
         whitelists:
           - opnsense.org
-          - ansibleguy.net
+          - oxlorg.net
         blocklists:
           - example.tor
         wildcards:
@@ -121,6 +121,6 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.unbound_dnsbl:
+      oxlorg.opnsense.unbound_dnsbl:
         reload: false
       when: not ansible_check_mode

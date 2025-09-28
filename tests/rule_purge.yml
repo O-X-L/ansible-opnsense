@@ -4,15 +4,15 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'rule'
 
-    ansibleguy.opnsense.rule:
+    oxlorg.opnsense.rule:
       match_fields: ['description']
       multi_control:
         fail_verify: true
@@ -23,12 +23,12 @@
 
   tasks:
     - name: Purge ALL
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         multi_control:
           purge_all: true
 
     - name: Adding 1
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         rules:
           - name: 'ANSIBLE_TEST_3_1'
             source_net: '192.168.1.0/24'
@@ -48,7 +48,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single)
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         multi_control:
           purge_filter:
             destination_net: '192.168.10.0/24'
@@ -60,7 +60,7 @@
         not opn1.changed
 
     - name: Simple disable-purge
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         multi_purge:
           - name: 'ANSIBLE_TEST_3_1'
         multi_control:
@@ -72,7 +72,7 @@
         not opn2.changed
 
     - name: Simple purge
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         multi_purge:
           - name: 'ANSIBLE_TEST_3_1'
       when: not ansible_check_mode
@@ -82,7 +82,7 @@
         not opn3.changed
 
     - name: Listing rules
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn4
       failed_when: >
         'data' not in opn4 or
@@ -90,7 +90,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         rules:
           - name: 'ANSIBLE_TEST_3_1'
             source_net: '192.168.1.0/24'
@@ -110,7 +110,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single)
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         multi_control:
           purge_filter:
             destination_net: '192.168.10.0/24'
@@ -121,7 +121,7 @@
         not opn1.changed
 
     - name: Listing rules
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn5
       failed_when: >
         'data' not in opn5 or
@@ -129,7 +129,7 @@
       when: not ansible_check_mode
 
     - name: Adding 3
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         rules:
           - name: 'ANSIBLE_TEST_3_1'
             source_net: '192.168.1.0/24'
@@ -149,7 +149,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single inverted)
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         multi_control:
           purge_filter:
             destination_net: '192.168.10.0/24'
@@ -161,7 +161,7 @@
         not opn6.changed
 
     - name: Listing rules
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn7
       failed_when: >
         'data' not in opn7 or
@@ -169,7 +169,7 @@
       when: not ansible_check_mode
 
     - name: Adding 4
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         rules:
           - name: 'ANSIBLE_TEST_3_1'
             source_net: '192.168.1.0/24'
@@ -196,7 +196,7 @@
         not opn8.changed
 
     - name: Filtered purge (multiple)
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         multi_control:
           purge_filter:
             ip_protocol: 'inet'
@@ -208,7 +208,7 @@
         not opn8.changed
 
     - name: Listing rules
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn9
       failed_when: >
         'data' not in opn9 or
@@ -216,7 +216,7 @@
       when: not ansible_check_mode
 
     - name: Purge ALL
-      ansibleguy.opnsense.rule:
+      oxlorg.opnsense.rule:
         multi_control:
           purge_all: true
       when: not ansible_check_mode
@@ -226,7 +226,7 @@
         not opn10.changed
 
     - name: Checking cleanup
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn11
       failed_when: >
         'data' not in opn11 or

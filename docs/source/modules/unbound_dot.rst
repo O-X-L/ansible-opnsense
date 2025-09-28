@@ -61,16 +61,16 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'unbound_dot'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.unbound_dot:
+          oxlorg.opnsense.unbound_dot:
             target: '1.1.1.1'
             # domain: ''
             # port: 53
@@ -81,13 +81,13 @@ Examples
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.unbound_dot:
+          oxlorg.opnsense.unbound_dot:
             domain: 'dot.template.opnsense.oxl.app'
             target: '1.1.1.1'
             verify: 'dot.template.opnsense.oxl.app'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'unbound_dot'
           register: existing_entries
 

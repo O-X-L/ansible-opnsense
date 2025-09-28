@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'shaper_queue'
 
   environment:
@@ -17,20 +17,20 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         'data' not in opn10 or
         opn10.data | length != 0
 
     - name: Adding dummy pipe
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_2_1'
         bandwidth: 50
       check_mode: false
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: 'ANSIBLE_TEST_1_1'
         pipe: 'ANSIBLE_TEST_2_1'
         weight: 50
@@ -41,7 +41,7 @@
         opn1.changed
 
     - name: Adding 1 - failing because of invalid int-value
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: 'ANSIBLE_TEST_1_1'
         pipe: 'ANSIBLE_TEST_2_1'
         weight: 999
@@ -49,21 +49,21 @@
       failed_when: not opn11.failed
 
     - name: Adding 1 - failing because of unprovided weight
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: 'ANSIBLE_TEST_1_1'
         pipe: 'ANSIBLE_TEST_2_1'
       register: opn12
       failed_when: not opn12.failed
 
     - name: Adding 1 - failing because of non-existant pipe
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: 'ANSIBLE_TEST_1_1'
         pipe: 'does-not-exist'
       register: opn13
       failed_when: not opn13.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: 'ANSIBLE_TEST_1_1'
         pipe: 'ANSIBLE_TEST_2_1'
         weight: 50
@@ -73,7 +73,7 @@
         not opn4.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: 'ANSIBLE_TEST_1_1'
         pipe: 'ANSIBLE_TEST_2_1'
         weight: 60
@@ -85,7 +85,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: 'ANSIBLE_TEST_1_1'
         pipe: 'ANSIBLE_TEST_2_1'
         weight: 60
@@ -98,7 +98,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: 'ANSIBLE_TEST_1_1'
         pipe: 'ANSIBLE_TEST_2_1'
         weight: 60
@@ -111,7 +111,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: 'ANSIBLE_TEST_1_1'
         pipe: 'ANSIBLE_TEST_2_1'
         weight: 60
@@ -123,7 +123,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2 & flushing/resetting running config
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: 'ANSIBLE_TEST_1_2'
         pipe: 'ANSIBLE_TEST_2_1'
         weight: 75
@@ -135,7 +135,7 @@
         not opn5.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: 'ANSIBLE_TEST_1_2'
         pipe: 'ANSIBLE_TEST_2_1'
         weight: 75
@@ -147,7 +147,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn8
@@ -157,7 +157,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn3
       failed_when: >
         'data' not in opn3 or
@@ -165,7 +165,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.shaper_queue:
+      oxlorg.opnsense.shaper_queue:
         description: "{{ item }}"
         state: 'absent'
       loop:
@@ -174,13 +174,13 @@
       when: not ansible_check_mode
 
     - name: Cleanup pipe
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_2_1'
         state: 'absent'
       check_mode: false
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn2
       failed_when: >
         'data' not in opn2 or

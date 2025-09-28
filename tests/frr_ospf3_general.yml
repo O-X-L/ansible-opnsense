@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf3_general'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring
-      ansibleguy.opnsense.frr_ospf3_general:
+      oxlorg.opnsense.frr_ospf3_general:
         id: '10.0.0.1'
         enabled: true
       register: opn1
@@ -33,7 +33,7 @@
         not opn1.changed
 
     - name: Changing
-      ansibleguy.opnsense.frr_ospf3_general:
+      oxlorg.opnsense.frr_ospf3_general:
         id: '10.0.1.1'
         enabled: true
       register: opn5
@@ -42,7 +42,7 @@
         not opn5.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.frr_ospf3_general:
+      oxlorg.opnsense.frr_ospf3_general:
         id: '10.0.1.1'
         enabled: false
       register: opn2
@@ -52,7 +52,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.frr_ospf3_general:
+      oxlorg.opnsense.frr_ospf3_general:
         id: '10.0.1.1'
         enabled: false
       register: opn3
@@ -62,7 +62,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.frr_ospf3_general:
+      oxlorg.opnsense.frr_ospf3_general:
         id: '10.0.1.1'
       register: opn4
       failed_when: >
@@ -71,6 +71,6 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.frr_ospf3_general:
+      oxlorg.opnsense.frr_ospf3_general:
         enabled: false
       when: not ansible_check_mode

@@ -4,15 +4,15 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.source_nat:
+    oxlorg.opnsense.source_nat:
       match_fields: ['description']
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'source_nat'
 
   environment:
@@ -20,14 +20,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.source_nat:
+      oxlorg.opnsense.source_nat:
         description: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -36,7 +36,7 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of invalid alias (server-side)
-      ansibleguy.opnsense.source_nat:
+      oxlorg.opnsense.source_nat:
         description: 'ANSIBLE_TEST_1_1'
         interface: 'lan'
         destination: 'DoesNotExist'
@@ -46,7 +46,7 @@
       when: not ansible_check_mode
 
     - name: Adding 1
-      ansibleguy.opnsense.source_nat:
+      oxlorg.opnsense.source_nat:
         description: 'ANSIBLE_TEST_1_1'
         interface: 'lan'
         destination: '192.168.0.1'
@@ -57,7 +57,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.source_nat:
+      oxlorg.opnsense.source_nat:
         description: 'ANSIBLE_TEST_1_1'
         interface: 'lan'
         destination: '192.168.0.1'
@@ -69,7 +69,7 @@
         not opn9.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.source_nat:
+      oxlorg.opnsense.source_nat:
         description: 'ANSIBLE_TEST_1_1'
         interface: 'lan'
         destination: '192.168.0.1'
@@ -83,7 +83,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed (w/ module alias)
-      ansibleguy.opnsense.snat:
+      oxlorg.opnsense.snat:
         description: 'ANSIBLE_TEST_1_1'
         interface: 'lan'
         destination: '192.168.0.1'
@@ -97,7 +97,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.source_nat:
+      oxlorg.opnsense.source_nat:
         description: 'ANSIBLE_TEST_1_1'
         interface: 'lan'
         destination: '192.168.0.1'
@@ -110,7 +110,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.source_nat:
+      oxlorg.opnsense.source_nat:
         description: 'ANSIBLE_TEST_1_2'
         no_nat: true
         interface: 'lan'
@@ -127,7 +127,7 @@
         not opn5.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.source_nat:
+      oxlorg.opnsense.source_nat:
         description: 'ANSIBLE_TEST_1_2'
         no_nat: true
         interface: 'lan'
@@ -145,7 +145,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.source_nat:
+      oxlorg.opnsense.source_nat:
         description: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn7
@@ -155,7 +155,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -163,7 +163,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.source_nat:
+      oxlorg.opnsense.source_nat:
         description: "{{ item }}"
         state: 'absent'
       loop:
@@ -172,7 +172,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

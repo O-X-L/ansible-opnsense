@@ -4,7 +4,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    ansibleguy.opnsense.service:
+    oxlorg.opnsense.service:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -15,7 +15,7 @@
 
   tasks:
     - name: Checking syslog status
-      ansibleguy.opnsense.service:
+      oxlorg.opnsense.service:
         name: 'syslog'
         action: 'status'
       register: opn1
@@ -25,7 +25,7 @@
         opn1.data.status != 'running'
 
     - name: Stopping syslog
-      ansibleguy.opnsense.service:
+      oxlorg.opnsense.service:
         name: 'syslog'
         action: 'stop'
       register: opn2
@@ -35,7 +35,7 @@
       when: not ansible_check_mode
 
     - name: Checking syslog status (should be stopped)
-      ansibleguy.opnsense.service:
+      oxlorg.opnsense.service:
         name: 'syslog'
         action: 'status'
       register: opn3
@@ -46,7 +46,7 @@
       when: not ansible_check_mode
 
     - name: Starting syslog
-      ansibleguy.opnsense.service:
+      oxlorg.opnsense.service:
         name: 'syslog'
         action: 'start'
       register: opn4
@@ -56,7 +56,7 @@
       when: not ansible_check_mode
 
     - name: Checking syslog status (should be running again)
-      ansibleguy.opnsense.service:
+      oxlorg.opnsense.service:
         name: 'syslog'
         action: 'status'
       register: opn5
@@ -67,7 +67,7 @@
       when: not ansible_check_mode
 
     - name: Restarting syslog
-      ansibleguy.opnsense.service:
+      oxlorg.opnsense.service:
         name: 'syslog'
         action: 'restart'
       register: opn6
@@ -77,7 +77,7 @@
       when: not ansible_check_mode
 
     - name: Reloading syslog
-      ansibleguy.opnsense.service:
+      oxlorg.opnsense.service:
         name: 'syslog'
         action: 'reload'
       register: opn7
@@ -87,7 +87,7 @@
       when: not ansible_check_mode
 
     - name: Checking syslog status (should still be running)
-      ansibleguy.opnsense.service:
+      oxlorg.opnsense.service:
         name: 'syslog'
         action: 'status'
       register: opn8
@@ -97,7 +97,7 @@
         opn8.data.status != 'running'
 
     - name: Restarting traffic-shaper (flush & reload)
-      ansibleguy.opnsense.service:
+      oxlorg.opnsense.service:
         name: 'shaper'
         action: 'restart'
       register: opn9

@@ -34,7 +34,7 @@ For more detailed information on what alias types are supported - see the `OPNSe
 Multi
 *****
 
-- Each alias has the attributes as defined in the :ref:`ansibleguy.opnsense.alias <modules_alias>` module
+- Each alias has the attributes as defined in the :ref:`oxlorg.opnsense.alias <modules_alias>` module
 
 - To ensure valid configuration - the attributes of each alias get verified using ansible's built-in verifier
 
@@ -54,13 +54,13 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
+        group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Creation
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             aliases:
               - name: 'test1'
                 content: '1.1.1.1'
@@ -80,7 +80,7 @@ Examples
               # output_info: false
 
         - name: Changes
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             aliases:
               - name: 'test1'
                 content: ['1.1.1.3']
@@ -92,7 +92,7 @@ Examples
                 enabled: false
 
         - name: Change state of all
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             aliases:
               - name: 'test1'
               - name: 'test3'
@@ -102,7 +102,7 @@ Examples
               # enabled: true
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             target: 'alias'
           register: existing_entries
 
@@ -111,7 +111,7 @@ Examples
             var: existing_entries.data
 
         - name: Purging all non-configured aliases
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             aliases: {...}
 
             multi_control:
@@ -119,7 +119,7 @@ Examples
               # action: 'disable'  # default = delete
 
         - name: Purging all port aliases
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             multi_control:
               purge_all: true
               filters:  # filtering aliases to purge by alias-parameters
