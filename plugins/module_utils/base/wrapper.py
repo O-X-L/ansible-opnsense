@@ -38,7 +38,7 @@ def module_multi_wrapper(
         result=result,
         kind=kind,
         obj=obj,
-        entry_args=entry_args['multi']['options'],
+        entry_args=entry_args['multi']['options_late'],
         callbacks=callbacks,
     )
     if module.params['profiling'] or module.params['debug']:

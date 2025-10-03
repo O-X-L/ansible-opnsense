@@ -39,6 +39,6 @@ def test_build_multi_mod_args():
     assert 'purge_filter_partial' in mc
     assert 'purge_all' in mc
 
-    mo = a['multi']['options']
+    mo = a['multi']['options_late']
     for k in OPN_MOD_ARGS:
         assert k in mo

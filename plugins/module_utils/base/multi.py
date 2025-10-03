@@ -65,7 +65,7 @@ def build_multi_mod_args(
         multi=dict(
             type='list', required=False, default=[], aliases=aliases,
             description=description,
-            elements='dict', options=entry_args_full,
+            elements='dict', options_late=entry_args_full,
         ),
         multi_purge=dict(
             type='list', required=False, default=[], aliases=aliases_purge,
@@ -308,6 +308,7 @@ class MultiModule:
             error_func = self.m.warn
 
         validation = ModuleArgumentSpecValidator(self.mod_entry_args).validate(parameters=entry)
+        entry.update(validation.validated_parameters)
 
         try:
             validation_error = validation.errors[0]
@@ -358,18 +359,16 @@ class MultiModule:
                 if f not in entry:
                     entry[f] = self.p[f]
 
-            entry = self.callbacks.build(entry)
-
-            if not self.validation:
-                valid_entries.append(entry)
-
-            else:
-                # (re-)validate the entry like ansible does on module-init
+            if self.validation:
+                # validate the entry like ansible does on module-init
                 if entry['debug']:
                     self.m.warn(f"Validating {self.k}: '{entry}'")
 
-                if self._validate_entry(entry):
-                    valid_entries.append(entry)
+                if not self._validate_entry(entry):
+                    continue
+
+            entry = self.callbacks.build(entry)
+            valid_entries.append(entry)
 
         return valid_entries
 
