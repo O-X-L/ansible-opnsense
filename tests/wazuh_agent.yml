@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'wazuh_agent'
 
   environment:
@@ -17,21 +17,21 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid server address
-      ansibleguy.opnsense.wazuh_agent:
+      oxlorg.opnsense.wazuh_agent:
         server_address: 'invalid..server'
         reload: false
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring - failing because of invalid port
-      ansibleguy.opnsense.wazuh_agent:
+      oxlorg.opnsense.wazuh_agent:
         server_address: '192.168.1.100'
         port: 99999
         reload: false
@@ -39,7 +39,7 @@
       failed_when: not opn_fail2.failed
 
     - name: Configuring - failing because of invalid debug level
-      ansibleguy.opnsense.wazuh_agent:
+      oxlorg.opnsense.wazuh_agent:
         server_address: '192.168.1.100'
         debug_level: 5
         reload: false
@@ -47,7 +47,7 @@
       failed_when: not opn_fail3.failed
 
     - name: Configuring
-      ansibleguy.opnsense.wazuh_agent:
+      oxlorg.opnsense.wazuh_agent:
         server_address: '192.168.1.100'
         agent_name: 'test-agent'
         protocol: 'tcp'
@@ -60,7 +60,7 @@
         not opn1.changed
 
     - name: Configuring - nothing changed
-      ansibleguy.opnsense.wazuh_agent:
+      oxlorg.opnsense.wazuh_agent:
         server_address: '192.168.1.100'
         agent_name: 'test-agent'
         protocol: 'tcp'
@@ -73,7 +73,7 @@
         opn2.changed
 
     - name: Configuring - changing server
-      ansibleguy.opnsense.wazuh_agent:
+      oxlorg.opnsense.wazuh_agent:
         server_address: '10.0.0.100'
         agent_name: 'test-agent-2'
         protocol: 'udp'
@@ -87,7 +87,7 @@
         not opn3.changed
 
     - name: Configuring - with authentication
-      ansibleguy.opnsense.wazuh_agent:
+      oxlorg.opnsense.wazuh_agent:
         server_address: '10.0.0.100'
         agent_name: 'test-agent-auth'
         protocol: 'tcp'
@@ -112,7 +112,7 @@
         not opn4.changed
 
     - name: Cleanup
-      ansibleguy.opnsense.wazuh_agent:
+      oxlorg.opnsense.wazuh_agent:
         server_address: '127.0.0.1'
         enabled: false
         reload: false
