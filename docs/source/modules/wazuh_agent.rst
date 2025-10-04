@@ -33,7 +33,7 @@ You need to install the Wazuh agent plugin:
 os-wazuh-agent
 ```
 
-You can also install it using the :ref:`ansibleguy.opnsense.package <modules_package>` module.
+You can also install it using the :ref:`oxlorg.opnsense.package <modules_package>` module.
 
 ----
 
@@ -98,13 +98,13 @@ Examples
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.oxlorg.net'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.wazuh_agent:
+          oxlorg.opnsense.wazuh_agent:
             server_address: '192.168.1.100'
             # agent_name: ''
             # protocol: 'tcp'
@@ -125,12 +125,12 @@ Examples
             # enabled: true
 
         - name: Configure basic Wazuh agent
-          ansibleguy.opnsense.wazuh_agent:
+          oxlorg.opnsense.wazuh_agent:
             server_address: '192.168.1.100'
             agent_name: 'opnsense-fw'
 
         - name: Configure Wazuh agent with authentication
-          ansibleguy.opnsense.wazuh_agent:
+          oxlorg.opnsense.wazuh_agent:
             server_address: 'wazuh.example.com'
             agent_name: 'firewall-01'
             protocol: 'tcp'
@@ -139,7 +139,7 @@ Examples
             auth_port: 1515
 
         - name: Configure Wazuh agent with custom logging
-          ansibleguy.opnsense.wazuh_agent:
+          oxlorg.opnsense.wazuh_agent:
             server_address: '10.0.0.100'
             remote_commands: true
             syslog_programs:
@@ -149,14 +149,14 @@ Examples
             suricata_eve_log: true
 
         - name: Disable Wazuh agent modules selectively
-          ansibleguy.opnsense.wazuh_agent:
+          oxlorg.opnsense.wazuh_agent:
             server_address: '192.168.1.100'
             rootcheck_enabled: false
             syscheck_enabled: false
             active_response_enabled: false
 
         - name: Configure with debug output
-          ansibleguy.opnsense.wazuh_agent:
+          oxlorg.opnsense.wazuh_agent:
             server_address: '192.168.1.100'
             debug_level: 2
             debug: true
