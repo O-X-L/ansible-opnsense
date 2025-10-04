@@ -57,7 +57,7 @@ def build_multi_mod_args(
     not_required.append('match_fields')
     for field in not_required:
         if field in args_base:
-            args_base[field]['required'] = False
+            mod_args[field] = {**mod_args[field], 'required': False}
 
     entry_args_full = {**args_base, **RELOAD_MOD_ARG_DEF_FALSE, **opn_args_multi}
 

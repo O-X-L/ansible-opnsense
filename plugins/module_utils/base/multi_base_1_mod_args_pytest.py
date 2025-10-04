@@ -42,3 +42,6 @@ def test_build_multi_mod_args():
     mo = a['multi']['options_late']
     for k in OPN_MOD_ARGS:
         assert k in mo
+
+    assert mod_args['arg2']['required'] is False
+    assert a['multi']['options_late']['arg2']['required'] is True
