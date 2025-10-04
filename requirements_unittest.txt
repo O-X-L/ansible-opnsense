@@ -2,5 +2,5 @@ ansible-core
 pytest
 pytest-ansible
 httpx
-# pytest-mock
+pytest-mock
 pytest-cov

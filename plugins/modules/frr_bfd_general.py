@@ -1,27 +1,27 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright: (C) 2025, AnsibleGuy <guy@ansibleguy.net>
+# Copyright: (C) 2025, Pascal Rath <contact+opnsense@OXL.at>
 # GNU General Public License v3.0+ (see https://www.gnu.org/licenses/gpl-3.0.txt)
 
 # see: https://docs.opnsense.org/development/api/plugins/wireguard.html
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, EN_ONLY_MOD_ARG, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import Session
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import \
         is_true, to_digit
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
 
-# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/frr_bfd.html#ansibleguy-opnsense-frr-bfd-general'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/frr_bfd.html#oxlorg-opnsense-frr-bfd-general'
 # EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/frr_bfd.html#id1'
 
 

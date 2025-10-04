@@ -2,9 +2,9 @@
 
 .. include:: ../_include/head.rst
 
-========
-2 - List
-========
+====
+List
+====
 
 **STATE**: stable
 
@@ -42,13 +42,13 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Pulling aliases
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             target: 'alias'
           register: existing_aliases
 
@@ -57,7 +57,7 @@ Examples
             var: existing_aliases.data
 
         - name: Pulling routes
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             target: 'route'
           register: existing_routes
 

@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'webproxy_acl'
 
   environment:
@@ -17,19 +17,19 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring
-      ansibleguy.opnsense.webproxy_acl:
+      oxlorg.opnsense.webproxy_acl:
         allow: ['192.168.0.0/24', '172.16.0.5']
         exclude: ['192.168.2.0/28', '172.16.1.5']
         banned: ['172.16.3.0/24']
-        exclude_domains: ['ansibleguy.net']
-        block_domains: ['ansibleguy.com']
+        exclude_domains: ['oxlorg.net']
+        block_domains: ['oxlorg.com']
         block_user_agents: ['test1']
         block_mime_types: ['video/flv']
         ports_tcp: ['80:http', '21:ftp']
@@ -40,12 +40,12 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.webproxy_acl:
+      oxlorg.opnsense.webproxy_acl:
         allow: ['192.168.0.0/24', '172.16.1.0/29', '172.16.0.5']
         exclude: ['192.168.2.0/28', '172.16.1.5']
         banned: ['172.16.3.0/24', '172.16.2.5']
-        exclude_domains: ['ansibleguy.net']
-        block_domains: ['ansibleguy.com']
+        exclude_domains: ['oxlorg.net']
+        block_domains: ['oxlorg.com']
         block_user_agents: ['test1', 'test2']
         block_mime_types: ['video/flv', 'test']
         ports_tcp: ['80:http', '21:ftp']
@@ -57,12 +57,12 @@
       when: not ansible_check_mode
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.webproxy_acl:
+      oxlorg.opnsense.webproxy_acl:
         allow: ['192.168.0.0/24', '172.16.1.0/29', '172.16.0.5']
         exclude: ['192.168.2.0/28', '172.16.1.5']
         banned: ['172.16.3.0/24', '172.16.2.5']
-        exclude_domains: ['ansibleguy.net']
-        block_domains: ['ansibleguy.com']
+        exclude_domains: ['oxlorg.net']
+        block_domains: ['oxlorg.com']
         block_user_agents: ['test1', 'test2']
         block_mime_types: ['video/flv', 'test']
         ports_tcp: ['80:http', '21:ftp']
@@ -74,5 +74,5 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.webproxy_acl:
+      oxlorg.opnsense.webproxy_acl:
       when: not ansible_check_mode

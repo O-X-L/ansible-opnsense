@@ -8,10 +8,10 @@ DHCP
 
 **STATE**: stable
 
-**TESTS**: `Reservation <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dhcp_reservation.yml>`_ |
-`ControlAgent <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dhcp_controlagent.yml>`_ |
-`Subnet <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dhcp_subnet.yml>`_ |
-`General <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/dhcp_general.yml>`_
+**TESTS**: `Reservation <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_reservation.yml>`_ |
+`ControlAgent <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_controlagent.yml>`_ |
+`Subnet <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_subnet.yml>`_ |
+`General <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_general.yml>`_
 
 **API Docs**: `Core - KEA <https://docs.opnsense.org/development/api/core/kea.html>`_
 
@@ -29,7 +29,7 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
-ansibleguy.opnsense.dhcp_general
+oxlorg.opnsense.dhcp_general
 ================================
 
 ..  csv-table:: Definition
@@ -41,7 +41,7 @@ ansibleguy.opnsense.dhcp_general
     "fw_rules","boolean","false","true","fwrules, rules","Automatically add a basic set of firewall rules to allow DHCP traffic"
     "lifetime","int","false","4000","valid_lifetime","Defines how long the addresses (leases) given out by the server are valid (in seconds)"
 
-ansibleguy.opnsense.dhcp_reservation
+oxlorg.opnsense.dhcp_reservation
 ====================================
 
 ..  csv-table:: Definition
@@ -55,7 +55,7 @@ ansibleguy.opnsense.dhcp_reservation
     "description","string","false","","\-","Optional description"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.dhcp_controlagent
+oxlorg.opnsense.dhcp_controlagent
 =====================================
 
 ..  csv-table:: Definition
@@ -67,7 +67,7 @@ ansibleguy.opnsense.dhcp_controlagent
     "http_port","int","false","8000","","MAC/Ether address of the client in question"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.dhcp_subnet
+oxlorg.opnsense.dhcp_subnet
 ===============================
 
 ..  csv-table:: Definition
@@ -96,7 +96,7 @@ ansibleguy.opnsense.dhcp_subnet
 Examples
 ********
 
-ansibleguy.opnsense.dhcp_general
+oxlorg.opnsense.dhcp_general
 ================================
 
 .. code-block:: yaml
@@ -104,13 +104,13 @@ ansibleguy.opnsense.dhcp_general
       - hosts: localhost
         gather_facts: no
         module_defaults:
-          group/ansibleguy.opnsense.all:
-            firewall: 'opnsense.template.ansibleguy.net'
+          group/oxlorg.opnsense.all:
+            firewall: 'opnsense.template.opnsense.oxl.app'
             api_credentials_file: '/home/guy/.secret/opn.key'
 
         tasks:
           - name: Listen to network interfaces
-            ansibleguy.opnsense.dhcp_general:
+            oxlorg.opnsense.dhcp_general:
               enabled: true
               interfaces: 'lan,opt1,opt2,vlan0.10'
               # socket_type: 'raw'
@@ -119,7 +119,7 @@ ansibleguy.opnsense.dhcp_general
 
 ----
 
-ansibleguy.opnsense.dhcp_reservation
+oxlorg.opnsense.dhcp_reservation
 ====================================
 
 .. code-block:: yaml
@@ -127,16 +127,16 @@ ansibleguy.opnsense.dhcp_reservation
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'dhcp_reservation'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.dhcp_reservation:
+          oxlorg.opnsense.dhcp_reservation:
             ip: '192.168.0.1'
             subnet: '192.168.0.0/24'
             mac: 'aa:aa:aa:bb:bb:bb'
@@ -147,18 +147,18 @@ ansibleguy.opnsense.dhcp_reservation
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.dhcp_reservation:
+          oxlorg.opnsense.dhcp_reservation:
             subnet: '192.168.0.0/24'
             ip: '192.168.0.1'
             mac: 'aa:aa:aa:bb:bb:bb'
 
         - name: Removing
-          ansibleguy.opnsense.dhcp_reservation:
+          oxlorg.opnsense.dhcp_reservation:
             ip: '192.168.0.1'
             state: 'absent'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'dhcp_reservation'
           register: existing_entries
 
@@ -168,7 +168,7 @@ ansibleguy.opnsense.dhcp_reservation
 
 ----
 
-ansibleguy.opnsense.dhcp_controlagent
+oxlorg.opnsense.dhcp_controlagent
 =====================================
 
 .. code-block:: yaml
@@ -176,13 +176,13 @@ ansibleguy.opnsense.dhcp_controlagent
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.dhcp_controlagent:
+          oxlorg.opnsense.dhcp_controlagent:
             enabled: true
             http_host: 127.0.0.1
             http_port: 8000
@@ -190,13 +190,13 @@ ansibleguy.opnsense.dhcp_controlagent
             # debug: false
 
         - name: Stopping
-          ansibleguy.opnsense.dhcp_controlagent:
+          oxlorg.opnsense.dhcp_controlagent:
             enabled: false
             reload: true
 
 ----
 
-ansibleguy.opnsense.dhcp_subnet
+oxlorg.opnsense.dhcp_subnet
 ===============================
 
 .. code-block:: yaml
@@ -204,16 +204,16 @@ ansibleguy.opnsense.dhcp_subnet
     - host: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'dhcp_reservation'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.dhcp_subnet:
+          oxlorg.opnsense.dhcp_subnet:
             subnet: '192.168.89.0/24'
             # description: ''
             # pools: []
@@ -233,7 +233,7 @@ ansibleguy.opnsense.dhcp_subnet
             # match_fields: ['subnet']
 
         - name: Add subnet
-          ansibleguy.opnsense.dhcp_subnet:
+          oxlorg.opnsense.dhcp_subnet:
             subnet: '10.0.100.0/24'
             pools:
               - '10.0.100.1-10.0.100.99'
@@ -244,6 +244,6 @@ ansibleguy.opnsense.dhcp_subnet
             domain: 'test.lan'
 
         - name: Remove subnet
-          ansibleguy.opnsense.dhcp_subnet:
+          oxlorg.opnsense.dhcp_subnet:
             subnet: '10.0.100.0/24'
             state: absent

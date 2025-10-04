@@ -1,3 +1,3 @@
 [report]
 skip_empty = True
-omit = *_test.py
+omit = *_pytest.py

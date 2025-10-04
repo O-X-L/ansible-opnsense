@@ -8,7 +8,7 @@ Rule Interface Group
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/rule_interface_group.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/rule_interface_group.yml>`_
 
 **API Docs**: `Core - Firewall <https://docs.opnsense.org/development/api/core/firewall.html>`_
 
@@ -46,16 +46,16 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'rule_interface_group'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.rule_interface_group:
+          oxlorg.opnsense.rule_interface_group:
             name: Internal
             members: ['vtnet0', 'vtnet1']
             # gui_group: true
@@ -63,18 +63,18 @@ Examples
             # description: 'Optional description'
 
         - name: Adding 1
-          ansibleguy.opnsense.rule_interface_group:
+          oxlorg.opnsense.rule_interface_group:
             name: Internal
             members: ['vtnet0', 'vtnet1']
 
         # note: you can also use the module alias-name
         - name: Adding 2
-          ansibleguy.opnsense.rule_if_group:
+          oxlorg.opnsense.rule_if_group:
             name: DMZ
             members: ['vtnet3', 'vtnet4']
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'rule_interface_group'
           register: existing_entries
 

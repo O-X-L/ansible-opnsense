@@ -2,7 +2,7 @@
 
 **STATE**: stable
 
-**TESTS**: [frr_rip](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_rip.yml)
+**TESTS**: [frr_rip](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_rip.yml)
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
 
@@ -35,7 +35,7 @@ You can also install it using the [package module](https://ansible-opnsense.oxl.
 
 For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basic.html)
 
-### ansibleguy.opnsense.frr_rip
+### oxlorg.opnsense.frr_rip
 
 | Parameter | Type    | Required | Default value | Aliases            | Comment                                                                                                                                        |
 |:----------|:--------|:---------|:--------------|:-------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------|
@@ -49,22 +49,22 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 
 ## Examples
 
-### ansibleguy.opnsense.frr_rip
+### oxlorg.opnsense.frr_rip
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_rip'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_rip:
+      oxlorg.opnsense.frr_rip:
         # version: 2
         # metric: 10
         # passive_ints: []
@@ -73,7 +73,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # enabled: true
 
     - name: Pulling settings
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_rip'
       register: existing_entries
 
@@ -82,13 +82,13 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Enabling & Configuring RIP
-      ansibleguy.opnsense.frr_rip:
+      oxlorg.opnsense.frr_rip:
         passive_ints: ['lan']
         redistribute: ['static']
         networks: ['10.0.10.0/24']
         enabled: true
 
     - name: Disabling RIP
-      ansibleguy.opnsense.frr_rip:
+      oxlorg.opnsense.frr_rip:
         enabled: false
 ```

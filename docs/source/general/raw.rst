@@ -2,13 +2,13 @@
 
 .. include:: ../_include/head.rst
 
-=======
-3 - Raw
-=======
+===
+Raw
+===
 
 **STATE**: unstable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/raw.yml>`_
+**TESTS**: `Playbook <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/raw.yml>`_
 
 Contribution
 ************
@@ -57,13 +57,13 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Query interfaces
-          ansibleguy.opnsense.raw:
+          oxlorg.opnsense.raw:
             url: 'interfaces/overview/interfacesInfo'
           register: interfaces
 
@@ -71,7 +71,7 @@ Examples
             var: interfaces.rows
 
         - name: Execute action
-          ansibleguy.opnsense.raw:
+          oxlorg.opnsense.raw:
             module: 'syslog'
             controller: 'service'
             command: 'restart'

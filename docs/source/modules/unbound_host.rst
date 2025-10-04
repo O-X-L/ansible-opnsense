@@ -8,7 +8,7 @@ DNS - Unbound - Host Override
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/unbound_host.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/unbound_host.yml>`_
 
 **API Docs**: `Core - Unbound <https://docs.opnsense.org/development/api/core/unbound.html>`_
 
@@ -86,21 +86,21 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.unbound_host:
+        oxlorg.opnsense.unbound_host:
           match_fields: ['description']
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'unbound_host'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.unbound_host:
+          oxlorg.opnsense.unbound_host:
             hostname: 'host'
-            domain: 'opnsense.template.ansibleguy.net'
+            domain: 'opnsense.template.opnsense.oxl.app'
             value: '192.168.0.1'
             # match_fields: ['description']
             # record_type: 'A'
@@ -112,33 +112,33 @@ Examples
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.unbound_host:
+          oxlorg.opnsense.unbound_host:
             hostname: 'host'
-            domain: 'opnsense.template.ansibleguy.net'
+            domain: 'opnsense.template.opnsense.oxl.app'
             value: '192.168.0.1'
             description: 'test1'
             # match_fields: ['description']
 
         - name: Removing
-          ansibleguy.opnsense.unbound_host:
+          oxlorg.opnsense.unbound_host:
             hostname: 'host'
-            domain: 'opnsense.template.ansibleguy.net'
+            domain: 'opnsense.template.opnsense.oxl.app'
             value: '192.168.0.1'
             state: 'absent'
             description: 'test1'
             # match_fields: ['description']
 
         - name: Adding MX record
-          ansibleguy.opnsense.unbound_host:
+          oxlorg.opnsense.unbound_host:
             hostname: 'mx'
-            domain: 'opnsense.template.ansibleguy.net'
-            value: 'host.opnsense.template.ansibleguy.net'
+            domain: 'opnsense.template.opnsense.oxl.app'
+            value: 'host.opnsense.template.opnsense.oxl.app'
             record_type: 'MX'
             description: 'test2'
             # match_fields: ['description']
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'unbound_host'
           register: existing_entries
 

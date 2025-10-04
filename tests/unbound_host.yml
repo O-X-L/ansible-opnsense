@@ -6,16 +6,16 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.unbound_host:
+    oxlorg.opnsense.unbound_host:
       match_fields: ['description']
       timeout: 60
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'unbound_host'
 
   environment:
@@ -23,16 +23,16 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         'data' not in opn10 or
         opn10.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.unbound_host:
+      oxlorg.opnsense.unbound_host:
         hostname: 'host'
-        domain: 'opnsense.test.ansibleguy.net'
+        domain: 'opnsense.test.oxlorg.net'
         value: '192.168.0.1'
         state: 'absent'
         reload: false
@@ -42,10 +42,10 @@
         opn1.changed
 
     - name: Adding - failing because of invalid values
-      ansibleguy.opnsense.unbound_host:
+      oxlorg.opnsense.unbound_host:
         description: 'ANSIBLE_TEST_1_1'
         hostname: 'host'
-        domain: 'opnsense.test.ansibleguy.net'
+        domain: 'opnsense.test.oxlorg.net'
         value: "{{ item.v }}"
         type: "{{ item.t }}"
         reload: false
@@ -61,9 +61,9 @@
         - {t: 'MX', v: '192.168.0.1'}
 
     - name: Adding 1
-      ansibleguy.opnsense.unbound_host:
+      oxlorg.opnsense.unbound_host:
         hostname: 'host'
-        domain: 'opnsense.test.ansibleguy.net'
+        domain: 'opnsense.test.oxlorg.net'
         value: '192.168.0.1'
         description: 'ANSIBLE_TEST_1_1'
         reload: false  # speed
@@ -73,9 +73,9 @@
         not opn4.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.unbound_host:
+      oxlorg.opnsense.unbound_host:
         hostname: 'host'
-        domain: 'opnsense.test.ansibleguy.net'
+        domain: 'opnsense.test.oxlorg.net'
         value: '192.168.0.1'
         description: 'ANSIBLE_TEST_1_1'
         enabled: false
@@ -87,9 +87,9 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.unbound_host:
+      oxlorg.opnsense.unbound_host:
         hostname: 'host'
-        domain: 'opnsense.test.ansibleguy.net'
+        domain: 'opnsense.test.oxlorg.net'
         value: '192.168.0.1'
         description: 'ANSIBLE_TEST_1_1'
         enabled: false
@@ -101,9 +101,9 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.unbound_host:
+      oxlorg.opnsense.unbound_host:
         hostname: 'host'
-        domain: 'opnsense.test.ansibleguy.net'
+        domain: 'opnsense.test.oxlorg.net'
         value: '192.168.0.1'
         description: 'ANSIBLE_TEST_1_1'
         reload: false  # speed
@@ -114,10 +114,10 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.unbound_host:
+      oxlorg.opnsense.unbound_host:
         hostname: 'mx'
-        domain: 'opnsense.test.ansibleguy.net'
-        value: 'host.opnsense.test.ansibleguy.net'
+        domain: 'opnsense.test.oxlorg.net'
+        value: 'host.opnsense.test.oxlorg.net'
         record_type: 'MX'
         prio: 5
         description: 'ANSIBLE_TEST_1_2'
@@ -128,10 +128,10 @@
         not opn5.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.unbound_host:
+      oxlorg.opnsense.unbound_host:
         hostname: 'mx'
-        domain: 'opnsense.test.ansibleguy.net'
-        value: 'host.opnsense.test.ansibleguy.net'
+        domain: 'opnsense.test.oxlorg.net'
+        value: 'host.opnsense.test.oxlorg.net'
         record_type: 'MX'
         prio: 5
         description: 'ANSIBLE_TEST_1_2'
@@ -143,7 +143,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.unbound_host:
+      oxlorg.opnsense.unbound_host:
         description: 'ANSIBLE_TEST_1_2'
         hostname: 'dummy'
         domain: 'dummy'
@@ -157,7 +157,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn3
       failed_when: >
         'data' not in opn3 or
@@ -165,7 +165,7 @@
       when: not ansible_check_mode
 
     - name: Adding 3 - TLD-domain
-      ansibleguy.opnsense.unbound_host:
+      oxlorg.opnsense.unbound_host:
         hostname: 'host'
         domain: 'local'
         value: '192.168.0.1'
@@ -177,7 +177,7 @@
         not opn14.changed
 
     - name: Cleanup
-      ansibleguy.opnsense.unbound_host:
+      oxlorg.opnsense.unbound_host:
         description: "{{ item }}"
         hostname: 'dummy'
         domain: 'dummy'
@@ -191,7 +191,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn2
       failed_when: >
         'data' not in opn2 or

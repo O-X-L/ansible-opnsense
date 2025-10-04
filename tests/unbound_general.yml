@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'unbound_general'
 
   environment:
@@ -17,21 +17,21 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid port
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         port: 0
         reload: false
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring - failing because of non-existent interface
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         interfaces:
           - 'DOES-NOT-EXIST'
         reload: false
@@ -39,28 +39,28 @@
       failed_when: not opn_fail2.failed
 
     - name: Configuring - failing because of invalid DNS64 prefix
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         dns64_prefix: 'INVALID-PREFIX'
         reload: false
       register: opn_fail3
       failed_when: not opn_fail3.failed
 
     - name: Configuring - failing because of invalid DHCP domain
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         dhcp_domain: '!INVALID-DOMAIN!'
         reload: false
       register: opn_fail4
       failed_when: not opn_fail4.failed
 
     - name: Configuring - failing because of invalid local zone type
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         local_zone_type: 'INVALID-TYPE'
         reload: false
       register: opn_fail5
       failed_when: not opn_fail5.failed
 
     - name: Configuring - failing because of non-existent outgoing interface
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         outgoing_interfaces:
           - 'DOES-NOT-EXIST'
         reload: false
@@ -68,7 +68,7 @@
       failed_when: not opn_fail6.failed
 
     - name: Configuring
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         port: 5353
         interfaces:
           - 'lan'
@@ -81,7 +81,7 @@
         not opn1.changed
 
     - name: Changing
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         port: 53
         interfaces:
           - 'lan'
@@ -94,7 +94,7 @@
         not opn2.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         port: 53
         interfaces:
           - 'lan'
@@ -108,7 +108,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         port: 53
         interfaces:
           - 'lan'
@@ -122,7 +122,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         port: 53
         interfaces:
           - 'lan'
@@ -135,7 +135,7 @@
       when: not ansible_check_mode
 
     - name: Changing more
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         port: 53
         interfaces:
           - 'lan'
@@ -163,7 +163,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         port: 53
         interfaces:
           - 'lan'
@@ -191,7 +191,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.unbound_general:
+      oxlorg.opnsense.unbound_general:
         enabled: false
         reload: false
       when: not ansible_check_mode

@@ -2,7 +2,7 @@
 
 **STATE**: stable
 
-**TESTS**: [frr_diagnostic](https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/frr_diagnostic.yml)
+**TESTS**: [frr_diagnostic](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_diagnostic.yml)
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
 
@@ -35,7 +35,7 @@ You can also install it using the [package module](https://ansible-opnsense.oxl.
 
 For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basic.html)
 
-### ansibleguy.opnsense.frr_diagnostic
+### oxlorg.opnsense.frr_diagnostic
 
 | Parameter   | Type            | Required | Default value         | Aliases | Comment                                                                                                                                                                                                                                                                                                                                  |
 |:------------|:----------------|:---------|:----------------------|:--------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -45,19 +45,19 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 
 ## Examples
 
-### ansibleguy.opnsense.frr_diagnostic
+### oxlorg.opnsense.frr_diagnostic
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_diagnostic:
+      oxlorg.opnsense.frr_diagnostic:
         target: 'generalroute'
       register: frr_info
 

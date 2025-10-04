@@ -1,11 +1,11 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import is_unset
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.unbound import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import is_unset
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.unbound import \
     validate_domain
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
 class Alias(BaseModule):
@@ -36,8 +36,8 @@ class Alias(BaseModule):
         'existing_hosts': 'unbound.hosts.host',
     }
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.alias = {}
         self.existing_hosts = None
         self.target_found = False

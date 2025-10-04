@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'ids_policy_rule'
 
   environment:
@@ -17,19 +17,19 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Adding 1
-      ansibleguy.opnsense.ids_policy_rule:
+      oxlorg.opnsense.ids_policy_rule:
         sid: 2400000
         action: 'alert'
 
     - name: Adding 1 - nothing changed
-      ansibleguy.opnsense.ids_policy_rule:
+      oxlorg.opnsense.ids_policy_rule:
         sid: 2400000
         action: 'alert'
       register: opn6
@@ -39,7 +39,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1
-      ansibleguy.opnsense.ids_policy_rule:
+      oxlorg.opnsense.ids_policy_rule:
         sid: 2400000
         action: 'drop'
       register: opn1
@@ -49,7 +49,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.ids_policy_rule:
+      oxlorg.opnsense.ids_policy_rule:
         sid: 2400000
         action: 'drop'
       register: opn5
@@ -59,7 +59,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1
-      ansibleguy.opnsense.ids_policy_rule:
+      oxlorg.opnsense.ids_policy_rule:
         sid: 2400000
         action: 'drop'
         enabled: false
@@ -70,7 +70,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.ids_policy_rule:
+      oxlorg.opnsense.ids_policy_rule:
         sid: 2400000
         action: 'drop'
         enabled: false
@@ -81,7 +81,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.ids_policy_rule:
+      oxlorg.opnsense.ids_policy_rule:
         sid: 2400000
         action: 'drop'
         enabled: true
@@ -92,7 +92,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.ids_policy_rule:
+      oxlorg.opnsense.ids_policy_rule:
         sid: 2400000
         state: absent
       when: not ansible_check_mode

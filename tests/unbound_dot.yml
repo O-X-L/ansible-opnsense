@@ -6,15 +6,15 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.unbound_dot:
+    oxlorg.opnsense.unbound_dot:
       timeout: 60
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'unbound_dot'
 
   environment:
@@ -22,17 +22,17 @@
 
   tasks:
     - name: Listing dots
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         'data' not in opn10 or
         opn10.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.unbound_dot:
-        domain: 'dot.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_dot:
+        domain: 'dot.opnsense.test.oxlorg.net'
         target: '1.1.1.1'
-        verify: 'dot.opnsense.test.ansibleguy.net'
+        verify: 'dot.opnsense.test.oxlorg.net'
         state: 'absent'
         reload: false
       register: opn1
@@ -41,8 +41,8 @@
         opn1.changed
 
     - name: Adding 1 - failing because of invalid verfiy-content
-      ansibleguy.opnsense.unbound_dot:
-        domain: 'dot.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_dot:
+        domain: 'dot.opnsense.test.oxlorg.net'
         target: '1.1.1.1'
         verify: 'Some CN'
         reload: false  # speed
@@ -50,10 +50,10 @@
       failed_when: not opn11.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.unbound_dot:
-        domain: 'dot.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_dot:
+        domain: 'dot.opnsense.test.oxlorg.net'
         target: '1.1.1.1'
-        verify: 'dot.opnsense.test.ansibleguy.net'
+        verify: 'dot.opnsense.test.oxlorg.net'
         reload: false  # speed
       register: opn4
       failed_when: >
@@ -61,10 +61,10 @@
         not opn4.changed
 
     - name: Adding 2
-      ansibleguy.opnsense.unbound_dot:
-        domain: 'dot.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_dot:
+        domain: 'dot.opnsense.test.oxlorg.net'
         target: '1.1.1.2'
-        verify: 'dot.opnsense.test.ansibleguy.net'
+        verify: 'dot.opnsense.test.oxlorg.net'
         reload: false  # speed
       register: opn5
       failed_when: >
@@ -72,10 +72,10 @@
         not opn5.changed
 
     - name: Disabling 2
-      ansibleguy.opnsense.unbound_dot:
-        domain: 'dot.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_dot:
+        domain: 'dot.opnsense.test.oxlorg.net'
         target: '1.1.1.2'
-        verify: 'dot.opnsense.test.ansibleguy.net'
+        verify: 'dot.opnsense.test.oxlorg.net'
         enabled: false
         reload: false  # speed
       register: opn6
@@ -85,10 +85,10 @@
       when: not ansible_check_mode
 
     - name: Disabling 2 - nothing changed
-      ansibleguy.opnsense.unbound_dot:
-        domain: 'dot.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_dot:
+        domain: 'dot.opnsense.test.oxlorg.net'
         target: '1.1.1.2'
-        verify: 'dot.opnsense.test.ansibleguy.net'
+        verify: 'dot.opnsense.test.oxlorg.net'
         enabled: false
         reload: false  # speed
       register: opn9
@@ -98,10 +98,10 @@
       when: not ansible_check_mode
 
     - name: Enabling 2
-      ansibleguy.opnsense.unbound_dot:
-        domain: 'dot.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_dot:
+        domain: 'dot.opnsense.test.oxlorg.net'
         target: '1.1.1.2'
-        verify: 'dot.opnsense.test.ansibleguy.net'
+        verify: 'dot.opnsense.test.oxlorg.net'
         reload: false  # speed
       register: opn7
       failed_when: >
@@ -110,10 +110,10 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.unbound_dot:
-        domain: 'dot.opnsense.test.ansibleguy.net'
+      oxlorg.opnsense.unbound_dot:
+        domain: 'dot.opnsense.test.oxlorg.net'
         target: '1.1.1.2'
-        verify: 'dot.opnsense.test.ansibleguy.net'
+        verify: 'dot.opnsense.test.oxlorg.net'
         state: 'absent'
         reload: false  # speed
       register: opn8
@@ -123,7 +123,7 @@
       when: not ansible_check_mode
 
     - name: Listing dots
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn3
       failed_when: >
         'data' not in opn3 or
@@ -131,9 +131,9 @@
       when: not ansible_check_mode
 
     - name: Adding 3 without domain
-      ansibleguy.opnsense.unbound_dot:
+      oxlorg.opnsense.unbound_dot:
         target: '1.1.1.3'
-        verify: 'dot.opnsense.test.ansibleguy.net'
+        verify: 'dot.opnsense.test.oxlorg.net'
         reload: false  # speed
       register: opn6
       failed_when: >
@@ -141,9 +141,9 @@
         not opn6.changed
 
     - name: Changing 3 port
-      ansibleguy.opnsense.unbound_dot:
+      oxlorg.opnsense.unbound_dot:
         target: '1.1.1.3'
-        verify: 'dot.opnsense.test.ansibleguy.net'
+        verify: 'dot.opnsense.test.oxlorg.net'
         port: 853
         reload: false  # speed
       register: opn6
@@ -152,15 +152,15 @@
         not opn6.changed
 
     - name: Removing 3
-      ansibleguy.opnsense.unbound_dot:
+      oxlorg.opnsense.unbound_dot:
         target: '1.1.1.3'
-        verify: 'dot.opnsense.test.ansibleguy.net'
+        verify: 'dot.opnsense.test.oxlorg.net'
         state: 'absent'
         reload: false
       when: not ansible_check_mode
 
     - name: Adding 4 without domain or verify
-      ansibleguy.opnsense.unbound_dot:
+      oxlorg.opnsense.unbound_dot:
         target: '1.1.1.4'
         reload: false  # speed
       register: opn7
@@ -169,7 +169,7 @@
         not opn7.changed
 
     - name: Cleanup
-      ansibleguy.opnsense.unbound_dot:
+      oxlorg.opnsense.unbound_dot:
         target: "{{ item }}"
         state: 'absent'
         reload: false
@@ -181,7 +181,7 @@
       when: not ansible_check_mode
 
     - name: Listing dots
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn2
       failed_when: >
         'data' not in opn2 or

@@ -8,7 +8,7 @@ DNS - Unbound - DNS-over-TLS
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/unbound_dot.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/unbound_dot.yml>`_
 
 **API Docs**: `Core - Unbound <https://docs.opnsense.org/development/api/core/unbound.html>`_
 
@@ -61,16 +61,16 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'unbound_dot'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.unbound_dot:
+          oxlorg.opnsense.unbound_dot:
             target: '1.1.1.1'
             # domain: ''
             # port: 53
@@ -81,13 +81,13 @@ Examples
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.unbound_dot:
-            domain: 'dot.template.ansibleguy.net'
+          oxlorg.opnsense.unbound_dot:
+            domain: 'dot.template.opnsense.oxl.app'
             target: '1.1.1.1'
-            verify: 'dot.template.ansibleguy.net'
+            verify: 'dot.template.opnsense.oxl.app'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'unbound_dot'
           register: existing_entries
 

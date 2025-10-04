@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'ids_user_rule'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Removing 1 - does not exist
-      ansibleguy.opnsense.ids_user_rule:
+      oxlorg.opnsense.ids_user_rule:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -33,7 +33,7 @@
         opn_pre2.changed
 
     - name: Adding 1
-      ansibleguy.opnsense.ids_user_rule:
+      oxlorg.opnsense.ids_user_rule:
         name: 'ANSIBLE_TEST_1_1'
       register: opn1
       failed_when: >
@@ -41,7 +41,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.ids_user_rule:
+      oxlorg.opnsense.ids_user_rule:
         name: 'ANSIBLE_TEST_1_1'
         source_ip: '192.168.10.1'
         destination_ip: '1.1.1.1'
@@ -55,7 +55,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.ids_user_rule:
+      oxlorg.opnsense.ids_user_rule:
         name: 'ANSIBLE_TEST_1_1'
         source_ip: '192.168.10.1'
         destination_ip: '1.1.1.1'
@@ -69,7 +69,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1 - more
-      ansibleguy.opnsense.ids_user_rule:
+      oxlorg.opnsense.ids_user_rule:
         name: 'ANSIBLE_TEST_1_1'
         source_ip: '192.168.20.1'
         destination_ip: '1.1.0.0'
@@ -83,7 +83,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.ids_user_rule:
+      oxlorg.opnsense.ids_user_rule:
         name: 'ANSIBLE_TEST_1_1'
         source_ip: '192.168.20.1'
         destination_ip: '1.1.0.0'
@@ -97,7 +97,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1
-      ansibleguy.opnsense.ids_user_rule:
+      oxlorg.opnsense.ids_user_rule:
         name: 'ANSIBLE_TEST_1_1'
         source_ip: '192.168.20.1'
         destination_ip: '1.1.0.0'
@@ -112,7 +112,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.ids_user_rule:
+      oxlorg.opnsense.ids_user_rule:
         name: 'ANSIBLE_TEST_1_1'
         source_ip: '192.168.20.1'
         destination_ip: '1.1.0.0'
@@ -127,7 +127,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.ids_user_rule:
+      oxlorg.opnsense.ids_user_rule:
         name: 'ANSIBLE_TEST_1_1'
         source_ip: '192.168.20.1'
         destination_ip: '1.1.0.0'
@@ -142,7 +142,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1 - nothing changed
-      ansibleguy.opnsense.ids_user_rule:
+      oxlorg.opnsense.ids_user_rule:
         name: 'ANSIBLE_TEST_1_1'
         source_ip: '192.168.20.1'
         destination_ip: '1.1.0.0'
@@ -156,7 +156,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.ids_user_rule:
+      oxlorg.opnsense.ids_user_rule:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       when: not ansible_check_mode

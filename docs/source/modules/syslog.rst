@@ -8,7 +8,7 @@ Syslog
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/syslog.yml>`_
+**TESTS**: `Playbook <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/syslog.yml>`_
 
 **API Docs**: `Core - Syslog <https://docs.opnsense.org/development/api/core/syslog.html>`_
 
@@ -48,19 +48,19 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.syslog:
+        oxlorg.opnsense.syslog:
           match_fields: ['description']
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'syslog'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.syslog:
+          oxlorg.opnsense.syslog:
             target: '192.168.0.1'
             # port: 514
             # transport: 'udp4'
@@ -73,13 +73,13 @@ Examples
             # match_fields: ['target', 'facility', 'program']
 
         - name: Adding 1
-          ansibleguy.opnsense.syslog:
+          oxlorg.opnsense.syslog:
             description: 'test1'
             target: '192.168.0.1'
             # match_fields: ['description']
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'syslog'
           register: existing_entries
 
@@ -99,14 +99,14 @@ In this example the description is used as unique identifier!
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.syslog:
+        oxlorg.opnsense.syslog:
           match_fields: ['description']
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'syslog'
 
       vars:
@@ -114,12 +114,12 @@ In this example the description is used as unique identifier!
 
       tasks:
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'syslog'
           register: existing_entries
 
         - name: Purge
-          ansibleguy.opnsense.syslog:
+          oxlorg.opnsense.syslog:
             description: "{{ destination.description }}"
             target: "{{ destination.target }}"
             state: 'absent'

@@ -8,9 +8,9 @@ Access / User Management
 
 **STATE**: unstable
 
-**TESTS**: `user <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/user.yml>`_ |
-`group <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/group.yml>`_ |
-`privilege <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/privilege.yml>`_
+**TESTS**: `user <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/user.yml>`_ |
+`group <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/group.yml>`_ |
+`privilege <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/privilege.yml>`_
 
 **API Docs**: `Core - Auth <https://docs.opnsense.org/development/api/core/auth.html>`_
 
@@ -31,8 +31,8 @@ Thanks to `@jiuka <https://github.com/jiuka>`_ for developing this module!
 Definition
 **********
 
-ansibleguy.opnsense.user
-===================================
+oxlorg.opnsense.user
+========================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -53,7 +53,7 @@ ansibleguy.opnsense.user
     "membership","list","false","\-","group, m, g","List of group memberships."
     "privilege","list","false","\-","priv, p","List of granted privileges."
 
-ansibleguy.opnsense.group
+oxlorg.opnsense.group
 =========================
 
 ..  csv-table:: Definition
@@ -67,7 +67,7 @@ ansibleguy.opnsense.group
     "source_net","list","false","\-","source, src, s","List of networks which constraint the membership of this group to their location."
 
 
-ansibleguy.opnsense.privilege
+oxlorg.opnsense.privilege
 =============================
 
 ..  csv-table:: Definition
@@ -100,13 +100,13 @@ Examples
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Example User
-          ansibleguy.opnsense.user:
+          oxlorg.opnsense.user:
             name: alice
             # expires:
             # authorized_keys: |
@@ -127,7 +127,7 @@ Examples
             # debug: false
 
         - name: Example Group
-          ansibleguy.opnsense.group:
+          oxlorg.opnsense.group:
             name: aliceandbob
             # description:
             # member:
@@ -137,7 +137,7 @@ Examples
             # debug: false
 
         - name: Example Privilege
-          ansibleguy.opnsense.group:
+          oxlorg.opnsense.group:
             id: user-config-readonly
             user: alice
             group: aliceandbob
@@ -145,7 +145,7 @@ Examples
             # debug: false
 
         - name: Adding Monitoring User
-          ansibleguy.opnsense.user:
+          oxlorg.opnsense.user:
             name: alice
             update_password: on_create
             scrambled_password: true
@@ -155,14 +155,14 @@ Examples
               - page-status-carp
 
         - name: Ensure only admins have all privileges
-          ansibleguy.opnsense.privilege:
+          oxlorg.opnsense.privilege:
             id: page-all
             user: []
             group: admin
             state: pure
 
         - name: Listing users
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             target: 'user'
           register: existing_users
 

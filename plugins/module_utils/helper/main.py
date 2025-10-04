@@ -2,15 +2,19 @@ from typing import Callable
 from functools import reduce
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     exit_bug, exit_cnf
 
 
-def diff_remove_empty(diff: dict) -> dict:
+def diff_remove_empty(diff: dict, to_none: bool = False) -> dict:
     d = diff.copy()
     for k in diff:
         if len(diff[k]) == 0:
-            d.pop(k)
+            if to_none:
+                d[k] = None
+
+            else:
+                d.pop(k)
 
     return d
 
@@ -266,9 +270,12 @@ def get_simple_existing(
     return simple_entries
 
 
-def format_int(data: (int, str)) -> (int, str):
+def format_int(data: (int, str)) -> (int, str, None):
     if isinstance(data, int):
         return data
+
+    if data is None:
+        return None
 
     if data.isnumeric():
         return int(data)

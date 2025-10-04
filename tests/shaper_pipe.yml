@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'shaper_pipe'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         'data' not in opn10 or
         opn10.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_1_1'
         bandwidth: 50
         state: 'absent'
@@ -34,7 +34,7 @@
         opn1.changed
 
     - name: Adding 1 - failing because of invalid int-value
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_1_1'
         bandwidth: 50
         queue: 999
@@ -42,13 +42,13 @@
       failed_when: not opn11.failed
 
     - name: Adding 1 - failing because of unprovided bandwidth
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_1_1'
       register: opn12
       failed_when: not opn12.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_1_1'
         bandwidth: 50
       register: opn4
@@ -57,7 +57,7 @@
         not opn4.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_1_1'
         bandwidth: 60
         queue: 20
@@ -70,7 +70,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_1_1'
         bandwidth: 60
         queue: 20
@@ -83,7 +83,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_1_1'
         bandwidth: 60
         queue: 20
@@ -96,7 +96,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_1_1'
         bandwidth: 60
         queue: 20
@@ -108,7 +108,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2 & flushing/resetting running config
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_1_2'
         bandwidth: 750
         bandwidth_metric: 'Kbit'
@@ -119,7 +119,7 @@
         not opn5.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_1_2'
         bandwidth: 750
         bandwidth_metric: 'Kbit'
@@ -130,7 +130,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn8
@@ -140,7 +140,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn3
       failed_when: >
         'data' not in opn3 or
@@ -148,7 +148,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.shaper_pipe:
+      oxlorg.opnsense.shaper_pipe:
         description: "{{ item }}"
         state: 'absent'
       loop:
@@ -157,7 +157,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn2
       failed_when: >
         'data' not in opn2 or

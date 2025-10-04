@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'ids_general'
 
   environment:
@@ -17,21 +17,21 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Adding 1 - failing because of missing interfaces
-      ansibleguy.opnsense.ids_general:
+      oxlorg.opnsense.ids_general:
         interfaces: []
         enabled: true
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of invalid local-network
-      ansibleguy.opnsense.ids_general:
+      oxlorg.opnsense.ids_general:
         interfaces: ['LAN']
         enabled: true
         local_networks: ['invalid']
@@ -39,7 +39,7 @@
       failed_when: not opn_fail2.failed
 
     - name: Adding 1 - failing because of too low packet-size
-      ansibleguy.opnsense.ids_general:
+      oxlorg.opnsense.ids_general:
         interfaces: ['LAN']
         enabled: true
         default_packet_size: 12
@@ -47,7 +47,7 @@
       failed_when: not opn_fail3.failed
 
     - name: Adding 1 - failing because of non-existing cron (server-side)
-      ansibleguy.opnsense.ids_general:
+      oxlorg.opnsense.ids_general:
         interfaces: ['LAN']
         enabled: true
         schedule: 'DOES-NOT-EXIST'
@@ -56,7 +56,7 @@
       when: not ansible_check_mode
 
     - name: Adding 1
-      ansibleguy.opnsense.ids_general:
+      oxlorg.opnsense.ids_general:
         interfaces: ['opt1']
         enabled: true
         pattern_matcher: 'ac'
@@ -68,7 +68,7 @@
         log_level: 'info'
 
     - name: Changing 1
-      ansibleguy.opnsense.ids_general:
+      oxlorg.opnsense.ids_general:
         interfaces: ['opt1']
         enabled: true
         block: true
@@ -86,7 +86,7 @@
         not opn9.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.ids_general:
+      oxlorg.opnsense.ids_general:
         interfaces: ['opt1']
         enabled: false
         block: true
@@ -105,7 +105,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.ids_general:
+      oxlorg.opnsense.ids_general:
         interfaces: ['opt1']
         enabled: false
         block: true
@@ -124,7 +124,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.ids_general:
+      oxlorg.opnsense.ids_general:
         interfaces: ['opt1']
         block: true
         pattern_matcher: 'ac-bs'
@@ -142,7 +142,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.ids_general:
+      oxlorg.opnsense.ids_general:
         interfaces: ['opt1']
         enabled: false
       when: not ansible_check_mode

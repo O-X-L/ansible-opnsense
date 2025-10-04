@@ -22,8 +22,8 @@ source_suffix = {
     '.md': 'markdown',
 }
 html_theme_options = {
-    # 'banner_text': '<a href="https://github.com/O-X-L/ansible_opnsense">Repository on GitHub</a> | '
-    #                '<a href="https://github.com/O-X-L/ansible_opnsense/issues/new/choose">Report Errors</a> | '
+    # 'banner_text': '<a href="https://github.com/O-X-L/ansible-opnsense">Repository on GitHub</a> | '
+    #                '<a href="https://github.com/O-X-L/ansible-opnsense/issues/new/choose">Report Errors</a> | '
     #                '<a href="https://www.o-x-l.com">Get Support</a>'
     "site_url": "https://ansible-opnsense.oxl.app",
     "repo_url": "https://github.com/O-X-L/ansible-opnsense",

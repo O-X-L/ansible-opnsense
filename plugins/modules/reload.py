@@ -19,8 +19,8 @@ except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/reload.html'
-# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/reload.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/general/reload.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/general/reload.html'
 
 
 def run_module():

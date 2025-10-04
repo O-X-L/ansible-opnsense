@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.hasync_service:
+    oxlorg.opnsense.hasync_service:
       ignore_version_mismatch: true
 
   vars:
@@ -22,14 +22,14 @@
 
   tasks:
     - name: Restart all - failing because of missing peer
-      ansibleguy.opnsense.hasync_service:
+      oxlorg.opnsense.hasync_service:
         action: restart
       register: opn_pre1
       failed_when: >
         not opn_pre1.failed
 
     - name: Setup incorrect peer
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
         synchronize_to_ip: "{{ hasync_peer }}"
         username: "{{ hasync_username }}"
         password: "invalid{{ hasync_password }}"
@@ -38,14 +38,14 @@
           - rules
 
     - name: Restart all - failing because of inaccessible peer
-      ansibleguy.opnsense.hasync_service:
+      oxlorg.opnsense.hasync_service:
         action: restart
       register: opn_pre2
       failed_when: >
         not opn_pre2.failed
 
     - name: Setup peer
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:
         synchronize_to_ip: "{{ hasync_peer }}"
         username: "{{ hasync_username }}"
         password: "{{ hasync_password }}"
@@ -55,7 +55,7 @@
       when: hasync_peer | bool
 
     - name: Restart all
-      ansibleguy.opnsense.hasync_service:
+      oxlorg.opnsense.hasync_service:
         action: restart
       register: opn1
       failed_when: >
@@ -64,7 +64,7 @@
       when: hasync_peer | bool
 
     - name: Stop login - failing because of unstopable service
-      ansibleguy.opnsense.hasync_service:
+      oxlorg.opnsense.hasync_service:
         name: login
         action: stop
       register: opn2
@@ -73,7 +73,7 @@
       when: hasync_peer | bool
 
     - name: Stop ntpd
-      ansibleguy.opnsense.hasync_service:
+      oxlorg.opnsense.hasync_service:
         name: ntpd
         action: stop
       register: opn3
@@ -88,7 +88,7 @@
       when: hasync_peer | bool
 
     - name: Stop ntpd - nothing changed
-      ansibleguy.opnsense.hasync_service:
+      oxlorg.opnsense.hasync_service:
         name: ntpd
         action: stop
       register: opn4
@@ -98,7 +98,7 @@
       when: hasync_peer | bool
 
     - name: Start ntpd
-      ansibleguy.opnsense.hasync_service:
+      oxlorg.opnsense.hasync_service:
         name: ntpd
         action: start
       register: opn5
@@ -113,7 +113,7 @@
       when: hasync_peer | bool
 
     - name: Start ntpd - nothing changed
-      ansibleguy.opnsense.hasync_service:
+      oxlorg.opnsense.hasync_service:
         name: ntpd
         action: start
       register: opn6
@@ -123,7 +123,7 @@
       when: hasync_peer | bool
 
     - name: Restart ntpd
-      ansibleguy.opnsense.hasync_service:
+      oxlorg.opnsense.hasync_service:
         name: ntpd
         action: restart
       register: opn7
@@ -133,4 +133,4 @@
       when: hasync_peer | bool
 
     - name: Cleanup peer
-      ansibleguy.opnsense.hasync_general:
+      oxlorg.opnsense.hasync_general:

@@ -54,8 +54,8 @@ jobs:
 
       - name: Preparing collection for AnsibleLint
         run: |
-          mkdir -p /tmp/ansible_lint/collections/ansible_collections/ansibleguy
-          ln -s ${{ github.workspace }} /tmp/ansible_lint/collections/ansible_collections/ansibleguy/opnsense
+          mkdir -p /tmp/ansible_lint/collections/ansible_collections/oxlorg
+          ln -s ${{ github.workspace }} /tmp/ansible_lint/collections/ansible_collections/oxlorg/opnsense
         shell: bash
 
       - name: Running AnsibleLint

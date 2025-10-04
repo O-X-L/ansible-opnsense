@@ -8,15 +8,19 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'gateway'
 
+    oxlorg.opnsense.gateway:
+      match_fields: ['name']
+
   vars:
+    pre_existing_gws: 2
     gw:
       ip1: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL_GW1') | default('172.17.1.69', true) }}"
       ip2: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL_GW2') | default('172.17.1.70', true) }}"
@@ -26,7 +30,7 @@
 
   tasks:
     - name: Removing - does not exist
-      ansibleguy.opnsense.gateway:
+      oxlorg.opnsense.gateway:
         name: 'Test_GW'
         state: 'absent'
       register: opn3
@@ -35,7 +39,7 @@
         opn3.changed
 
     - name: Adding 1 - failing because of invalid gateway
-      ansibleguy.opnsense.gateway:
+      oxlorg.opnsense.gateway:
         name: 'ANSIBLE_TEST_1'
         interface: 'lan'
         gateway: 999.999.999.999
@@ -43,7 +47,7 @@
       failed_when: not opn_fail1.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.gateway:
+      oxlorg.opnsense.gateway:
         name: 'ANSIBLE_TEST_1'
         interface: 'lan'
         gateway: "{{ gw.ip1 }}"
@@ -53,7 +57,7 @@
         not opn4.changed
 
     - name: Adding 2
-      ansibleguy.opnsense.gateway:
+      oxlorg.opnsense.gateway:
         name: 'ANSIBLE_TEST_2'
         description: 'xyz'
         interface: 'lan'
@@ -64,7 +68,7 @@
         not opn5.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.gateway:
+      oxlorg.opnsense.gateway:
         name: 'ANSIBLE_TEST_1'
         interface: 'lan'
         gateway: "{{ gw.ip1 }}"
@@ -76,7 +80,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.gateway:
+      oxlorg.opnsense.gateway:
         name: 'ANSIBLE_TEST_1'
         interface: 'lan'
         gateway: "{{ gw.ip1 }}"
@@ -85,7 +89,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.gateway:
+      oxlorg.opnsense.gateway:
         name: 'ANSIBLE_TEST_1'
         interface: 'lan'
         gateway: "{{ gw.ip1 }}"
@@ -96,15 +100,15 @@
       when: not ansible_check_mode
 
     - name: Listing gateways
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn1
       failed_when: >
         'data' not in opn1 or
-        opn1.data | length != 4
+        opn1.data | length != (pre_existing_gws + 2)
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.gateway:
+      oxlorg.opnsense.gateway:
         name: "{{ item }}"
         state: 'absent'
       loop:
@@ -112,8 +116,8 @@
         - 'ANSIBLE_TEST_2'
 
     - name: Listing gateways
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn2
       failed_when: >
         'data' not in opn2 or
-        opn2.data | length != 2
+        opn2.data | length != pre_existing_gws
