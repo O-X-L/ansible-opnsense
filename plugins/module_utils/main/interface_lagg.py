@@ -47,8 +47,9 @@ class Lagg(BaseModule):
             if is_unset(self.p['members']):
                 self.m.fail_json("You need to provide a list of 'members' to create a lagg!")
 
-            if is_unset(self.p['lagghash']):
-                self.m.fail_json("You need to provide a list of 'lagghash' to create a lagg!")
+            if self.p['proto'] in ['lacp', 'loadbalance']:
+                if is_unset(self.p['lagghash']):
+                    self.m.fail_json("You need to provide a list of 'lagghash' to create a lagg!")
 
         self._base_check()
 
