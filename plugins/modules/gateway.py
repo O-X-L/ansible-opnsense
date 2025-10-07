@@ -124,8 +124,8 @@ def run_module():
         ),
         data_length=dict(
             type='int', required=False,
-            description='Specify the number of data bytes to be sent. Default is 0.',
-            default=0
+            description='Specify the number of data bytes to be sent. Default is 1.',
+            default=1
         ),
         description=dict(type='str', required=False, aliases=['desc']),
         match_fields=dict(
