@@ -3,7 +3,7 @@ from ipaddress import ip_address
 from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
-    is_ip6
+    is_ip4, is_ip6
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import is_unset
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
@@ -75,6 +75,11 @@ class Gw(BaseModule):
 
                 except ValueError:
                     self.m.fail_json(f"Value '{self.p['gateway']}' is not a valid gateway!")
+
+                if self.p['ip_protocol'] == 'inet' and not is_ip4(self.p['gateway']):
+                    self.m.fail_json(f"Gateway '{self.p['gateway']}' is not a valid IPv4-address!")
+                elif self.p['ip_protocol'] == 'inet6' and not is_ip6(self.p['gateway']):
+                    self.m.fail_json(f"Gateway '{self.p['gateway']}' is not a valid IPv6-address!")
 
             if self.p['monitor']:
                 try:
