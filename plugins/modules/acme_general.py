@@ -79,8 +79,6 @@ def run_module():
     module_wrapper(General(module=module, result=result))
     module.exit_json(**result)
 
-    module.exit_json(**result)
-
 
 def main():
     run_module()
