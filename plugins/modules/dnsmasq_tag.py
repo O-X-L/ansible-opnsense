@@ -14,7 +14,7 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
 try:
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
-        OPN_MOD_ARGS, STATE_ONLY_MOD_ARG
+        OPN_MOD_ARGS, STATE_ONLY_MOD_ARG, RELOAD_MOD_ARG
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.dnsmasq_tag import Tag
 
 except MODULE_EXCEPTIONS:
@@ -32,6 +32,7 @@ def run_module():
             description='DHCP tag.',
         ),
         **STATE_ONLY_MOD_ARG,
+        **RELOAD_MOD_ARG,
         **OPN_MOD_ARGS,
     )
 

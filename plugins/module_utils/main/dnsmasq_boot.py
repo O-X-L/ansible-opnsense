@@ -17,6 +17,7 @@ class Boot(BaseModule):
     API_KEY_PATH_REQ = 'boot'
     API_MOD = 'dnsmasq'
     API_CONT = 'settings'
+    API_CONT_REL = 'service'
     FIELDS_CHANGE = ['address', 'filename', 'interface', 'servername', 'tag']
     FIELDS_TYPING = {
         'select': ['interface'],
