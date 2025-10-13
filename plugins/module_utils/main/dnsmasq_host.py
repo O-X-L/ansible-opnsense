@@ -21,6 +21,7 @@ class Host(BaseModule):
     API_KEY_PATH_REQ = 'host'
     API_MOD = 'dnsmasq'
     API_CONT = 'settings'
+    API_CONT_REL = 'service'
     FIELDS_CHANGE = [
         'host', 'domain', 'local', 'ip', 'aliases', 'cnames', 'client_id', 'hardware_addr', 'lease_time', 'ignore',
         'set_tag', 'comments',

@@ -19,6 +19,7 @@ class Range(BaseModule):
     API_KEY_PATH_REQ = 'range'
     API_MOD = 'dnsmasq'
     API_CONT = 'settings'
+    API_CONT_REL = 'service'
     FIELDS_CHANGE = [
         'interface', 'set_tag', 'start_addr', 'end_addr', 'subnet_mask', 'constructor', 'mode',
         'prefix_len', 'lease_time', 'domain_type', 'domain', 'sync', 'ra_mode', 'ra_priority',
