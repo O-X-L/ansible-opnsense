@@ -19,6 +19,7 @@ class Option(BaseModule):
     API_KEY_PATH_REQ = 'option'
     API_MOD = 'dnsmasq'
     API_CONT = 'settings'
+    API_CONT_REL = 'service'
     FIELDS_CHANGE = ['type', 'option', 'option6', 'interface', 'tag', 'set_tag', 'value', 'force']
     FIELDS_TYPING = {
         'select': ['type', 'option', 'option6', 'interface', 'set_tag'],
