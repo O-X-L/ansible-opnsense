@@ -38,6 +38,7 @@ def run_module():
         ip_protocol=dict(
             type='str', required=False, choices=['inet', 'inet6'],
             description='The Internet Protocol this gateway uses.',
+            default='inet'
         ),
         gateway=dict(
             type='str', required=False, aliases=['gw', 'ip'],
