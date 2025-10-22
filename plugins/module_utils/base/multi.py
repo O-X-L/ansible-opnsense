@@ -316,7 +316,7 @@ class MultiModule:
             validation_error = None
 
         if validation_error:
-            error_func(f"Got invalid config for {self.k} '{self._entry_id(entry)}': {validation.errors.msg}")
+            error_func(f"Got invalid config for {self.k} '{self._entry_id(entry)}': {validation_error}")
 
         else:
             result = True

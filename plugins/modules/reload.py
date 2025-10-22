@@ -175,7 +175,7 @@ def run_module():
 
         elif target in ['dnsmasq']:
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.dnsmasq_general import \
-                Dnsmasq as Target_Obj
+                General as Target_Obj
 
     except MODULE_EXCEPTIONS:
         module_dependency_error()

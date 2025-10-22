@@ -38,6 +38,7 @@ def run_module():
         ip_protocol=dict(
             type='str', required=False, choices=['inet', 'inet6'],
             description='The Internet Protocol this gateway uses.',
+            default='inet'
         ),
         gateway=dict(
             type='str', required=False, aliases=['gw', 'ip'],
@@ -124,8 +125,8 @@ def run_module():
         ),
         data_length=dict(
             type='int', required=False,
-            description='Specify the number of data bytes to be sent. Default is 0.',
-            default=0
+            description='Specify the number of data bytes to be sent. Default is 1.',
+            default=1
         ),
         description=dict(type='str', required=False, aliases=['desc']),
         match_fields=dict(

@@ -16,6 +16,7 @@ class Tag(BaseModule):
     API_KEY_PATH_REQ = 'tag'
     API_MOD = 'dnsmasq'
     API_CONT = 'settings'
+    API_CONT_REL = 'service'
     FIELDS_CHANGE = []
     FIELDS_TYPING = {}
     FIELDS_ALL = ['tag']
