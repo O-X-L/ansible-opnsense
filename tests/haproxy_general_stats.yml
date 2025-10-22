@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'haproxy_general_stats'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Create test users for stats testing
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: "{{ item.name }}"
         description: "{{ item.description }}"
         password: "{{ item.password }}"
@@ -34,7 +34,7 @@
         - {name: 'stats_monitor', description: 'Stats monitor user', password: 'monitor123'}
 
     - name: Create test groups for stats testing
-      ansibleguy.opnsense.haproxy_group:
+      oxlorg.opnsense.haproxy_group:
         name: "{{ item.name }}"
         description: "{{ item.description }}"
         members: "{{ item.members }}"
@@ -44,13 +44,13 @@
         - {name: 'stats_operators', description: 'Stats operators group', members: ['stats_monitor']}
 
     - name: Configuring - failing because of invalid port
-      ansibleguy.opnsense.haproxy_general_stats:
+      oxlorg.opnsense.haproxy_general_stats:
         port: 70000
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring basic stats settings
-      ansibleguy.opnsense.haproxy_general_stats:
+      oxlorg.opnsense.haproxy_general_stats:
         enabled: true
         port: 8823
         remote_enabled: true
@@ -66,7 +66,7 @@
         not opn1.changed
 
     - name: Changing stats settings with Prometheus
-      ansibleguy.opnsense.haproxy_general_stats:
+      oxlorg.opnsense.haproxy_general_stats:
         enabled: true
         port: 8824
         remote_enabled: false
@@ -81,7 +81,7 @@
         not opn9.changed
 
     - name: Disabling HAProxy stats
-      ansibleguy.opnsense.haproxy_general_stats:
+      oxlorg.opnsense.haproxy_general_stats:
         enabled: false
         port: 8824
         remote_enabled: false
@@ -96,7 +96,7 @@
       when: not ansible_check_mode
 
     - name: Disabling HAProxy stats - nothing changed
-      ansibleguy.opnsense.haproxy_general_stats:
+      oxlorg.opnsense.haproxy_general_stats:
         enabled: false
         port: 8824
         remote_enabled: false
@@ -111,7 +111,7 @@
       when: not ansible_check_mode
 
     - name: Enabling HAProxy stats
-      ansibleguy.opnsense.haproxy_general_stats:
+      oxlorg.opnsense.haproxy_general_stats:
         enabled: true
         port: 8824
         remote_enabled: false
@@ -126,7 +126,7 @@
       when: not ansible_check_mode
 
     - name: Testing minimal configuration
-      ansibleguy.opnsense.haproxy_general_stats:
+      oxlorg.opnsense.haproxy_general_stats:
         enabled: true
         port: 8822
         remote_enabled: false
@@ -139,7 +139,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.haproxy_general_stats:
+      oxlorg.opnsense.haproxy_general_stats:
         enabled: true
         port: 8822
         remote_enabled: false
@@ -152,7 +152,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup stats configuration
-      ansibleguy.opnsense.haproxy_general_stats:
+      oxlorg.opnsense.haproxy_general_stats:
         enabled: false
         port: 8822
         remote_enabled: false
@@ -163,7 +163,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup test groups
-      ansibleguy.opnsense.haproxy_group:
+      oxlorg.opnsense.haproxy_group:
         name: "{{ item }}"
         state: 'absent'
       loop:
@@ -172,7 +172,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup test users
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: "{{ item }}"
         state: 'absent'
       loop:

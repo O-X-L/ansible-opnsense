@@ -27,7 +27,7 @@ These modules manage the general HAProxy configuration including settings, stati
 
 .. _haproxy_general_settings:
 
-ansibleguy.opnsense.haproxy_general_settings
+oxlorg.opnsense.haproxy_general_settings
 ==============================================
 
 Manages the basic operational settings for HAProxy.
@@ -49,7 +49,7 @@ Examples
 .. code-block:: yaml
 
     - name: Configure HAProxy basic settings
-      ansibleguy.opnsense.haproxy_general_settings:
+      oxlorg.opnsense.haproxy_general_settings:
         enabled: true
         graceful_stop: true
         hard_stop_after: 60
@@ -59,7 +59,7 @@ Examples
 
 .. _haproxy_general_stats:
 
-ansibleguy.opnsense.haproxy_general_stats
+oxlorg.opnsense.haproxy_general_stats
 ==========================================
 
 Manages HAProxy statistics and monitoring configuration.
@@ -87,7 +87,7 @@ Examples
 .. code-block:: yaml
 
     - name: Configure HAProxy statistics with authentication
-      ansibleguy.opnsense.haproxy_general_stats:
+      oxlorg.opnsense.haproxy_general_stats:
         enabled: true
         port: 8822
         auth_enabled: true
@@ -99,7 +99,7 @@ Examples
 
 .. _haproxy_general_defaults:
 
-ansibleguy.opnsense.haproxy_general_defaults
+oxlorg.opnsense.haproxy_general_defaults
 =============================================
 
 Manages HAProxy default connection and timeout settings.
@@ -125,7 +125,7 @@ Examples
 .. code-block:: yaml
 
     - name: Configure HAProxy connection defaults
-      ansibleguy.opnsense.haproxy_general_defaults:
+      oxlorg.opnsense.haproxy_general_defaults:
         max_connections: 2000
         timeout_client: '30s'
         timeout_server: '30s'
@@ -136,7 +136,7 @@ Examples
 
 .. _haproxy_general_tuning:
 
-ansibleguy.opnsense.haproxy_general_tuning
+oxlorg.opnsense.haproxy_general_tuning
 ===========================================
 
 Manages HAProxy performance tuning and advanced configuration.
@@ -178,7 +178,7 @@ Examples
 .. code-block:: yaml
 
     - name: Configure HAProxy performance tuning
-      ansibleguy.opnsense.haproxy_general_tuning:
+      oxlorg.opnsense.haproxy_general_tuning:
         max_connections: 2000
         nbthread: 4
         buffer_size: 32768
@@ -189,7 +189,7 @@ Examples
 
 .. _haproxy_general_logging:
 
-ansibleguy.opnsense.haproxy_general_logging
+oxlorg.opnsense.haproxy_general_logging
 ============================================
 
 Manages HAProxy logging configuration.
@@ -209,7 +209,7 @@ Examples
 .. code-block:: yaml
 
     - name: Configure HAProxy logging
-      ansibleguy.opnsense.haproxy_general_logging:
+      oxlorg.opnsense.haproxy_general_logging:
         host: '192.168.1.100'
         facility: 'local0'
         level: 'info'
@@ -219,7 +219,7 @@ Examples
 
 .. _haproxy_general_peers:
 
-ansibleguy.opnsense.haproxy_general_peers
+oxlorg.opnsense.haproxy_general_peers
 ==========================================
 
 Manages HAProxy peer synchronization for high availability.
@@ -242,7 +242,7 @@ Examples
 .. code-block:: yaml
 
     - name: Configure HAProxy peer synchronization
-      ansibleguy.opnsense.haproxy_general_peers:
+      oxlorg.opnsense.haproxy_general_peers:
         enabled: true
         name1: 'haproxy1.example.com'
         listen1: '192.168.1.10'
@@ -255,7 +255,7 @@ Examples
 
 .. _haproxy_general_cache:
 
-ansibleguy.opnsense.haproxy_general_cache
+oxlorg.opnsense.haproxy_general_cache
 ==========================================
 
 Manages HAProxy caching configuration.
@@ -277,7 +277,7 @@ Examples
 .. code-block:: yaml
 
     - name: Configure HAProxy caching
-      ansibleguy.opnsense.haproxy_general_cache:
+      oxlorg.opnsense.haproxy_general_cache:
         enabled: true
         total_max_size: 64
         max_age: 300

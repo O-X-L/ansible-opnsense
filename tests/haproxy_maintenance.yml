@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'haproxy_maintenance'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring maintenance jobs
-      ansibleguy.opnsense.haproxy_maintenance:
+      oxlorg.opnsense.haproxy_maintenance:
         sync_certs: true
         reload_service: false
         restart_service: false
@@ -34,7 +34,7 @@
         not opn1.changed
 
     - name: Changing maintenance settings
-      ansibleguy.opnsense.haproxy_maintenance:
+      oxlorg.opnsense.haproxy_maintenance:
         sync_certs: false
         reload_service: true
         restart_service: false
@@ -44,7 +44,7 @@
         not opn2.changed
 
     - name: Enabling all maintenance jobs
-      ansibleguy.opnsense.haproxy_maintenance:
+      oxlorg.opnsense.haproxy_maintenance:
         sync_certs: true
         reload_service: true
         restart_service: true
@@ -55,7 +55,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.haproxy_maintenance:
+      oxlorg.opnsense.haproxy_maintenance:
         sync_certs: true
         reload_service: true
         restart_service: true
@@ -66,7 +66,7 @@
       when: not ansible_check_mode
 
     - name: Disabling all maintenance jobs
-      ansibleguy.opnsense.haproxy_maintenance:
+      oxlorg.opnsense.haproxy_maintenance:
         sync_certs: false
         reload_service: false
         restart_service: false
@@ -77,7 +77,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.haproxy_maintenance:
+      oxlorg.opnsense.haproxy_maintenance:
         sync_certs: false
         reload_service: false
         restart_service: false

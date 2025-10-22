@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'haproxy_general_defaults'
 
   environment:
@@ -17,20 +17,20 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid timeout format
-      ansibleguy.opnsense.haproxy_general_defaults:
+      oxlorg.opnsense.haproxy_general_defaults:
         timeout_client: 'invalid'
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring basic defaults settings
-      ansibleguy.opnsense.haproxy_general_defaults:
+      oxlorg.opnsense.haproxy_general_defaults:
         max_connections: 2000
         max_connections_servers: 1000
         timeout_client: '60s'
@@ -47,7 +47,7 @@
         not opn1.changed
 
     - name: Changing defaults settings
-      ansibleguy.opnsense.haproxy_general_defaults:
+      oxlorg.opnsense.haproxy_general_defaults:
         max_connections: 4000
         max_connections_servers: 2000
         timeout_client: '120s'
@@ -64,7 +64,7 @@
         not opn9.changed
 
     - name: Testing edge values
-      ansibleguy.opnsense.haproxy_general_defaults:
+      oxlorg.opnsense.haproxy_general_defaults:
         max_connections: 1
         max_connections_servers: 1
         timeout_client: '1s'
@@ -81,7 +81,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.haproxy_general_defaults:
+      oxlorg.opnsense.haproxy_general_defaults:
         max_connections: 1
         max_connections_servers: 1
         timeout_client: '1s'
@@ -98,7 +98,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.haproxy_general_defaults:
+      oxlorg.opnsense.haproxy_general_defaults:
         timeout_client: '30s'
         timeout_connect: '30s'
         timeout_server: '30s'
