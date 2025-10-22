@@ -1005,44 +1005,44 @@
         - 'AnsibleTest1'
 
     - name: Cleanup HAProxy general settings
-      ansibleguy.opnsense.haproxy_general_settings:
+      oxlorg.opnsense.haproxy_general_settings:
         enabled: false
 
     - name: Cleanup HAProxy general cache settings
-      ansibleguy.opnsense.haproxy_general_cache:
+      oxlorg.opnsense.haproxy_general_cache:
         enabled: false
 
     - name: Cleanup HAProxy general defaults settings
-      ansibleguy.opnsense.haproxy_general_defaults:
+      oxlorg.opnsense.haproxy_general_defaults:
         retries: 3
         redispatch: 'x-1'
 
     - name: Cleanup HAProxy general logging settings
-      ansibleguy.opnsense.haproxy_general_logging:
+      oxlorg.opnsense.haproxy_general_logging:
         host: '127.0.0.1'
         facility: 'local0'
         level: 'info'
 
     - name: Cleanup HAProxy general peers settings
-      ansibleguy.opnsense.haproxy_general_peers:
+      oxlorg.opnsense.haproxy_general_peers:
         enabled: false
 
     - name: Cleanup HAProxy general stats settings
-      ansibleguy.opnsense.haproxy_general_stats:
+      oxlorg.opnsense.haproxy_general_stats:
         enabled: false
 
     - name: Cleanup HAProxy general tuning settings
-      ansibleguy.opnsense.haproxy_general_tuning:
+      oxlorg.opnsense.haproxy_general_tuning:
         root: false
 
     - name: Cleanup HAProxy maintenance settings
-      ansibleguy.opnsense.haproxy_maintenance:
+      oxlorg.opnsense.haproxy_maintenance:
         sync_certs: false
         reload_service: false
         restart_service: false
 
     - name: Cleanup HAProxy CPU rules
-      ansibleguy.opnsense.haproxy_cpu:
+      oxlorg.opnsense.haproxy_cpu:
         name: "{{ item }}"
         state: 'absent'
       loop:
@@ -1050,7 +1050,7 @@
         - 'ANSIBLE_TEST_1_2'
 
     - name: Cleanup HAProxy users
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: "{{ item }}"
         state: 'absent'
       loop:
@@ -1059,7 +1059,7 @@
         - 'ansible_test_user'
 
     - name: Cleanup HAProxy groups
-      ansibleguy.opnsense.haproxy_group:
+      oxlorg.opnsense.haproxy_group:
         name: "{{ item }}"
         state: 'absent'
       loop:
