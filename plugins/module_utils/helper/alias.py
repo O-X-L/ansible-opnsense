@@ -1,12 +1,11 @@
 from re import match as regex_match
 from typing import Callable
 
-from ansible.module_utils.basic import AnsibleModule
-
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
     BUILTIN_ALIASES, BUILTIN_INTERFACE_ALIASES_REG
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_valid_partial_mac_address, is_valid_url, validate_port_or_range, is_valid_network, is_valid_host, is_ip
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import is_unset
 
 
 # This should be kept aligned with getValidators from the AliasContentField
@@ -69,56 +68,12 @@ def validate_values(cnf: dict, error_func: Callable, existing_entries: dict) -> 
             error_func(error)
 
 
-def check_purge_filter(module: AnsibleModule, existing_rule: dict) -> bool:
-    # used for 'alias_multi' and 'rule_multi'
-    to_purge = True
-
-    for filter_key, filter_value in module.params['filters'].items():
-        if module.params['filter_invert']:
-            # purge all except matches
-            if module.params['filter_partial']:
-                if str(existing_rule[filter_key]).find(filter_value) != -1:
-                    to_purge = False
-                    break
-
-            else:
-                if existing_rule[filter_key] == filter_value:
-                    to_purge = False
-                    break
-
-        else:
-            # purge only matches
-            if module.params['filter_partial']:
-                if str(existing_rule[filter_key]).find(filter_value) == -1:
-                    to_purge = False
-                    break
-
-            else:
-                if existing_rule[filter_key] != filter_value:
-                    to_purge = False
-                    break
-
-    return to_purge
-
-
 def compare_aliases(existing: dict, configured: dict) -> tuple:
     before = list(map(str, existing['content']))
     after = list(map(str, configured['content']))
     before.sort()
     after.sort()
     return before != after, before, after
-
-
-def check_purge_configured(module: AnsibleModule, existing_alias: dict) -> bool:
-    to_purge = True
-    existing_name = existing_alias['name']
-
-    for alias_name in module.params['aliases'].keys():
-        if existing_name == alias_name:
-            to_purge = False
-            break
-
-    return to_purge
 
 
 def builtin_alias(name: str) -> bool:
@@ -136,3 +91,21 @@ def filter_builtin_alias(aliases: list) -> list:
             filtered.append(alias)
 
     return filtered
+
+
+DEFAULT_UPDATEFREQ_DAYS_URLTABLE = 7  # see: https://github.com/O-X-L/ansible-opnsense/pull/270
+
+
+def build_updatefreq(updatefreq: (int, float, str), default: bool = False) -> (int, float):
+    if is_unset(updatefreq):
+        if default:
+            return DEFAULT_UPDATEFREQ_DAYS_URLTABLE
+
+        return updatefreq
+
+    updatefreq = float(updatefreq)
+    dec = 1
+    if str(updatefreq).endswith('.0'):
+        dec = None
+
+    return round(updatefreq, dec)

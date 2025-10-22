@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'acme_account'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.acme_account:
+      oxlorg.opnsense.acme_account:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -33,14 +33,14 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of invalid ca
-      ansibleguy.opnsense.acme_account:
+      oxlorg.opnsense.acme_account:
         name: 'ANSIBLE_TEST_1_1'
         ca: opnsense
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.acme_account:
+      oxlorg.opnsense.acme_account:
         name: 'ANSIBLE_TEST_1_1'
         ca: letsencrypt_test
         email: example@example.com
@@ -50,7 +50,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.acme_account:
+      oxlorg.opnsense.acme_account:
         name: 'ANSIBLE_TEST_1_1'
         description: letsencrypt_test
         ca: letsencrypt_test
@@ -61,7 +61,7 @@
         not opn2.changed
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.acme_account:
+      oxlorg.opnsense.acme_account:
         name: 'ANSIBLE_TEST_1_1'
         description: letsencrypt_test
         ca: letsencrypt_test
@@ -73,7 +73,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1
-      ansibleguy.opnsense.acme_account:
+      oxlorg.opnsense.acme_account:
         name: 'ANSIBLE_TEST_1_1'
         description: letsencrypt_test
         ca: letsencrypt_test
@@ -86,7 +86,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.acme_account:
+      oxlorg.opnsense.acme_account:
         name: 'ANSIBLE_TEST_1_1'
         description: letsencrypt_test
         ca: letsencrypt_test
@@ -99,7 +99,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.acme_account:
+      oxlorg.opnsense.acme_account:
         name: 'ANSIBLE_TEST_1_1'
         description: letsencrypt_test
         ca: letsencrypt_test
@@ -111,7 +111,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.acme_account:
+      oxlorg.opnsense.acme_account:
         name: 'ANSIBLE_TEST_1_2'
         ca: custom
         email: example@example.com
@@ -122,7 +122,7 @@
         not opn9.changed
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -130,7 +130,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.acme_account:
+      oxlorg.opnsense.acme_account:
         name: '{{ item }}'
         state: 'absent'
       loop:
@@ -139,7 +139,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

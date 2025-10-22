@@ -8,5 +8,7 @@ echo ''
 echo 'BUILDING tarball'
 echo ''
 
-rm -f ansibleguy-opnsense-*.tar.gz
+rm -f oxlorg-opnsense-*.tar.gz
 ansible-galaxy collection build
+
+echo "CHECK CONTENT: 'tar --list -f oxlorg-opnsense-*.tar.gz'"

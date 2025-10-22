@@ -1,21 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright: (C) 2025, AnsibleGuy <guy@ansibleguy.net>
+# Copyright: (C) 2025, Pascal Rath <contact+opnsense@OXL.at>
 # GNU General Public License v3.0+ (see https://www.gnu.org/licenses/gpl-3.0.txt)
 
 # see: https://docs.opnsense.org/development/api/core/dnsmasq.html
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-        OPN_MOD_ARGS, STATE_ONLY_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.dnsmasq_domain import Domain
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
+        OPN_MOD_ARGS, STATE_ONLY_MOD_ARG, RELOAD_MOD_ARG
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.dnsmasq_domain import Domain
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
@@ -56,6 +56,7 @@ def run_module():
             description='Description here for your reference.',
         ),
         **STATE_ONLY_MOD_ARG,
+        **RELOAD_MOD_ARG,
         **OPN_MOD_ARGS,
     )
 

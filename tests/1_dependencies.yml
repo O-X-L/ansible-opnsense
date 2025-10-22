@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.package:
+    oxlorg.opnsense.package:
       timeout: 120
 
   environment:
@@ -17,7 +17,7 @@
 
   tasks:
     - name: Installing packages
-      ansibleguy.opnsense.package:
+      oxlorg.opnsense.package:
         name: "{{ item }}"
         action: 'install'
       register: opn_dep_install

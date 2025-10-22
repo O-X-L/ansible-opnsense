@@ -8,15 +8,15 @@ Postfix
 
 **STATE**: stable
 
-**TESTS**: `postfix_general <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_general.yml>`_ |
-`postfix_domain <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_domain.yml>`_ |
-`postfix_recipient <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_recipient.yml>`_ |
-`postfix_recipientbcc <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_recipientbcc.yml>`_ |
-`postfix_sender <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_sender.yml>`_ |
-`postfix_senderbcc <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_senderbcc.yml>`_ |
-`postfix_sendercanonical <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_sendercanonical.yml>`_ |
-`postfix_headercheck <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_headercheck.yml>`_ |
-`postfix_address <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/postfix_address.yml>`_
+**TESTS**: `postfix_general <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/postfix_general.yml>`_ |
+`postfix_domain <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/postfix_domain.yml>`_ |
+`postfix_recipient <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/postfix_recipient.yml>`_ |
+`postfix_recipientbcc <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/postfix_recipientbcc.yml>`_ |
+`postfix_sender <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/postfix_sender.yml>`_ |
+`postfix_senderbcc <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/postfix_senderbcc.yml>`_ |
+`postfix_sendercanonical <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/postfix_sendercanonical.yml>`_ |
+`postfix_headercheck <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/postfix_headercheck.yml>`_ |
+`postfix_address <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/postfix_address.yml>`_
 
 **API Docs**: `Plugins - Postfix <https://docs.opnsense.org/development/api/plugins/postfix.html>`_
 
@@ -39,7 +39,7 @@ You need to install the postfix plugin:
 os-postfix
 ```
 
-You can also install it using the :ref:`ansibleguy.opnsense.package <modules_package>` module.
+You can also install it using the :ref:`oxlorg.opnsense.package <modules_package>` module.
 
 ----
 
@@ -48,7 +48,7 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
-ansibleguy.opnsense.postfix_general
+oxlorg.opnsense.postfix_general
 ===================================
 
 ..  csv-table:: Definition
@@ -78,7 +78,7 @@ ansibleguy.opnsense.postfix_general
     "smtpauth_enabled","boolean","false","false","\-","Enable authentication against your relayhost."
     "smtpauth_user","string","false","\-","\-","The username to use for SMTP authentication against your relayhost."
     "smtpauth_password","string","false","\-","\.","The password to use for SMTP authentication against your relayhost."
-    "enforce_recipient_check","boolean","false","false","\-","Activates recipient restrictions managed by ansibleguy.opnsense.postfix_recipient."
+    "enforce_recipient_check","boolean","false","false","\-","Activates recipient restrictions managed by oxlorg.opnsense.postfix_recipient."
     "extensive_helo_restrictions","boolean","false","false","\-","Activate hello restrictions."
     "extensive_sender_restrictions","boolean","false","false","\-","Activate sender restrictions."
     "reject_unknown_client_hostname","boolean","false","false","\-","Add `reject_unknown_client_hostname <https://www.postfix.org/postconf.5.html#reject_unknown_client_hostname>`_ to `smtpd_recipient_restrictions <https://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions>`_."
@@ -99,7 +99,7 @@ ansibleguy.opnsense.postfix_general
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.postfix_domain
+oxlorg.opnsense.postfix_domain
 ==================================
 
 ..  csv-table:: Definition
@@ -112,7 +112,7 @@ ansibleguy.opnsense.postfix_domain
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.postfix_recipient
+oxlorg.opnsense.postfix_recipient
 =====================================
 
 ..  csv-table:: Definition
@@ -125,7 +125,7 @@ ansibleguy.opnsense.postfix_recipient
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.postfix_recipientbcc
+oxlorg.opnsense.postfix_recipientbcc
 ========================================
 
 ..  csv-table:: Definition
@@ -138,7 +138,7 @@ ansibleguy.opnsense.postfix_recipientbcc
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.postfix_sender
+oxlorg.opnsense.postfix_sender
 ==================================
 
 ..  csv-table:: Definition
@@ -151,7 +151,7 @@ ansibleguy.opnsense.postfix_sender
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.postfix_senderbcc
+oxlorg.opnsense.postfix_senderbcc
 =====================================
 
 ..  csv-table:: Definition
@@ -164,7 +164,7 @@ ansibleguy.opnsense.postfix_senderbcc
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.postfix_sendercanonical
+oxlorg.opnsense.postfix_sendercanonical
 ===========================================
 
 ..  csv-table:: Definition
@@ -177,7 +177,7 @@ ansibleguy.opnsense.postfix_sendercanonical
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.postfix_headercheck
+oxlorg.opnsense.postfix_headercheck
 =======================================
 
 ..  csv-table:: Definition
@@ -190,7 +190,7 @@ ansibleguy.opnsense.postfix_headercheck
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 
-ansibleguy.opnsense.postfix_address
+oxlorg.opnsense.postfix_address
 ===================================
 
 ..  csv-table:: Definition
@@ -207,26 +207,26 @@ ansibleguy.opnsense.postfix_address
 Usage
 *****
 
-ansibleguy.opnsense.postfix_general
+oxlorg.opnsense.postfix_general
 ===================================
 
-Use ``ansibleguy.opnsense.postfix_general`` to setup the postfix daemon. 
+Use ``oxlorg.opnsense.postfix_general`` to setup the postfix daemon.
 
-ansibleguy.opnsense.postfix_domain
+oxlorg.opnsense.postfix_domain
 ==================================
 
 Manage accepted domains and the target to forward mails to using the
 `relay_domains <https://www.postfix.org/postconf.5.html#relay_domains>`_ and
 `transport_maps <https://www.postfix.org/postconf.5.html#transport_maps>`_.
 
-ansibleguy.opnsense.postfix_recipient / postfix_sender
+oxlorg.opnsense.postfix_recipient / postfix_sender
 ======================================================
 
 Manage addresses on the
 `smtpd_recipient_restrictions <https://www.postfix.org/postconf.5.html#smtpd_recipient_restrictions>`_ and
 `check_sender_access <https://www.postfix.org/postconf.5.html#check_sender_access>`_ maps respectively.
 
-ansibleguy.opnsense.postfix_recipientbcc / postfix_senderbcc
+oxlorg.opnsense.postfix_recipientbcc / postfix_senderbcc
 ============================================================
 
 Manage entries for the
@@ -234,14 +234,14 @@ Manage entries for the
 `sender_bcc_maps <https://www.postfix.org/postconf.5.html#sender_bcc_maps>`_ maps respectively.
 
 
-ansibleguy.opnsense.postfix_canonical
+oxlorg.opnsense.postfix_canonical
 =====================================
 
 Manage entries for the
 `sender_canonical_maps <https://www.postfix.org/postconf.5.html#sender_canonical_maps>`_ map.
 
 
-ansibleguy.opnsense.postfix_headercheck
+oxlorg.opnsense.postfix_headercheck
 =======================================
 
 Manage entries for the
@@ -249,7 +249,7 @@ Manage entries for the
 `smtp_header_checks <https://www.postfix.org/postconf.5.html#smtp_header_checks>`_ (type: WHILE_DELIVERING) maps.
 
 
-ansibleguy.opnsense.postfix_address
+oxlorg.opnsense.postfix_address
 ===================================
 
 Manage entries for the
@@ -266,13 +266,13 @@ Examples
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Setup Postfix
-          ansibleguy.opnsense.postfix_general:
+          oxlorg.opnsense.postfix_general:
             enable: true
             # myhostname:
             # mydomain:
@@ -324,55 +324,55 @@ Examples
             # debug: false
 
         - name: Add Domain
-          ansibleguy.opnsense.postfix_domain:
-            domainname: ansibleguy.net
-            # destination: mail.ansibleguy.net
+          oxlorg.opnsense.postfix_domain:
+            domainname: opnsense.oxl.app
+            # destination: mail.opnsense.oxl.app
             # enable: true
 
         - name: Block Recipient
-          ansibleguy.opnsense.postfix_recipient:
-            address: noreply@ansibleguy.net
+          oxlorg.opnsense.postfix_recipient:
+            address: noreply@opnsense.oxl.app
             action: REJECT
             # enable: true
 
         - name: Auto BCC Recipient
-          ansibleguy.opnsense.postfix_recipient:
-            address: alice@ansibleguy.net
-            to: bob@ansibleguy.net
+          oxlorg.opnsense.postfix_recipient:
+            address: alice@opnsense.oxl.app
+            to: bob@opnsense.oxl.app
             # enable: true
 
         - name: Block Sender
-          ansibleguy.opnsense.postfix_recipient:
-            address: internal-only@ansibleguy.net
+          oxlorg.opnsense.postfix_recipient:
+            address: internal-only@opnsense.oxl.app
             action: REJECT
             # enable: true
 
         - name: Auto BCC Sender
-          ansibleguy.opnsense.postfix_recipient:
-            address: alice@ansibleguy.net
-            to: bob@ansibleguy.net
+          oxlorg.opnsense.postfix_recipient:
+            address: alice@opnsense.oxl.app
+            to: bob@opnsense.oxl.app
             # enable: true
 
         - name: Sender Canonical Rewriting
-          ansibleguy.opnsense.postfix_sendercanonical:
-            address: '@ansibleguy.com'
-            to: '@ansibleguy.net'
+          oxlorg.opnsense.postfix_sendercanonical:
+            address: '@oxlorg.com'
+            to: '@opnsense.oxl.app'
             # enable: true
 
         - name: Strip User-Agent header
-          ansibleguy.opnsense.header_check:
+          oxlorg.opnsense.header_check:
             expression: /^\s*User-Agent/ IGNORE
             filter: WHILE_DELIVERING
             # enable: true
 
         - name: Address Rewriting
-          ansibleguy.opnsense.postfix_address:
-            address: root@ansibleguy.net
-            to: alice@ansibleguy.net
+          oxlorg.opnsense.postfix_address:
+            address: root@opnsense.oxl.app
+            to: alice@opnsense.oxl.app
             # enable: true
 
         - name: Listing jobs
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
             target: 'postfix_address'
           register: existing_postfix_address
 

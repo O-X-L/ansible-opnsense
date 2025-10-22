@@ -2,12 +2,12 @@ from ipaddress import ip_address
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
-    is_ip6
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import is_unset
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
+    is_ip4, is_ip6
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import is_unset
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
 class Gw(BaseModule):
@@ -16,10 +16,11 @@ class Gw(BaseModule):
         'add': 'add_gateway',
         'del': 'del_gateway',
         'set': 'set_gateway',
-        'search': 'get',
+        'search': 'search_gateway',
+        'detail': 'get_gateway',
         'toggle': 'toggle_gateway',
     }
-    API_KEY_PATH = 'gateways.gateway_item'
+    API_KEY_PATH = 'gateway_item'
     API_MOD = 'routing'
     API_CONT = 'settings'
     FIELDS_CHANGE = [
@@ -62,8 +63,8 @@ class Gw(BaseModule):
     }
     EXIST_ATTR = 'gw'
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.gw = {}
 
     def check(self) -> None:
@@ -75,6 +76,11 @@ class Gw(BaseModule):
                 except ValueError:
                     self.m.fail_json(f"Value '{self.p['gateway']}' is not a valid gateway!")
 
+                if self.p['ip_protocol'] == 'inet' and not is_ip4(self.p['gateway']):
+                    self.m.fail_json(f"Gateway '{self.p['gateway']}' is not a valid IPv4-address!")
+                elif self.p['ip_protocol'] == 'inet6' and not is_ip6(self.p['gateway']):
+                    self.m.fail_json(f"Gateway '{self.p['gateway']}' is not a valid IPv6-address!")
+
             if self.p['monitor']:
                 try:
                     ip_address(self.p['monitor'])
@@ -84,12 +90,5 @@ class Gw(BaseModule):
 
             if not self.p['interface']:
                 self.m.fail_json('You need to provide a value for the interface!')
-
-            if is_unset(self.p['ip_protocol']):
-                if is_ip6(self.p['gateway']):
-                    self.p['ip_protocol'] = 'inet6'
-
-                else:
-                    self.p['ip_protocol'] = 'inet'
 
         self._base_check()

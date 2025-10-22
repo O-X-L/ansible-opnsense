@@ -1,10 +1,10 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_ip_or_network, is_unset
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
 class Network(BaseModule):
@@ -41,8 +41,8 @@ class Network(BaseModule):
         'existing_prefixes': 'ospf6.prefixlists.prefixlist',
     }
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.net = {}
         self.existing_prefixes = None
 

@@ -2,11 +2,11 @@ from ipaddress import IPv6Address, IPv4Address, AddressValueError, NetmaskValueE
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_ip, is_unset, is_valid_domain
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
 class Syslog(BaseModule):
@@ -42,8 +42,8 @@ class Syslog(BaseModule):
         'port': {'min': 1, 'max': 65535},
     }
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.dest = {}
 
     def check(self) -> None:

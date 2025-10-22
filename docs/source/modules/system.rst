@@ -8,7 +8,7 @@ System
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/system.yml>`_
+**TESTS**: `Playbook <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/system.yml>`_
 
 **API Docs**: `Core - Firmware <https://docs.opnsense.org/development/api/core/firmware.html>`_
 
@@ -52,34 +52,34 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Reboot the box - will wait until finished
-          ansibleguy.opnsense.system:
+          oxlorg.opnsense.system:
             action: 'reboot'
 
         - name: Reboot the box - don't wait
-          ansibleguy.opnsense.system:
+          oxlorg.opnsense.system:
             action: 'reboot'
             wait: false
 
         - name: Shutdown the box
-          ansibleguy.opnsense.system:
+          oxlorg.opnsense.system:
             action: 'poweroff'
 
         - name: Pull updates
-          ansibleguy.opnsense.system:
+          oxlorg.opnsense.system:
             action: 'update'
 
         - name: Start upgrade - will wait until finished (WARNING: ONLY USE IN TEST-ENVIRONMENTS)
-          ansibleguy.opnsense.system:
+          oxlorg.opnsense.system:
             action: 'upgrade'
             timeout: 120  # depends on your download speed and firmware-version
             force_upgrade: true
 
         - name: Run audit
-          ansibleguy.opnsense.system:
+          oxlorg.opnsense.system:
             action: 'audit'

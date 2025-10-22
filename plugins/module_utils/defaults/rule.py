@@ -1,5 +1,4 @@
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
-    OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import STATE_MOD_ARG
 
 RULE_DEFAULTS = {
     'sequence': 1,
@@ -70,7 +69,7 @@ RULE_MOD_ARG_ALIASES = {
     'allow_opts': ['opts'],
     'overload': ['ol'],
     'schedule': ['sched'],
-    'description': ['desc'],
+    'description': ['name', 'desc'],
     'state': ['st'],
     'enabled': ['en'],
     'icmp_type': ['icmp_types'],
@@ -255,13 +254,4 @@ RULE_MOD_ARGS = dict(
     ),
     **STATE_MOD_ARG,
     **RULE_MATCH_FIELDS_ARG,
-    **OPN_MOD_ARGS,
-    **RELOAD_MOD_ARG,
-)
-
-RULE_MOD_ARG_KEY_FIELD = dict(
-    key_field=dict(
-        type='str', required=True, choices=['sequence', 'description', 'uuid'], aliases=['key'],
-        description='What field is used as key of the provided dictionary'
-    )
 )

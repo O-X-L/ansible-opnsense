@@ -1,10 +1,10 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_ip6
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
 class Range(BaseModule):
@@ -19,6 +19,7 @@ class Range(BaseModule):
     API_KEY_PATH_REQ = 'range'
     API_MOD = 'dnsmasq'
     API_CONT = 'settings'
+    API_CONT_REL = 'service'
     FIELDS_CHANGE = [
         'interface', 'set_tag', 'start_addr', 'end_addr', 'subnet_mask', 'constructor', 'mode',
         'prefix_len', 'lease_time', 'domain_type', 'domain', 'sync', 'ra_mode', 'ra_priority',

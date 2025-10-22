@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'ids_policy'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Adding 1 - failing because of non-existing/disabled ruleset
-      ansibleguy.opnsense.ids_policy:
+      oxlorg.opnsense.ids_policy:
         description: 'ANSIBLE_TEST_1_1'
         rulesets: "{{ item }}"
         enabled: true
@@ -35,7 +35,7 @@
         - 'abuse.ch/SSL IP Blacklist'
 
     - name: Adding 1
-      ansibleguy.opnsense.ids_policy:
+      oxlorg.opnsense.ids_policy:
         description: 'ANSIBLE_TEST_1_1'
         priority: 1
         rulesets: 'ET open/drop'
@@ -46,7 +46,7 @@
           signature_severity: ['Minor']
 
     - name: Adding 1 - nothing changed
-      ansibleguy.opnsense.ids_policy:
+      oxlorg.opnsense.ids_policy:
         description: 'ANSIBLE_TEST_1_1'
         priority: 1
         rulesets: 'ET open/drop'
@@ -62,7 +62,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1
-      ansibleguy.opnsense.ids_policy:
+      oxlorg.opnsense.ids_policy:
         description: 'ANSIBLE_TEST_1_1'
         priority: 2
         rulesets: 'ET open/drop'
@@ -78,7 +78,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.ids_policy:
+      oxlorg.opnsense.ids_policy:
         description: 'ANSIBLE_TEST_1_1'
         priority: 2
         rulesets: 'ET open/drop'
@@ -94,7 +94,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1
-      ansibleguy.opnsense.ids_policy:
+      oxlorg.opnsense.ids_policy:
         description: 'ANSIBLE_TEST_1_1'
         priority: 2
         rulesets: 'ET open/drop'
@@ -111,7 +111,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.ids_policy:
+      oxlorg.opnsense.ids_policy:
         description: 'ANSIBLE_TEST_1_1'
         priority: 2
         rulesets: 'ET open/drop'
@@ -128,7 +128,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.ids_policy:
+      oxlorg.opnsense.ids_policy:
         description: 'ANSIBLE_TEST_1_1'
         priority: 2
         rulesets: 'ET open/drop'
@@ -145,7 +145,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.ids_policy:
+      oxlorg.opnsense.ids_policy:
         description: 'ANSIBLE_TEST_1_1'
         state: absent
       when: not ansible_check_mode

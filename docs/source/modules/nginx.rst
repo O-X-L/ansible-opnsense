@@ -8,7 +8,7 @@ Nginx
 
 **STATE**: unstable
 
-**TESTS**: `nginx_upstream_server <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/nginx_upstream_server.yml>`_
+**TESTS**: `nginx_upstream_server <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/nginx_upstream_server.yml>`_
 
 **API Docs**: `Plugins - Nginx <https://docs.opnsense.org/development/api/plugins/nginx.html>`_
 
@@ -30,7 +30,7 @@ You need to install the following plugin:
 
     os-nginx
 
-You can also install it using the :ref:`ansibleguy.opnsense.package <modules_package>` module.
+You can also install it using the :ref:`oxlorg.opnsense.package <modules_package>` module.
 
 
 Definition
@@ -38,7 +38,7 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
-ansibleguy.opnsense.nginx_general
+oxlorg.opnsense.nginx_general
 =================================
 
 ..  csv-table:: Definition
@@ -49,7 +49,7 @@ ansibleguy.opnsense.nginx_general
     "ban_ttl","integer","false","0","\-","Set autoblock lifetime in minutes. Set to 0 for infinite."
 
 
-ansibleguy.opnsense.nginx_upstream_server
+oxlorg.opnsense.nginx_upstream_server
 =========================================
 
 ..  csv-table:: Definition
@@ -79,7 +79,7 @@ Enabling the nginx configured services.
 Examples
 ********
 
-ansibleguy.opnsense.nginx_upstream_server
+oxlorg.opnsense.nginx_upstream_server
 =========================================
 
 .. code-block:: yaml
@@ -87,16 +87,16 @@ ansibleguy.opnsense.nginx_upstream_server
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'nginx_upstream_server'
 
       tasks:
         - name: Add an upstream server
-          ansibleguy.opnsense.nginx_upstream_server:
+          oxlorg.opnsense.nginx_upstream_server:
             name: 'upstream1'
             server: '192.168.1.1'
             port: 80
@@ -109,12 +109,12 @@ ansibleguy.opnsense.nginx_upstream_server
             # reload: true
 
         - name: Changing the server
-          ansibleguy.opnsense.nginx_upstream_server:
+          oxlorg.opnsense.nginx_upstream_server:
             name: 'upstream1'
             server: '192.168.1.100'
 
         - name: Listing upstream servers
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'nginx_upstream_server'
           register: existing_servers
 

@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_prefix_list'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_1_1'
         seq: 55
         state: 'absent'
@@ -34,14 +34,14 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of invalid ip-version
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_1_1'
         version: 'IPv5'
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_1_1'
         network: '10.0.10.0/24'
         seq: 55
@@ -52,7 +52,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_1_1'
         network: '10.0.11.0/24'
         seq: 55
@@ -63,7 +63,7 @@
         not opn9.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_1_1'
         network: '10.0.11.0/24'
         seq: 55
@@ -76,7 +76,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_1_1'
         network: '10.0.11.0/24'
         seq: 55
@@ -89,7 +89,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_1_1'
         network: '10.0.11.0/24'
         seq: 55
@@ -101,7 +101,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_1_2'
         network: '10.0.20.0/24'
         seq: 56
@@ -112,7 +112,7 @@
         not opn5.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_1_2'
         network: '10.0.20.0/24'
         seq: 56
@@ -124,7 +124,7 @@
       when: not ansible_check_mode
 
     - name: Adding 3 (same name, different sequence)
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_1_2'
         network: '10.0.30.0/24'
         seq: 57
@@ -136,7 +136,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_1_2'
         seq: 56
         state: 'absent'
@@ -147,7 +147,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -155,7 +155,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: "{{ item.n }}"
         seq: "{{ item.s | default(omit) }}"
         state: 'absent'
@@ -166,7 +166,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

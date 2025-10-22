@@ -13,8 +13,8 @@ import pytest
     ('host', '192.168.1.1', True),
     ('host', '192.168.1.1-192.168.1.2', True),
     ('host', '!192.168.1.1', True),
-    ('host', 'ansibleguy.net', True),
-    ('host', '!ansibleguy.net', False),
+    ('host', 'oxl.at', True),
+    ('host', '!oxl.at', False),
     ('host', 'alias1', True),
     ('network', '192.168.1.1', True),
     ('network', '!192.168.1.1', True),
@@ -38,7 +38,7 @@ import pytest
     ('asn', '4294967297', False),
 ])
 def test_validate_values(aliastype, value, valid):
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.alias import validate_values
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.alias import validate_values
 
     error_func = Mock()
 
@@ -48,3 +48,19 @@ def test_validate_values(aliastype, value, valid):
         error_func.assert_not_called()
     else:
         error_func.assert_called_once()
+
+
+def test_build_updatefreq():
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.alias import build_updatefreq
+
+    assert build_updatefreq(2.0) == 2
+    assert build_updatefreq(2) == 2
+    assert build_updatefreq(1.9) == 1.9
+    assert build_updatefreq('1.9') == 1.9
+    assert build_updatefreq('') == ''
+    assert build_updatefreq(None) is None
+
+
+def test_placeholder():
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.alias import \
+        compare_aliases, builtin_alias, filter_builtin_alias

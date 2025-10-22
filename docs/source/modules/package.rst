@@ -8,7 +8,7 @@ Package
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/package.yml>`_
+**TESTS**: `Playbook <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/package.yml>`_
 
 **API Docs**: `Core - Firmware <https://docs.opnsense.org/development/api/core/firmware.html>`_
 
@@ -29,7 +29,7 @@ If:
 - the package cache is too old, it will take some time - as OPNSense automatically checks for updates beforehand
 - the target firewall runs an outdated version, the actions 'install' and 'reinstall' will fail as OPNSense prevents it
 
-  - in that case - you should run :ref:`ansibleguy.opnsense.system <modules_system>` with action 'upgrade'
+  - in that case - you should run :ref:`oxlorg.opnsense.system <modules_system>` with action 'upgrade'
 
 
 Be aware that the list-module with target 'package' will return installed plugins AND base-packages.
@@ -58,46 +58,46 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'package'
 
       tasks:
         - name: Installing
-          ansibleguy.opnsense.package:
+          oxlorg.opnsense.package:
             name: 'os-api-backup'
             action: 'install'
 
         - name: Installing - multiple packages at once
-          ansibleguy.opnsense.package:
+          oxlorg.opnsense.package:
             name: ['os-api-backup', 'os-dmidecode']
             action: 'install'
 
         - name: Removing
-          ansibleguy.opnsense.package:
+          oxlorg.opnsense.package:
             name: 'os-api-backup'
             action: 'remove'
 
         - name: Re-installing
-          ansibleguy.opnsense.package:
+          oxlorg.opnsense.package:
             name: 'os-api-backup'
             action: 'reinstall'
 
         - name: Locking
-          ansibleguy.opnsense.package:
+          oxlorg.opnsense.package:
             name: 'os-api-backup'
             action: 'lock'
 
         - name: Unlocking
-          ansibleguy.opnsense.package:
+          oxlorg.opnsense.package:
             name: 'os-api-backup'
             action: 'unlock'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'package'
           register: existing_entries
 

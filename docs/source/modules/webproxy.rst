@@ -8,18 +8,18 @@ Web Proxy
 
 **STATE**: stable
 
-**TESTS**: `webproxy_general <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/webproxy_general.yml>`_ |
-`webproxy_cache <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/webproxy_cache.yml>`_ |
-`webproxy_parent <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/webproxy_parent.yml>`_ |
-`webproxy_traffic <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/webproxy_traffic.yml>`_ |
-`webproxy_forward <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/webproxy_forward.yml>`_ |
-`webproxy_acl <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_acl.yml>`_ |
-`webproxy_icap <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_icap.yml>`_ |
-`webproxy_auth <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_auth.yml>`_ |
-`webproxy_remote_acl <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_remote_acl.yml>`_ |
-`webproxy_pac_proxy <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_pac_proxy.yml>`_ |
-`webproxy_pac_match <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_pac_match.yml>`_ |
-`webproxy_pac_rule <https://github.com/O-X-L/ansible_opnsense/blob/stable/tests/webproxy_pac_rule.yml>`_
+**TESTS**: `webproxy_general <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/webproxy_general.yml>`_ |
+`webproxy_cache <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/webproxy_cache.yml>`_ |
+`webproxy_parent <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/webproxy_parent.yml>`_ |
+`webproxy_traffic <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/webproxy_traffic.yml>`_ |
+`webproxy_forward <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/webproxy_forward.yml>`_ |
+`webproxy_acl <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_acl.yml>`_ |
+`webproxy_icap <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_icap.yml>`_ |
+`webproxy_auth <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_auth.yml>`_ |
+`webproxy_remote_acl <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_remote_acl.yml>`_ |
+`webproxy_pac_proxy <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_pac_proxy.yml>`_ |
+`webproxy_pac_match <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_pac_match.yml>`_ |
+`webproxy_pac_rule <https://github.com/O-X-L/ansible-opnsense/blob/stable/tests/webproxy_pac_rule.yml>`_
 
 **API Docs**: `Plugins - Proxy <https://docs.opnsense.org/development/api/plugins/proxy.html>`_
 
@@ -44,7 +44,7 @@ You need to install the following plugin:
 
     os-squid
 
-You can also install it using the :ref:`ansibleguy.opnsense.package <modules_package>` module.
+You can also install it using the :ref:`oxlorg.opnsense.package <modules_package>` module.
 
 ----
 
@@ -54,22 +54,22 @@ Info
 General
 =======
 
-ansibleguy.opnsense.webproxy_general
+oxlorg.opnsense.webproxy_general
 ------------------------------------
 
 This module manages the basic Web-Proxy settings that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - General Proxy Settings' (*URL 'ui/proxy'*)
 
-ansibleguy.opnsense.webproxy_cache
+oxlorg.opnsense.webproxy_cache
 ----------------------------------
 
 This module manages the Web-Proxy caching-settings that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - General Proxy Settings - Local Cache Settings (*DropDown*)' (*URL 'ui/proxy#subtab_proxy-general-cache-local'*)
 
-ansibleguy.opnsense.webproxy_parent
+oxlorg.opnsense.webproxy_parent
 -----------------------------------
 
 This module manages the Web-Proxy parent-proxy settings that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - General Proxy Settings - Parent Proxy Settings (*DropDown*)' (*URL 'ui/proxy#subtab_proxy-general-parentproxy'*)
 
-ansibleguy.opnsense.webproxy_traffic
+oxlorg.opnsense.webproxy_traffic
 ------------------------------------
 
 This module manages the Web-Proxy traffic-management settings that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - General Proxy Settings - Traffic Management Settings (*DropDown*)' (*URL 'ui/proxy#subtab_proxy-general-traffic'*)
@@ -77,7 +77,7 @@ This module manages the Web-Proxy traffic-management settings that can be found 
 Forward
 =======
 
-ansibleguy.opnsense.webproxy_forward
+oxlorg.opnsense.webproxy_forward
 ------------------------------------
 
 This module manages the Web-Proxy forwarding settings that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - Forward Proxy
@@ -86,17 +86,17 @@ This module manages the Web-Proxy forwarding settings that can be found in the W
 * FTP Proxy Settings (*DropDown*)' (*URL 'ui/proxy#subtab_proxy-forward-ftp'*)
 * SNMP Agent Settings (*DropDown*)' (*URL 'ui/proxy#subtab_proxy-forward-snmp'*)
 
-ansibleguy.opnsense.webproxy_acl
+oxlorg.opnsense.webproxy_acl
 --------------------------------
 
 This module manages the Web-Proxy forwarding ACLs that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - General Proxy Settings - Access Control List (*DropDown*)' (*URL 'ui/proxy#subtab_proxy-forward-acl'*)
 
-ansibleguy.opnsense.webproxy_icap
+oxlorg.opnsense.webproxy_icap
 ---------------------------------
 
 This module manages the Web-Proxy ICAP settings that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - General Proxy Settings - ICAP Settings (*DropDown*)' (*URL 'ui/proxy#subtab_proxy-icap'*)
 
-ansibleguy.opnsense.webproxy_auth
+oxlorg.opnsense.webproxy_auth
 ---------------------------------
 
 This module manages the Web-Proxy authentication settings that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - General Proxy Settings - Authentication Settings (*DropDown*)' (*URL 'ui/proxy#subtab_proxy-general-authentication'*)
@@ -104,7 +104,7 @@ This module manages the Web-Proxy authentication settings that can be found in t
 Remote ACL
 ==========
 
-ansibleguy.opnsense.webproxy_remote_acl
+oxlorg.opnsense.webproxy_remote_acl
 ---------------------------------------
 
 This module manages the Remote ACL entries that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - Remote Access Control Lists
@@ -114,12 +114,12 @@ The configured lists are matched by its unique file-name.
 Proxy Auto-Config
 =================
 
-ansibleguy.opnsense.webproxy_pac_proxy
+oxlorg.opnsense.webproxy_pac_proxy
 --------------------------------------
 
 This module manages the Proxy-Auto-Config Proxy entries that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - Proxy Auto-Config - Proxies (*DropDown*)' (*URL 'ui/proxy#subtab_pac_proxies'*)
 
-ansibleguy.opnsense.webproxy_pac_match
+oxlorg.opnsense.webproxy_pac_match
 --------------------------------------
 
 This module manages the Proxy-Auto-Config Match entries that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - Proxy Auto-Config - Matches (*DropDown*)' (*URL 'ui/proxy#subtab_pac_matches'*)
@@ -134,7 +134,7 @@ You need to **provide arguments** for different **match-types**:
 * 'weekday_range' needs 'weekday_from' and 'weekday_to' to be provided
 * 'dns_domain_levels' needs 'domain_level_from' and 'domain_level_to' to be provided
 
-ansibleguy.opnsense.webproxy_pac_rule
+oxlorg.opnsense.webproxy_pac_rule
 -------------------------------------
 
 This module manages the Proxy-Auto-Config Rule entries that can be found in the WEB-UI menu: 'Services - Web Proxy - Administration - Proxy Auto-Config - Rules (*DropDown*)' (*URL 'ui/proxy#subtab_pac_rules'*)
@@ -149,7 +149,7 @@ Definition
 General
 =======
 
-ansibleguy.opnsense.webproxy_general
+oxlorg.opnsense.webproxy_general
 ------------------------------------
 
 ..  csv-table:: Definition
@@ -174,7 +174,7 @@ ansibleguy.opnsense.webproxy_general
     "connect_timeout","integer","false","\-","","Between 1 and 120 seconds. This can help you when having connection issues with IPv6 enabled servers. "
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.webproxy_cache
+oxlorg.opnsense.webproxy_cache
 ----------------------------------
 
 ..  csv-table:: Definition
@@ -194,7 +194,7 @@ ansibleguy.opnsense.webproxy_cache
     "max_swap_rate","integer","false","0","swap_rate","Limits disk access by setting a maximum I/O rate in swaps per second"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.webproxy_parent
+oxlorg.opnsense.webproxy_parent
 -----------------------------------
 
 ..  csv-table:: Definition
@@ -211,7 +211,7 @@ ansibleguy.opnsense.webproxy_parent
     "local_ips","list","false","\-","ips","IP addresses not to be sent via parent proxy"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.webproxy_traffic
+oxlorg.opnsense.webproxy_traffic
 ------------------------------------
 
 ..  csv-table:: Definition
@@ -228,7 +228,7 @@ ansibleguy.opnsense.webproxy_traffic
 Forward
 =======
 
-ansibleguy.opnsense.webproxy_forward
+oxlorg.opnsense.webproxy_forward
 ------------------------------------
 
 ..  csv-table:: Definition
@@ -254,7 +254,7 @@ ansibleguy.opnsense.webproxy_forward
     "transparent_ftp","boolean","false","false","\-","Enable transparent ftp proxy mode to forward all requests or destination port 21 to the proxy server without any additional configuration"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.webproxy_acl
+oxlorg.opnsense.webproxy_acl
 --------------------------------
 
 ..  csv-table:: Definition
@@ -274,7 +274,7 @@ ansibleguy.opnsense.webproxy_acl
     "ports_ssl","list","false","['443:https']","p_ssl","Allowed destination SSL ports, you may use ranges (ex. 222-226) and add comments with colon (ex. 22:ssh)"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.webproxy_icap
+oxlorg.opnsense.webproxy_icap
 ---------------------------------
 
 ..  csv-table:: Definition
@@ -294,7 +294,7 @@ ansibleguy.opnsense.webproxy_icap
     "exclude","list","false","\-","\-","Exclusion list destination domains.You may use a regular expression, use a comma or press Enter for new item. Examples: 'mydomain.com' matches on '\*.mydomain.com'; 'https://([a-zA-Z]+)\\.mydomain\\.' matches on 'http(s)://textONLY.mydomain.\*'; '\\.gif$' matches on '\\*.gif' but not on '\\*.gif\\test'; '\\[0-9]+\\.gif$' matches on '\\123.gif' but not on '\\test.gif'"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.webproxy_auth
+oxlorg.opnsense.webproxy_auth
 ---------------------------------
 
 ..  csv-table:: Definition
@@ -312,7 +312,7 @@ ansibleguy.opnsense.webproxy_auth
 Remote ACL
 ==========
 
-ansibleguy.opnsense.webproxy_remote_acl
+oxlorg.opnsense.webproxy_remote_acl
 ---------------------------------------
 
 ..  csv-table:: Definition
@@ -331,7 +331,7 @@ ansibleguy.opnsense.webproxy_remote_acl
 Proxy Auto-Config
 =================
 
-ansibleguy.opnsense.webproxy_pac_proxy
+oxlorg.opnsense.webproxy_pac_proxy
 --------------------------------------
 
 ..  csv-table:: Definition
@@ -344,7 +344,7 @@ ansibleguy.opnsense.webproxy_pac_proxy
     "description","string","false","\-","desc","\-"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.webproxy_pac_match
+oxlorg.opnsense.webproxy_pac_match
 --------------------------------------
 
 ..  csv-table:: Definition
@@ -368,7 +368,7 @@ ansibleguy.opnsense.webproxy_pac_match
     "weekday_to","integer","false","1","day_to","End hour weekday match-period. 1 = monday, 7 = sunday"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.webproxy_pac_rule
+oxlorg.opnsense.webproxy_pac_rule
 -------------------------------------
 
 ..  csv-table:: Definition
@@ -391,7 +391,7 @@ Examples
 General
 =======
 
-ansibleguy.opnsense.webproxy_general
+oxlorg.opnsense.webproxy_general
 ------------------------------------
 
 .. code-block:: yaml
@@ -399,16 +399,16 @@ ansibleguy.opnsense.webproxy_general
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'webproxy_general'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.webproxy_general:
+          oxlorg.opnsense.webproxy_general:
             # errors: 'opnsense'
             # icp_port: ''
             # log: true
@@ -430,7 +430,7 @@ ansibleguy.opnsense.webproxy_general
             # debug: false
 
         - name: Pulling settings
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'webproxy_general'
           register: current_config
 
@@ -438,7 +438,7 @@ ansibleguy.opnsense.webproxy_general
           ansible.builtin.debug:
             var: current_config.data
 
-ansibleguy.opnsense.webproxy_cache
+oxlorg.opnsense.webproxy_cache
 ----------------------------------
 
 .. code-block:: yaml
@@ -446,16 +446,16 @@ ansibleguy.opnsense.webproxy_cache
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'webproxy_cache'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.webproxy_cache:
+          oxlorg.opnsense.webproxy_cache:
             # memory_mb: 256
             # size_mb: 100
             # directory: '/var/squid/cache'
@@ -471,7 +471,7 @@ ansibleguy.opnsense.webproxy_cache
             # debug: false
 
         - name: Pulling settings
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'webproxy_cache'
           register: current_config
 
@@ -479,7 +479,7 @@ ansibleguy.opnsense.webproxy_cache
           ansible.builtin.debug:
             var: current_config.data
 
-ansibleguy.opnsense.webproxy_parent
+oxlorg.opnsense.webproxy_parent
 -----------------------------------
 
 .. code-block:: yaml
@@ -487,16 +487,16 @@ ansibleguy.opnsense.webproxy_parent
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'webproxy_parent'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.webproxy_parent:
+          oxlorg.opnsense.webproxy_parent:
             # host: ''
             # auth: false
             # user: ''
@@ -509,7 +509,7 @@ ansibleguy.opnsense.webproxy_parent
             # debug: false
 
         - name: Pulling settings
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'webproxy_parent'
           register: current_config
 
@@ -517,7 +517,7 @@ ansibleguy.opnsense.webproxy_parent
           ansible.builtin.debug:
             var: current_config.data
 
-ansibleguy.opnsense.webproxy_traffic
+oxlorg.opnsense.webproxy_traffic
 ------------------------------------
 
 .. code-block:: yaml
@@ -525,16 +525,16 @@ ansibleguy.opnsense.webproxy_traffic
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'webproxy_traffic'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.webproxy_traffic:
+          oxlorg.opnsense.webproxy_traffic:
             # download_kb_max: 2048
             # upload_kb_max: 1024
             # throttle_kb_bandwidth: 1024
@@ -544,7 +544,7 @@ ansibleguy.opnsense.webproxy_traffic
             # debug: false
 
         - name: Pulling settings
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'webproxy_traffic'
           register: current_config
 
@@ -555,7 +555,7 @@ ansibleguy.opnsense.webproxy_traffic
 Forward
 =======
 
-ansibleguy.opnsense.webproxy_forward
+oxlorg.opnsense.webproxy_forward
 ------------------------------------
 
 .. code-block:: yaml
@@ -563,16 +563,16 @@ ansibleguy.opnsense.webproxy_forward
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'webproxy_forward'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.webproxy_forward:
+          oxlorg.opnsense.webproxy_forward:
             # interfaces: ['lan']
             # port: 3238
             # port_ssl: 3239
@@ -593,7 +593,7 @@ ansibleguy.opnsense.webproxy_forward
             # reload: true
             # debug: false
 
-ansibleguy.opnsense.webproxy_acl
+oxlorg.opnsense.webproxy_acl
 --------------------------------
 
 .. code-block:: yaml
@@ -601,16 +601,16 @@ ansibleguy.opnsense.webproxy_acl
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'webproxy_acl'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.webproxy_acl:
+          oxlorg.opnsense.webproxy_acl:
             # allow: []
             # exclude: []
             # banned: []
@@ -626,12 +626,12 @@ ansibleguy.opnsense.webproxy_acl
             # debug: false
 
         - name: Configuring
-          ansibleguy.opnsense.webproxy_acl:
+          oxlorg.opnsense.webproxy_acl:
             allow: ['192.168.0.0/24', '172.16.1.0/29', '172.16.0.5']
             exclude: ['192.168.2.0/28', '172.16.1.5']
             banned: ['172.16.3.0/24', '172.16.2.5']
-            exclude_domains: ['ansibleguy.net']
-            block_domains: ['ansibleguy.com']
+            exclude_domains: ['opnsense.oxl.app']
+            block_domains: ['oxlorg.com']
             block_user_agents: ['test1', 'test2']
             block_mime_types: ['video/flv', 'test']
             ports_tcp: ['80:http', '21:ftp']
@@ -639,7 +639,7 @@ ansibleguy.opnsense.webproxy_acl
             youtube_filter: 'moderate'
 
         - name: Pulling settings
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'webproxy_acl'
           register: current_config
 
@@ -647,7 +647,7 @@ ansibleguy.opnsense.webproxy_acl
           ansible.builtin.debug:
             var: current_config.data
 
-ansibleguy.opnsense.webproxy_icap
+oxlorg.opnsense.webproxy_icap
 ---------------------------------
 
 .. code-block:: yaml
@@ -655,16 +655,16 @@ ansibleguy.opnsense.webproxy_icap
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'webproxy_icap'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.webproxy_icap:
+          oxlorg.opnsense.webproxy_icap:
             # request_url: 'icap://[::1]:1344/avscan'
             # response_url: 'icap://[::1]:1344/avscan'
             # ttl: 60
@@ -680,7 +680,7 @@ ansibleguy.opnsense.webproxy_icap
             # debug: false
 
         - name: Pulling settings
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'webproxy_icap'
           register: current_config
 
@@ -688,7 +688,7 @@ ansibleguy.opnsense.webproxy_icap
           ansible.builtin.debug:
             var: current_config.data
 
-ansibleguy.opnsense.webproxy_auth
+oxlorg.opnsense.webproxy_auth
 ---------------------------------
 
 .. code-block:: yaml
@@ -696,16 +696,16 @@ ansibleguy.opnsense.webproxy_auth
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'webproxy_auth'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.webproxy_auth:
+          oxlorg.opnsense.webproxy_auth:
             # method: ''
             # group: ''
             # prompt: 'OPNsense proxy authentication'
@@ -715,7 +715,7 @@ ansibleguy.opnsense.webproxy_auth
             # debug: false
 
         - name: Pulling settings
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'webproxy_auth'
           register: current_config
 
@@ -726,7 +726,7 @@ ansibleguy.opnsense.webproxy_auth
 Remote ACL
 ==========
 
-ansibleguy.opnsense.webproxy_remote_acl
+oxlorg.opnsense.webproxy_remote_acl
 ---------------------------------------
 
 .. code-block:: yaml
@@ -734,18 +734,18 @@ ansibleguy.opnsense.webproxy_remote_acl
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'webproxy_remote_acl'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.webproxy_remote_acl:
+          oxlorg.opnsense.webproxy_remote_acl:
             file: 'example'
-            url: 'https://example.ansibleguy.net/rac1'
+            url: 'https://example.opnsense.oxl.app/rac1'
             description: 'example ACL'
             # categories: []
             # username: ''
@@ -756,7 +756,7 @@ ansibleguy.opnsense.webproxy_remote_acl
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.webproxy_remote_acl:
+          oxlorg.opnsense.webproxy_remote_acl:
             file: 'test1'
             url: 'https://test.lan/rac1'
             username: 'random'
@@ -765,7 +765,7 @@ ansibleguy.opnsense.webproxy_remote_acl
             description: 'test'
 
         - name: Disabling
-          ansibleguy.opnsense.webproxy_remote_acl:
+          oxlorg.opnsense.webproxy_remote_acl:
             file: 'test1'
             url: 'https://test.lan/rac2'
             username: 'random'
@@ -774,7 +774,7 @@ ansibleguy.opnsense.webproxy_remote_acl
             enabled: false
 
         - name: Pulling settings
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'webproxy_remote_acl'
           register: existing_entries
 
@@ -783,14 +783,14 @@ ansibleguy.opnsense.webproxy_remote_acl
             var: existing_entries.data
 
         - name: Removing
-          ansibleguy.opnsense.webproxy_remote_acl:
+          oxlorg.opnsense.webproxy_remote_acl:
             file: 'test1'
             state: 'absent'
 
 Proxy Auto-Config
 =================
 
-ansibleguy.opnsense.webproxy_pac_proxy
+oxlorg.opnsense.webproxy_pac_proxy
 --------------------------------------
 
 .. code-block:: yaml
@@ -798,31 +798,31 @@ ansibleguy.opnsense.webproxy_pac_proxy
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'webproxy_pac_proxy'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.webproxy_pac_proxy:
+          oxlorg.opnsense.webproxy_pac_proxy:
             name: 'example'
-            url: 'example.ansibleguy.net:3128'
+            url: 'example.opnsense.oxl.app:3128'
             # type: 'proxy'
             # description: ''
             # reload: true
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.webproxy_pac_proxy:
+          oxlorg.opnsense.webproxy_pac_proxy:
             name: 'test1'
             url: 'test.lan:3128'
             description: 'test'
 
         - name: Pulling settings
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'webproxy_pac_proxy'
           register: existing_entries
 
@@ -831,11 +831,11 @@ ansibleguy.opnsense.webproxy_pac_proxy
             var: existing_entries.data
 
         - name: Removing
-          ansibleguy.opnsense.webproxy_pac_proxy:
+          oxlorg.opnsense.webproxy_pac_proxy:
             file: 'test1'
             state: 'absent'
 
-ansibleguy.opnsense.webproxy_pac_match
+oxlorg.opnsense.webproxy_pac_match
 --------------------------------------
 
 .. code-block:: yaml
@@ -843,16 +843,16 @@ ansibleguy.opnsense.webproxy_pac_match
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'webproxy_pac_match'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.webproxy_pac_match:
+          oxlorg.opnsense.webproxy_pac_match:
             name: 'example'
             # type: 'url_matches'
             # description: ''
@@ -872,21 +872,21 @@ ansibleguy.opnsense.webproxy_pac_match
             # debug: false
 
         - name: Adding hostname match
-          ansibleguy.opnsense.webproxy_pac_match:
-            hostname: 'test.ansibleguy.net'
+          oxlorg.opnsense.webproxy_pac_match:
+            hostname: 'test.opnsense.oxl.app'
             type: 'hostname_matches'
             description: 'test'
 
         - name: Adding time match
-          ansibleguy.opnsense.webproxy_pac_match:
-            hostname: 'test.ansibleguy.net'
+          oxlorg.opnsense.webproxy_pac_match:
+            hostname: 'test.opnsense.oxl.app'
             description: 'working hours'
             type: 'time_range'
             hour_from: 6
             hour_to: 18
 
         - name: Pulling settings
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'webproxy_pac_match'
           register: existing_entries
 
@@ -895,11 +895,11 @@ ansibleguy.opnsense.webproxy_pac_match
             var: existing_entries.data
 
         - name: Removing
-          ansibleguy.opnsense.webproxy_pac_match:
+          oxlorg.opnsense.webproxy_pac_match:
             file: 'test1'
             state: 'absent'
 
-ansibleguy.opnsense.webproxy_pac_rule
+oxlorg.opnsense.webproxy_pac_rule
 -------------------------------------
 
 .. code-block:: yaml
@@ -907,16 +907,16 @@ ansibleguy.opnsense.webproxy_pac_rule
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'webproxy_pac_rule'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.webproxy_pac_rule:
+          oxlorg.opnsense.webproxy_pac_rule:
             description: 'example'
             matches: []
             proxies: []
@@ -926,7 +926,7 @@ ansibleguy.opnsense.webproxy_pac_rule
             # debug: false
 
         - name: Adding - linking to existing match & proxy
-          ansibleguy.opnsense.webproxy_pac_rule:
+          oxlorg.opnsense.webproxy_pac_rule:
             description: 'test_rule'
             matches: ['test_match']
             proxies: ['test_proxy']
@@ -934,7 +934,7 @@ ansibleguy.opnsense.webproxy_pac_rule
             match_type: 'unless'
 
         - name: Pulling settings
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'webproxy_pac_rule'
           register: existing_entries
 
@@ -943,6 +943,6 @@ ansibleguy.opnsense.webproxy_pac_rule
             var: existing_entries.data
 
         - name: Removing
-          ansibleguy.opnsense.webproxy_pac_rule:
+          oxlorg.opnsense.webproxy_pac_rule:
             file: 'test_rule'
             state: 'absent'

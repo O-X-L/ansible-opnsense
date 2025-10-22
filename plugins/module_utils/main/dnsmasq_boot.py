@@ -1,8 +1,8 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
 class Boot(BaseModule):
@@ -17,6 +17,7 @@ class Boot(BaseModule):
     API_KEY_PATH_REQ = 'boot'
     API_MOD = 'dnsmasq'
     API_CONT = 'settings'
+    API_CONT_REL = 'service'
     FIELDS_CHANGE = ['address', 'filename', 'interface', 'servername', 'tag']
     FIELDS_TYPING = {
         'select': ['interface'],

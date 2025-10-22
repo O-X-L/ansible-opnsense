@@ -8,7 +8,7 @@ DNS - Unbound - Forwarding
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/unbound_forward.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/unbound_forward.yml>`_
 
 **API Docs**: `Core - Unbound <https://docs.opnsense.org/development/api/core/unbound.html>`_
 
@@ -61,32 +61,32 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'unbound_forward'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.unbound_forward:
-            domain: 'dot.template.ansibleguy.net'
+          oxlorg.opnsense.unbound_forward:
+            domain: 'dot.template.opnsense.oxl.app'
             target: '1.1.1.1'
             # port: 53
-            # verify: 'dot.template.ansibleguy.net'
+            # verify: 'dot.template.opnsense.oxl.app'
             # state: 'present'
             # reload: true
             # enabled: true
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.unbound_forward:
-            domain: 'dot.template.ansibleguy.net'
+          oxlorg.opnsense.unbound_forward:
+            domain: 'dot.template.opnsense.oxl.app'
             target: '1.1.1.1'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'unbound_forward'
           register: existing_entries
 

@@ -4,275 +4,274 @@ requires_ansible: ">=2.14"
 
 action_groups:
   alias:
-    - ansibleguy.opnsense.alias
-    - ansibleguy.opnsense.alias_multi
-    - ansibleguy.opnsense.alias_purge
+  - oxlorg.opnsense.alias
+  - oxlorg.opnsense.alias_multi
+  - oxlorg.opnsense.alias_purge
   rule:
-    - ansibleguy.opnsense.rule
-    - ansibleguy.opnsense.rule_multi
-    - ansibleguy.opnsense.rule_purge
-    - ansibleguy.opnsense.rule_interface_group
+  - oxlorg.opnsense.rule
+  - oxlorg.opnsense.rule_multi
+  - oxlorg.opnsense.rule_purge
+  - oxlorg.opnsense.rule_interface_group
   unbound:
-    - ansibleguy.opnsense.unbound_general
-    - ansibleguy.opnsense.unbound_acl
-    - ansibleguy.opnsense.unbound_forward
-    - ansibleguy.opnsense.unbound_dot
-    - ansibleguy.opnsense.unbound_host
-    - ansibleguy.opnsense.unbound_host_alias
-    - ansibleguy.opnsense.unbound_dnsbl
+  - oxlorg.opnsense.unbound_general
+  - oxlorg.opnsense.unbound_acl
+  - oxlorg.opnsense.unbound_forward
+  - oxlorg.opnsense.unbound_dot
+  - oxlorg.opnsense.unbound_host
+  - oxlorg.opnsense.unbound_host_alias
+  - oxlorg.opnsense.unbound_dnsbl
   ipsec:
-    - ansibleguy.opnsense.ipsec_auth_local
-    - ansibleguy.opnsense.ipsec_auth_remote
-    - ansibleguy.opnsense.ipsec_child
-    - ansibleguy.opnsense.ipsec_vti
-    - ansibleguy.opnsense.ipsec_cert
-    - ansibleguy.opnsense.ipsec_psk
-    - ansibleguy.opnsense.ipsec_connection
-    - ansibleguy.opnsense.ipsec_pool
-    - ansibleguy.opnsense.ipsec_manual_spd
-    - ansibleguy.opnsense.ipsec_general
+  - oxlorg.opnsense.ipsec_auth_local
+  - oxlorg.opnsense.ipsec_auth_remote
+  - oxlorg.opnsense.ipsec_child
+  - oxlorg.opnsense.ipsec_vti
+  - oxlorg.opnsense.ipsec_cert
+  - oxlorg.opnsense.ipsec_psk
+  - oxlorg.opnsense.ipsec_connection
+  - oxlorg.opnsense.ipsec_pool
+  - oxlorg.opnsense.ipsec_manual_spd
+  - oxlorg.opnsense.ipsec_general
   shaper:
-    - ansibleguy.opnsense.shaper_pipe
-    - ansibleguy.opnsense.shaper_queue
-    - ansibleguy.opnsense.shaper_rule
+  - oxlorg.opnsense.shaper_pipe
+  - oxlorg.opnsense.shaper_queue
+  - oxlorg.opnsense.shaper_rule
   monit:
-    - ansibleguy.opnsense.monit_service
-    - ansibleguy.opnsense.monit_alert
-    - ansibleguy.opnsense.monit_test
+  - oxlorg.opnsense.monit_service
+  - oxlorg.opnsense.monit_alert
+  - oxlorg.opnsense.monit_test
   wireguard:
-    - ansibleguy.opnsense.wireguard_server
-    - ansibleguy.opnsense.wireguard_peer
-    - ansibleguy.opnsense.wireguard_show
-    - ansibleguy.opnsense.wireguard_general
+  - oxlorg.opnsense.wireguard_server
+  - oxlorg.opnsense.wireguard_peer
+  - oxlorg.opnsense.wireguard_show
+  - oxlorg.opnsense.wireguard_general
   interface:
-    - ansibleguy.opnsense.interface_vlan
-    - ansibleguy.opnsense.interface_vxlan
-    - ansibleguy.opnsense.interface_vip
-    - ansibleguy.opnsense.interface_lagg
-    - ansibleguy.opnsense.interface_loopback
-    - ansibleguy.opnsense.interface_gre
-    - ansibleguy.opnsense.interface_bridge
-    - ansibleguy.opnsense.interface_gif
-    - ansibleguy.opnsense.neighbor
+  - oxlorg.opnsense.interface_vlan
+  - oxlorg.opnsense.interface_vxlan
+  - oxlorg.opnsense.interface_vip
+  - oxlorg.opnsense.interface_lagg
+  - oxlorg.opnsense.interface_loopback
+  - oxlorg.opnsense.interface_gre
+  - oxlorg.opnsense.interface_bridge
+  - oxlorg.opnsense.interface_gif
+  - oxlorg.opnsense.neighbor
   frr:
-    - ansibleguy.opnsense.frr_diagnostic
-    - ansibleguy.opnsense.frr_general
-    - ansibleguy.opnsense.frr_bfd_general
-    - ansibleguy.opnsense.frr_bfd_neighbor
-    - ansibleguy.opnsense.frr_bgp_general
-    - ansibleguy.opnsense.frr_bgp_prefix_list
-    - ansibleguy.opnsense.frr_bgp_community_list
-    - ansibleguy.opnsense.frr_bgp_as_path
-    - ansibleguy.opnsense.frr_bgp_redistribution
-    - ansibleguy.opnsense.frr_bgp_route_map
-    - ansibleguy.opnsense.frr_bgp_neighbor
-    - ansibleguy.opnsense.frr_bgp_peer_group
-    - ansibleguy.opnsense.frr_ospf_general
-    - ansibleguy.opnsense.frr_ospf_prefix_list
-    - ansibleguy.opnsense.frr_ospf_interface
-    - ansibleguy.opnsense.frr_ospf_redistribution
-    - ansibleguy.opnsense.frr_ospf_route_map
-    - ansibleguy.opnsense.frr_ospf_network
-    - ansibleguy.opnsense.frr_ospf3_general
-    - ansibleguy.opnsense.frr_ospf3_prefix_list
-    - ansibleguy.opnsense.frr_ospf3_interface
-    - ansibleguy.opnsense.frr_ospf3_redistribution
-    - ansibleguy.opnsense.frr_ospf3_route_map
-    - ansibleguy.opnsense.frr_ospf3_network
-    - ansibleguy.opnsense.frr_rip
+  - oxlorg.opnsense.frr_diagnostic
+  - oxlorg.opnsense.frr_general
+  - oxlorg.opnsense.frr_bfd_general
+  - oxlorg.opnsense.frr_bfd_neighbor
+  - oxlorg.opnsense.frr_bgp_general
+  - oxlorg.opnsense.frr_bgp_prefix_list
+  - oxlorg.opnsense.frr_bgp_community_list
+  - oxlorg.opnsense.frr_bgp_as_path
+  - oxlorg.opnsense.frr_bgp_redistribution
+  - oxlorg.opnsense.frr_bgp_route_map
+  - oxlorg.opnsense.frr_bgp_neighbor
+  - oxlorg.opnsense.frr_bgp_peer_group
+  - oxlorg.opnsense.frr_ospf_general
+  - oxlorg.opnsense.frr_ospf_prefix_list
+  - oxlorg.opnsense.frr_ospf_interface
+  - oxlorg.opnsense.frr_ospf_redistribution
+  - oxlorg.opnsense.frr_ospf_route_map
+  - oxlorg.opnsense.frr_ospf_network
+  - oxlorg.opnsense.frr_ospf3_general
+  - oxlorg.opnsense.frr_ospf3_prefix_list
+  - oxlorg.opnsense.frr_ospf3_interface
+  - oxlorg.opnsense.frr_ospf3_redistribution
+  - oxlorg.opnsense.frr_ospf3_route_map
+  - oxlorg.opnsense.frr_ospf3_network
+  - oxlorg.opnsense.frr_rip
   bind:
-    - ansibleguy.opnsense.bind_general
-    - ansibleguy.opnsense.bind_acl
-    - ansibleguy.opnsense.bind_blocklist
-    - ansibleguy.opnsense.bind_domain
-    - ansibleguy.opnsense.bind_record
-    - ansibleguy.opnsense.bind_record_multi
+  - oxlorg.opnsense.bind_general
+  - oxlorg.opnsense.bind_acl
+  - oxlorg.opnsense.bind_blocklist
+  - oxlorg.opnsense.bind_domain
+  - oxlorg.opnsense.bind_record
+  - oxlorg.opnsense.bind_record_multi
   webproxy:
-    - ansibleguy.opnsense.webproxy_general
-    - ansibleguy.opnsense.webproxy_cache
-    - ansibleguy.opnsense.webproxy_parent
-    - ansibleguy.opnsense.webproxy_traffic
-    - ansibleguy.opnsense.webproxy_forward
-    - ansibleguy.opnsense.webproxy_acl
-    - ansibleguy.opnsense.webproxy_icap
-    - ansibleguy.opnsense.webproxy_auth
-    - ansibleguy.opnsense.webproxy_remote_acl
-    - ansibleguy.opnsense.webproxy_pac_proxy
-    - ansibleguy.opnsense.webproxy_pac_match
-    - ansibleguy.opnsense.webproxy_pac_rule
+  - oxlorg.opnsense.webproxy_general
+  - oxlorg.opnsense.webproxy_cache
+  - oxlorg.opnsense.webproxy_parent
+  - oxlorg.opnsense.webproxy_traffic
+  - oxlorg.opnsense.webproxy_forward
+  - oxlorg.opnsense.webproxy_acl
+  - oxlorg.opnsense.webproxy_icap
+  - oxlorg.opnsense.webproxy_auth
+  - oxlorg.opnsense.webproxy_remote_acl
+  - oxlorg.opnsense.webproxy_pac_proxy
+  - oxlorg.opnsense.webproxy_pac_match
+  - oxlorg.opnsense.webproxy_pac_rule
   nginx:
-    - ansibleguy.opnsense.nginx_general
-    - ansibleguy.opnsense.nginx_upstream_server
+  - oxlorg.opnsense.nginx_general
+  - oxlorg.opnsense.nginx_upstream_server
   route:
-    - ansibleguy.opnsense.route
-    - ansibleguy.opnsense.gateway
+  - oxlorg.opnsense.route
+  - oxlorg.opnsense.gateway
   nat:
-    - ansibleguy.opnsense.nat_source
-    - ansibleguy.opnsense.nat_one_to_one
+  - oxlorg.opnsense.nat_source
+  - oxlorg.opnsense.nat_one_to_one
   system:
-    - ansibleguy.opnsense.list
-    - ansibleguy.opnsense.reload
-    - ansibleguy.opnsense.service
-    - ansibleguy.opnsense.savepoint
-    - ansibleguy.opnsense.package
-    - ansibleguy.opnsense.system
-    - ansibleguy.opnsense.cron
-    - ansibleguy.opnsense.syslog
-    - ansibleguy.opnsense.snapshot
+  - oxlorg.opnsense.list
+  - oxlorg.opnsense.reload
+  - oxlorg.opnsense.service
+  - oxlorg.opnsense.savepoint
+  - oxlorg.opnsense.package
+  - oxlorg.opnsense.system
+  - oxlorg.opnsense.cron
+  - oxlorg.opnsense.syslog
+  - oxlorg.opnsense.snapshot
   ids:
-    - ansibleguy.opnsense.ids_action
-    - ansibleguy.opnsense.ids_general
-    - ansibleguy.opnsense.ids_policy
-    - ansibleguy.opnsense.ids_policy_rule
-    - ansibleguy.opnsense.ids_rule
-    - ansibleguy.opnsense.ids_ruleset
-    - ansibleguy.opnsense.ids_ruleset_properties
-    - ansibleguy.opnsense.ids_user_rule
+  - oxlorg.opnsense.ids_action
+  - oxlorg.opnsense.ids_general
+  - oxlorg.opnsense.ids_policy
+  - oxlorg.opnsense.ids_policy_rule
+  - oxlorg.opnsense.ids_rule
+  - oxlorg.opnsense.ids_ruleset
+  - oxlorg.opnsense.ids_ruleset_properties
+  - oxlorg.opnsense.ids_user_rule
   openvpn:
-    - ansibleguy.opnsense.openvpn_client
-    - ansibleguy.opnsense.openvpn_server
-    - ansibleguy.opnsense.openvpn_static_key
-    - ansibleguy.opnsense.openvpn_status
-    - ansibleguy.opnsense.openvpn_client_override
-    - ansibleguy.opnsense.openvpn_client_template
-    - ansibleguy.opnsense.openvpn_client_export
+  - oxlorg.opnsense.openvpn_client
+  - oxlorg.opnsense.openvpn_server
+  - oxlorg.opnsense.openvpn_static_key
+  - oxlorg.opnsense.openvpn_status
+  - oxlorg.opnsense.openvpn_client_override
+  - oxlorg.opnsense.openvpn_client_template
+  - oxlorg.opnsense.openvpn_client_export
   dnsmasq:
-    - ansibleguy.opnsense.dnsmasq_general
-    - ansibleguy.opnsense.dnsmasq_domain
-    - ansibleguy.opnsense.dnsmasq_host
-    - ansibleguy.opnsense.dnsmasq_range
-    - ansibleguy.opnsense.dnsmasq_option
-    - ansibleguy.opnsense.dnsmasq_boot
-    - ansibleguy.opnsense.dnsmasq_tag
+  - oxlorg.opnsense.dnsmasq_general
+  - oxlorg.opnsense.dnsmasq_domain
+  - oxlorg.opnsense.dnsmasq_host
+  - oxlorg.opnsense.dnsmasq_range
+  - oxlorg.opnsense.dnsmasq_option
+  - oxlorg.opnsense.dnsmasq_boot
+  - oxlorg.opnsense.dnsmasq_tag
   dhcrelay:
-    - ansibleguy.opnsense.dhcrelay_destination
-    - ansibleguy.opnsense.dhcrelay_relay
+  - oxlorg.opnsense.dhcrelay_destination
+  - oxlorg.opnsense.dhcrelay_relay
   dhcp:
-    - ansibleguy.opnsense.dhcp_reservation
-    - ansibleguy.opnsense.dhcp_controlagent
-    - ansibleguy.opnsense.dhcp_general
-    - ansibleguy.opnsense.dhcp_subnet
+  - oxlorg.opnsense.dhcp_reservation
+  - oxlorg.opnsense.dhcp_controlagent
+  - oxlorg.opnsense.dhcp_general
+  - oxlorg.opnsense.dhcp_subnet
   acme:
-    - ansibleguy.opnsense.acme_general
-    - ansibleguy.opnsense.acme_account
-    - ansibleguy.opnsense.acme_validation
-    - ansibleguy.opnsense.acme_action
-    - ansibleguy.opnsense.acme_certificate
+  - oxlorg.opnsense.acme_general
+  - oxlorg.opnsense.acme_account
+  - oxlorg.opnsense.acme_validation
+  - oxlorg.opnsense.acme_action
+  - oxlorg.opnsense.acme_certificate
   postfix:
-    - ansibleguy.opnsense.postfix_general
-    - ansibleguy.opnsense.postfix_domain
-    - ansibleguy.opnsense.postfix_recipient
-    - ansibleguy.opnsense.postfix_recipientbcc
-    - ansibleguy.opnsense.postfix_sender
-    - ansibleguy.opnsense.postfix_senderbcc
-    - ansibleguy.opnsense.postfix_sendercanonical
-    - ansibleguy.opnsense.postfix_headercheck
-    - ansibleguy.opnsense.postfix_address
+  - oxlorg.opnsense.postfix_general
+  - oxlorg.opnsense.postfix_domain
+  - oxlorg.opnsense.postfix_recipient
+  - oxlorg.opnsense.postfix_recipientbcc
+  - oxlorg.opnsense.postfix_sender
+  - oxlorg.opnsense.postfix_senderbcc
+  - oxlorg.opnsense.postfix_sendercanonical
+  - oxlorg.opnsense.postfix_headercheck
+  - oxlorg.opnsense.postfix_address
   hasync:
-    - ansibleguy.opnsense.hasync_general
-    - ansibleguy.opnsense.hasync_service
+  - oxlorg.opnsense.hasync_general
+  - oxlorg.opnsense.hasync_service
   haproxy:
-    - ansibleguy.opnsense.haproxy_general_settings
-    - ansibleguy.opnsense.haproxy_general_cache
-    - ansibleguy.opnsense.haproxy_general_defaults
-    - ansibleguy.opnsense.haproxy_general_logging
-    - ansibleguy.opnsense.haproxy_general_peers
-    - ansibleguy.opnsense.haproxy_general_stats
-    - ansibleguy.opnsense.haproxy_general_tuning
-    - ansibleguy.opnsense.haproxy_maintenance
-    - ansibleguy.opnsense.haproxy_cpu
-    - ansibleguy.opnsense.haproxy_user
-    - ansibleguy.opnsense.haproxy_group
+  - ansibleguy.opnsense.haproxy_general_settings
+  - ansibleguy.opnsense.haproxy_general_cache
+  - ansibleguy.opnsense.haproxy_general_defaults
+  - ansibleguy.opnsense.haproxy_general_logging
+  - ansibleguy.opnsense.haproxy_general_peers
+  - ansibleguy.opnsense.haproxy_general_stats
+  - ansibleguy.opnsense.haproxy_general_tuning
+  - ansibleguy.opnsense.haproxy_maintenance
+  - ansibleguy.opnsense.haproxy_cpu
+  - ansibleguy.opnsense.haproxy_user
+  - ansibleguy.opnsense.haproxy_group
   raw:
-    - ansibleguy.opnsense.raw
+  - oxlorg.opnsense.raw
   access:
-    - ansibleguy.opnsense.user
-    - ansibleguy.opnsense.group
-    - ansibleguy.opnsense.privilege
+  - oxlorg.opnsense.user
+  - oxlorg.opnsense.group
+  - oxlorg.opnsense.privilege
   all:
-    - metadata:
-        extend_group:
-          - ansibleguy.opnsense.alias
-          - ansibleguy.opnsense.rule
-          - ansibleguy.opnsense.unbound
-          - ansibleguy.opnsense.ipsec
-          - ansibleguy.opnsense.shaper
-          - ansibleguy.opnsense.monit
-          - ansibleguy.opnsense.wireguard
-          - ansibleguy.opnsense.interface
-          - ansibleguy.opnsense.frr
-          - ansibleguy.opnsense.bind
-          - ansibleguy.opnsense.webproxy
-          - ansibleguy.opnsense.nginx
-          - ansibleguy.opnsense.route
-          - ansibleguy.opnsense.gateway
-          - ansibleguy.opnsense.nat
-          - ansibleguy.opnsense.system
-          - ansibleguy.opnsense.ids
-          - ansibleguy.opnsense.openvpn
-          - ansibleguy.opnsense.dhcrelay
-          - ansibleguy.opnsense.dhcp
-          - ansibleguy.opnsense.acme
-          - ansibleguy.opnsense.postfix
-          - ansibleguy.opnsense.hasync
-          - ansibleguy.opnsense.raw
-          - ansibleguy.opnsense.access
-          - ansibleguy.opnsense.dnsmasq
-          - ansibleguy.opnsense.haproxy
-
+  - metadata:
+      extend_group:
+      - oxlorg.opnsense.alias
+      - oxlorg.opnsense.rule
+      - oxlorg.opnsense.unbound
+      - oxlorg.opnsense.ipsec
+      - oxlorg.opnsense.shaper
+      - oxlorg.opnsense.monit
+      - oxlorg.opnsense.wireguard
+      - oxlorg.opnsense.interface
+      - oxlorg.opnsense.frr
+      - oxlorg.opnsense.bind
+      - oxlorg.opnsense.webproxy
+      - oxlorg.opnsense.nginx
+      - oxlorg.opnsense.route
+      - oxlorg.opnsense.gateway
+      - oxlorg.opnsense.nat
+      - oxlorg.opnsense.system
+      - oxlorg.opnsense.ids
+      - oxlorg.opnsense.openvpn
+      - oxlorg.opnsense.dhcrelay
+      - oxlorg.opnsense.dhcp
+      - oxlorg.opnsense.acme
+      - oxlorg.opnsense.postfix
+      - oxlorg.opnsense.hasync
+      - oxlorg.opnsense.raw
+      - oxlorg.opnsense.access
+      - oxlorg.opnsense.dnsmasq
+      - ansibleguy.opnsense.haproxy
 plugin_routing:
   modules:
     ipsec_tunnel:
-      redirect: ansibleguy.opnsense.ipsec_connection
+      redirect: oxlorg.opnsense.ipsec_connection
     ipsec_network:
-      redirect: ansibleguy.opnsense.ipsec_pool
+      redirect: oxlorg.opnsense.ipsec_pool
     snat:
-      redirect: ansibleguy.opnsense.source_nat
+      redirect: oxlorg.opnsense.source_nat
     proxy_general:
-      redirect: ansibleguy.opnsense.webproxy_general
+      redirect: oxlorg.opnsense.webproxy_general
     proxy_cache:
-      redirect: ansibleguy.opnsense.webproxy_cache
+      redirect: oxlorg.opnsense.webproxy_cache
     proxy_parent:
-      redirect: ansibleguy.opnsense.webproxy_parent
+      redirect: oxlorg.opnsense.webproxy_parent
     proxy_traffic:
-      redirect: ansibleguy.opnsense.webproxy_traffic
+      redirect: oxlorg.opnsense.webproxy_traffic
     proxy_forward:
-      redirect: ansibleguy.opnsense.webproxy_forward
+      redirect: oxlorg.opnsense.webproxy_forward
     proxy_acl:
-      redirect: ansibleguy.opnsense.webproxy_acl
+      redirect: oxlorg.opnsense.webproxy_acl
     proxy_icap:
-      redirect: ansibleguy.opnsense.webproxy_icap
+      redirect: oxlorg.opnsense.webproxy_icap
     proxy_auth:
-      redirect: ansibleguy.opnsense.webproxy_auth
+      redirect: oxlorg.opnsense.webproxy_auth
     proxy_remote_acl:
-      redirect: ansibleguy.opnsense.webproxy_remote_acl
+      redirect: oxlorg.opnsense.webproxy_remote_acl
     proxy_pac_proxy:
-      redirect: ansibleguy.opnsense.webproxy_pac_proxy
+      redirect: oxlorg.opnsense.webproxy_pac_proxy
     proxy_pac_match:
-      redirect: ansibleguy.opnsense.webproxy_pac_match
+      redirect: oxlorg.opnsense.webproxy_pac_match
     proxy_pac_rule:
-      redirect: ansibleguy.opnsense.webproxy_pac_rule
+      redirect: oxlorg.opnsense.webproxy_pac_rule
     openvpn_client_overwrite:
-      redirect: ansibleguy.opnsense.openvpn_client_override
+      redirect: oxlorg.opnsense.openvpn_client_override
     routing:
-      redirect: ansibleguy.opnsense.gateway
+      redirect: oxlorg.opnsense.gateway
     gw:
-      redirect: ansibleguy.opnsense.gateway
+      redirect: oxlorg.opnsense.gateway
     rule_if_group:
-      redirect: ansibleguy.opnsense.rule_interface_group
+      redirect: oxlorg.opnsense.rule_interface_group
     dhcrelay:
-      redirect: ansibleguy.opnsense.dhcrelay_relay
+      redirect: oxlorg.opnsense.dhcrelay_relay
     dhcrelay_dst:
-      redirect: ansibleguy.opnsense.dhcrelay_destination
+      redirect: oxlorg.opnsense.dhcrelay_destination
     unbound_domain:
-      redirect: ansibleguy.opnsense.unbound_forward
+      redirect: oxlorg.opnsense.unbound_forward
     acme_challenge:
-      redirect: ansibleguy.opnsense.acme_validation
+      redirect: oxlorg.opnsense.acme_validation
     acme_automation:
-      redirect: ansibleguy.opnsense.acme_action
+      redirect: oxlorg.opnsense.acme_action
     source_nat:
-      redirect: ansibleguy.opnsense.nat_source
+      redirect: oxlorg.opnsense.nat_source
     one_to_one:
-      redirect: ansibleguy.opnsense.nat_one_to_one
+      redirect: oxlorg.opnsense.nat_one_to_one
     wireguard_client:
-      redirect: ansibleguy.opnsense.wireguard_peer
+      redirect: oxlorg.opnsense.wireguard_peer

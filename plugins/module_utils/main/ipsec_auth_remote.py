@@ -1,8 +1,8 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.ipsec_auth import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.ipsec_auth import \
     BaseAuth
 
 
@@ -16,6 +16,6 @@ class Auth(BaseAuth):
     }
     API_KEY_PATH = 'swanctl.remotes.remote'
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseAuth.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseAuth.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.auth = {}

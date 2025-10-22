@@ -2,13 +2,13 @@
 
 .. include:: ../_include/head.rst
 
-==========
-2 - Reload
-==========
+======
+Reload
+======
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/reload.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/reload.yml>`_
 
 Contribution
 ************
@@ -24,7 +24,7 @@ This module can reload the running/loaded configuration for a specified part of 
 
 Most modules of this collection will automatically reload its relevant running config on change - but you can speed up mass-management of items when disabling reload on single module-calls (*reload: false*), and do it afterward using THIS module.
 
-Alternatively you can use the :ref:`ansibleguy.opnsense.service <modules_service>` module with action :code:`reload` if you like it better.
+Alternatively you can use the :ref:`oxlorg.opnsense.service <modules_service>` module with action :code:`reload` if you like it better.
 
 Definition
 **********
@@ -47,17 +47,17 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Reloading aliases
-          ansibleguy.opnsense.reload:
+          oxlorg.opnsense.reload:
             target: 'alias'
 
         - name: Reloading routes
-          ansibleguy.opnsense.reload:
+          oxlorg.opnsense.reload:
             target: 'route'
 
 Practical
@@ -68,13 +68,13 @@ Practical
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
       tasks:
         - name: Adding routes
-          ansibleguy.opnsense.route:
+          oxlorg.opnsense.route:
             network: "{{ item.nw }}"
             gateway: "{{ item.gw }}"
             reload: false
@@ -83,9 +83,9 @@ Practical
             - {nw: '10.67.0.0/16', gw: 'VPN2_GW'}
 
         - name: Adding DNS overrides
-          ansibleguy.opnsense.unbound_host:
+          oxlorg.opnsense.unbound_host:
             hostname: "{{ item.host }}"
-            domain: 'opnsense.template.ansibleguy.net'
+            domain: 'opnsense.template.opnsense.oxl.app'
             value: "{{ item.value }}"
             reload: false
           loop:
@@ -93,7 +93,7 @@ Practical
             - {host: 'd', value: '192.168.0.5'}
 
         - name: Reloading
-          ansibleguy.opnsense.reload:
+          oxlorg.opnsense.reload:
             target: "{{ item }}"
           loop:
             - 'route'

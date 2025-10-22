@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'webproxy_cache'
 
   environment:
@@ -17,20 +17,20 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid max-size
-      ansibleguy.opnsense.webproxy_parent:
+      oxlorg.opnsense.webproxy_parent:
         size_mb_max: 1000000
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring
-      ansibleguy.opnsense.webproxy_cache:
+      oxlorg.opnsense.webproxy_cache:
         memory_mb: 512
         size_mb: 2048
         memory_cache_mode: 'always'
@@ -41,7 +41,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.webproxy_cache:
+      oxlorg.opnsense.webproxy_cache:
         memory_mb: 256
         size_mb: 1024
         memory_cache_mode: 'always'
@@ -54,7 +54,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.webproxy_cache:
+      oxlorg.opnsense.webproxy_cache:
         memory_mb: 256
         size_mb: 1024
         memory_cache_mode: 'always'
@@ -67,5 +67,5 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.webproxy_cache:
+      oxlorg.opnsense.webproxy_cache:
       when: not ansible_check_mode

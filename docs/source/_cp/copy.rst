@@ -2,10 +2,10 @@ link
 `Desc <url>`_
 
 reload ref
-:ref:`ansibleguy.opnsense.reload <modules_reload>`
+:ref:`oxlorg.opnsense.reload <modules_reload>`
 
 test url
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/alias.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/alias.yml>`_
 
 table row
     "par","typ","req","def","ali","cmt"

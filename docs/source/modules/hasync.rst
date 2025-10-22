@@ -8,8 +8,8 @@ High Availability
 
 **STATE**: stable
 
-**TESTS**: `ansibleguy.opnsense.hasync_general <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/hasync_general.yml>`_ |
-`ansibleguy.opnsense.hasync_service <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/hasync_service.yml>`_
+**TESTS**: `oxlorg.opnsense.hasync_general <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/hasync_general.yml>`_ |
+`oxlorg.opnsense.hasync_service <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/hasync_service.yml>`_
 
 **API Docs**: `Core - HASync <https://docs.opnsense.org/development/api/core/core.html>`_
 
@@ -31,7 +31,7 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
-ansibleguy.opnsense.hasync_general
+oxlorg.opnsense.hasync_general
 ===================================
 
 ..  csv-table:: Definition
@@ -51,7 +51,7 @@ ansibleguy.opnsense.hasync_general
     "syncitems","list of string","false","\-","\-","Services that should be send to the other host."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.hasync_service
+oxlorg.opnsense.hasync_service
 ===================================
 
 ..  csv-table:: Definition
@@ -65,14 +65,14 @@ ansibleguy.opnsense.hasync_service
 Usage
 *****
 
-Use the :code:`ansibleguy.opnsense.hasync_general` module to configure the synchronisation of states and configuration.
-If configuration synchronization is set up the :code:`ansibleguy.opnsense.hasync_service` module can be used to trigger the sync and restart of a specific or all services.
+Use the :code:`oxlorg.opnsense.hasync_general` module to configure the synchronisation of states and configuration.
+If configuration synchronization is set up the :code:`oxlorg.opnsense.hasync_service` module can be used to trigger the sync and restart of a specific or all services.
 
 
 Examples
 ********
 
-ansibleguy.opnsense.hasync_general
+oxlorg.opnsense.hasync_general
 ==================================
 
 .. code-block:: yaml
@@ -80,11 +80,11 @@ ansibleguy.opnsense.hasync_general
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'hasync_general'
 
       tasks:
@@ -92,7 +92,7 @@ ansibleguy.opnsense.hasync_general
         # required ones normally
         # add their default values to get a brief overview of how the module works
         - name: Example
-          ansibleguy.opnsense.hasync_general:
+          oxlorg.opnsense.hasync_general:
             # preempt: false
             # disconnect_ppps: false
             # pfsync_interface: 
@@ -107,7 +107,7 @@ ansibleguy.opnsense.hasync_general
             # debug: false
 
         - name: Setup pfsync
-          ansibleguy.opnsense.hasync_general:
+          oxlorg.opnsense.hasync_general:
             preempt: false
             disconnect_ppps: false
             pfsync_interface: pfSync
@@ -115,7 +115,7 @@ ansibleguy.opnsense.hasync_general
             pfsync_version: 1400
 
         - name: Setup Config Sync
-          ansibleguy.opnsense.hasync_general:
+          oxlorg.opnsense.hasync_general:
             synchronize_to_ip: 192.168.1.2
             username: opnsync
             password: secret
@@ -124,7 +124,7 @@ ansibleguy.opnsense.hasync_general
               - rules
 
         - name: Listing config
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'hasync_general'
           register: hasync_config
 
@@ -132,7 +132,7 @@ ansibleguy.opnsense.hasync_general
           ansible.builtin.debug:
             var: hasync_config.data
 
-ansibleguy.opnsense.hasync_service
+oxlorg.opnsense.hasync_service
 ==================================
 
 .. code-block:: yaml
@@ -140,28 +140,28 @@ ansibleguy.opnsense.hasync_service
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
 
       tasks:
         - name: Synchronize and restart cron
-          ansibleguy.opnsense.hasync_service:
+          oxlorg.opnsense.hasync_service:
             name: cron
             action: restart
 
         - name: Synchronize and restart all services
-          ansibleguy.opnsense.hasync_service:
+          oxlorg.opnsense.hasync_service:
             #name: all
             action: restart
 
         - name: Stop ntpd
-          ansibleguy.opnsense.hasync_service:
+          oxlorg.opnsense.hasync_service:
             name: ntpd
             action: stop
 
         - name: Start ntpd
-          ansibleguy.opnsense.hasync_service:
+          oxlorg.opnsense.hasync_service:
             name: ntpd
             action: start

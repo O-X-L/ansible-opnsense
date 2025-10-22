@@ -44,7 +44,7 @@ function run_test_soft() {
   fi
 }
 
-cd "$TMP_COL_DIR/ansible_collections/ansibleguy/opnsense"
+cd "$TMP_COL_DIR/ansible_collections/oxlorg/opnsense"
 
 echo ''
 echo '##############################'

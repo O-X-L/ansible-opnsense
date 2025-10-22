@@ -1,11 +1,11 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_unset
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     ModuleSoftError
 
 
@@ -46,8 +46,8 @@ class BaseAuth(BaseModule):
         'existing_remote_auth': 'swanctl.remotes.remote',
     }
 
-    def __init__(self, m: AnsibleModule, r: dict, s: Session = None):
-        BaseModule.__init__(self=self, m=m, r=r, s=s)
+    def __init__(self, m: AnsibleModule, r: dict, s: Session = None, f: dict = None):
+        BaseModule.__init__(self=self, m=m, r=r, s=s, f=f)
         self.auth = {}
         self.existing_conns = None
         self.pubkey_link_found = False
