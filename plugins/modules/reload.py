@@ -175,7 +175,7 @@ def run_module():
 
         elif target in ['haproxy']:
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_settings import \
-                GeneralSettings as Target_Obj
+                HaproxyGeneralSettings as Target_Obj
 
     except MODULE_EXCEPTIONS:
         module_dependency_error()

@@ -15,7 +15,7 @@ try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, EN_ONLY_MOD_ARG, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_settings import GeneralSettings
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_settings import HaproxyGeneralSettings
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
@@ -65,7 +65,7 @@ def run_module():
         supports_check_mode=True,
     )
 
-    module_wrapper(GeneralSettings(module=module, result=result))
+    module_wrapper(HaproxyGeneralSettings(module=module, result=result))
 
     module.exit_json(**result)
 

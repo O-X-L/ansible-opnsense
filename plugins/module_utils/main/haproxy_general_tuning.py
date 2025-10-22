@@ -4,7 +4,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api impor
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import GeneralModule
 
 
-class GeneralTuning(GeneralModule):
+class HaproxyGeneralTuning(GeneralModule):
     CMDS = {
         'set': 'set',
         'search': 'get',

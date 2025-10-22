@@ -15,7 +15,7 @@ try:
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
     from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_cpu import Cpu
+    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_cpu import HaproxyCpu
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
@@ -62,7 +62,7 @@ def run_module():
         ],
     )
 
-    module_wrapper(Cpu(module=module, result=result))
+    module_wrapper(HaproxyCpu(module=module, result=result))
 
     module.exit_json(**result)
 

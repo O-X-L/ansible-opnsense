@@ -4,7 +4,7 @@ from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api impor
 from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
 
 
-class Cpu(BaseModule):
+class HaproxyCpu(BaseModule):
     FIELD_ID = 'name'
 
     CMDS = {
