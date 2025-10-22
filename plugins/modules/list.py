@@ -579,39 +579,39 @@ def run_module():
 
         elif target == 'haproxy_general_settings':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_settings import \
-                GeneralSettings as Target_Obj
+                HaproxyGeneralSettings as Target_Obj
 
         elif target == 'haproxy_general_cache':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_cache import \
-                GeneralCache as Target_Obj
+                HaproxyGeneralCache as Target_Obj
 
         elif target == 'haproxy_general_defaults':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_defaults import \
-                GeneralDefaults as Target_Obj
+                HaproxyGeneralDefaults as Target_Obj
 
         elif target == 'haproxy_general_logging':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_logging import \
-                GeneralLogging as Target_Obj
+                HaproxyGeneralLogging as Target_Obj
 
         elif target == 'haproxy_general_peers':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_peers import \
-                GeneralPeers as Target_Obj
+                HaproxyGeneralPeers as Target_Obj
 
         elif target == 'haproxy_general_stats':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_stats import \
-                GeneralStats as Target_Obj
+                HaproxyGeneralStats as Target_Obj
 
         elif target == 'haproxy_general_tuning':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_tuning import \
-                GeneralTuning as Target_Obj
+                HaproxyGeneralTuning as Target_Obj
 
         elif target == 'haproxy_maintenance':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_maintenance import \
-                Maintenance as Target_Obj
+                HaproxyMaintenance as Target_Obj
 
         elif target == 'haproxy_cpu':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_cpu import \
-                Cpu as Target_Obj
+                HaproxyCpu as Target_Obj
 
         elif target == 'haproxy_user':
             from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_user import \
