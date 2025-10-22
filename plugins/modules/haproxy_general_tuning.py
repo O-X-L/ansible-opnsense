@@ -1,21 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-# Copyright: (C) 2025, AnsibleGuy <guy@ansibleguy.net>
+# Copyright: (C) 2025, MaximeWewer
 # GNU General Public License v3.0+ (see https://www.gnu.org/licenses/gpl-3.0.txt)
 
 # see: https://docs.opnsense.org/development/api/plugins/haproxy.html
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.handler import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, RELOAD_MOD_ARG
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_tuning import HaproxyGeneralTuning
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_tuning import HaproxyGeneralTuning
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()

@@ -39,7 +39,7 @@ You need to install the following plugin:
 
     os-haproxy
 
-You can also install it using the :ref:`ansibleguy.opnsense.package <modules_package>` module.
+You can also install it using the :ref:`oxlorg.opnsense.package <modules_package>` module.
 
 Function
 ********
@@ -97,7 +97,7 @@ Usage examples
       tasks:
         # Create authentication users
         - name: Create HAProxy users
-          ansibleguy.opnsense.haproxy_user:
+          oxlorg.opnsense.haproxy_user:
             name: "{{ item.name }}"
             description: "{{ item.description }}"
             password: "{{ item.password }}"
@@ -108,7 +108,7 @@ Usage examples
 
         # Create groups
         - name: Create HAProxy groups
-          ansibleguy.opnsense.haproxy_group:
+          oxlorg.opnsense.haproxy_group:
             name: "{{ item.name }}"
             description: "{{ item.description }}"
             members: "{{ item.members }}"
@@ -119,7 +119,7 @@ Usage examples
 
         # Configure basic settings
         - name: Configure HAProxy general settings
-          ansibleguy.opnsense.haproxy_general_settings:
+          oxlorg.opnsense.haproxy_general_settings:
             enabled: true
             graceful_stop: true
             hard_stop_after: 60
@@ -127,7 +127,7 @@ Usage examples
 
         # Configure monitoring with name resolution
         - name: Configure HAProxy statistics
-          ansibleguy.opnsense.haproxy_general_stats:
+          oxlorg.opnsense.haproxy_general_stats:
             enabled: true
             port: 8822
             auth_enabled: true
@@ -137,14 +137,14 @@ Usage examples
 
         # Configure performance
         - name: Configure HAProxy performance tuning
-          ansibleguy.opnsense.haproxy_general_tuning:
+          oxlorg.opnsense.haproxy_general_tuning:
             max_connections: 2000
             nbthread: 4
             buffer_size: 32768
 
         # Configure CPU affinity
         - name: Configure HAProxy CPU affinity
-          ansibleguy.opnsense.haproxy_cpu:
+          oxlorg.opnsense.haproxy_cpu:
             name: 'web_threads'
             thread_id: 'x1'
             cpu_id: ['x0', 'x1']
@@ -152,7 +152,7 @@ Usage examples
 
         # Configure maintenance
         - name: Configure HAProxy maintenance
-          ansibleguy.opnsense.haproxy_maintenance:
+          oxlorg.opnsense.haproxy_maintenance:
             sync_certs: true
             reload_service: false
             restart_service: false

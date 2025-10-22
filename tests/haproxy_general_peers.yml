@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'haproxy_general_peers'
 
   environment:
@@ -17,20 +17,20 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid port
-      ansibleguy.opnsense.haproxy_general_peers:
+      oxlorg.opnsense.haproxy_general_peers:
         port1: 70000
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring basic peers settings
-      ansibleguy.opnsense.haproxy_general_peers:
+      oxlorg.opnsense.haproxy_general_peers:
         enabled: true
         name1: 'haproxy-primary.example.com'
         listen1: '192.168.1.10'
@@ -44,7 +44,7 @@
         not opn1.changed
 
     - name: Changing peers settings
-      ansibleguy.opnsense.haproxy_general_peers:
+      oxlorg.opnsense.haproxy_general_peers:
         enabled: true
         name1: 'haproxy-node1.example.com'
         listen1: '10.0.0.10'
@@ -58,7 +58,7 @@
         not opn9.changed
 
     - name: Disabling HAProxy peers
-      ansibleguy.opnsense.haproxy_general_peers:
+      oxlorg.opnsense.haproxy_general_peers:
         enabled: false
         name1: 'haproxy-node1.example.com'
         listen1: '10.0.0.10'
@@ -73,7 +73,7 @@
       when: not ansible_check_mode
 
     - name: Disabling HAProxy peers - nothing changed
-      ansibleguy.opnsense.haproxy_general_peers:
+      oxlorg.opnsense.haproxy_general_peers:
         enabled: false
         name1: 'haproxy-node1.example.com'
         listen1: '10.0.0.10'
@@ -88,7 +88,7 @@
       when: not ansible_check_mode
 
     - name: Enabling HAProxy peers
-      ansibleguy.opnsense.haproxy_general_peers:
+      oxlorg.opnsense.haproxy_general_peers:
         enabled: true
         name1: 'haproxy-node1.example.com'
         listen1: '10.0.0.10'
@@ -103,7 +103,7 @@
       when: not ansible_check_mode
 
     - name: Testing single peer configuration
-      ansibleguy.opnsense.haproxy_general_peers:
+      oxlorg.opnsense.haproxy_general_peers:
         enabled: true
         name1: 'haproxy-standalone.example.com'
         listen1: '127.0.0.1'
@@ -115,7 +115,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.haproxy_general_peers:
+      oxlorg.opnsense.haproxy_general_peers:
         enabled: true
         name1: 'haproxy-standalone.example.com'
         listen1: '127.0.0.1'
@@ -127,7 +127,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.haproxy_general_peers:
+      oxlorg.opnsense.haproxy_general_peers:
         enabled: false
         port1: 1024
         port2: 1024

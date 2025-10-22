@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'haproxy_user'
 
   environment:
@@ -17,20 +17,20 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid name
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: ''
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Creating HAProxy user
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: 'testuser1'
         description: 'Test user 1'
         password: 'testpassword123'
@@ -41,7 +41,7 @@
         not opn1.changed
 
     - name: Creating another HAProxy user
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: 'testuser2'
         description: 'Test user 2'
         password: 'testpassword456'
@@ -52,7 +52,7 @@
         not opn2.changed
 
     - name: Changing user settings
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: 'testuser1'
         description: 'Modified test user 1'
         password: 'newpassword123'
@@ -63,7 +63,7 @@
         not opn9.changed
 
     - name: Disabling HAProxy user
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: 'testuser1'
         description: 'Modified test user 1'
         password: 'newpassword123'
@@ -75,7 +75,7 @@
       when: not ansible_check_mode
 
     - name: Disabling HAProxy user - nothing changed
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: 'testuser1'
         description: 'Modified test user 1'
         password: 'newpassword123'
@@ -87,7 +87,7 @@
       when: not ansible_check_mode
 
     - name: Enabling HAProxy user
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: 'testuser1'
         description: 'Modified test user 1'
         password: 'newpassword123'
@@ -99,7 +99,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: 'testuser1'
         description: 'Modified test user 1'
         password: 'newpassword123'
@@ -111,13 +111,13 @@
       when: not ansible_check_mode
 
     - name: Cleanup user 1
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: 'testuser1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup user 2
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: 'testuser2'
         state: 'absent'
       when: not ansible_check_mode

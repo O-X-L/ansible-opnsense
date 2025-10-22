@@ -578,47 +578,47 @@ def run_module():
                 Tag as Target_Obj
 
         elif target == 'haproxy_general_settings':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_settings import \
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_settings import \
                 HaproxyGeneralSettings as Target_Obj
 
         elif target == 'haproxy_general_cache':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_cache import \
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_cache import \
                 HaproxyGeneralCache as Target_Obj
 
         elif target == 'haproxy_general_defaults':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_defaults import \
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_defaults import \
                 HaproxyGeneralDefaults as Target_Obj
 
         elif target == 'haproxy_general_logging':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_logging import \
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_logging import \
                 HaproxyGeneralLogging as Target_Obj
 
         elif target == 'haproxy_general_peers':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_peers import \
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_peers import \
                 HaproxyGeneralPeers as Target_Obj
 
         elif target == 'haproxy_general_stats':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_stats import \
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_stats import \
                 HaproxyGeneralStats as Target_Obj
 
         elif target == 'haproxy_general_tuning':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_general_tuning import \
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_tuning import \
                 HaproxyGeneralTuning as Target_Obj
 
         elif target == 'haproxy_maintenance':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_maintenance import \
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_maintenance import \
                 HaproxyMaintenance as Target_Obj
 
         elif target == 'haproxy_cpu':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_cpu import \
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_cpu import \
                 HaproxyCpu as Target_Obj
 
         elif target == 'haproxy_user':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_user import \
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_user import \
                 HaproxyUser as Target_Obj
 
         elif target == 'haproxy_group':
-            from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.haproxy_group import \
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_group import \
                 HaproxyGroup as Target_Obj
 
     except AttributeError:
