@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'acme_action'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -33,21 +33,21 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of invalid value
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_1'
         type: ANSIBLE_TEST_1_1
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of invalid domain
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         field1: '!INVALID-DOMAIN!'
         field2: 'INVALID-IP'
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_1'
         type: configd_restart_gui
       register: opn1
@@ -56,7 +56,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_1'
         type: configd_restart_haproxy
       register: opn2
@@ -65,7 +65,7 @@
         not opn2.changed
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_1'
         type: configd_restart_haproxy
       register: opn3
@@ -75,7 +75,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_1'
         type: configd_restart_haproxy
         enabled: false
@@ -86,7 +86,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_1'
         type: configd_restart_haproxy
         enabled: false
@@ -97,7 +97,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_1'
         type: configd_restart_haproxy
       register: opn6
@@ -107,7 +107,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2 - Upload SFTP
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_2'
         type: configd_upload_sftp
         sftp_host: 127.0.0.1
@@ -128,7 +128,7 @@
         not opn7.changed
 
     - name: Adding 2 - Upload SFTP - nothing changed
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_2'
         type: configd_upload_sftp
         sftp_host: 127.0.0.1
@@ -150,7 +150,7 @@
       when: not ansible_check_mode
 
     - name: Adding 3 - Remote SSH
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_3'
         type: configd_remote_ssh
         remote_ssh_host: 127.0.0.1
@@ -163,7 +163,7 @@
         not opn9.changed
 
     - name: Adding 3 - Remote SSH - nothing changed
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_3'
         type: configd_remote_ssh
         remote_ssh_host: 127.0.0.1
@@ -177,7 +177,7 @@
       when: not ansible_check_mode
 
     - name: Adding 4 - FRITZ!Box
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_4'
         type: acme_fritzbox
         acme_fritzbox_url: https://fritzbox.example.com
@@ -189,7 +189,7 @@
         not opn11.changed
 
     - name: Adding 4 - FRITZ!Box - nothing changed
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_4'
         type: acme_fritzbox
         acme_fritzbox_url: https://fritzbox.example.com
@@ -202,7 +202,7 @@
       when: not ansible_check_mode
 
     - name: Adding 5 - PANOS
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_5'
         type: acme_panos
         acme_panos_username: palo
@@ -214,7 +214,7 @@
         not opn13.changed
 
     - name: Adding 5 - PANOS - nothing changed
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_5'
         type: acme_panos
         acme_panos_username: palo
@@ -227,7 +227,7 @@
       when: not ansible_check_mode
 
     - name: Adding 6 - Proxmox
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_6'
         type: acme_proxmoxve
         acme_proxmoxve_user: prox
@@ -243,7 +243,7 @@
         not opn15.changed
 
     - name: Adding 6 - Proxmox - nothing changed
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_6'
         type: acme_proxmoxve
         acme_proxmoxve_user: prox
@@ -260,7 +260,7 @@
       when: not ansible_check_mode
 
     - name: Adding 7 - Vault
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_7'
         type: acme_vault
         acme_vault_url: http://vault.example.com:8200.
@@ -273,7 +273,7 @@
         not opn17.changed
 
     - name: Adding 7 - Vault - nothing changed
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_7'
         type: acme_vault
         acme_vault_url: http://vault.example.com:8200.
@@ -287,7 +287,7 @@
       when: not ansible_check_mode
 
     - name: Adding 8 - Synology DSM
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_8'
         type: acme_synology_dsm
         acme_synology_dsm_hostname: synology.example.com
@@ -304,7 +304,7 @@
         not opn19.changed
 
     - name: Adding 8 - Synology DSM - nothing changed
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_8'
         type: acme_synology_dsm
         acme_synology_dsm_hostname: synology.example.com
@@ -322,7 +322,7 @@
       when: not ansible_check_mode
 
     - name: Adding 9 - TrueNAS
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_9'
         type: acme_truenas
         acme_truenas_apikey: SECRET
@@ -334,7 +334,7 @@
         not opn21.changed
 
     - name: Adding 9 - TrueNAS - nothing changed
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_9'
         type: acme_truenas
         acme_truenas_apikey: SECRET
@@ -347,7 +347,7 @@
       when: not ansible_check_mode
 
     - name: Adding 10 - Unifi
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_10'
         type: acme_unifi
         acme_unifi_keystore: /tmp/keystore
@@ -357,7 +357,7 @@
         not opn23.changed
 
     - name: Adding 10 - Unifi - nothing changed
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: 'ANSIBLE_TEST_1_10'
         type: acme_unifi
         acme_unifi_keystore: /tmp/keystore
@@ -368,7 +368,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -376,7 +376,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.acme_action:
+      oxlorg.opnsense.acme_action:
         name: '{{ item }}'
         state: 'absent'
       loop:
@@ -393,7 +393,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

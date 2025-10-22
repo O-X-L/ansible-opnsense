@@ -8,7 +8,7 @@ DNS - Unbound - Host Alias
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/unbound_host_alias.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/unbound_host_alias.yml>`_
 
 **API Docs**: `Core - Unbound <https://docs.opnsense.org/development/api/core/unbound.html>`_
 
@@ -83,22 +83,22 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.unbound_host_alias:
+        oxlorg.opnsense.unbound_host_alias:
           match_fields: ['description']
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'unbound_host_alias'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.unbound_host_alias:
+          oxlorg.opnsense.unbound_host_alias:
             alias: 'test'
-            domain: 'opnsense.template.ansibleguy.net'
-            target: 'host.opnsense.template.ansibleguy.net'
+            domain: 'opnsense.template.opnsense.oxl.app'
+            target: 'host.opnsense.template.opnsense.oxl.app'
             # match_fields: ['description']
             # description: 'example'
             # state: 'present'
@@ -107,7 +107,7 @@ Examples
             # debug: false
 
         - name: Adding alias 'test1.local' for record 'test.local'
-          ansibleguy.opnsense.unbound_host_alias:
+          oxlorg.opnsense.unbound_host_alias:
             alias: 'test1'
             domain: 'local'
             target: 'test.local'
@@ -115,7 +115,7 @@ Examples
             # match_fields: ['description']
 
         - name: Disabling
-          ansibleguy.opnsense.unbound_host_alias:
+          oxlorg.opnsense.unbound_host_alias:
             alias: 'test1'
             domain: 'local'
             target: 'test.local'
@@ -124,7 +124,7 @@ Examples
             # match_fields: ['description']
 
         - name: Removing
-          ansibleguy.opnsense.unbound_host_alias:
+          oxlorg.opnsense.unbound_host_alias:
             alias: 'test1'
             domain: 'local'
             target: 'test.local'
@@ -133,7 +133,7 @@ Examples
             # match_fields: ['description']
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'unbound_host_alias'
           register: existing_entries
 

@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'monit_service'
 
   vars:
@@ -20,14 +20,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         'data' not in opn10 or
         opn10.data | length != default_svc_count
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn1
@@ -36,13 +36,13 @@
         opn1.changed
 
     - name: Adding 1 - failing because of unsupported type
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_1'
       register: opn12
       failed_when: not opn12.failed
 
     - name: Adding 1 - failing because of missing type-arguments
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_1'
         type: "{{ item }}"
       register: opn11
@@ -52,7 +52,7 @@
         - 'host'  # address
 
     - name: Adding 1 - failing because of invalid address-ip
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_1'
         type: 'network'
         address: '192.168-INVALID-IP'
@@ -60,7 +60,7 @@
       failed_when: not opn14.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_1'
         type: 'custom'
       register: opn4
@@ -69,7 +69,7 @@
         not opn4.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_1'
         type: 'custom'
         enabled: false
@@ -80,7 +80,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_1'
         type: 'custom'
         enabled: false
@@ -91,7 +91,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_1'
         type: 'custom'
       register: opn7
@@ -101,7 +101,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_2'
         type: 'network'
         address: '192.168.0.1'
@@ -112,7 +112,7 @@
         not opn5.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_2'
         type: 'network'
         address: '192.168.0.1'
@@ -124,7 +124,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn8
@@ -134,7 +134,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn3
       failed_when: >
         'data' not in opn3 or
@@ -142,14 +142,14 @@
       when: not ansible_check_mode
 
     - name: Adding dummy test
-      ansibleguy.opnsense.monit_test:
+      oxlorg.opnsense.monit_test:
         name: 'ANSIBLE_TEST_2_1'
         condition: 'memory usage is greater than 90%'
         type: 'SystemResource'
       when: not ansible_check_mode
 
     - name: Adding 3 - linking test
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_3'
         type: 'system'
         tests: ['ANSIBLE_TEST_2_1']
@@ -161,7 +161,7 @@
       when: not ansible_check_mode
 
     - name: Changing 3 - nothing changed
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_3'
         type: 'system'
         tests: ['ANSIBLE_TEST_2_1']
@@ -173,7 +173,7 @@
       when: not ansible_check_mode
 
     - name: Adding 4 - linking dependency
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_4'
         type: 'custom'
         depends: ['ANSIBLE_TEST_1_1']
@@ -184,7 +184,7 @@
       when: not ansible_check_mode
 
     - name: Changing 4 - nothing changed
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: 'ANSIBLE_TEST_1_4'
         type: 'custom'
         depends: ['ANSIBLE_TEST_1_1']
@@ -195,7 +195,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.monit_service:
+      oxlorg.opnsense.monit_service:
         name: "{{ item }}"
         state: 'absent'
       loop:
@@ -206,13 +206,13 @@
       when: not ansible_check_mode
 
     - name: Cleanup test
-      ansibleguy.opnsense.monit_test:
+      oxlorg.opnsense.monit_test:
         name: 'ANSIBLE_TEST_2_1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn2
       failed_when: >
         'data' not in opn2 or

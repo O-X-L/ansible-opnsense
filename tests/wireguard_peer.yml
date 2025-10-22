@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    ansibleguy.opnsense.wireguard_peer:
+    oxlorg.opnsense.wireguard_peer:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -26,14 +26,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         'data' not in opn10 or
         opn10.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn1
@@ -42,7 +42,7 @@
         opn1.changed
 
     - name: Adding 1 - failing because of invalid allowed-ip
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_1_1'
         public_key: "{{ test.pub1 }}"
         allowed_ips: ['192.168.0.1000']
@@ -50,7 +50,7 @@
       failed_when: not opn11.failed
 
     - name: Adding 1 - failing because of invalid port
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_1_1'
         public_key: "{{ test.pub1 }}"
         allowed_ips: ['192.168.0.1/32']
@@ -59,22 +59,22 @@
       failed_when: not opn12.failed
 
     - name: Adding 1 - failing because of missing public key
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_1_1'
         allowed_ips: ['192.168.0.1/32']
       register: opn14
       failed_when: not opn14.failed
 
     - name: Adding 1 - failing because of missing allowed-ips
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_1_1'
       register: opn15
       failed_when: not opn15.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_1_1'
-        target: 'wg.test.ansibleguy.net'
+        target: 'wg.test.oxlorg.net'
         allowed_ips: ['192.168.0.1/32']
         public_key: "{{ test.pub1 }}"
       register: opn4
@@ -83,9 +83,9 @@
         not opn4.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_1_1'
-        target: 'wg.test.ansibleguy.net'
+        target: 'wg.test.oxlorg.net'
         allowed_ips: ['192.168.0.1/32']
         public_key: "{{ test.pub1 }}"
         enabled: false
@@ -96,9 +96,9 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_1_1'
-        target: 'wg.test.ansibleguy.net'
+        target: 'wg.test.oxlorg.net'
         allowed_ips: ['192.168.0.1/32']
         public_key: "{{ test.pub1 }}"
         enabled: false
@@ -109,9 +109,9 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_1_1'
-        target: 'wg.test.ansibleguy.net'
+        target: 'wg.test.oxlorg.net'
         allowed_ips: ['192.168.0.1/32']
         public_key: "{{ test.pub1 }}"
       register: opn7
@@ -121,9 +121,9 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_1_2'
-        target: 'wg2.test.ansibleguy.net'
+        target: 'wg2.test.oxlorg.net'
         allowed_ips: ['192.168.1.1/32']
         public_key: "{{ test.pub2 }}"
         psk: "{{ test.psk }}"
@@ -135,9 +135,9 @@
         not opn5.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_1_2'
-        target: 'wg2.test.ansibleguy.net'
+        target: 'wg2.test.oxlorg.net'
         allowed_ips: ['192.168.1.1/32']
         public_key: "{{ test.pub2 }}"
         psk: "{{ test.psk }}"
@@ -150,7 +150,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn8
@@ -160,7 +160,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn3
       failed_when: >
         'data' not in opn3 or
@@ -168,7 +168,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: "{{ item }}"
         state: 'absent'
       loop:
@@ -177,7 +177,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn2
       failed_when: >
         'data' not in opn2 or
@@ -188,7 +188,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -203,7 +203,7 @@
 
   tasks:
     - name: Adding dummy instance
-      ansibleguy.opnsense.wireguard_server:
+      oxlorg.opnsense.wireguard_server:
         name: 'ANSIBLE_TEST_2_1'
         allowed_ips: ['192.168.0.1/32']
         public_key: "{{ test.pub1 }}"
@@ -212,9 +212,9 @@
       when: not ansible_check_mode
 
     - name: Adding
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_3_1'
-        target: 'wg.test.ansibleguy.net'
+        target: 'wg.test.oxlorg.net'
         allowed_ips: ['192.168.0.1/32']
         public_key: "{{ test.pub1 }}"
         servers: 'ANSIBLE_TEST_2_1'
@@ -225,9 +225,9 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_3_1'
-        target: 'wg.test.ansibleguy.net'
+        target: 'wg.test.oxlorg.net'
         allowed_ips: ['192.168.0.1/32']
         public_key: "{{ test.pub1 }}"
         servers: 'ANSIBLE_TEST_2_1'
@@ -238,7 +238,7 @@
       when: not ansible_check_mode
 
     - name: Server - Nothing changed
-      ansibleguy.opnsense.wireguard_server:
+      oxlorg.opnsense.wireguard_server:
         name: 'ANSIBLE_TEST_2_1'
         allowed_ips: ['192.168.0.1/32']
         public_key: "{{ test.pub1 }}"
@@ -251,9 +251,9 @@
       when: not ansible_check_mode
 
     - name: Peer - Nothing changed
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_3_1'
-        target: 'wg.test.ansibleguy.net'
+        target: 'wg.test.oxlorg.net'
         allowed_ips: ['192.168.0.1/32']
         public_key: "{{ test.pub1 }}"
         servers: 'ANSIBLE_TEST_2_1'
@@ -264,13 +264,13 @@
       when: not ansible_check_mode
 
     - name: Cleanup peer
-      ansibleguy.opnsense.wireguard_peer:
+      oxlorg.opnsense.wireguard_peer:
         name: 'ANSIBLE_TEST_3_1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup dummy instance
-      ansibleguy.opnsense.wireguard_server:
+      oxlorg.opnsense.wireguard_server:
         name: 'ANSIBLE_TEST_2_1'
         state: 'absent'
       when: not ansible_check_mode

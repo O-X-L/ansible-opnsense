@@ -8,7 +8,7 @@ Alias
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/alias.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/alias.yml>`_
 
 **API Docs**: `Core - Firewall <https://docs.opnsense.org/development/api/core/firewall.html>`_
 
@@ -33,7 +33,7 @@ To use GeoIP alias types - you need to configure a source for it first. See: `do
 Mass-Manage
 ===========
 
-If you want to mass-manage aliases - take a look at the :ref:`ansibleguy.opnsense.alias_multi <modules_alias_multi>` module. It is scales better for that use-case!
+If you want to mass-manage aliases - take a look at the :ref:`oxlorg.opnsense.alias_multi <modules_alias_multi>` module. It is scales better for that use-case!
 
 Definition
 **********
@@ -63,19 +63,19 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'alias'
 
-        ansibleguy.opnsense.reload:
+        oxlorg.opnsense.reload:
           target: 'alias'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             name: 'ANSIBLE_TEST1'
             description: 'just a test'
             content: '1.1.1.1'
@@ -91,12 +91,12 @@ Examples
             # debug: false
 
         - name: Adding
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             name: 'ANSIBLE_TEST2'
             content: '192.168.1.1'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'alias'
           register: existing_entries
 
@@ -105,59 +105,59 @@ Examples
             var: existing_entries.data  # type = list of dicts
 
         - name: Changing
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             name: 'ANSIBLE_TEST2'
             content: ['192.168.1.5', '192.168.10.4']
 
         - name: Removing
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             name: 'ANSIBLE_TEST3'
             state: 'absent'
 
         - name: Disabling
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             name: 'ANSIBLE_TEST2'
             enabled: false
 
         - name: Adding ports
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             name: 'ANSIBLE_TEST3'
             type: 'port'
             content: [80, 443, '9000:9002']
 
         - name: Adding url-table
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             name: 'ANSIBLE_TEST4'
             type: 'urltable'
             updatefreq_days: 2.6
             content: 'https://www.spamhaus.org/drop/drop.txt'
 
         - name: Adding url-json
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             name: 'ANSIBLE_TEST5'
             type: 'urltable'
             updatefreq_days: 2.6
             content: 'https://www.spamhaus.org/drop/drop.txt'
 
         - name: Adding dns-names
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             name: 'ANSIBLE_TEST6'
             content:
               - 'https://api.github.com/meta'
             path_expression: '.web + .api + .git | .[]'
 
         - name: Adding network
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             name: 'ANSIBLE_TEST6'
             type: 'network'
             content: '192.168.0.0/24'
 
         - name: Adding geoips regions
-          ansibleguy.opnsense.alias:
+          oxlorg.opnsense.alias:
             name: 'ANSIBLE_TEST_1_2_GEOIP2'
             type: 'geoip'
             content: ['AT', 'DE', 'CH']
 
         - name: Reloading running config
-          ansibleguy.opnsense.reload:
+          oxlorg.opnsense.reload:
           #  target: 'alias'

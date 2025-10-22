@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'openvpn_instance'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -33,7 +33,7 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because no remote was provided
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_1_1'
         protocol: 'udp'
         mode: 'tun'
@@ -43,18 +43,18 @@
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because no ca/cert was provided
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_1_1'
-        remote: 'openvpn.test.ansibleguy.net:20000'
+        remote: 'openvpn.test.oxlorg.net:20000'
         protocol: 'udp'
         mode: 'tun'
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_1_1'
-        remote: 'openvpn.test.ansibleguy.net:20000'
+        remote: 'openvpn.test.oxlorg.net:20000'
         protocol: 'udp'
         mode: 'tun'
         network_remote: ['192.168.77.128/27']
@@ -65,9 +65,9 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_1_1'
-        remote: 'openvpn.test.ansibleguy.net:20000'
+        remote: 'openvpn.test.oxlorg.net:20000'
         protocol: 'udp'
         mode: 'tun'
         network_remote: ['192.168.77.128/27', '192.168.89.64/27']
@@ -82,9 +82,9 @@
         not opn9.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_1_1'
-        remote: 'openvpn.test.ansibleguy.net:20000'
+        remote: 'openvpn.test.oxlorg.net:20000'
         protocol: 'udp'
         mode: 'tun'
         network_remote: ['192.168.77.128/27', '192.168.89.64/27']
@@ -101,9 +101,9 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_1_1'
-        remote: 'openvpn.test.ansibleguy.net:20000'
+        remote: 'openvpn.test.oxlorg.net:20000'
         protocol: 'udp'
         mode: 'tun'
         network_remote: ['192.168.77.128/27', '192.168.89.64/27']
@@ -120,9 +120,9 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_1_1'
-        remote: 'openvpn.test.ansibleguy.net:20000'
+        remote: 'openvpn.test.oxlorg.net:20000'
         protocol: 'udp'
         mode: 'tun'
         network_remote: ['192.168.77.128/27', '192.168.89.64/27']
@@ -138,9 +138,9 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_1_2'
-        remote: 'openvpn.test.ansibleguy.net:24000'
+        remote: 'openvpn.test.oxlorg.net:24000'
         protocol: 'tcp'
         mode: 'tap'
         network_local: '192.168.67.0/29'
@@ -154,9 +154,9 @@
         not opn5.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_1_2'
-        remote: 'openvpn.test.ansibleguy.net:24000'
+        remote: 'openvpn.test.oxlorg.net:24000'
         protocol: 'tcp'
         mode: 'tap'
         network_local: '192.168.67.0/29'
@@ -171,7 +171,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn7
@@ -181,7 +181,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -189,7 +189,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: "{{ item }}"
         state: 'absent'
       loop:
@@ -198,7 +198,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_post1
       failed_when: >
         'data' not in opn_post1 or
@@ -208,7 +208,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -218,14 +218,14 @@
 
   tasks:
     - name: Adding dummy key
-      ansibleguy.opnsense.openvpn_static_key:
+      oxlorg.opnsense.openvpn_static_key:
         name: 'ANSIBLE_TEST_2_1'
       when: not ansible_check_mode
 
     - name: Adding 1 with link to static-key
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_2_1'
-        remote: 'openvpn.test.ansibleguy.net'
+        remote: 'openvpn.test.oxlorg.net'
         ca: 'OpenVPN'
         key: 'ANSIBLE_TEST_2_1'
       register: opn10
@@ -235,13 +235,13 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.openvpn_client:
+      oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_2_1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup key
-      ansibleguy.opnsense.openvpn_static_key:
+      oxlorg.opnsense.openvpn_static_key:
         name: 'ANSIBLE_TEST_2_1'
         state: 'absent'
       when: not ansible_check_mode

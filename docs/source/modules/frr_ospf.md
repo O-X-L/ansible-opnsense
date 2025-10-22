@@ -2,18 +2,18 @@
 
 **STATE**: stable
 
-**TESTS**: [frr_ospf_general](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_general.yml) |
-[frr_ospf_prefix_list](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_prefix_list.yml) |
-[frr_ospf_interface](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_interface.yml) |
-[frr_ospf_route_map](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_route_map.yml) |
-[frr_ospf_network](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_network.yml) |
-[frr_ospf_redistribution](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_redistribution.yml) |
-[frr_ospf3_general](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf3_general.yml) |
-[frr_ospf3_prefix_list](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf3_prefix_list.yml) |
-[frr_ospf3_interface](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf3_interface.yml) |
-[frr_ospf3_route_map](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf3_route_map.yml) |
-[frr_ospf_network](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf_network.yml) |
-[frr_ospf3_redistribution](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/frr_ospf3_redistribution.yml)
+**TESTS**: [frr_ospf_general](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_general.yml) |
+[frr_ospf_prefix_list](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_prefix_list.yml) |
+[frr_ospf_interface](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_interface.yml) |
+[frr_ospf_route_map](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_route_map.yml) |
+[frr_ospf_network](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_network.yml) |
+[frr_ospf_redistribution](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_redistribution.yml) |
+[frr_ospf3_general](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf3_general.yml) |
+[frr_ospf3_prefix_list](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf3_prefix_list.yml) |
+[frr_ospf3_interface](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf3_interface.yml) |
+[frr_ospf3_route_map](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf3_route_map.yml) |
+[frr_ospf_network](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_network.yml) |
+[frr_ospf3_redistribution](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf3_redistribution.yml)
 
 
 **API Docs**: [Plugins - Quagga](https://docs.opnsense.org/development/api/plugins/quagga.html)
@@ -49,7 +49,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 
 ### OSPF
 
-#### ansibleguy.opnsense.frr_ospf_general
+#### oxlorg.opnsense.frr_ospf_general
 
 | Parameter        | Type    | Required | Default value | Aliases                                             | Comment                                                                                                                                                                                                                                                        |
 |:-----------------|:--------|:---------|:--------------|:----------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -60,10 +60,10 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | originate        | boolean | false    | false         | orig, advertise_default_gw                          | This will send the information that we have a default gateway                                                                                                                                                                                                  |
 | originate_always | boolean | false    | false         | orig_always, always_advertise_default_gw            | This will send the information that we have a default gateway, regardless of if it is available                                                                                                                                                                |
 | originate_metric | integer | false    | -             | orig_metric                                         | This let you manipulate the metric when advertising default gateway                                                                                                                                                                                            |
-| reload           | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
+| reload           | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 | enabled          | boolean | false    | true                 | -       | En- or disable the service                                                                                                                                                                                                                                     |
 
-#### ansibleguy.opnsense.frr_ospf_network
+#### oxlorg.opnsense.frr_ospf_network
 
 | Parameter    | Type    | Required                           | Default value  | Aliases                              | Comment                                                                                                                                                                                                                                                          |
 |:-------------|:--------|:-----------------------------------|:---------------|:-------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -74,9 +74,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | area_range   | string  | -                                  | -              | -                                    | Here you can summarize a network for this area like 192.168.0.0/23                                                                                                                                                 |
 | prefix_list_in   | string  | -                                  | -              | prefix_in, pre_in                    | Prefix-List for inbound direction                                                                                                                                                 |
 | prefix_list_out   | string  | -                                  | -              | prefix_out, pre_out                  | Prefix-List for outbound direction                                                                                                                                                 |
-| reload       | boolean | false                              | true           | -                                    | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
+| reload       | boolean | false                              | true           | -                                    | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
-#### ansibleguy.opnsense.frr_ospf_interface
+#### oxlorg.opnsense.frr_ospf_interface
 
 | Parameter           | Type    | Required                               | Default value         | Aliases   | Comment                                                                                                                                                                                                                                                          |
 |:--------------------|:--------|:---------------------------------------|:----------------------|:----------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -95,9 +95,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | transmit_delay      | integer  | false                                  | -                     | delay     | Integer between 0 and 4294967295                                                                                                                                                                                                                                 |
 | priority            | integer  | false                                  | -                     | prio     | Integer between 0 and 4294967295                                                                                                                                                                                                                                 |
 | network_type        | string  | false                                  | -                     | nw_type         | One of: 'broadcast', 'non-broadcast', 'point-to-multipoint', 'point-to-point'                                                                                                                                                                                    |
-| reload              | boolean | false                                  | true                  | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
+| reload              | boolean | false                                  | true                  | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
-#### ansibleguy.opnsense.frr_ospf_prefix_list
+#### oxlorg.opnsense.frr_ospf_prefix_list
 
 | Parameter | Type    | Required | Default value | Aliases    | Comment                                                                                                                                                                                                                                                        |
 |:----------|:--------|:---------|:----------------------|:-----------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -105,9 +105,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | seq       | string | false for state changes, else true    | -          | seq_number | The ACL sequence number (10-99) |
 | network   | string | false for state changes, else true    | -          | net        | The network pattern you want to match. It's not validated so please be careful! |
 | action    | string | false for state changes, else true    | -          | -          | Set permit for match or deny to negate the rule. One of: 'permit', 'deny' |
-| reload    | boolean | false    | true          | -          | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
+| reload    | boolean | false    | true          | -          | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
-#### ansibleguy.opnsense.frr_ospf_route_map
+#### oxlorg.opnsense.frr_ospf_route_map
 
 | Parameter    | Type    | Required | Default value | Aliases   | Comment                                                                                                                                                                                                                                                                                                                                                                                                                            |
 |:-------------|:--------|:---------|:--------------|:----------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -116,31 +116,31 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | action  | string  | false for state changes, else true    | -             | -         | Set permit for match or deny to negate the rule. One of: 'permit', 'deny'                                                                                                                                                                                                                                                                                                                                                          |                                                                                                                                                  |
 | prefix_list  | list    | false    | -             | prefix    | List of prefix-list entries to link                                                                                                                                                                                                                                                                                                                                                                                                |                                                                                                                                                  |
 | set  | string  | false    | -             | -         | Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)                                                                                                                                                                                                                        |                                                                                                                                                  |
-| reload       | boolean | false    | true          | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html).                                                                                                                                                                   |
+| reload       | boolean | false    | true          | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html).                                                                                                                                                                   |
 
-#### ansibleguy.opnsense.frr_ospf_redistribution
+#### oxlorg.opnsense.frr_ospf_redistribution
 
 | Parameter      | Type    | Required | Default value | Aliases | Comment |
 |:---------------|:--------|:---------|:--------------|:--------|:--------|
 | redistribution | string  | false    | -             | -       | Select routing sources to redistribute to other nodes. One of: 'bgp', 'connected', 'kernel', 'rip' or 'static'. |
 | description    | string  | true     | -             | desc    | Description for this distribution. |
 | route_map      | string  | false    | -             | map, rm | Optional Route-map to apply to this redistribution. |
-| reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
+| reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
 ----
 
 ### OSPFv3 (_IPv6_)
 
-#### ansibleguy.opnsense.frr_ospf3_general
+#### oxlorg.opnsense.frr_ospf3_general
 
 | Parameter    | Type    | Required | Default value | Aliases                                             | Comment                                                                                                                                                                                                                                                   |
 |:-------------|:--------|:---------|:--------------|:----------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | carp  | boolean | false    | false         | carp_demote                                         | Register CARP status monitor, when no neighbors are found, consider this node less attractive. This feature needs syslog enabled using "Debugging" logging to catch all relevant status events. This option is not compatible with "Enable CARP Failover" |
 | id  | string  | false    | -             | router_id                                           | If you have a CARP setup, you may want to configure a router id in case of a conflict. (_4-byte field/IPv4 Address_)                                                                                                                                      |                                                                                                                                                  |
-| reload       | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
+| reload       | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 | enabled          | boolean | false    | true                 | -       | En- or disable the service                                                                                                                                                                                                                                     |
 
-#### ansibleguy.opnsense.frr_ospf3_network
+#### oxlorg.opnsense.frr_ospf3_network
 
 | Parameter    | Type    | Required                           | Default value  | Aliases                              | Comment                                                                                                                                                                                                                                                          |
 |:-------------|:--------|:-----------------------------------|:---------------|:-------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -151,9 +151,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | area_range   | string  | -                                  | -              | -                                    | Here you can summarize a network for this area like fe80:1234::/56                                                                                                                                                 |
 | prefix_list_in   | string  | -                                  | -              | prefix_in, pre_in                    | Prefix-List for inbound direction                                                                                                                                                 |
 | prefix_list_out   | string  | -                                  | -              | prefix_out, pre_out                  | Prefix-List for outbound direction                                                                                                                                                 |
-| reload       | boolean | false                              | true           | -                                    | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
+| reload       | boolean | false                              | true           | -                                    | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
-#### ansibleguy.opnsense.frr_ospf3_interface
+#### oxlorg.opnsense.frr_ospf3_interface
 
 | Parameter    | Type    | Required | Default value         | Aliases   | Comment                                                                                                                                                                                                                                                          |
 |:-------------|:--------|:---------|:----------------------|:----------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -170,9 +170,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | transmit_delay       | integer  | false    | -                     | delay     | Integer between 0 and 4294967295                                                                                                                                                                                                                                 |
 | priority       | integer  | false    | -                     | prio     | Integer between 0 and 4294967295                                                                                                                                                                                                                                 |
 | network_type       | string  | false    | -                     | nw_type         | One of: 'broadcast', 'point-to-point'                                                                                                                                                                                                                            |
-| reload       | boolean | false    | true                  | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
+| reload       | boolean | false    | true                  | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
-#### ansibleguy.opnsense.frr_ospf3_prefix_list
+#### oxlorg.opnsense.frr_ospf3_prefix_list
 
 | Parameter | Type    | Required | Default value | Aliases    | Comment                                                                                                                                                                                                                                                        |
 |:----------|:--------|:---------|:----------------------|:-----------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -180,9 +180,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | seq       | string | false for state changes, else true    | -          | seq_number | The ACL sequence number (10-99) |
 | network   | string | false for state changes, else true    | -          | net        | The network pattern you want to match. It's not validated so please be careful! |
 | action    | string | false for state changes, else true    | -          | -          | Set permit for match or deny to negate the rule. One of: 'permit', 'deny' |
-| reload    | boolean | false    | true          | -          | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
+| reload    | boolean | false    | true          | -          | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
-#### ansibleguy.opnsense.frr_ospf3_route_map
+#### oxlorg.opnsense.frr_ospf3_route_map
 
 | Parameter    | Type    | Required | Default value | Aliases   | Comment                                                                                                                                                                                                                                                                                                                                                                                                                            |
 |:-------------|:--------|:---------|:--------------|:----------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -191,16 +191,16 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | action  | string  | false for state changes, else true    | -             | -         | Set permit for match or deny to negate the rule. One of: 'permit', 'deny'                                                                                                                                                                                                                                                                                                                                                          |                                                                                                                                                  |
 | prefix_list  | list    | false    | -             | prefix    | List of prefix-list entries to link                                                                                                                                                                                                                                                                                                                                                                                                |                                                                                                                                                  |
 | set  | string  | false    | -             | -         | Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)                                                                                                                                                                                                                        |                                                                                                                                                  |
-| reload       | boolean | false    | true          | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html).                                                                                                                                                                   |
+| reload       | boolean | false    | true          | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html).                                                                                                                                                                   |
 
-#### ansibleguy.opnsense.frr_ospf3_redistribution
+#### oxlorg.opnsense.frr_ospf3_redistribution
 
 | Parameter      | Type    | Required | Default value | Aliases | Comment |
 |:---------------|:--------|:---------|:--------------|:--------|:--------|
 | redistribution | string  | false    | -             | -       | Select routing sources to redistribute to other nodes. One of: 'bgp', 'connected', 'kernel', 'rip' or 'static'. |
 | description    | string  | true     | -             | desc    | Description for this distribution. |
 | route_map      | string  | false    | -             | map, rm | Optional Route-map to apply to this redistribution. |
-| reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/modules/2_reload.html). |
+| reload         | boolean | false    | true          | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
 ----
 
@@ -208,22 +208,22 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 
 ### OSPF (_IPv4_)
 
-#### ansibleguy.opnsense.frr_ospf_general
+#### oxlorg.opnsense.frr_ospf_general
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf_general'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_ospf_general:
+      oxlorg.opnsense.frr_ospf_general:
         # id: '10.0.0.1'
         # cost: 200
         # passive_ints: []
@@ -234,7 +234,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # enabled: true
 
     - name: Configuring general settings
-      ansibleguy.opnsense.frr_ospf_general:
+      oxlorg.opnsense.frr_ospf_general:
         id: '10.0.1.1'
         cost: 300
         passive_ints: ['lan']
@@ -242,7 +242,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         originate_metric: 1000
 
     - name: Disabling OSPF
-      ansibleguy.opnsense.frr_ospf_general:
+      oxlorg.opnsense.frr_ospf_general:
         id: '10.0.1.1'
         cost: 300
         passive_ints: ['lan']
@@ -251,7 +251,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Pulling settings
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_ospf_general'
       register: existing_entries
 
@@ -260,22 +260,22 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 ```
 
-#### ansibleguy.opnsense.frr_ospf_prefix_list
+#### oxlorg.opnsense.frr_ospf_prefix_list
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf_prefix_list'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_ospf_prefix_list:
+      oxlorg.opnsense.frr_ospf_prefix_list:
         name: 'example'
         seq: 10
         action: 'permit'
@@ -283,14 +283,14 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # enabled: true
 
     - name: Configuring prefix-list
-      ansibleguy.opnsense.frr_ospf_prefix_list:
+      oxlorg.opnsense.frr_ospf_prefix_list:
         name: 'test2'
         seq: 25
         action: 'permit'
         network: '10.0.1.0/24'
 
     - name: Disabling prefix-list
-      ansibleguy.opnsense.frr_ospf_prefix_list:
+      oxlorg.opnsense.frr_ospf_prefix_list:
         name: 'test2'
         seq: 25
         action: 'permit'
@@ -298,7 +298,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Pulling settings
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_ospf_prefix_list'
       register: existing_entries
 
@@ -307,27 +307,27 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing prefix-list
-      ansibleguy.opnsense.frr_ospf_prefix_list:
+      oxlorg.opnsense.frr_ospf_prefix_list:
         name: 'test2'
         state: 'absent'
 ```
 
-#### ansibleguy.opnsense.frr_ospf_route_map
+#### oxlorg.opnsense.frr_ospf_route_map
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf_route_map'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_ospf_route_map:
+      oxlorg.opnsense.frr_ospf_route_map:
         name: 'example'
         id: 10
         action: 'permit'
@@ -336,14 +336,14 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # enabled: true
 
     - name: Configuring route-map
-      ansibleguy.opnsense.frr_ospf_route_map:
+      oxlorg.opnsense.frr_ospf_route_map:
         name: 'test2'
         id: 65
         action: 'permit'
         set: 'local-preference 300'
 
     - name: Disabling route-map
-      ansibleguy.opnsense.frr_ospf_route_map:
+      oxlorg.opnsense.frr_ospf_route_map:
         name: 'test2'
         id: 65
         action: 'permit'
@@ -351,7 +351,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Pulling settings
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_ospf_route_map'
       register: existing_entries
 
@@ -360,30 +360,30 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing route-map
-      ansibleguy.opnsense.frr_ospf_route_map:
+      oxlorg.opnsense.frr_ospf_route_map:
         name: 'test2'
         state: 'absent'
 ```
 
-#### ansibleguy.opnsense.frr_ospf_network
+#### oxlorg.opnsense.frr_ospf_network
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.frr_ospf_network:
+    oxlorg.opnsense.frr_ospf_network:
       match_fields: ['ip', 'mask']
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf_route_map'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_ospf_network:
+      oxlorg.opnsense.frr_ospf_network:
         ip: '10.0.0.0'
         mask: 24
         area: '0.0.0.0'
@@ -391,20 +391,20 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # enabled: true
 
     - name: Configuring network
-      ansibleguy.opnsense.frr_ospf_network:
+      oxlorg.opnsense.frr_ospf_network:
         ip: '10.0.1.0'
         mask: 28
         area: '0.0.1.0'
 
     - name: Disabling network
-      ansibleguy.opnsense.frr_ospf_network:
+      oxlorg.opnsense.frr_ospf_network:
         ip: '10.0.1.0'
         mask: 28
         area: '0.0.1.0'
         enabled: false
 
     - name: Pulling settings
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_ospf_network'
       register: existing_entries
 
@@ -413,31 +413,31 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing network
-      ansibleguy.opnsense.frr_ospf_network:
+      oxlorg.opnsense.frr_ospf_network:
         ip: '10.0.1.0'
         mask: 28
         state: 'absent'
 ```
 
-#### ansibleguy.opnsense.frr_ospf_interface
+#### oxlorg.opnsense.frr_ospf_interface
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.frr_ospf_interface:
+    oxlorg.opnsense.frr_ospf_interface:
       match_fields: ['interface']
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf_interface'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_ospf_interface:
+      oxlorg.opnsense.frr_ospf_interface:
         interface: 'opt1'
         # area: '0.0.0.0'
         # cost: 10
@@ -456,7 +456,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # match_fields: ['interface', 'area']
 
     - name: Configuring interface
-      ansibleguy.opnsense.frr_ospf_interface:
+      oxlorg.opnsense.frr_ospf_interface:
         interface: 'opt1'
         area: '0.0.0.0'
         cost: 500
@@ -471,7 +471,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         auth_key: "{{ 'random' | hash('md5') }}"
 
     - name: Disabling interface
-      ansibleguy.opnsense.frr_ospf_interface:
+      oxlorg.opnsense.frr_ospf_interface:
         interface: 'opt1'
         area: '0.0.0.0'
         cost: 500
@@ -487,7 +487,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Pulling settings
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_ospf_interface'
       register: existing_entries
 
@@ -496,45 +496,45 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing interface
-      ansibleguy.opnsense.frr_ospf_interface:
+      oxlorg.opnsense.frr_ospf_interface:
         interface: 'opt1'
         state: 'absent'
 ```
 
-#### ansibleguy.opnsense.frr_ospf_redistribution
+#### oxlorg.opnsense.frr_ospf_redistribution
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf_redistribution'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_ospf_redistribution:
+      oxlorg.opnsense.frr_ospf_redistribution:
         description: 'test1'
         redistribution: ospf
         # enabled: true
         # reload: true
 
     - name: Creating redistribution
-      ansibleguy.opnsense.frr_ospf_redistribution:
+      oxlorg.opnsense.frr_ospf_redistribution:
         description: 'test2'
         redistribution: ospf
 
     - name: Disabling redistribution
-      ansibleguy.opnsense.frr_ospf_redistribution:
+      oxlorg.opnsense.frr_ospf_redistribution:
         description: 'test2'
         redistribution: ospf
         enabled: false
 
     - name: Pulling redistributions
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_ospf_redistribution'
       register: existing_entries
 
@@ -543,7 +543,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing redistribution
-      ansibleguy.opnsense.frr_ospf_redistribution:
+      oxlorg.opnsense.frr_ospf_redistribution:
         description: 'test2'
         state: 'absent'
 ```
@@ -552,37 +552,37 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 
 ### OSPFv3 (_IPv6_)
 
-#### ansibleguy.opnsense.frr_ospf3_general
+#### oxlorg.opnsense.frr_ospf3_general
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf3_general'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_ospf3_general:
+      oxlorg.opnsense.frr_ospf3_general:
         # id: '10.0.0.1'
         # carp: false
         # enabled: true
 
     - name: Configuring general settings
-      ansibleguy.opnsense.frr_ospf3_general:
+      oxlorg.opnsense.frr_ospf3_general:
         id: '10.0.1.1'
 
     - name: Disabling OSPFv3
-      ansibleguy.opnsense.frr_ospf3_general:
+      oxlorg.opnsense.frr_ospf3_general:
         id: '10.0.1.1'
         enabled: false
 
     - name: Pulling settings
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_ospf3_general'
       register: existing_entries
 
@@ -591,22 +591,22 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 ```
 
-#### ansibleguy.opnsense.frr_ospf3_prefix_list
+#### oxlorg.opnsense.frr_ospf3_prefix_list
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf3_prefix_list'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_ospf3_prefix_list:
+      oxlorg.opnsense.frr_ospf3_prefix_list:
         name: 'example'
         seq: 10
         action: 'permit'
@@ -614,14 +614,14 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # enabled: true
 
     - name: Configuring prefix-list
-      ansibleguy.opnsense.frr_ospf3_prefix_list:
+      oxlorg.opnsense.frr_ospf3_prefix_list:
         name: 'test2'
         seq: 25
         action: 'permit'
         network: '10.0.1.0/24'
 
     - name: Disabling prefix-list
-      ansibleguy.opnsense.frr_ospf3_prefix_list:
+      oxlorg.opnsense.frr_ospf3_prefix_list:
         name: 'test2'
         seq: 25
         action: 'permit'
@@ -629,7 +629,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Pulling settings
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_ospf3_prefix_list'
       register: existing_entries
 
@@ -638,27 +638,27 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing prefix-list
-      ansibleguy.opnsense.frr_ospf3_prefix_list:
+      oxlorg.opnsense.frr_ospf3_prefix_list:
         name: 'test2'
         state: 'absent'
 ```
 
-#### ansibleguy.opnsense.frr_ospf3_route_map
+#### oxlorg.opnsense.frr_ospf3_route_map
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf3_route_map'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_ospf3route_map:
+      oxlorg.opnsense.frr_ospf3route_map:
         name: 'example'
         id: 10
         action: 'permit'
@@ -667,14 +667,14 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # enabled: true
 
     - name: Configuring route-map
-      ansibleguy.opnsense.frr_ospf3_route_map:
+      oxlorg.opnsense.frr_ospf3_route_map:
         name: 'test2'
         id: 65
         action: 'permit'
         set: 'local-preference 300'
 
     - name: Disabling route-map
-      ansibleguy.opnsense.frr_ospf3_route_map:
+      oxlorg.opnsense.frr_ospf3_route_map:
         name: 'test2'
         id: 65
         action: 'permit'
@@ -682,7 +682,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Pulling settings
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_ospf3_route_map'
       register: existing_entries
 
@@ -691,30 +691,30 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing route-map
-      ansibleguy.opnsense.frr_ospf3_route_map:
+      oxlorg.opnsense.frr_ospf3_route_map:
         name: 'test2'
         state: 'absent'
 ```
 
-#### ansibleguy.opnsense.frr_ospf3_network
+#### oxlorg.opnsense.frr_ospf3_network
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.frr_ospf3_network:
+    oxlorg.opnsense.frr_ospf3_network:
       match_fields: ['ip', 'mask']
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf_route_map'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_ospf3_network:
+      oxlorg.opnsense.frr_ospf3_network:
         ip: 'fe80::1234'
         mask: 64
         area: '0.0.0.0'
@@ -722,20 +722,20 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # enabled: true
 
     - name: Configuring network
-      ansibleguy.opnsense.frr_ospf3_network:
+      oxlorg.opnsense.frr_ospf3_network:
         ip: 'fe80::1234'
         mask: 64
         area: '0.0.1.0'
 
     - name: Disabling network
-      ansibleguy.opnsense.frr_ospf3_network:
+      oxlorg.opnsense.frr_ospf3_network:
         ip: 'fe80::1234'
         mask: 64
         area: '0.0.1.0'
         enabled: false
 
     - name: Pulling settings
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_ospf3_network'
       register: existing_entries
 
@@ -744,31 +744,31 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing network
-      ansibleguy.opnsense.frr_ospf3_network:
+      oxlorg.opnsense.frr_ospf3_network:
         ip: 'fe80::1234'
         mask: 64
         state: 'absent'
 ```
 
-#### ansibleguy.opnsense.frr_ospf3_interface
+#### oxlorg.opnsense.frr_ospf3_interface
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.frr_ospf3_interface:
+    oxlorg.opnsense.frr_ospf3_interface:
       match_fields: ['interface']
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf3_interface'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_ospf3_interface:
+      oxlorg.opnsense.frr_ospf3_interface:
         interface: 'opt1'
         # area: '0.0.0.0'
         # cost: 10
@@ -785,7 +785,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # match_fields: ['interface', 'area']
 
     - name: Configuring interface
-      ansibleguy.opnsense.frr_ospf3_interface:
+      oxlorg.opnsense.frr_ospf3_interface:
         interface: 'opt1'
         area: '0.0.0.0'
         cost: 500
@@ -798,7 +798,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         network_type: 'point-to-point'
 
     - name: Disabling interface
-      ansibleguy.opnsense.frr_ospf3_interface:
+      oxlorg.opnsense.frr_ospf3_interface:
         interface: 'opt1'
         area: '0.0.0.0'
         cost: 500
@@ -812,7 +812,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         enabled: false
 
     - name: Pulling settings
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_ospf3_interface'
       register: existing_entries
 
@@ -821,45 +821,45 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing interface
-      ansibleguy.opnsense.frr_ospf3_interface:
+      oxlorg.opnsense.frr_ospf3_interface:
         interface: 'opt1'
         state: 'absent'
 ```
 
-#### ansibleguy.opnsense.frr_ospf3_redistribution
+#### oxlorg.opnsense.frr_ospf3_redistribution
 
 ```yaml
 - hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
-      firewall: 'opnsense.template.ansibleguy.net'
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
       api_credential_file: '/home/guy/.secret/opn.key'
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_ospf3_redistribution'
 
   tasks:
     - name: Example
-      ansibleguy.opnsense.frr_ospf3_redistribution:
+      oxlorg.opnsense.frr_ospf3_redistribution:
         description: 'test1'
         redistribution: ospf
         # enabled: true
         # reload: true
 
     - name: Creating redistribution
-      ansibleguy.opnsense.frr_ospf3_redistribution:
+      oxlorg.opnsense.frr_ospf3_redistribution:
         description: 'test2'
         redistribution: ospf
 
     - name: Disabling redistribution
-      ansibleguy.opnsense.frr_ospf3_redistribution:
+      oxlorg.opnsense.frr_ospf3_redistribution:
         description: 'test2'
         redistribution: ospf
         enabled: false
 
     - name: Pulling redistributions
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       #  target: 'frr_ospf3_redistribution'
       register: existing_entries
 
@@ -868,7 +868,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         var: existing_entries.data
 
     - name: Removing redistribution
-      ansibleguy.opnsense.frr_ospf3_redistribution:
+      oxlorg.opnsense.frr_ospf3_redistribution:
         description: 'test2'
         state: 'absent'
 ```

@@ -11,7 +11,7 @@ Routing
 Static Routes
 =============
 
-**TESTS**: `route <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/route.yml>`_
+**TESTS**: `route <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/route.yml>`_
 
 **API Docs**: `Core - Routes <https://docs.opnsense.org/development/api/core/routes.html>`_
 
@@ -20,7 +20,7 @@ Static Routes
 Gateway Groups
 ==============
 
-**TESTS**: `gateway <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/gateway.yml>`_
+**TESTS**: `gateway <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/gateway.yml>`_
 
 **API Docs**: `Core - routings <https://docs.opnsense.org/development/api/core/routing.html>`_
 
@@ -40,7 +40,7 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
-ansibleguy.opnsense.route
+oxlorg.opnsense.route
 =========================
 
 ..  csv-table:: Definition
@@ -53,7 +53,7 @@ ansibleguy.opnsense.route
     "match_fields","list of strings","false","['network', 'gateway']","\-","Fields that are used to match configured routes with the running config - if any of those fields are changed, the module will think it's a new route"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
-ansibleguy.opnsense.gateway
+oxlorg.opnsense.gateway
 ===========================
 
 ..  csv-table:: Definition
@@ -104,7 +104,7 @@ However - it is **recommended** to use/set 'description' as **unique identifier*
 Examples
 ********
 
-ansibleguy.opnsense.route
+oxlorg.opnsense.route
 =========================
 
 .. code-block:: yaml
@@ -112,19 +112,19 @@ ansibleguy.opnsense.route
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.route:
+        oxlorg.opnsense.route:
           match_fields: ['description']
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'route'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.route:
+          oxlorg.opnsense.route:
             description: 'test1'
             network: '172.16.0.0/12'
             gateway: 'LAN_GW'
@@ -134,14 +134,14 @@ ansibleguy.opnsense.route
             # state: 'present'
 
         - name: Adding route
-          ansibleguy.opnsense.route:
+          oxlorg.opnsense.route:
             description: 'test2'
             network: '10.206.0.0/16'
             gateway: 'VPN_GW'
             # match_fields: ['description']
 
         - name: Disabling route
-          ansibleguy.opnsense.route:
+          oxlorg.opnsense.route:
             description: 'test3'
             network: '10.55.0.0/16'
             gateway: 'VPN_GW'
@@ -149,7 +149,7 @@ ansibleguy.opnsense.route
             # match_fields: ['description']
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'route'
           register: existing_entries
 
@@ -158,14 +158,14 @@ ansibleguy.opnsense.route
             var: existing_entries.data
 
         - name: Removing route 'test3'
-          ansibleguy.opnsense.route:
+          oxlorg.opnsense.route:
             description: 'test3'
             network: '10.55.0.0/16'
             gateway: 'VPN_GW'
             state: 'absent'
             match_fields: ['description']
 
-ansibleguy.opnsense.gateway
+oxlorg.opnsense.gateway
 ===========================
 
 .. code-block:: yaml
@@ -173,35 +173,35 @@ ansibleguy.opnsense.gateway
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.gateway:
+        oxlorg.opnsense.gateway:
           match_fields: ['description']
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'gateway'
 
       tasks:
         - name: List Gateways
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           register: existing_entries
 
         - name: Add Gateway
-          ansibleguy.opnsense.gateway:
+          oxlorg.opnsense.gateway:
             name: 'Test_GW'
             interface: 'wg1'
             gateway: '10.255.255.16'
 
         - name: Set Gateway Monitor IP
-          ansibleguy.opnsense.gateway:
+          oxlorg.opnsense.gateway:
             name: 'Test_GW'
             interface: 'wg1'
             gateway: '10.255.255.16'
             monitor: '1.1.1.1'
 
         - name: Delete Gateway
-          ansibleguy.opnsense.gateway:
+          oxlorg.opnsense.gateway:
             name: 'Test_GW'
             state: absent

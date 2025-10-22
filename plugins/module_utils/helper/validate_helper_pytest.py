@@ -11,7 +11,7 @@ import pytest
     ('00:11:22:33:44:', False),
 ])
 def test_is_valid_mac_address(value, result):
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
         is_valid_mac_address
 
     assert is_valid_mac_address(value) == result
@@ -30,7 +30,7 @@ def test_is_valid_mac_address(value, result):
     ('00:11:22:33:44:', False),
 ])
 def test_is_valid_partial_mac_address(value, result):
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
         is_valid_partial_mac_address
 
     assert is_valid_partial_mac_address(value) == result
@@ -46,7 +46,7 @@ def test_is_valid_partial_mac_address(value, result):
     ('2001:0db8:85a3::1319:8a2e:0370::', False),
 ])
 def test_is_ip(value, result):
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
         is_ip
 
     assert is_ip(value) == result
@@ -68,7 +68,7 @@ def test_is_ip(value, result):
     ('2001:0db8:85a3::1319:8a2e:0370::', False),
 ])
 def test_is_network(value, result):
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
         is_network
 
     assert is_network(value, strict=True) == result
@@ -94,7 +94,7 @@ def test_is_network(value, result):
     ('!2001::85a3:08d3:1319::0370:7344', False),
 ])
 def test_is_valid_network(value, result):
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import is_valid_network
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import is_valid_network
 
     assert is_valid_network(value) == result
 
@@ -103,12 +103,12 @@ def test_is_valid_network(value, result):
     ('!1.2.4.5', True),
     ('1.2.4.5', True),
     ('1.2.400.5', False),
-    ('ansibleguy.net', True),
+    ('oxl.at', True),
     ('2001:0db8:85a3:08d3:1319:8a2e:0370:7344', True),
     ('2001::85a3:08d3:1319::0370:7344', False),
 ])
 def test_is_valid_host(value, result):
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import is_valid_host
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import is_valid_host
 
     assert is_valid_host(value) == result
 
@@ -118,7 +118,7 @@ def test_is_valid_host(value, result):
     (65536, False),
 ])
 def test_validate_port(value, valid):
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import validate_port
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import validate_port
 
     error_func = Mock()
 
@@ -144,7 +144,7 @@ def test_validate_port(value, valid):
     ('notsmtp', False, {}),
 ])
 def test_validate_port_or_range(value, valid, params):
-    from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import validate_port_or_range
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import validate_port_or_range
 
     error_func = Mock()
 
@@ -154,3 +154,9 @@ def test_validate_port_or_range(value, valid, params):
         error_func.assert_not_called()
     else:
         error_func.assert_called_once()
+
+
+def test_placeholder():
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
+        is_valid_domain, is_valid_email, is_valid_url, validate_int_fields, validate_str_fields, \
+        is_ip4, is_ip6, is_ip_or_network, is_ip6_network, valid_hostname

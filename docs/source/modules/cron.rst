@@ -8,7 +8,7 @@ Cron Jobs
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/cron.yml>`_
+**TESTS**: `Playbook <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/cron.yml>`_
 
 **API Docs**: `Core - Cron <https://docs.opnsense.org/development/api/core/cron.html>`_
 
@@ -56,16 +56,16 @@ Examples
     - hosts: localhost
       gather_facts: no
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'cron'
 
       tasks:
         - name: Example
-          ansibleguy.opnsense.cron:
+          oxlorg.opnsense.cron:
             description: 'test1'
             command: 'system remote backup'
             # parameters
@@ -79,7 +79,7 @@ Examples
             # debug: false
 
         - name: Adding daily firmware update check
-          ansibleguy.opnsense.cron:
+          oxlorg.opnsense.cron:
             description: 'test2'
             command: 'firmware poll'
             minutes: '0'
@@ -87,12 +87,12 @@ Examples
             days: '*'
 
         - name: Removing some job
-          ansibleguy.opnsense.cron:
+          oxlorg.opnsense.cron:
             description: 'test3'
             state: 'absent'
 
         - name: Adding monthly firmware upgrade
-          ansibleguy.opnsense.cron:
+          oxlorg.opnsense.cron:
             description: 'test4'
             command: 'firmware auto-update'
             minutes: '0'
@@ -101,7 +101,7 @@ Examples
             months: '*'
 
         - name: Listing
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'cron'
           register: existing_jobs
 

@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_general'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring
-      ansibleguy.opnsense.frr_general:
+      oxlorg.opnsense.frr_general:
         enabled: true
         profile: 'traditional'
         log: true
@@ -35,7 +35,7 @@
         not opn1.changed
 
     - name: Changing
-      ansibleguy.opnsense.frr_general:
+      oxlorg.opnsense.frr_general:
         enabled: true
         profile: 'datacenter'
         log: true
@@ -47,7 +47,7 @@
         not opn5.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.frr_general:
+      oxlorg.opnsense.frr_general:
         profile: 'datacenter'
         log: true
         log_level: 'emergencies'
@@ -60,7 +60,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.frr_general:
+      oxlorg.opnsense.frr_general:
         profile: 'datacenter'
         log: true
         log_level: 'emergencies'
@@ -73,7 +73,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.frr_general:
+      oxlorg.opnsense.frr_general:
         profile: 'datacenter'
         log: true
         log_level: 'emergencies'
@@ -86,7 +86,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.frr_general:
+      oxlorg.opnsense.frr_general:
         enabled: false
         profile: 'traditional'
         carp: false

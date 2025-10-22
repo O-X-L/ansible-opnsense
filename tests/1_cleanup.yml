@@ -14,14 +14,15 @@
 
   tasks:
     - name: Cleanup Rules
-      oxlorg.opnsense.rule_purge:
-        force_all: true
+      oxlorg.opnsense.rule:
+        multi_control:
+          purge_all: true
         match_fields: ['description']
-        key_field: 'description'
 
     - name: Cleanup Aliases
-      oxlorg.opnsense.alias_purge:
-        force_all: true
+      oxlorg.opnsense.alias:
+        multi_control:
+          purge_all: true
 
     - name: Cleanup packages
       oxlorg.opnsense.package:
@@ -83,8 +84,8 @@
         state: 'absent'
         reload: false  # speed
       loop:
-        - {d: 'fwd.opnsense.test.oxl.app', t: '1.1.1.1'}
-        - {d: 'fwd.opnsense.test.oxl.app', t: '1.1.1.2'}
+        - {d: 'fwd.opnsense.test.oxlorg.net', t: '1.1.1.1'}
+        - {d: 'fwd.opnsense.test.oxlorg.net', t: '1.1.1.2'}
         - {d: '', t: '1.1.1.3'}
         - {d: '', t: '1.1.1.4'}
 
@@ -177,8 +178,8 @@
         recipient: "{{ item }}"
         state: 'absent'
       loop:
-        - 'alert@monit.opnsense.test.oxl.app'
-        - 'alert2@monit.opnsense.test.oxl.app'
+        - 'alert@monit.opnsense.test.oxlorg.net'
+        - 'alert2@monit.opnsense.test.oxlorg.net'
 
     - name: Cleanup monit tests
       oxlorg.opnsense.monit_test:
@@ -488,19 +489,9 @@
         enabled: false
 
     - name: Cleanup BIND Records
-      oxlorg.opnsense.bind_record_multi:
-        records:
-          'test4.oxl':
-            - 'test1'
-            - name: 'test1'
-              type: 'TXT'
-            - 'test2'
-            - name: 'test2'
-              type: 'TXT'
-            - 'test3'
-            - name: 'test4'
-              type: 'CNAME'
-        state: 'absent'
+      oxlorg.opnsense.bind_record:
+        multi_control:
+          purge_all: true
       register: bind_cleanup1
       failed_when:
         - bind_cleanup1.failed
@@ -511,10 +502,10 @@
         name: "{{ item }}"
         state: 'absent'
       loop:
-        - 'test1.oxl'
-        - 'test2.oxl'
-        - 'test3.oxl'
-        - 'test4.oxl'
+        - 'test1.oxlorg'
+        - 'test2.oxlorg'
+        - 'test3.oxlorg'
+        - 'test4.oxlorg'
 
     - name: Cleanup BIND ACLs
       oxlorg.opnsense.bind_acl:
@@ -971,8 +962,8 @@
         domain: '{{ item }}'
         state: 'absent'
       loop:
-        - 'test1.oxl'
-        - 'test2.oxl'
+        - 'test1.oxlorg'
+        - 'test2.oxlorg'
 
     - name: Cleanup dnsmasq Host
       oxlorg.opnsense.dnsmasq_host:

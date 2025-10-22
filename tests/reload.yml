@@ -4,7 +4,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    ansibleguy.opnsense.reload:
+    oxlorg.opnsense.reload:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -14,7 +14,7 @@
 
   tasks:
     - name: Reloading
-      ansibleguy.opnsense.reload:
+      oxlorg.opnsense.reload:
         target: "{{ item }}"
         timeout: 90
       when: not ansible_check_mode

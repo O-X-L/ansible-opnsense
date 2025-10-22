@@ -8,7 +8,7 @@ MODULE TITLE
 
 **STATE**: unstable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/<module>.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/<module>.yml>`_
 
 **API Docs**: `<module> <https://docs.opnsense.org/development/api/core/<module>.html>`_
 
@@ -43,11 +43,11 @@ Examples
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: '<module>'
 
       tasks:
@@ -55,20 +55,20 @@ Examples
         # required ones normally
         # add their default values to get a brief overview of how the module works
         - name: Example
-          ansibleguy.opnsense.<module>:
+          oxlorg.opnsense.<module>:
             description: 'test1'
             command: 'system remote backup'
             # state: 'absent'
             # debug: false
 
         - name: Adding something
-          ansibleguy.opnsense.<module>:
+          oxlorg.opnsense.<module>:
 
         - name: Changing something
-          ansibleguy.opnsense.<module>:
+          oxlorg.opnsense.<module>:
 
         - name: Listing jobs
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: '<module>'
           register: existing_jobs
 

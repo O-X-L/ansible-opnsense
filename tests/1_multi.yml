@@ -1,0 +1,582 @@
+---
+
+# these tests should cover the main functionality of the abstracted mass management
+#   module-specific logic should be tested by dedicated test-cases (<module>_multi.yml)
+
+# low-level checks should be done via unit-tests:
+#   module_utils/base/multi_base_1_mod_args.py => testing the module-argument generator
+#   module_utils/base/multi_base_2_parts_pytest.py => testing multi-handling methods
+#   module_utils/base/multi_base_3_full_pytest.py => 'end-to-end'-like tests
+
+- name: Testing Mass Management
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    oxlorg.opnsense.list:
+      target: 'alias'
+
+    oxlorg.opnsense.alias:
+      multi_control:
+        fail_verify: true
+        fail_process: true
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Purging all
+      oxlorg.opnsense.alias:
+        multi_control:
+          purge_all: true
+
+    - name: Fail required args (1)
+      oxlorg.opnsense.alias:
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Fail required args (2)
+      oxlorg.opnsense.alias:
+        multi_control:
+          purge_action: 'disable'
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Fail required args (3)
+      oxlorg.opnsense.alias:
+        multi_control:
+          purge_unconfigured: true
+      register: opn_fail3
+      failed_when: not opn_fail3.failed
+
+    - name: Removing - do not exist
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+        multi_control:
+          state: 'absent'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        opn1.changed
+
+    - name: Adding
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.1.1'
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.1.1', '192.168.1.2']
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/24'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.1.0/24', '192.168.2.0/24']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 80
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [80, 443]
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Changing
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.2.0/24', '192.168.20.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [80, 8443]
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.2.0/24', '192.168.20.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [80, 8443]
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        opn4.changed
+      when: not ansible_check_mode
+
+    - name: Changing few
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: not ansible_check_mode
+
+    - name: Disabling some
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+        multi_control:
+          enabled: false
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+      when: not ansible_check_mode
+
+    - name: Checking count
+      oxlorg.opnsense.list:
+      register: opn8
+      failed_when: >
+        'data' not in opn8 or
+        opn8.data | length != 6
+      when: not ansible_check_mode
+
+    - name: Checking disabled-state
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        opn9.changed
+      when: not ansible_check_mode
+
+    - name: Removing some
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+          - name: 'ANSIBLE_TEST_0_2'
+        multi_control:
+          state: 'absent'
+      register: opn10
+      failed_when: >
+        opn10.failed or
+        not opn10.changed
+      when: not ansible_check_mode
+
+    - name: Checking count
+      oxlorg.opnsense.list:
+      register: opn11
+      failed_when: >
+        'data' not in opn11 or
+        opn11.data | length != 4
+      when: not ansible_check_mode
+
+    - name: Recreating
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      when: not ansible_check_mode
+
+    - name: Removing unconfigured/orphaned
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+        multi_control:
+          purge_unconfigured: true
+      register: purge1
+      failed_when: >
+        purge1.failed or
+        not purge1.changed
+      when: not ansible_check_mode
+
+    - name: Checking count
+      oxlorg.opnsense.list:
+      register: opn15
+      failed_when: >
+        'data' not in opn15 or
+        opn15.data | length != 3
+      when: not ansible_check_mode
+
+    - name: Recreating
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      when: not ansible_check_mode
+
+    - name: Simple purge
+      oxlorg.opnsense.alias:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_0_1'
+      register: purge2
+      failed_when: >
+        purge2.failed or
+        not purge2.changed
+      when: not ansible_check_mode
+
+    - name: Listing aliases
+      oxlorg.opnsense.list:
+      register: opn16
+      failed_when: >
+        'data' not in opn16 or
+        opn16.data | length != 5
+      when: not ansible_check_mode
+
+    - name: Simple disable-purge
+      oxlorg.opnsense.alias:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_0_3'
+        multi_control:
+          purge_action: 'disable'
+      register: purge3
+      failed_when: >
+        purge3.failed or
+        not purge3.changed
+      when: not ansible_check_mode
+
+    - name: Simple disable-purge - nothing changed
+      oxlorg.opnsense.alias:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_0_3'
+        multi_control:
+          purge_action: 'disable'
+      register: purge4
+      failed_when: >
+        purge4.failed or
+        purge4.changed
+      when: not ansible_check_mode
+
+    - name: Recreating
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      when: not ansible_check_mode
+
+    - name: Filtered purge (single)
+      oxlorg.opnsense.alias:
+        multi_control:
+          purge_filter:
+            type: 'port'
+      when: not ansible_check_mode
+      register: purge5
+
+    - name: Listing entries
+      oxlorg.opnsense.list:
+      register: opn17
+      failed_when: >
+        'data' not in opn17 or
+        opn17.data | length != 4
+      when: not ansible_check_mode
+
+    - name: Recreating
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      when: not ansible_check_mode
+
+    - name: Filtered purge (single inverted)
+      oxlorg.opnsense.alias:
+        multi_control:
+          purge_filter:
+            type: 'port'
+          purge_filter_invert: true
+      when: not ansible_check_mode
+      register: purge6
+      failed_when: >
+        purge6.failed or
+        not purge6.changed
+
+    - name: Recreating
+      oxlorg.opnsense.alias:
+        aliases:
+          - name: 'ANSIBLE_TEST_0_1'
+            type: 'host'
+            content: '192.168.2.1'
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_2'
+            type: 'host'
+            content: ['192.168.2.1', '192.168.2.2']
+            enabled: false
+
+          - name: 'ANSIBLE_TEST_0_3'
+            type: 'network'
+            content: '192.168.1.0/25'
+
+          - name: 'ANSIBLE_TEST_0_4'
+            type: 'network'
+            content: ['192.168.12.0/24', '192.168.21.0/23']
+
+          - name: 'ANSIBLE_TEST_0_5'
+            type: 'port'
+            content: 443
+
+          - name: 'ANSIBLE_TEST_0_6'
+            type: 'port'
+            content: [8080, 8443]
+      when: not ansible_check_mode
+
+    - name: Filtered purge (partial match)
+      oxlorg.opnsense.alias:
+        multi_control:
+          purge_filter:
+            content: '192.168.1'
+          purge_filter_partial: true
+      when: not ansible_check_mode
+      register: purge7
+      failed_when: >
+        purge7.failed or
+        not purge7.changed
+
+    - name: Listing aliases
+      oxlorg.opnsense.list:
+      register: opn19
+      failed_when: >
+        'data' not in opn19 or
+        opn19.data | length != 4
+      when: not ansible_check_mode
+
+    - name: Purging all
+      oxlorg.opnsense.alias:
+        multi_control:
+          purge_all: true
+      register: opn_clean1
+      failed_when: >
+        opn_clean1.failed or
+        not opn_clean1.changed
+      when: not ansible_check_mode
+
+    - name: Checking count
+      oxlorg.opnsense.list:
+      register: opn_clean2
+      failed_when: >
+        'data' not in opn_clean2 or
+        opn_clean2.data | length != 0
+      when: not ansible_check_mode

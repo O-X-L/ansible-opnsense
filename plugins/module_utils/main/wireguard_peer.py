@@ -1,11 +1,11 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_ip, is_ip_or_network, is_unset
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import BaseModule
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_valid_domain
 
 
@@ -50,8 +50,8 @@ class Peer(BaseModule):
     EXIST_ATTR = 'peer'
     FIELDS_DIFF_EXCLUDE = []
 
-    def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
-        BaseModule.__init__(self=self, m=module, r=result, s=session)
+    def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
+        BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.peer = {}
         self.existing_servers = None
         self.existing_peers = None
@@ -101,7 +101,7 @@ class Peer(BaseModule):
         self._base_check()
 
     def _translate_servers(self, search_in: list) -> list:
-        from ansible_collections.ansibleguy.opnsense.plugins.module_utils.main.wireguard_server import Server
+        from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.wireguard_server import Server
 
         servers = []
         existing = {}

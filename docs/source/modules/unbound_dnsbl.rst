@@ -8,7 +8,7 @@ DNS - Unbound - Blocklists
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible_opnsense/blob/latest/tests/unbound_dnsbl.yml>`_
+**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/unbound_dnsbl.yml>`_
 
 **API Docs**: `unbound_dnsbl <https://docs.opnsense.org/development/api/core/unbound.html>`_
 
@@ -62,11 +62,11 @@ Examples
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'unbound_dnsbl'
 
       tasks:
@@ -74,11 +74,11 @@ Examples
         # required ones normally
         # add their default values to get a brief overview of how the module works
         - name: Example
-          ansibleguy.opnsense.unbound_dnsbl:
+          oxlorg.opnsense.unbound_dnsbl:
             type: atl
             # safesearch: false
             # lists: ['https://example.com/dns.blocklist']
-            # whitelists: ['ansibleguy.net']
+            # whitelists: ['opnsense.oxl.app']
             # blocklists: ['example.net']
             # wildcards: ['example.net']
             # address: 192.168.254.254
@@ -88,12 +88,12 @@ Examples
             # debug: false
 
         - name: Configuring DNS Blocklists
-          ansibleguy.opnsense.unbound_dnsbl:
+          oxlorg.opnsense.unbound_dnsbl:
             type: atl
             enable: true
 
         - name: Listing current config
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'unbound_dnsbl'
           register: dnsbl_config
 

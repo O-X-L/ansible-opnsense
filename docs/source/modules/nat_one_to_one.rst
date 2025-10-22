@@ -8,7 +8,7 @@ NAT One-To-One
 
 **STATE**: stable
 
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/nat_one_to_one.yml>`_
+**TESTS**: `Playbook <https://github.com/oxlorg/collection_opnsense/blob/latest/tests/nat_one_to_one.yml>`_
 
 **API Docs**: `Core - Firewall <https://docs.opnsense.org/development/api/core/firewall.html>`_
 
@@ -29,7 +29,7 @@ Savepoint
 
 You can prevent lockout-situations using the savepoint systems:
 
-- :ref:`ansibleguy.opnsense.savepoint <modules_savepoint>`
+- :ref:`oxlorg.opnsense.savepoint <modules_savepoint>`
 
 
 Definition
@@ -75,11 +75,11 @@ Examples
     - hosts: localhost
       gather_facts: false
       module_defaults:
-        group/ansibleguy.opnsense.all:
-          firewall: 'opnsense.template.ansibleguy.net'
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        ansibleguy.opnsense.list:
+        oxlorg.opnsense.list:
           target: 'nat_one_to_one'
 
       tasks:
@@ -87,7 +87,7 @@ Examples
         # required ones normally
         # add their default values to get a brief overview of how the module works
         - name: Example
-          ansibleguy.opnsense.nat_one_to_one:
+          oxlorg.opnsense.nat_one_to_one:
             #sequence: 1
             interface: 'lan'
             #type: binnat
@@ -103,7 +103,7 @@ Examples
             # debug: false
 
         - name: Listing jobs
-          ansibleguy.opnsense.list:
+          oxlorg.opnsense.list:
           #  target: 'nat_one_to_one'
           register: existing_one_to_one
 

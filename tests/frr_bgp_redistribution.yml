@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_redistribution'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -33,7 +33,7 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of invalid redistribute
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'ANSIBLE_TEST_1_1'
         redistribute: ansible
       register: opn_fail1
@@ -41,7 +41,7 @@
 
 
     - name: Adding 1 - failing because of non-existent route-map
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'ANSIBLE_TEST_1_1'
         redistribute: ospf
         route_map: 'DOES-NOT-EXIST'
@@ -49,7 +49,7 @@
       failed_when: not opn_fail2.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'ANSIBLE_TEST_1_1'
         redistribute: ospf
       register: opn1
@@ -58,7 +58,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'ANSIBLE_TEST_1_1'
         redistribute: connected
       register: opn2
@@ -67,7 +67,7 @@
         not opn2.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'ANSIBLE_TEST_1_1'
         redistribute: connected
         enabled: false
@@ -78,7 +78,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'ANSIBLE_TEST_1_1'
         redistribute: connected
         enabled: false
@@ -89,7 +89,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'ANSIBLE_TEST_1_1'
         redistribute: connected
       register: opn5
@@ -99,7 +99,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'ANSIBLE_TEST_1_2'
         redistribute: ospf
       register: opn6
@@ -108,7 +108,7 @@
         not opn6.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'ANSIBLE_TEST_1_2'
         redistribute: ospf
       register: opn7
@@ -118,7 +118,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn8
@@ -128,7 +128,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn9
       failed_when: >
         'data' not in opn9 or
@@ -136,7 +136,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: "{{ item }}"
         state: 'absent'
       loop:
@@ -145,7 +145,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or
@@ -156,12 +156,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_redistribution'
 
   environment:
@@ -169,7 +169,7 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre2
       failed_when: >
         'data' not in opn_pre2 or
@@ -177,14 +177,14 @@
       when: not ansible_check_mode
 
     - name: Adding dummy route-map
-      ansibleguy.opnsense.frr_bgp_route_map:
+      oxlorg.opnsense.frr_bgp_route_map:
         name: 'ANSIBLE_TEST_3_1'
         id: 50
         action: 'permit'
       when: not ansible_check_mode
 
     - name: Adding redistribution linked to route-map
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: 'ANSIBLE_TEST_2_1'
         redistribute: ospf
         route_map: 'ANSIBLE_TEST_3_1'
@@ -195,7 +195,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup redistributions
-      ansibleguy.opnsense.frr_bgp_redistribution:
+      oxlorg.opnsense.frr_bgp_redistribution:
         description: "{{ item }}"
         state: 'absent'
       loop:
@@ -204,13 +204,13 @@
       when: not ansible_check_mode
 
     - name: Cleanup route-map
-      ansibleguy.opnsense.frr_bgp_route_map:
+      oxlorg.opnsense.frr_bgp_route_map:
         name: 'ANSIBLE_TEST_3_1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean2
       failed_when: >
         'data' not in opn_clean2 or

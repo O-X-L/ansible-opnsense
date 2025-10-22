@@ -4,7 +4,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    ansibleguy.opnsense.frr_bfd_general:
+    oxlorg.opnsense.frr_bfd_general:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -14,7 +14,7 @@
 
   tasks:
     - name: Enabling BFD
-      ansibleguy.opnsense.frr_bfd_general:
+      oxlorg.opnsense.frr_bfd_general:
         enabled: true
       register: opn1
       failed_when: >
@@ -22,7 +22,7 @@
         not opn1.changed
 
     - name: Disabling BFD
-      ansibleguy.opnsense.frr_bfd_general:
+      oxlorg.opnsense.frr_bfd_general:
         enabled: false
       register: opn2
       failed_when: >

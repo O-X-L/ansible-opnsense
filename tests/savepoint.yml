@@ -4,7 +4,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    ansibleguy.opnsense.savepoint:
+    oxlorg.opnsense.savepoint:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -14,19 +14,19 @@
 
   tasks:
     - name: Canceling filter savepoint rollback - does not exist
-      ansibleguy.opnsense.savepoint:
+      oxlorg.opnsense.savepoint:
         action: 'cancel_rollback'
         controller: 'filter'
         revision: 'non-existent'
 
     - name: Reverting filter savepoint - does not exist
-      ansibleguy.opnsense.savepoint:
+      oxlorg.opnsense.savepoint:
         action: 'revert'
         controller: 'filter'
         revision: 'non-existent'
 
     - name: Creating filter savepoint
-      ansibleguy.opnsense.savepoint:
+      oxlorg.opnsense.savepoint:
         action: 'create'
         controller: 'filter'
       register: opn1
@@ -37,21 +37,21 @@
       when: not ansible_check_mode
 
     - name: Applying filter savepoint
-      ansibleguy.opnsense.savepoint:
+      oxlorg.opnsense.savepoint:
         action: 'apply'
         controller: 'filter'
         revision: "{{ opn1.revision }}"
       when: not ansible_check_mode
 
     - name: Canceling filter savepoint rollback
-      ansibleguy.opnsense.savepoint:
+      oxlorg.opnsense.savepoint:
         action: 'cancel'
         controller: 'filter'
         revision: "{{ opn1.revision }}"
       when: not ansible_check_mode
 
     - name: Creating filter savepoint - to be reverted
-      ansibleguy.opnsense.savepoint:
+      oxlorg.opnsense.savepoint:
         action: 'create'
         controller: 'filter'
       register: opn2
@@ -62,21 +62,21 @@
       when: not ansible_check_mode
 
     - name: Applying filter savepoint - to be reverted
-      ansibleguy.opnsense.savepoint:
+      oxlorg.opnsense.savepoint:
         action: 'apply'
         controller: 'filter'
         revision: "{{ opn2.revision }}"
       when: not ansible_check_mode
 
     - name: Reverting filter savepoint
-      ansibleguy.opnsense.savepoint:
+      oxlorg.opnsense.savepoint:
         action: 'revert'
         controller: 'filter'
         revision: "{{ opn2.revision }}"
       when: not ansible_check_mode
 
     - name: Creating source-nat savepoint
-      ansibleguy.opnsense.savepoint:
+      oxlorg.opnsense.savepoint:
         action: 'create'
         controller: 'source_nat'
       register: opn4
@@ -87,14 +87,14 @@
       when: not ansible_check_mode
 
     - name: Applying source-nat savepoint
-      ansibleguy.opnsense.savepoint:
+      oxlorg.opnsense.savepoint:
         action: 'apply'
         controller: 'source_nat'
         revision: "{{ opn4.revision }}"
       when: not ansible_check_mode
 
     - name: Canceling source-nat savepoint rollback
-      ansibleguy.opnsense.savepoint:
+      oxlorg.opnsense.savepoint:
         action: 'cancel_rollback'
         controller: 'source_nat'
         revision: "{{ opn4.revision }}"

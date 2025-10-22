@@ -1,9 +1,9 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.base import Base
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.base import Base
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     validate_int_fields, validate_str_fields
 
 
@@ -53,8 +53,17 @@ class BaseShared:
 
 
 class BaseModule(BaseShared):
-    def __init__(self, m: AnsibleModule, r: dict, s: Session = None):
+    def __init__(self, m: AnsibleModule, r: dict, s: Session = None, f: dict = None, multi: dict = None):
         super().__init__(m, r, s)
+        if f is None:
+            f = {}
+
+        if multi is not None and len(multi) > 0:
+            # override params by MultiModule
+            self.p = multi
+
+        self.fail_verify = f.get('verify', False)
+        self.fail_process = f.get('process', False)
 
     def _base_check(self, match_fields: list = None):
         self._check_validators()

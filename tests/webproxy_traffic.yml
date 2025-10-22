@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'webproxy_traffic'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring
-      ansibleguy.opnsense.webproxy_traffic:
+      oxlorg.opnsense.webproxy_traffic:
         download_kb_max: 40960
         upload_kb_max: 10240
         throttle_kb_bandwidth: 81920
@@ -35,7 +35,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.webproxy_traffic:
+      oxlorg.opnsense.webproxy_traffic:
         download_kb_max: 20480
         upload_kb_max: 5120
         throttle_kb_bandwidth: 40960
@@ -47,7 +47,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1
-      ansibleguy.opnsense.webproxy_traffic:
+      oxlorg.opnsense.webproxy_traffic:
         download_kb_max: 20480
         upload_kb_max: 5120
         throttle_kb_bandwidth: 40960
@@ -60,7 +60,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.webproxy_traffic:
+      oxlorg.opnsense.webproxy_traffic:
         download_kb_max: 20480
         upload_kb_max: 5120
         throttle_kb_bandwidth: 40960
@@ -73,7 +73,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.webproxy_traffic:
+      oxlorg.opnsense.webproxy_traffic:
         download_kb_max: 20480
         upload_kb_max: 5120
         throttle_kb_bandwidth: 40960
@@ -85,6 +85,6 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.webproxy_traffic:
+      oxlorg.opnsense.webproxy_traffic:
         enabled: false
       when: not ansible_check_mode

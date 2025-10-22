@@ -4,17 +4,17 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'group'
 
   tasks:
     - name: Cleanup
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: '{{ item }}'
         state: 'absent'
       loop:
@@ -23,14 +23,14 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | selectattr('scope', 'eq', 'user') | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -39,20 +39,20 @@
         opn_pre2.changed
 
     - name: Removing 1 - failing because of system group
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: 'admins'
         state: 'absent'
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of invalid value
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: 'TOO_LONG_MAX_32_AAAAAAAAAAAAAAAAA'
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_1_1
       register: opn1
       failed_when: >
@@ -60,7 +60,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_1_1
         description: ANSIBLE_TEST_1_1
       register: opn2
@@ -69,7 +69,7 @@
         not opn2.changed
 
     - name: Adding 2
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
         source_net: 127.0.0.1/24
@@ -79,7 +79,7 @@
         not opn3.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
         source_net: 127.0.0.1/24
@@ -90,7 +90,7 @@
       when: not ansible_check_mode
 
     - name: Changing 2 - grant privileges
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
         source_net: 127.0.0.1/24
@@ -103,7 +103,7 @@
       when: not ansible_check_mode
 
     - name: Changing 2 - grant privileges - nothing changed
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
         source_net: 127.0.0.1/24
@@ -116,7 +116,7 @@
       when: not ansible_check_mode
 
     - name: Changing 2 - revoking privileges
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
         source_net: 127.0.0.1/24
@@ -128,7 +128,7 @@
       when: not ansible_check_mode
 
     - name: Changing 2 - revoking privileges - nothing changed
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_1_2
         description: ANSIBLE_TEST_1_2
         source_net: 127.0.0.1/24
@@ -140,7 +140,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_1_2
         state: 'absent'
       register: opn10
@@ -150,7 +150,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn11
       failed_when: >
         'data' not in opn11 or
@@ -158,7 +158,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: '{{ item }}'
         state: 'absent'
       loop:
@@ -167,7 +167,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or
@@ -178,24 +178,24 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'group'
 
   tasks:
     - name: Adding Dummy User
-      ansibleguy.opnsense.user:
+      oxlorg.opnsense.user:
         name: '{{ item }}'
       loop:
         - ANSIBLE_TEST_2_1
         - ANSIBLE_TEST_2_2
 
     - name: Adding 1
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_2_1
         member: ANSIBLE_TEST_2_1
       register: opn12
@@ -204,7 +204,7 @@
         not opn12.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_2_1
         member:
           - ANSIBLE_TEST_2_1
@@ -215,7 +215,7 @@
         not opn13.changed
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_2_1
         member:
           - ANSIBLE_TEST_2_1
@@ -227,7 +227,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_2_1
         member: []
       register: opn15
@@ -237,7 +237,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: ANSIBLE_TEST_2_1
         member: []
       register: opn16
@@ -247,7 +247,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.group:
+      oxlorg.opnsense.group:
         name: '{{ item }}'
         state: 'absent'
       loop:
@@ -255,7 +255,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup Dummy User
-      ansibleguy.opnsense.user:
+      oxlorg.opnsense.user:
         name: '{{ item }}'
         state: 'absent'
       loop:

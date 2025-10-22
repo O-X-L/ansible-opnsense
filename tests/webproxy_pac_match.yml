@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'webproxy_pac_match'
 
   environment:
@@ -17,7 +17,7 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
@@ -25,7 +25,7 @@
         opn_pre1.data | length != 0
 
     - name: Adding 1 - failing because of missing match arguments
-      ansibleguy.opnsense.webproxy_remote_acl:
+      oxlorg.opnsense.webproxy_remote_acl:
         name: 'ANSIBLE_TEST_1_1'
         type: "{{ item.t }}"
         domain_level_from: "{{ item.df | default(omit) }}"
@@ -60,11 +60,11 @@
         - {'t': 'time_range', 'hf': 1}  # no to hours
 
     - name: Adding 1
-      ansibleguy.opnsense.webproxy_pac_match:
+      oxlorg.opnsense.webproxy_pac_match:
         name: 'ANSIBLE_TEST_1_1'
         description: 'test'
         negate: false
-        url: 'ansibleguy.net/*'
+        url: 'oxlorg.net/*'
         type: 'url_matches'
       register: opn1
       failed_when: >
@@ -72,9 +72,9 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.webproxy_pac_match:
+      oxlorg.opnsense.webproxy_pac_match:
         name: 'ANSIBLE_TEST_1_1'
-        hostname: 'test.ansibleguy.net'
+        hostname: 'test.oxlorg.net'
         description: 'test_new'
         type: 'hostname_matches'
         negate: true
@@ -85,9 +85,9 @@
       when: not ansible_check_mode
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.webproxy_pac_match:
+      oxlorg.opnsense.webproxy_pac_match:
         name: 'ANSIBLE_TEST_1_1'
-        hostname: 'test.ansibleguy.net'
+        hostname: 'test.oxlorg.net'
         description: 'test_new'
         type: 'hostname_matches'
         negate: true
@@ -98,7 +98,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.webproxy_pac_match:
+      oxlorg.opnsense.webproxy_pac_match:
         name: 'ANSIBLE_TEST_1_2'
         description: 'working hours'
         type: 'time_range'
@@ -111,7 +111,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn7
       failed_when: >
         opn7.failed or
@@ -119,7 +119,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.webproxy_pac_match:
+      oxlorg.opnsense.webproxy_pac_match:
         name: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn8
@@ -129,7 +129,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         opn10.failed or
@@ -137,7 +137,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.webproxy_pac_match:
+      oxlorg.opnsense.webproxy_pac_match:
         name: "{{ item }}"
         state: 'absent'
       loop:
@@ -146,7 +146,7 @@
       when: not ansible_check_mode
 
     - name: Checking cleanup
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn9
       failed_when: >
         opn9.failed or
@@ -154,7 +154,7 @@
       when: not ansible_check_mode
 
     - name: Removing non-existent
-      ansibleguy.opnsense.webproxy_pac_match:
+      oxlorg.opnsense.webproxy_pac_match:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn11

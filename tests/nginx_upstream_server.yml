@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'nginx_upstream_server'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.nginx_upstream_server:
+      oxlorg.opnsense.nginx_upstream_server:
         name: 'ANSIBLE@TEST1'
         state: 'absent'
       register: opn_pre2
@@ -33,20 +33,20 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of missing server
-      ansibleguy.opnsense.nginx_upstream_server:
+      oxlorg.opnsense.nginx_upstream_server:
         name: 'ANSIBLE@TEST1'
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of missing port
-      ansibleguy.opnsense.nginx_upstream_server:
+      oxlorg.opnsense.nginx_upstream_server:
         name: 'ANSIBLE@TEST1'
         server: 192.168.1.1
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of missing priority
-      ansibleguy.opnsense.nginx_upstream_server:
+      oxlorg.opnsense.nginx_upstream_server:
         name: 'ANSIBLE@TEST1'
         server: 192.168.1.1
         port: 80
@@ -54,14 +54,14 @@
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - should succeed
-      ansibleguy.opnsense.nginx_upstream_server:
+      oxlorg.opnsense.nginx_upstream_server:
         name: 'ANSIBLE@TEST1'
         server: 192.168.1.1
         port: 80
         priority: 1
 
     - name: Adding 1 - should succeed and not change
-      ansibleguy.opnsense.nginx_upstream_server:
+      oxlorg.opnsense.nginx_upstream_server:
         name: 'ANSIBLE@TEST1'
         server: 192.168.1.1
         port: 80
@@ -73,7 +73,7 @@
       when: not ansible_check_mode
 
     - name: Remove 1 - should succeed
-      ansibleguy.opnsense.nginx_upstream_server:
+      oxlorg.opnsense.nginx_upstream_server:
         name: 'ANSIBLE@TEST1'
         state: 'absent'
       when: not ansible_check_mode

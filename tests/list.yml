@@ -4,7 +4,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -14,49 +14,49 @@
 
   tasks:
     - name: Querying config - basic modules
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: ['alias', 'rule', 'route', 'syslog', 'package', 'cron', 'source_nat']
 
     - name: Querying config - Unbound
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: ['unbound_general', 'unbound_acl', 'unbound_host', 'unbound_forward', 'unbound_host_alias', 'unbound_dot']
 
     - name: Querying config - Traffic shaper
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: ['shaper_pipe', 'shaper_queue', 'shaper_rule']
 
     - name: Querying config - Monit
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: ['monit_service', 'monit_test', 'monit_alert']
 
     - name: Querying config - BIND
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: ['bind_domain', 'bind_acl', 'bind_general', 'bind_blocklist', 'bind_record']
 
     - name: Querying config - Interfaces
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: ['interface_vxlan', 'interface_vlan', 'interface_vip', 'interface_lagg']
 
     - name: Querying config - WireGuard
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: ['wireguard_server', 'wireguard_peer']
 
     - name: Querying config - FRR
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: [
@@ -66,7 +66,7 @@
       ]
 
     - name: Querying config - WebProxy
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: [
@@ -76,7 +76,7 @@
       ]
 
     - name: Querying config - IPSec
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: [
@@ -85,7 +85,7 @@
       ]
 
     - name: Querying config - IDS
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: [
@@ -94,7 +94,7 @@
       ]
 
     - name: Querying config - OpenVPN
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: [
@@ -102,7 +102,7 @@
       ]
 
     - name: Querying config - DHCP
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
         target: "{{ item }}"
       when: not ansible_check_mode
       loop: [

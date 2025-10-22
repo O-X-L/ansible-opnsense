@@ -4,7 +4,7 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
@@ -14,7 +14,7 @@
 
   tasks:
     - name: Configuring
-      ansibleguy.opnsense.dhcp_controlagent:
+      oxlorg.opnsense.dhcp_controlagent:
         enabled: true
       register: opn1
       failed_when: >
@@ -22,7 +22,7 @@
         not opn1.changed
 
     - name: Changing
-      ansibleguy.opnsense.dhcp_controlagent:
+      oxlorg.opnsense.dhcp_controlagent:
         enabled: true
         http_port: 8082
         http_host: '192.168.0.55'
@@ -32,7 +32,7 @@
         not opn5.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.dhcp_controlagent:
+      oxlorg.opnsense.dhcp_controlagent:
         enabled: false
         http_port: 8082
         http_host: '192.168.0.55'
@@ -43,7 +43,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.dhcp_controlagent:
+      oxlorg.opnsense.dhcp_controlagent:
         enabled: false
         http_port: 8082
         http_host: '192.168.0.55'
@@ -54,7 +54,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.dhcp_controlagent:
+      oxlorg.opnsense.dhcp_controlagent:
         enabled: true
         http_port: 8082
         http_host: '192.168.0.55'
@@ -65,7 +65,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.dhcp_controlagent:
+      oxlorg.opnsense.dhcp_controlagent:
         enabled: false
         http_host: '127.0.0.1'
         http_port: 8000

@@ -6,15 +6,15 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.syslog:
+    oxlorg.opnsense.syslog:
       match_fields: ['description']
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'syslog'
 
   environment:
@@ -22,7 +22,7 @@
 
   tasks:
     - name: Removing - does not exist
-      ansibleguy.opnsense.syslog:
+      oxlorg.opnsense.syslog:
         description: 'ANSIBLE_TEST_1'
         target: '192.168.0.1'
         state: 'absent'
@@ -32,7 +32,7 @@
         opn3.changed
 
     - name: Adding 1
-      ansibleguy.opnsense.syslog:
+      oxlorg.opnsense.syslog:
         description: 'ANSIBLE_TEST_1'
         target: '192.168.0.1'
       register: opn4
@@ -41,7 +41,7 @@
         not opn4.changed
 
     - name: Failing tls validition
-      ansibleguy.opnsense.syslog:
+      oxlorg.opnsense.syslog:
         description: 'ANSIBLE_TEST_3'
         target: '192.168.0.2'
         transport: 'tls4'
@@ -49,7 +49,7 @@
       failed_when: not opn9.failed
 
     - name: Failing IPv4 validition
-      ansibleguy.opnsense.syslog:
+      oxlorg.opnsense.syslog:
         description: 'ANSIBLE_TEST_3'
         target: 'd563:4c4e:1919:0914:3489:1d43:6264:ac73'
         transport: 'tcp4'
@@ -57,7 +57,7 @@
       failed_when: not opn10.failed
 
     - name: Failing IPv6 validition
-      ansibleguy.opnsense.syslog:
+      oxlorg.opnsense.syslog:
         description: 'ANSIBLE_TEST_3'
         target: '192.168.0.1'
         transport: 'tcp6'
@@ -65,9 +65,9 @@
       failed_when: not opn11.failed
 
     - name: Adding 2 - DNS target
-      ansibleguy.opnsense.syslog:
+      oxlorg.opnsense.syslog:
         description: 'ANSIBLE_TEST_2'
-        target: 'test.ansibleguy.net'
+        target: 'test.oxlorg.net'
         transport: 'tcp6'
         timeout: 60
       register: opn5
@@ -76,7 +76,7 @@
         not opn5.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.syslog:
+      oxlorg.opnsense.syslog:
         description: 'ANSIBLE_TEST_1'
         target: '192.168.0.1'
         enabled: false
@@ -87,7 +87,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.syslog:
+      oxlorg.opnsense.syslog:
         description: 'ANSIBLE_TEST_1'
         target: '192.168.0.1'
         enabled: false
@@ -98,7 +98,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.syslog:
+      oxlorg.opnsense.syslog:
         description: 'ANSIBLE_TEST_1'
         target: '192.168.0.1'
       register: opn8
@@ -108,7 +108,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn1
       failed_when: >
         'data' not in opn1 or
@@ -116,7 +116,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.syslog:
+      oxlorg.opnsense.syslog:
         description: "{{ item }}"
         target: '192.168.0.1'
         state: 'absent'
@@ -126,7 +126,7 @@
         - 'ANSIBLE_TEST_3'
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn2
       failed_when: >
         'data' not in opn2 or

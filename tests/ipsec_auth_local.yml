@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'ipsec_auth_local'
 
   vars:
@@ -58,14 +58,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -74,21 +74,21 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of missing connection
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_1'
         authentication: 'psk'
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of missing cert/pubkey when using pubkey-auth
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_1'
         authentication: 'pubkey'
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Adding 1 - failing because of missing eap-id when using eap-auth
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_1'
         authentication: 'eap_mschapv2'
         eap_id: 'dummy'
@@ -96,7 +96,7 @@
       failed_when: not opn_fail3.failed
 
     - name: Adding 1 - failing because of invalid round
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_1'
         authentication: 'psk'
         round: 11
@@ -104,7 +104,7 @@
       failed_when: not opn_fail4.failed
 
     - name: Adding 1 - failing because of non-existent connection
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_1'
         authentication: 'psk'
         connection: 'ANSIBLE_TEST_4_1'
@@ -113,19 +113,19 @@
       when: not ansible_check_mode
 
     - name: Adding dummy connection
-      ansibleguy.opnsense.ipsec_connection:
+      oxlorg.opnsense.ipsec_connection:
         name: 'ANSIBLE_TEST_4_1'
       when: not ansible_check_mode
 
     - name: Adding dummy cert
-      ansibleguy.opnsense.ipsec_cert:
+      oxlorg.opnsense.ipsec_cert:
         name: 'ANSIBLE_TEST_2_1'
         public_key: "{{ test1.pub }}"
         private_key: "{{ test1.priv }}"
       when: not ansible_check_mode
 
     - name: Adding 1 (psk)
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_1'
         authentication: 'psk'
         connection: 'ANSIBLE_TEST_4_1'
@@ -136,7 +136,7 @@
       when: not ansible_check_mode
 
     - name: Adding 1 - nothing changed
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_1'
         authentication: 'psk'
         connection: 'ANSIBLE_TEST_4_1'
@@ -147,7 +147,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1 (pubkey)
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_1'
         connection: 'ANSIBLE_TEST_4_1'
         authentication: 'pubkey'
@@ -159,7 +159,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_1'
         connection: 'ANSIBLE_TEST_4_1'
         authentication: 'pubkey'
@@ -172,7 +172,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_1'
         connection: 'ANSIBLE_TEST_4_1'
         authentication: 'pubkey'
@@ -185,7 +185,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_1'
         connection: 'ANSIBLE_TEST_4_1'
         authentication: 'pubkey'
@@ -197,7 +197,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2 (eap)
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_2'
         connection: 'ANSIBLE_TEST_4_1'
         authentication: 'eap-tls'
@@ -208,7 +208,7 @@
         not opn7.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_2'
         connection: 'ANSIBLE_TEST_4_1'
         authentication: 'eap-tls'
@@ -220,7 +220,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn9
@@ -230,7 +230,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         'data' not in opn10 or
@@ -238,7 +238,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup auth
-      ansibleguy.opnsense.ipsec_auth_local:
+      oxlorg.opnsense.ipsec_auth_local:
         name: "{{ item }}"
         state: 'absent'
       loop:
@@ -247,18 +247,18 @@
       when: not ansible_check_mode
 
     - name: Cleanup connection
-      ansibleguy.opnsense.ipsec_connection:
+      oxlorg.opnsense.ipsec_connection:
         name: 'ANSIBLE_TEST_4_1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup cert
-      ansibleguy.opnsense.ipsec_cert:
+      oxlorg.opnsense.ipsec_cert:
         name: 'ANSIBLE_TEST_2_1'
         state: 'absent'
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

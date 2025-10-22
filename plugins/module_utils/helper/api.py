@@ -6,11 +6,11 @@ from datetime import datetime
 
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.defaults.main import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
     DEBUG_CONFIG
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.main import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import \
     ensure_list
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.helper.validate import \
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_valid_domain, is_ip
 
 

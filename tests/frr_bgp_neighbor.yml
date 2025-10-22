@@ -4,15 +4,15 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.frr_bgp_neighbor:
+    oxlorg.opnsense.frr_bgp_neighbor:
       match_fields: ['description']
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_neighbor'
 
   environment:
@@ -20,14 +20,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -36,7 +36,7 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of invalid keepalive
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
         as_number: 1337
         keepalive: 3000
@@ -44,7 +44,7 @@
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing because of invalid ip-address
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
         as_number: 1337
         ip: 'INVALID-IP'
@@ -52,7 +52,7 @@
       failed_when: not opn_fail2.failed
 
     - name: Adding 1 - failing because of invalid local ip-address
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
         as_number: 1337
         local_ip: 'INVALID-IP'
@@ -60,7 +60,7 @@
       failed_when: not opn_fail3.failed
 
     - name: Adding 1 - failing because of non-existent prefix-list
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
         as_number: 1337
         prefix_list_in: 'DOES-NOT-EXIST'
@@ -68,7 +68,7 @@
       failed_when: not opn_fail4.failed
 
     - name: Adding 1 - failing because of non-existent route-map
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
         as_number: 1337
         route_map_out: 'DOES-NOT-EXIST'
@@ -76,7 +76,7 @@
       failed_when: not opn_fail5.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
         as_number: 1337
         ip: '10.0.0.1'
@@ -86,7 +86,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
         as_number: 1337
         ip: '10.0.0.1'
@@ -103,7 +103,7 @@
         not opn9.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
         as_number: 1337
         ip: '10.0.0.1'
@@ -122,7 +122,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
         as_number: 1337
         ip: '10.0.0.1'
@@ -141,7 +141,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
         as_number: 1337
         ip: '10.0.0.1'
@@ -159,7 +159,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_2'
         as_number: 1338
         ip: '10.0.1.1'
@@ -171,7 +171,7 @@
         not opn5.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_2'
         as_number: 1338
         ip: '10.0.1.1'
@@ -184,7 +184,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn7
@@ -194,7 +194,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -202,7 +202,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: "{{ item }}"
         state: 'absent'
       loop:
@@ -211,7 +211,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or
@@ -222,15 +222,15 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.frr_bgp_neighbor:
+    oxlorg.opnsense.frr_bgp_neighbor:
       match_fields: ['description']
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'frr_bgp_neighbor'
 
   environment:
@@ -238,7 +238,7 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre3
       failed_when: >
         'data' not in opn_pre3 or
@@ -246,7 +246,7 @@
       when: not ansible_check_mode
 
     - name: Adding dummy prefix-list
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_2_1'
         network: '10.0.10.0/24'
         seq: 51
@@ -254,7 +254,7 @@
       when: not ansible_check_mode
 
     - name: Adding dummy prefix-list 2 (same name, other sequence)
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_2_1'
         network: '10.0.11.0/24'
         seq: 50
@@ -262,7 +262,7 @@
       when: not ansible_check_mode
 
     - name: Adding neighbor linked to prefix-list
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_2_1'
         prefix_list_in: 'ANSIBLE_TEST_2_1'
         as_number: 1337
@@ -274,14 +274,14 @@
       when: not ansible_check_mode
 
     - name: Adding dummy route-map
-      ansibleguy.opnsense.frr_bgp_route_map:
+      oxlorg.opnsense.frr_bgp_route_map:
         name: 'ANSIBLE_TEST_3_1'
         id: 50
         action: 'permit'
       when: not ansible_check_mode
 
     - name: Adding neighbor linked to route-map
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_2_2'
         route_map_out: 'ANSIBLE_TEST_3_1'
         as_number: 1338
@@ -293,7 +293,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup neighbors
-      ansibleguy.opnsense.frr_bgp_neighbor:
+      oxlorg.opnsense.frr_bgp_neighbor:
         description: "{{ item }}"
         state: 'absent'
       loop:
@@ -302,7 +302,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup prefix-list
-      ansibleguy.opnsense.frr_bgp_prefix_list:
+      oxlorg.opnsense.frr_bgp_prefix_list:
         name: 'ANSIBLE_TEST_2_1'
         seq: "{{ item }}"
         state: 'absent'
@@ -312,13 +312,13 @@
       when: not ansible_check_mode
 
     - name: Cleanup route-map
-      ansibleguy.opnsense.frr_bgp_route_map:
+      oxlorg.opnsense.frr_bgp_route_map:
         name: 'ANSIBLE_TEST_3_1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean2
       failed_when: >
         'data' not in opn_clean2 or

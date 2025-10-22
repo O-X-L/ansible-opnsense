@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'acme_validation'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -33,14 +33,14 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of invalid value
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_1'
         method: ANSIBLE_TEST_1_1
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_1'
         method: http01
       register: opn1
@@ -49,7 +49,7 @@
         not opn1.changed
 
     - name: Changing 1
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_1'
         method: http01
         http_opn_autodiscovery: false
@@ -61,7 +61,7 @@
         not opn2.changed
 
     - name: Changing 1 - nothing changed
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_1'
         method: http01
         http_opn_autodiscovery: false
@@ -74,7 +74,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_1'
         method: http01
         http_opn_autodiscovery: false
@@ -88,7 +88,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_1'
         method: http01
         http_opn_autodiscovery: false
@@ -102,7 +102,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_1'
         method: http01
         http_opn_autodiscovery: false
@@ -115,7 +115,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2 - HTTP HAProxy
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_2'
         method: http01
         http_service: haproxy
@@ -125,7 +125,7 @@
         not opn7.changed
 
     - name: Adding 2 - HTTP HAProxy - nothing changed
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_2'
         method: http01
         http_service: haproxy
@@ -136,7 +136,7 @@
       when: not ansible_check_mode
 
     - name: Adding 3 - TLS ALPN
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_3'
         method: tlsalpn01
         tlsalpn_acme_ipaddresses:
@@ -147,7 +147,7 @@
         not opn9.changed
 
     - name: Adding 3 - TLS ALPN - nothing changed
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_3'
         method: tlsalpn01
         tlsalpn_acme_ipaddresses:
@@ -159,7 +159,7 @@
       when: not ansible_check_mode
 
     - name: Adding 4 - DNS Active24
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_4'
         dns_service: dns_active24
         dns_active24_token: SECRET
@@ -169,7 +169,7 @@
         not opn11.changed
 
     - name: Adding 4 - DNS Active24 - nothing changed
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_4'
         dns_service: dns_active24
         dns_active24_token: SECRET
@@ -180,7 +180,7 @@
       when: not ansible_check_mode
 
     - name: Adding 5 - DNS aliyun.com
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_5'
         dns_service: dns_ali
         dns_ali_key: KEY
@@ -191,7 +191,7 @@
         not opn13.changed
 
     - name: Adding 5 - DNS aliyun.com - nothing changed
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_5'
         dns_service: dns_ali
         dns_ali_key: KEY
@@ -203,7 +203,7 @@
       when: not ansible_check_mode
 
     - name: Adding 6 - DNS AutoDNS
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_6'
         dns_service: dns_autodns
         dns_autodns_user: auto
@@ -215,7 +215,7 @@
         not opn15.changed
 
     - name: Adding 6 - DNS AutoDNS - nothing changed
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_6'
         dns_service: dns_autodns
         dns_autodns_user: auto
@@ -228,7 +228,7 @@
       when: not ansible_check_mode
 
     - name: Adding 7 - DNS AWS
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_7'
         dns_service: dns_aws
         dns_aws_id: ID
@@ -239,7 +239,7 @@
         not opn17.changed
 
     - name: Adding 7 - DNS AWS - nothing changed
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_7'
         dns_service: dns_aws
         dns_aws_id: ID
@@ -251,7 +251,7 @@
       when: not ansible_check_mode
 
     - name: Adding 8 - DNS Azure
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_8'
         dns_service: dns_azure
         dns_azuredns_subscriptionid: SUB
@@ -264,7 +264,7 @@
         not opn19.changed
 
     - name: Adding 8 - DNS Azure - nothing changed
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_8'
         dns_service: dns_azure
         dns_azuredns_subscriptionid: SUB
@@ -278,7 +278,7 @@
       when: not ansible_check_mode
 
     - name: Adding 9 - DNS Bunny
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_9'
         dns_service: dns_bunny
         dns_bunny_api_key: SECRET
@@ -288,7 +288,7 @@
         not opn21.changed
 
     - name: Adding 9 - DNS Bunny - nothing changed
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_9'
         dns_service: dns_bunny
         dns_bunny_api_key: SECRET
@@ -299,7 +299,7 @@
       when: not ansible_check_mode
 
     - name: Adding 10 - DNS Cloudflare
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_10'
         dns_service: dns_cf
         dns_cf_email: cf@example.com
@@ -313,7 +313,7 @@
         not opn23.changed
 
     - name: Adding 10 - Unifi - nothing changed
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_10'
         dns_service: dns_cf
         dns_cf_email: cf@example.com
@@ -328,7 +328,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
@@ -336,7 +336,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.acme_validation:
+      oxlorg.opnsense.acme_validation:
         name: '{{ item }}'
         state: 'absent'
       loop:
@@ -353,7 +353,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

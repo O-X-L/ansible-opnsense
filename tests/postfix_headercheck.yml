@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'postfix_headercheck'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.postfix_headercheck:
+      oxlorg.opnsense.postfix_headercheck:
         expression: 'ANSIBLE_TEST_99_9'
         filter: WHILE_RECEIVING
         state: 'absent'
@@ -34,13 +34,13 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing because of missing filter
-      ansibleguy.opnsense.postfix_headercheck:
+      oxlorg.opnsense.postfix_headercheck:
         expression: '/^\s*User-Agent/ IGNORE'
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.postfix_headercheck:
+      oxlorg.opnsense.postfix_headercheck:
         expression: '/^\s*User-Agent/ IGNORE'
         filter: WHILE_RECEIVING
       register: opn1
@@ -49,7 +49,7 @@
         not opn1.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.postfix_headercheck:
+      oxlorg.opnsense.postfix_headercheck:
         expression: '/^\s*User-Agent/ IGNORE'
         filter: WHILE_RECEIVING
         enabled: false
@@ -60,7 +60,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.postfix_headercheck:
+      oxlorg.opnsense.postfix_headercheck:
         expression: '/^\s*User-Agent/ IGNORE'
         filter: WHILE_RECEIVING
         enabled: false
@@ -71,7 +71,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.postfix_headercheck:
+      oxlorg.opnsense.postfix_headercheck:
         expression: '/^\s*User-Agent/ IGNORE'
         filter: WHILE_RECEIVING
       register: opn5
@@ -81,7 +81,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.postfix_headercheck:
+      oxlorg.opnsense.postfix_headercheck:
         expression: '/^\s*User-Agent/ IGNORE'
         filter: WHILE_DELIVERING
       register: opn6
@@ -90,7 +90,7 @@
         not opn6.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.postfix_headercheck:
+      oxlorg.opnsense.postfix_headercheck:
         expression: '/^\s*User-Agent/ IGNORE'
         filter: WHILE_DELIVERING
       register: opn7
@@ -100,7 +100,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.postfix_headercheck:
+      oxlorg.opnsense.postfix_headercheck:
         expression: '/^\s*User-Agent/ IGNORE'
         filter: WHILE_DELIVERING
         state: 'absent'
@@ -111,7 +111,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn9
       failed_when: >
         'data' not in opn9 or
@@ -119,14 +119,14 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.postfix_headercheck:
+      oxlorg.opnsense.postfix_headercheck:
         expression: '/^\s*User-Agent/ IGNORE'
         filter: WHILE_RECEIVING
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

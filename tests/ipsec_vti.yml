@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'ipsec_vti'
 
   environment:
@@ -17,14 +17,14 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         'data' not in opn_pre1 or
         opn_pre1.data | length != 0
 
     - name: Removing - does not exist
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       register: opn_pre2
@@ -33,7 +33,7 @@
         opn_pre2.changed
 
     - name: Adding 1 - failing as not all addresses were provided
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: 'ANSIBLE_TEST_1_1'
         request_id: 100
         local_tunnel_address: '192.168.0.1/30'
@@ -42,7 +42,7 @@
       failed_when: not opn_fail1.failed
 
     - name: Adding 1 - failing without request-id
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: 'ANSIBLE_TEST_1_1'
         local_address: '192.168.1.1'
         remote_address: '192.168.1.2'
@@ -52,7 +52,7 @@
       failed_when: not opn_fail1.failed
 
     - name: Adding 1
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: 'ANSIBLE_TEST_1_1'
         request_id: 100
         local_address: '192.168.1.1'
@@ -65,7 +65,7 @@
         not opn1.changed
 
     - name: Adding 1 - nothing changed
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: 'ANSIBLE_TEST_1_1'
         request_id: 100
         local_address: '192.168.1.1'
@@ -79,7 +79,7 @@
       when: not ansible_check_mode
 
     - name: Changing 1
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: 'ANSIBLE_TEST_1_1'
         request_id: 110
         local_address: '192.168.10.1'
@@ -92,7 +92,7 @@
         not opn3.changed
 
     - name: Disabling 1
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: 'ANSIBLE_TEST_1_1'
         request_id: 110
         local_address: '192.168.10.1'
@@ -107,7 +107,7 @@
       when: not ansible_check_mode
 
     - name: Disabling 1 - nothing changed
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: 'ANSIBLE_TEST_1_1'
         request_id: 110
         local_address: '192.168.10.1'
@@ -122,7 +122,7 @@
       when: not ansible_check_mode
 
     - name: Enabling 1
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: 'ANSIBLE_TEST_1_1'
         request_id: 110
         local_address: '192.168.10.1'
@@ -136,7 +136,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: 'ANSIBLE_TEST_1_2'
         request_id: 200
         local_address: '192.168.20.1'
@@ -152,7 +152,7 @@
         not opn7.changed
 
     - name: Adding 2 - nothing changed
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: 'ANSIBLE_TEST_1_2'
         request_id: 200
         local_address: '192.168.20.1'
@@ -169,7 +169,7 @@
       when: not ansible_check_mode
 
     - name: Removing 2
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       register: opn9
@@ -179,7 +179,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn10
       failed_when: >
         'data' not in opn10 or
@@ -187,7 +187,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.ipsec_vti:
+      oxlorg.opnsense.ipsec_vti:
         name: "{{ item }}"
         state: 'absent'
       loop:
@@ -196,7 +196,7 @@
       when: not ansible_check_mode
 
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_clean1
       failed_when: >
         'data' not in opn_clean1 or

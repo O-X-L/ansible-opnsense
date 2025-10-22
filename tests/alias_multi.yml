@@ -4,87 +4,98 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'alias'
+
+    oxlorg.opnsense.alias:
+      multi_control:
+        fail_verify: true
+        fail_process: true
 
   environment:
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
+    - name: Fail required args (1)
+      oxlorg.opnsense.alias:
+      register: opn8
+      failed_when: not opn8.failed
+
     - name: Removing - do not exist
-      ansibleguy.opnsense.alias_multi:
+      oxlorg.opnsense.alias:
         aliases:
-          ANSIBLE_TEST_2_1:
-          ANSIBLE_TEST_2_2:
-          ANSIBLE_TEST_2_3:
-          ANSIBLE_TEST_2_4:
-          ANSIBLE_TEST_2_5:
-          ANSIBLE_TEST_2_6:
-          ANSIBLE_TEST_2_7:
-          ANSIBLE_TEST_2_8:
-          ANSIBLE_TEST_2_9:
-          ANSIBLE_TEST_2_10:
-          ANSIBLE_TEST_2_11:
-          ANSIBLE_TEST_2_12:
-          ANSIBLE_TEST_2_13:
-          ANSIBLE_TEST_2_14:
-        state: 'absent'
+          - name: 'ANSIBLE_TEST_2_1'
+          - name: 'ANSIBLE_TEST_2_2'
+          - name: 'ANSIBLE_TEST_2_3'
+          - name: 'ANSIBLE_TEST_2_4'
+          - name: 'ANSIBLE_TEST_2_5'
+          - name: 'ANSIBLE_TEST_2_6'
+          - name: 'ANSIBLE_TEST_2_7'
+          - name: 'ANSIBLE_TEST_2_8'
+          - name: 'ANSIBLE_TEST_2_9'
+          - name: 'ANSIBLE_TEST_2_10'
+          - name: 'ANSIBLE_TEST_2_11'
+          - name: 'ANSIBLE_TEST_2_12'
+          - name: 'ANSIBLE_TEST_2_13'
+          - name: 'ANSIBLE_TEST_2_14'
+        multi_control:
+          state: 'absent'
       register: opn1
       failed_when: >
         opn1.failed or
         opn1.changed
 
     - name: Adding
-      ansibleguy.opnsense.alias_multi:
+      oxlorg.opnsense.alias:
         aliases:
           # hosts
-          ANSIBLE_TEST_2_1:
+          - name: 'ANSIBLE_TEST_2_1'
             content: '192.168.1.1'
-          ANSIBLE_TEST_2_2:
+          - name: 'ANSIBLE_TEST_2_2'
             content: ['192.168.1.1', '192.168.1.2']
 
           # networks
-          ANSIBLE_TEST_2_3:
+          - name: 'ANSIBLE_TEST_2_3'
             type: 'network'
             content: '192.168.1.0/24'
-          ANSIBLE_TEST_2_4:
+          - name: 'ANSIBLE_TEST_2_4'
             type: 'network'
             content: ['192.168.1.0/24', '192.168.2.0/24']
 
           # ports
-          ANSIBLE_TEST_2_5:
+          - name: 'ANSIBLE_TEST_2_5'
             type: 'port'
             content: 80
-          ANSIBLE_TEST_2_6:
+          - name: 'ANSIBLE_TEST_2_6'
             type: 'port'
             content: [80, 443]
 
           # urls
-          ANSIBLE_TEST_2_7:
+          - name: 'ANSIBLE_TEST_2_7'
             type: 'url'
-            content: 'http://test.ansibleguy.net'
+            content: 'http://test.oxlorg.net'
 
           # urltables
-          ANSIBLE_TEST_2_8:
+          - name: 'ANSIBLE_TEST_2_8'
             type: 'urltable'
-            content: ['https://www.spamhaus.org/drop/drop.txt', 'https://www.spamhaus.org/drop/edrop.txt']
+            content: ['https://www.spamhaus.org/drop/drop.txt']
             updatefreq_days: 6.5
 
           # geoip
-          ANSIBLE_TEST_2_9:
+          - name: 'ANSIBLE_TEST_2_9'
             type: 'geoip'
             content: 'AT'
-          ANSIBLE_TEST_2_10:
+          - name: 'ANSIBLE_TEST_2_10'
             type: 'geoip'
             content: ['AT', 'DE', 'CH']
 
           # dynipv6host
-          ANSIBLE_TEST_2_11:
+          - name: 'ANSIBLE_TEST_2_11'
             type: 'dynipv6host'
             content:
               - '::f00d'
@@ -97,27 +108,33 @@
         not opn2.changed
 
     - name: Changing
-      ansibleguy.opnsense.alias_multi:
+      oxlorg.opnsense.alias:
         aliases:
-          ANSIBLE_TEST_2_2:
+          - name: 'ANSIBLE_TEST_2_2'
             content: ['192.168.1.1', '192.168.1.3']
-          ANSIBLE_TEST_2_3:
+
+          - name: 'ANSIBLE_TEST_2_3'
             type: 'network'
             content: '192.168.10.0/24'
-          ANSIBLE_TEST_2_5:
+
+          - name: 'ANSIBLE_TEST_2_5'
             type: 'port'
             content: 81
-          ANSIBLE_TEST_2_7:
+
+          - name: 'ANSIBLE_TEST_2_7'
             type: 'url'
-            content: 'http://test.template.ansibleguy.net'
-          ANSIBLE_TEST_2_8:
+            content: 'http://test.template.oxlorg.net'
+
+          - name: 'ANSIBLE_TEST_2_8'
             type: 'urltable'
             content: 'https://www.spamhaus.org/drop/dropv6.txt'
             updatefreq_days: 2
-          ANSIBLE_TEST_2_9:
+
+          - name: 'ANSIBLE_TEST_2_9'
             type: 'geoip'
             content: 'DE'
-          ANSIBLE_TEST_2_11:
+
+          - name: 'ANSIBLE_TEST_2_11'
             type: 'dynipv6host'
             content:
               - '::1000'
@@ -131,27 +148,33 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.alias_multi:
+      oxlorg.opnsense.alias:
         aliases:
-          ANSIBLE_TEST_2_2:
+          - name: 'ANSIBLE_TEST_2_2'
             content: ['192.168.1.1', '192.168.1.3']
-          ANSIBLE_TEST_2_3:
+
+          - name: 'ANSIBLE_TEST_2_3'
             type: 'network'
             content: '192.168.10.0/24'
-          ANSIBLE_TEST_2_5:
+
+          - name: 'ANSIBLE_TEST_2_5'
             type: 'port'
             content: 81
-          ANSIBLE_TEST_2_7:
+
+          - name: 'ANSIBLE_TEST_2_7'
             type: 'url'
-            content: 'http://test.template.ansibleguy.net'
-          ANSIBLE_TEST_2_8:
+            content: 'http://test.template.oxlorg.net'
+
+          - name: 'ANSIBLE_TEST_2_8'
             type: 'urltable'
             updatefreq_days: 2
             content: 'https://www.spamhaus.org/drop/dropv6.txt'
-          ANSIBLE_TEST_2_9:
+
+          - name: 'ANSIBLE_TEST_2_9'
             type: 'geoip'
             content: 'DE'
-          ANSIBLE_TEST_2_11:
+
+          - name: 'ANSIBLE_TEST_2_11'
             type: 'dynipv6host'
             content:
               - '::1000'
@@ -165,24 +188,23 @@
       when: not ansible_check_mode
 
     - name: Adding nested aliases
-      ansibleguy.opnsense.alias_multi:
+      oxlorg.opnsense.alias:
         aliases:
           # hosts
-          ANSIBLE_TEST_2_12:
+          - name: 'ANSIBLE_TEST_2_12'
             content: ['ANSIBLE_TEST_2_1', 'ANSIBLE_TEST_2_2']
 
           # networks
-          ANSIBLE_TEST_2_13:
+          - name: 'ANSIBLE_TEST_2_13'
             type: 'network'
             content: ['ANSIBLE_TEST_2_3', 'ANSIBLE_TEST_2_4']
 
           # ports
-          ANSIBLE_TEST_2_14:
+          - name: 'ANSIBLE_TEST_2_14'
             type: 'port'
             content: ['ANSIBLE_TEST_2_5', 'ANSIBLE_TEST_2_6']
 
         reload: false  # geoip and urltable take LONG time
-
       register: opn7
       failed_when: >
         opn7.failed or
@@ -190,7 +212,7 @@
       when: not ansible_check_mode
 
     - name: Listing aliases
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn4
       failed_when: >
         'data' not in opn4 or
@@ -198,32 +220,34 @@
       when: not ansible_check_mode
 
     - name: Removing nesting
-      ansibleguy.opnsense.alias_multi:
+      oxlorg.opnsense.alias:
         aliases:
-          ANSIBLE_TEST_2_12:
-          ANSIBLE_TEST_2_13:
-          ANSIBLE_TEST_2_14:
-        state: 'absent'
+          - name: 'ANSIBLE_TEST_2_12'
+          - name: 'ANSIBLE_TEST_2_13'
+          - name: 'ANSIBLE_TEST_2_14'
+        multi_control:
+          state: 'absent'
       when: not ansible_check_mode
 
     - name: Removing
-      ansibleguy.opnsense.alias_multi:
+      oxlorg.opnsense.alias:
         aliases:
-          ANSIBLE_TEST_2_1:
-          ANSIBLE_TEST_2_2:
-          ANSIBLE_TEST_2_3:
-          ANSIBLE_TEST_2_4:
-          ANSIBLE_TEST_2_5:
-          ANSIBLE_TEST_2_6:
-          ANSIBLE_TEST_2_7:
-          ANSIBLE_TEST_2_8:
-          ANSIBLE_TEST_2_9:
-          ANSIBLE_TEST_2_10:
-          ANSIBLE_TEST_2_11:
-        state: 'absent'
+          - name: 'ANSIBLE_TEST_2_1'
+          - name: 'ANSIBLE_TEST_2_2'
+          - name: 'ANSIBLE_TEST_2_3'
+          - name: 'ANSIBLE_TEST_2_4'
+          - name: 'ANSIBLE_TEST_2_5'
+          - name: 'ANSIBLE_TEST_2_6'
+          - name: 'ANSIBLE_TEST_2_7'
+          - name: 'ANSIBLE_TEST_2_8'
+          - name: 'ANSIBLE_TEST_2_9'
+          - name: 'ANSIBLE_TEST_2_10'
+          - name: 'ANSIBLE_TEST_2_11'
+        multi_control:
+          state: 'absent'
 
     - name: Checking cleanup
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn5
       failed_when: >
         'data' not in opn5 or
