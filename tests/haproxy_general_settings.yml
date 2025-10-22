@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'haproxy_general_settings'
 
   environment:
@@ -17,26 +17,26 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid hard_stop_after
-      ansibleguy.opnsense.haproxy_general_settings:
+      oxlorg.opnsense.haproxy_general_settings:
         hard_stop_after: 100000
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring - failing because of invalid close_spread_time
-      ansibleguy.opnsense.haproxy_general_settings:
+      oxlorg.opnsense.haproxy_general_settings:
         close_spread_time: 5000
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Configuring basic settings
-      ansibleguy.opnsense.haproxy_general_settings:
+      oxlorg.opnsense.haproxy_general_settings:
         enabled: true
         graceful_stop: true
         hard_stop_after: 60
@@ -49,7 +49,7 @@
         not opn1.changed
 
     - name: Changing settings
-      ansibleguy.opnsense.haproxy_general_settings:
+      oxlorg.opnsense.haproxy_general_settings:
         enabled: true
         graceful_stop: false
         hard_stop_after: 120
@@ -62,7 +62,7 @@
         not opn9.changed
 
     - name: Disabling HAProxy
-      ansibleguy.opnsense.haproxy_general_settings:
+      oxlorg.opnsense.haproxy_general_settings:
         enabled: false
         graceful_stop: false
         hard_stop_after: 120
@@ -76,7 +76,7 @@
       when: not ansible_check_mode
 
     - name: Disabling HAProxy - nothing changed
-      ansibleguy.opnsense.haproxy_general_settings:
+      oxlorg.opnsense.haproxy_general_settings:
         enabled: false
         graceful_stop: false
         hard_stop_after: 120
@@ -90,7 +90,7 @@
       when: not ansible_check_mode
 
     - name: Enabling HAProxy
-      ansibleguy.opnsense.haproxy_general_settings:
+      oxlorg.opnsense.haproxy_general_settings:
         enabled: true
         graceful_stop: false
         hard_stop_after: 120
@@ -104,7 +104,7 @@
       when: not ansible_check_mode
 
     - name: Testing edge values
-      ansibleguy.opnsense.haproxy_general_settings:
+      oxlorg.opnsense.haproxy_general_settings:
         enabled: true
         graceful_stop: true
         hard_stop_after: 0
@@ -118,7 +118,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.haproxy_general_settings:
+      oxlorg.opnsense.haproxy_general_settings:
         enabled: true
         graceful_stop: true
         hard_stop_after: 0
@@ -132,7 +132,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.haproxy_general_settings:
+      oxlorg.opnsense.haproxy_general_settings:
         enabled: false
         graceful_stop: true
         seamless_reload: false

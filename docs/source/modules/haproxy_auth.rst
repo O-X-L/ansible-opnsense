@@ -22,7 +22,7 @@ These modules manage HAProxy authentication users and groups for access control.
 
 .. _haproxy_user:
 
-ansibleguy.opnsense.haproxy_user
+oxlorg.opnsense.haproxy_user
 =================================
 
 Manages HAProxy authentication users.
@@ -42,7 +42,7 @@ Examples
 .. code-block:: yaml
 
     - name: Create HAProxy admin user
-      ansibleguy.opnsense.haproxy_user:
+      oxlorg.opnsense.haproxy_user:
         name: 'admin'
         description: 'Administrator user'
         password: '{{ vault_admin_password }}'
@@ -52,7 +52,7 @@ Examples
 
 .. _haproxy_group:
 
-ansibleguy.opnsense.haproxy_group
+oxlorg.opnsense.haproxy_group
 ===================================
 
 Manages HAProxy authentication groups.
@@ -73,7 +73,7 @@ Examples
 .. code-block:: yaml
 
     - name: Create HAProxy admin group
-      ansibleguy.opnsense.haproxy_group:
+      oxlorg.opnsense.haproxy_group:
         name: 'admins'
         description: 'Administrator group'
         members: ['admin', 'operator']

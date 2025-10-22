@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'haproxy_general_cache'
 
   environment:
@@ -17,20 +17,20 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid total_max_size
-      ansibleguy.opnsense.haproxy_general_cache:
+      oxlorg.opnsense.haproxy_general_cache:
         total_max_size: -1
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring basic cache settings
-      ansibleguy.opnsense.haproxy_general_cache:
+      oxlorg.opnsense.haproxy_general_cache:
         enabled: true
         total_max_size: 16
         max_age: 120
@@ -43,7 +43,7 @@
         not opn1.changed
 
     - name: Changing cache settings
-      ansibleguy.opnsense.haproxy_general_cache:
+      oxlorg.opnsense.haproxy_general_cache:
         enabled: true
         total_max_size: 32
         max_age: 300
@@ -56,7 +56,7 @@
         not opn9.changed
 
     - name: Disabling HAProxy cache
-      ansibleguy.opnsense.haproxy_general_cache:
+      oxlorg.opnsense.haproxy_general_cache:
         enabled: false
         total_max_size: 32
         max_age: 300
@@ -70,7 +70,7 @@
       when: not ansible_check_mode
 
     - name: Disabling HAProxy cache - nothing changed
-      ansibleguy.opnsense.haproxy_general_cache:
+      oxlorg.opnsense.haproxy_general_cache:
         enabled: false
         total_max_size: 32
         max_age: 300
@@ -84,7 +84,7 @@
       when: not ansible_check_mode
 
     - name: Enabling HAProxy cache
-      ansibleguy.opnsense.haproxy_general_cache:
+      oxlorg.opnsense.haproxy_general_cache:
         enabled: true
         total_max_size: 32
         max_age: 300
@@ -98,7 +98,7 @@
       when: not ansible_check_mode
 
     - name: Testing edge values
-      ansibleguy.opnsense.haproxy_general_cache:
+      oxlorg.opnsense.haproxy_general_cache:
         enabled: true
         total_max_size: 1
         max_age: 1
@@ -112,7 +112,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.haproxy_general_cache:
+      oxlorg.opnsense.haproxy_general_cache:
         enabled: true
         total_max_size: 1
         max_age: 1
@@ -126,7 +126,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      ansibleguy.opnsense.haproxy_general_cache:
+      oxlorg.opnsense.haproxy_general_cache:
         enabled: false
         total_max_size: 4
         max_age: 60

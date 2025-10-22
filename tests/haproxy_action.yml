@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'haproxy_action'
 
   environment:
@@ -17,20 +17,20 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid name
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: ''
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring - failing because of missing type
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Test Action 1'
       register: opn_fail2
@@ -38,7 +38,7 @@
 
     # Create prerequisite ACL for testing
     - name: Create test ACL for Action testing
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_ACL_1'
         description: 'Test ACL for Action'
         expression: 'hdr'
@@ -47,7 +47,7 @@
       when: not ansible_check_mode
 
     - name: Creating HAProxy Action with deny
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Test Action for deny'
         test_type: 'if'
@@ -59,7 +59,7 @@
         not opn1.changed
 
     - name: Creating HAProxy Action with ACL link
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_2'
         description: 'Test Action with ACL'
         test_type: 'if'
@@ -73,7 +73,7 @@
       when: not ansible_check_mode
 
     - name: Creating HAProxy Action with header manipulation
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_3'
         description: 'Test Action for header add'
         test_type: 'if'
@@ -86,7 +86,7 @@
         not opn3.changed
 
     - name: Creating HAProxy Action with variable setting
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_4'
         description: 'Test Action for set variable'
         test_type: 'if'
@@ -100,7 +100,7 @@
         not opn4.changed
 
     - name: Changing Action settings
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test Action for deny'
         test_type: 'unless'
@@ -112,7 +112,7 @@
         not opn9.changed
 
     - name: Changing Action operator
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test Action for deny'
         test_type: 'if'
@@ -125,7 +125,7 @@
       when: not ansible_check_mode
 
     - name: Changing Action operator - nothing changed
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test Action for deny'
         test_type: 'if'
@@ -138,7 +138,7 @@
       when: not ansible_check_mode
 
     - name: Changing Action back to original
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Test Action for deny'
         test_type: 'if'
@@ -151,7 +151,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Test Action for deny'
         test_type: 'if'
@@ -164,31 +164,31 @@
       when: not ansible_check_mode
 
     - name: Cleanup Action 1
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup Action 2
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup Action 3
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_3'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup Action 4
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_1_4'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup test ACL
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_ACL_1'
         expression: 'path_beg'
         state: 'absent'

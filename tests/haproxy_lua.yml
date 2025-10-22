@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'haproxy_lua'
 
   environment:
@@ -17,27 +17,27 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid name
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: ''
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring - failing because of missing content
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Test Lua script 1'
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Creating HAProxy Lua script with ID filename
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Test Lua script for authentication'
         enabled: true
@@ -60,7 +60,7 @@
         not opn1.changed
 
     - name: Creating HAProxy Lua script with name filename
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'ANSIBLE_TEST_1_2'
         description: 'Test Lua script for logging'
         enabled: true
@@ -79,7 +79,7 @@
         not opn2.changed
 
     - name: Creating HAProxy Lua script for rate limiting
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'ANSIBLE_TEST_1_3'
         description: 'Test Lua script for rate limiting'
         enabled: true
@@ -116,7 +116,7 @@
         not opn3.changed
 
     - name: Changing Lua script settings
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test Lua script for authentication'
         enabled: true
@@ -140,7 +140,7 @@
         not opn9.changed
 
     - name: Disabling HAProxy Lua script
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test Lua script for authentication'
         enabled: false
@@ -165,7 +165,7 @@
       when: not ansible_check_mode
 
     - name: Disabling HAProxy Lua script - nothing changed
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test Lua script for authentication'
         enabled: false
@@ -190,7 +190,7 @@
       when: not ansible_check_mode
 
     - name: Enabling HAProxy Lua script
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test Lua script for authentication'
         enabled: true
@@ -215,7 +215,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test Lua script for authentication'
         enabled: true
@@ -240,19 +240,19 @@
       when: not ansible_check_mode
 
     - name: Cleanup Lua script 1
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup Lua script 2
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup Lua script 3
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'ANSIBLE_TEST_1_3'
         state: 'absent'
       when: not ansible_check_mode

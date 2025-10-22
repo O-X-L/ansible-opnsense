@@ -39,7 +39,7 @@ You need to install the following plugin:
 
     os-haproxy
 
-You can also install it using the :ref:`ansibleguy.opnsense.package <modules_package>` module.
+You can also install it using the :ref:`oxlorg.opnsense.package <modules_package>` module.
 
 Function
 ********
@@ -110,7 +110,7 @@ Usage examples
       tasks:
         # Create authentication users
         - name: Create HAProxy users
-          ansibleguy.opnsense.haproxy_user:
+          oxlorg.opnsense.haproxy_user:
             name: "{{ item.name }}"
             description: "{{ item.description }}"
             password: "{{ item.password }}"
@@ -121,7 +121,7 @@ Usage examples
 
         # Create groups
         - name: Create HAProxy groups
-          ansibleguy.opnsense.haproxy_group:
+          oxlorg.opnsense.haproxy_group:
             name: "{{ item.name }}"
             description: "{{ item.description }}"
             members: "{{ item.members }}"
@@ -132,7 +132,7 @@ Usage examples
 
         # Configure basic settings
         - name: Configure HAProxy general settings
-          ansibleguy.opnsense.haproxy_general_settings:
+          oxlorg.opnsense.haproxy_general_settings:
             enabled: true
             graceful_stop: true
             hard_stop_after: 60
@@ -140,7 +140,7 @@ Usage examples
 
         # Configure monitoring with name resolution
         - name: Configure HAProxy statistics
-          ansibleguy.opnsense.haproxy_general_stats:
+          oxlorg.opnsense.haproxy_general_stats:
             enabled: true
             port: 8822
             auth_enabled: true
@@ -150,14 +150,14 @@ Usage examples
 
         # Configure performance
         - name: Configure HAProxy performance tuning
-          ansibleguy.opnsense.haproxy_general_tuning:
+          oxlorg.opnsense.haproxy_general_tuning:
             max_connections: 2000
             nbthread: 4
             buffer_size: 32768
 
         # Configure CPU affinity
         - name: Configure HAProxy CPU affinity
-          ansibleguy.opnsense.haproxy_cpu:
+          oxlorg.opnsense.haproxy_cpu:
             name: 'web_threads'
             thread_id: 'x1'
             cpu_id: ['x0', 'x1']
@@ -165,101 +165,72 @@ Usage examples
 
         # Configure maintenance
         - name: Configure HAProxy maintenance
-          ansibleguy.opnsense.haproxy_maintenance:
+          oxlorg.opnsense.haproxy_maintenance:
             sync_certs: true
             reload_service: false
             restart_service: false
 
-Advanced HAProxy setup with ACLs, Actions, and custom features:
+**Advanced HAProxy setup with ACLs, Actions, and custom features:**
 
 .. code-block:: yaml
 
-    - name: Advanced HAProxy configuration with rules and custom features
+    - name: Advanced HAProxy configuration with ACLs and Actions
       hosts: opnsense_firewalls
       tasks:
         # Create ACLs for traffic filtering
-        - name: Create ACL for admin path
-          ansibleguy.opnsense.haproxy_acl:
-            name: 'admin_path_acl'
-            description: 'ACL to match admin paths'
+        - name: Create HAProxy ACL for URL path matching
+          oxlorg.opnsense.haproxy_acl:
+            name: 'acl_api_path'
+            description: 'Match API paths'
             expression: 'path_beg'
-            path_beg: '/admin'
+            value: '/api/'
+            enabled: true
 
-        - name: Create ACL for API endpoints
-          ansibleguy.opnsense.haproxy_acl:
-            name: 'api_path_acl'
-            description: 'ACL to match API paths'
-            expression: 'path_reg'
-            path_reg: '^/api/v[0-9]+/'
+        - name: Create HAProxy ACL for header matching
+          oxlorg.opnsense.haproxy_acl:
+            name: 'acl_mobile_user'
+            description: 'Match mobile user agents'
+            expression: 'hdr_sub(user-agent)'
+            value: 'Mobile'
+            enabled: true
 
-        # Create actions based on ACLs
-        - name: Redirect admin traffic to secure backend
-          ansibleguy.opnsense.haproxy_action:
-            name: 'redirect_admin'
-            description: 'Redirect admin paths to secure backend'
-            type: 'use_backend'
-            use_backend: 'secure_backend'
-            test_type: 'if'
-            linked_acls:
-              - 'admin_path_acl'
+        # Create Actions based on ACL conditions
+        - name: Create HAProxy Action for custom header
+          oxlorg.opnsense.haproxy_action:
+            name: 'action_add_api_header'
+            description: 'Add custom header for API traffic'
+            operator: 'http-request'
+            action: 'set-header'
+            header_name: 'X-API-Request'
+            header_value: 'true'
+            acl: ['acl_api_path']
+            enabled: true
 
-        - name: Add security headers for API
-          ansibleguy.opnsense.haproxy_action:
-            name: 'api_security_headers'
-            description: 'Add security headers to API responses'
-            type: 'http-response_add-header'
-            http_response_add_header_name: 'X-Content-Type-Options'
-            http_response_add_header_content: 'nosniff'
-            test_type: 'if'
-            linked_acls:
-              - 'api_path_acl'
-
-        # Configure Lua script for custom logic
-        - name: Create Lua script for request processing
-          ansibleguy.opnsense.haproxy_lua:
-            name: 'request_processor'
-            description: 'Custom request processing logic'
-            preload: true
-            filename_scheme: 'name'
-            content: |
-              function process_request(txn)
-                local path = txn.http:req_get_path()
-                if string.match(path, "^/internal/") then
-                  txn:Alert("Blocked internal path access: " .. path)
-                  txn:done(403)
-                end
-              end
+        # Add Lua scripts for custom logic
+        - name: Add HAProxy Lua script
+          oxlorg.opnsense.haproxy_lua:
+            name: 'custom_routing'
+            description: 'Custom routing logic'
+            script: "{{ lookup('file', 'haproxy_scripts/routing.lua') }}"
+            enabled: true
 
         # Configure FastCGI application
-        - name: Create FastCGI application for PHP
-          ansibleguy.opnsense.haproxy_fcgi:
+        - name: Configure HAProxy FastCGI application
+          oxlorg.opnsense.haproxy_fcgi:
             name: 'php_app'
             description: 'PHP FastCGI application'
             docroot: '/var/www/html'
-            index: 'index.php'
-            max_reqs: 1000
-            keep_conn: true
+            pass_header: ['HTTP_AUTHORIZATION']
+            enabled: true
 
-        # Configure custom error pages
-        - name: Create custom 503 error page
-          ansibleguy.opnsense.haproxy_errorfile:
-            name: 'maintenance_page'
-            description: 'Custom maintenance page for 503 errors'
+        # Add custom error pages
+        - name: Add HAProxy custom error page
+          oxlorg.opnsense.haproxy_errorfile:
+            name: 'custom_503'
+            description: 'Custom 503 error page'
             code: '503'
-            content: |
-              HTTP/1.1 503 Service Unavailable
-              Content-Type: text/html
-              Cache-Control: no-cache
-              Connection: close
-
-              <!DOCTYPE html>
-              <html>
-              <head><title>Maintenance</title></head>
-              <body>
-                <h1>Service Temporarily Unavailable</h1>
-                <p>We are currently performing maintenance. Please try again later.</p>
-              </body>
-              </html>
+            content: "{{ lookup('file', 'error_pages/503.html') }}"
+            enabled: true
 
 ----
 

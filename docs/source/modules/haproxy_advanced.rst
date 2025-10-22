@@ -23,7 +23,7 @@ These modules manage advanced HAProxy features including Lua scripts, FastCGI ap
 
 .. _haproxy_lua:
 
-ansibleguy.opnsense.haproxy_lua
+oxlorg.opnsense.haproxy_lua
 =================================
 
 Manages HAProxy Lua scripts for custom logic and processing.
@@ -45,7 +45,7 @@ Examples
 .. code-block:: yaml
 
     - name: Create authentication Lua script
-      ansibleguy.opnsense.haproxy_lua:
+      oxlorg.opnsense.haproxy_lua:
         name: 'auth_script'
         description: 'JWT authentication script'
         enabled: true
@@ -65,7 +65,7 @@ Examples
 
 .. _haproxy_fcgi:
 
-ansibleguy.opnsense.haproxy_fcgi
+oxlorg.opnsense.haproxy_fcgi
 ==================================
 
 Manages HAProxy FastCGI applications for dynamic content processing.
@@ -93,7 +93,7 @@ Examples
 .. code-block:: yaml
 
     - name: Create PHP FastCGI application
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'php_app'
         description: 'PHP application backend'
         enabled: true
@@ -107,7 +107,7 @@ Examples
 
 .. _haproxy_errorfile:
 
-ansibleguy.opnsense.haproxy_errorfile
+oxlorg.opnsense.haproxy_errorfile
 ======================================
 
 Manages HAProxy custom error pages for better user experience.
@@ -127,7 +127,7 @@ Examples
 .. code-block:: yaml
 
     - name: Create custom 404 page
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'custom_404'
         description: 'Custom 404 error page'
         code: 'x404'

@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'haproxy_errorfile'
 
   environment:
@@ -17,20 +17,20 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid name
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: ''
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring - failing because of missing content
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Test error file 1'
         code: 'x503'
@@ -38,7 +38,7 @@
       failed_when: not opn_fail2.failed
 
     - name: Creating HAProxy Error file for 503
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Custom 503 Service Unavailable page'
         code: 'x503'
@@ -75,7 +75,7 @@
         not opn1.changed
 
     - name: Creating HAProxy Error file for 500
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_2'
         description: 'Custom 500 Internal Server Error page'
         code: 'x500'
@@ -111,7 +111,7 @@
         not opn2.changed
 
     - name: Creating HAProxy Error file for 400
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_3'
         description: 'Custom 400 Bad Request page'
         code: 'x400'
@@ -149,7 +149,7 @@
         not opn3.changed
 
     - name: Creating HAProxy Error file for 403
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_4'
         description: 'Custom 403 Forbidden page'
         code: 'x403'
@@ -186,7 +186,7 @@
         not opn4.changed
 
     - name: Changing Error file content
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified custom 503 Service Unavailable page'
         code: 'x503'
@@ -221,7 +221,7 @@
         not opn9.changed
 
     - name: Changing Error file code
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified custom 502 Bad Gateway page'
         code: 'x502'
@@ -248,7 +248,7 @@
       when: not ansible_check_mode
 
     - name: Changing Error file code - nothing changed
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified custom 502 Bad Gateway page'
         code: 'x502'
@@ -275,7 +275,7 @@
       when: not ansible_check_mode
 
     - name: Changing Error file back to original
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Custom 503 Service Unavailable page'
         code: 'x503'
@@ -302,7 +302,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Custom 503 Service Unavailable page'
         code: 'x503'
@@ -329,25 +329,25 @@
       when: not ansible_check_mode
 
     - name: Cleanup Error file 1
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup Error file 2
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup Error file 3
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_3'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup Error file 4
-      ansibleguy.opnsense.haproxy_errorfile:
+      oxlorg.opnsense.haproxy_errorfile:
         name: 'ANSIBLE_TEST_1_4'
         state: 'absent'
       when: not ansible_check_mode

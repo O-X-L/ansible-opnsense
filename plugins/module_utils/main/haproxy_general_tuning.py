@@ -1,10 +1,10 @@
 from ansible.module_utils.basic import AnsibleModule
 
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.api import Session
-from ansible_collections.ansibleguy.opnsense.plugins.module_utils.base.cls import GeneralModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import Session
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import GeneralModule
 
 
-class GeneralTuning(GeneralModule):
+class HaproxyGeneralTuning(GeneralModule):
     CMDS = {
         'set': 'set',
         'search': 'get',
@@ -17,9 +17,7 @@ class GeneralTuning(GeneralModule):
     API_CMD_REL = 'reconfigure'
 
     FIELDS_TRANSLATE = {
-        'root': 'root',
         'max_connections': 'maxConnections',
-        'nbthread': 'nbthread',
         'resolvers_prefer': 'resolversPrefer',
         'ssl_server_verify': 'sslServerVerify',
         'max_dh_size': 'maxDHSize',
@@ -45,7 +43,7 @@ class GeneralTuning(GeneralModule):
         'h2_max_concurrent_streams_incoming': 'h2_maxConcurrentStreamsIncoming',
     }
 
-    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys())
+    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys()) + ['root', 'nbthread'] 
     FIELDS_ALL = FIELDS_CHANGE
 
     FIELDS_TYPING = {

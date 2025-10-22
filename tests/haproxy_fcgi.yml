@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'haproxy_fcgi'
 
   environment:
@@ -17,20 +17,20 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid name
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: ''
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring - failing because of missing docroot
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Test FCGI app 1'
       register: opn_fail2
@@ -38,7 +38,7 @@
 
     # Create prerequisite actions for testing
     - name: Create test action for FCGI testing
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_FCGI_ACTION_1'
         description: 'Test Action for FCGI pass header'
         test_type: 'if'
@@ -48,7 +48,7 @@
       when: not ansible_check_mode
 
     - name: Create another test action for FCGI testing
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_FCGI_ACTION_2'
         description: 'Test Action for FCGI set param'
         test_type: 'if'
@@ -58,7 +58,7 @@
       when: not ansible_check_mode
 
     - name: Creating HAProxy FCGI application basic
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Test PHP-FPM application'
         enabled: true
@@ -76,7 +76,7 @@
         not opn1.changed
 
     - name: Creating HAProxy FCGI application with stderr logging
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_2'
         description: 'Test PHP-FPM application with logging'
         enabled: true
@@ -94,7 +94,7 @@
         not opn2.changed
 
     - name: Creating HAProxy FCGI application with actions
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_3'
         description: 'Test PHP-FPM application with actions'
         enabled: true
@@ -108,7 +108,7 @@
       when: not ansible_check_mode
 
     - name: Creating HAProxy FCGI application minimal
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_4'
         description: 'Test minimal FCGI application'
         enabled: true
@@ -119,7 +119,7 @@
         not opn4.changed
 
     - name: Changing FCGI application settings
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test PHP-FPM application'
         enabled: true
@@ -137,7 +137,7 @@
         not opn9.changed
 
     - name: Disabling HAProxy FCGI application
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test PHP-FPM application'
         enabled: false
@@ -156,7 +156,7 @@
       when: not ansible_check_mode
 
     - name: Disabling HAProxy FCGI application - nothing changed
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test PHP-FPM application'
         enabled: false
@@ -175,7 +175,7 @@
       when: not ansible_check_mode
 
     - name: Enabling HAProxy FCGI application
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test PHP-FPM application'
         enabled: true
@@ -194,7 +194,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test PHP-FPM application'
         enabled: true
@@ -213,37 +213,37 @@
       when: not ansible_check_mode
 
     - name: Cleanup FCGI app 1
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup FCGI app 2
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_2'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup FCGI app 3
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_3'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup FCGI app 4
-      ansibleguy.opnsense.haproxy_fcgi:
+      oxlorg.opnsense.haproxy_fcgi:
         name: 'ANSIBLE_TEST_1_4'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup test action 1
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_FCGI_ACTION_1'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup test action 2
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'ANSIBLE_TEST_FCGI_ACTION_2'
         state: 'absent'
       when: not ansible_check_mode

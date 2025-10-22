@@ -22,7 +22,7 @@ These modules manage HAProxy system performance and maintenance settings.
 
 .. _haproxy_cpu:
 
-ansibleguy.opnsense.haproxy_cpu
+oxlorg.opnsense.haproxy_cpu
 =================================
 
 Manages CPU affinity rules for HAProxy processes.
@@ -42,7 +42,7 @@ Examples
 .. code-block:: yaml
 
     - name: Configure CPU affinity for web threads
-      ansibleguy.opnsense.haproxy_cpu:
+      oxlorg.opnsense.haproxy_cpu:
         name: 'web_threads'
         description: 'CPU affinity for web processing'
         thread_id: 'x1'
@@ -53,7 +53,7 @@ Examples
 
 .. _haproxy_maintenance:
 
-ansibleguy.opnsense.haproxy_maintenance
+oxlorg.opnsense.haproxy_maintenance
 ========================================
 
 Manages HAProxy maintenance and monitoring settings.
@@ -72,7 +72,7 @@ Examples
 .. code-block:: yaml
 
     - name: Configure HAProxy maintenance
-      ansibleguy.opnsense.haproxy_maintenance:
+      oxlorg.opnsense.haproxy_maintenance:
         sync_certs: true
         reload_service: false
         restart_service: false

@@ -22,7 +22,7 @@ These modules manage HAProxy traffic control through ACLs (Access Control Lists)
 
 .. _haproxy_acl:
 
-ansibleguy.opnsense.haproxy_acl
+oxlorg.opnsense.haproxy_acl
 =================================
 
 Manages HAProxy Access Control Lists for traffic filtering and condition matching.
@@ -109,7 +109,7 @@ Examples
 .. code-block:: yaml
 
     - name: Create ACL for API domain
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'acl_api_domain'
         description: 'API domain filter'
         expression: 'hdr'
@@ -119,7 +119,7 @@ Examples
 
 .. _haproxy_action:
 
-ansibleguy.opnsense.haproxy_action
+oxlorg.opnsense.haproxy_action
 ====================================
 
 Manages HAProxy Actions that execute when ACL conditions are met.
@@ -186,7 +186,7 @@ Examples
 .. code-block:: yaml
 
     - name: Create allow action for API
-      ansibleguy.opnsense.haproxy_action:
+      oxlorg.opnsense.haproxy_action:
         name: 'action_allow_api'
         description: 'Allow API access'
         test_type: 'if'

@@ -4,12 +4,12 @@
   hosts: localhost
   gather_facts: no
   module_defaults:
-    group/ansibleguy.opnsense.all:
+    group/oxlorg.opnsense.all:
       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
       ssl_verify: false
 
-    ansibleguy.opnsense.list:
+    oxlorg.opnsense.list:
       target: 'haproxy_acl'
 
   environment:
@@ -17,27 +17,27 @@
 
   tasks:
     - name: Listing
-      ansibleguy.opnsense.list:
+      oxlorg.opnsense.list:
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
         'data' not in opn_pre1
 
     - name: Configuring - failing because of invalid name
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: ''
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Configuring - failing because of missing expression
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Test ACL 1'
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Creating HAProxy ACL with host matching
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Test ACL for host matching'
         expression: 'hdr'
@@ -50,7 +50,7 @@
         not opn1.changed
 
     - name: Creating HAProxy ACL with path matching
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_2'
         description: 'Test ACL for path matching'
         expression: 'path_beg'
@@ -62,7 +62,7 @@
         not opn2.changed
 
     - name: Creating HAProxy ACL with source metrics
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_3'
         description: 'Test ACL for connection rate limit'
         expression: 'src_conn_rate'
@@ -75,7 +75,7 @@
         not opn3.changed
 
     - name: Creating HAProxy ACL with custom header
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_4'
         description: 'Test ACL for custom header'
         expression: 'cust_hdr'
@@ -88,7 +88,7 @@
         not opn4.changed
 
     - name: Changing ACL settings
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test ACL for host matching'
         expression: 'hdr'
@@ -101,7 +101,7 @@
         not opn9.changed
 
     - name: Disabling HAProxy ACL
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test ACL for host matching'
         expression: 'hdr'
@@ -115,7 +115,7 @@
       when: not ansible_check_mode
 
     - name: Disabling HAProxy ACL - nothing changed
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test ACL for host matching'
         expression: 'hdr'
@@ -129,7 +129,7 @@
       when: not ansible_check_mode
 
     - name: Enabling HAProxy ACL
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test ACL for host matching'
         expression: 'hdr'
@@ -143,7 +143,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_1'
         description: 'Modified test ACL for host matching'
         expression: 'hdr'
@@ -157,28 +157,28 @@
       when: not ansible_check_mode
 
     - name: Cleanup ACL 1
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_1'
         expression: 'hdr'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup ACL 2
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_2'
         expression: 'path_beg'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup ACL 3
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_3'
         expression: 'src_conn_rate'
         state: 'absent'
       when: not ansible_check_mode
 
     - name: Cleanup ACL 4
-      ansibleguy.opnsense.haproxy_acl:
+      oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_1_4'
         expression: 'cust_hdr'
         state: 'absent'
