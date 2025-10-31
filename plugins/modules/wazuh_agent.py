@@ -9,7 +9,7 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, EN_ONLY_MOD_ARG, RELOAD_MOD_ARG
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.wazuh_agent import WazuhAgent
@@ -62,7 +62,7 @@ def run_module():
             description='Enable remote commands from the log collector'
         ),
         syslog_programs=dict(
-            type='list', required=False, elements='str',
+            type='list', required=False, elements='str', default=[],
             description='Choose which applications to forward to Wazuh.'
         ),
         suricata_eve_log=dict(
@@ -92,7 +92,7 @@ def run_module():
             description='Toggles whether Command Module should accept commands'
         ),
         active_response_fw_alias_ignore=dict(
-            type='list', required=False, elements='str',
+            type='list', required=False, elements='str', default=[],
             description='Select an alias from which items should be ignored when dropping IP addresses'
         ),
         

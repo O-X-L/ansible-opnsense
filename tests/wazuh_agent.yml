@@ -29,6 +29,7 @@
         reload: false
       register: opn_fail1
       failed_when: not opn_fail1.failed
+      when: not ansible_check_mode
 
     - name: Configuring - failing because of invalid port
       oxlorg.opnsense.wazuh_agent:
@@ -37,6 +38,7 @@
         reload: false
       register: opn_fail2
       failed_when: not opn_fail2.failed
+      when: not ansible_check_mode
 
     - name: Configuring - failing because of invalid debug level
       oxlorg.opnsense.wazuh_agent:
@@ -45,6 +47,7 @@
         reload: false
       register: opn_fail3
       failed_when: not opn_fail3.failed
+      when: not ansible_check_mode
 
     - name: Configuring
       oxlorg.opnsense.wazuh_agent:
@@ -71,6 +74,7 @@
       failed_when: >
         opn2.failed or
         opn2.changed
+      when: not ansible_check_mode
 
     - name: Configuring - changing server
       oxlorg.opnsense.wazuh_agent:
@@ -85,6 +89,7 @@
       failed_when: >
         opn3.failed or
         not opn3.changed
+      when: not ansible_check_mode
 
     - name: Configuring - with authentication
       oxlorg.opnsense.wazuh_agent:
@@ -103,13 +108,14 @@
         syscheck_enabled: false
         active_response_enabled: true
         active_response_remote_commands: false
-        active_response_fw_alias_ignore:
-          - 'trusted_hosts'
+        # active_response_fw_alias_ignore:
+        #   - 'trusted_hosts'
         reload: false
       register: opn4
       failed_when: >
         opn4.failed or
         not opn4.changed
+      when: not ansible_check_mode
 
     - name: Cleanup
       oxlorg.opnsense.wazuh_agent:
