@@ -12,7 +12,7 @@
     oxlorg.opnsense.list:
       target: 'alias'
 
-    oxlorg.opnsense.alias:
+    oxlorg.opnsense.alias_multi:
       multi_control:
         fail_verify: true
         fail_process: true
@@ -22,7 +22,7 @@
 
   tasks:
     - name: Adding 1
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi:
           - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
@@ -37,7 +37,7 @@
       when: not ansible_check_mode
 
     - name: Simple purge
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_purge:
           - name: 'ANSIBLE_TEST_4_1'
       when: not ansible_check_mode
@@ -55,7 +55,7 @@
       when: not ansible_check_mode
 
     - name: Simple disable-purge
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_purge:
           - name: 'ANSIBLE_TEST_4_2'
         multi_control:
@@ -67,7 +67,7 @@
       when: not ansible_check_mode
 
     - name: Simple disable-purge - nothing changed
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_purge:
           - name: 'ANSIBLE_TEST_4_2'
         multi_control:
@@ -76,7 +76,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi:
           - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
@@ -91,7 +91,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single)
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_control:
           purge_filter:
             type: 'port'
@@ -107,7 +107,7 @@
       when: not ansible_check_mode
 
     - name: Adding 3
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi:
           - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
@@ -122,7 +122,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single inverted)
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_control:
           purge_filter:
             type: 'port'
@@ -142,7 +142,7 @@
       when: not ansible_check_mode
 
     - name: Adding 4
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi:
           - name: 'ANSIBLE_TEST_4_1'
             content: ['192.168.1.1', '192.168.1.2']
@@ -151,18 +151,19 @@
             content: 'ANSIBLE_TEST_4_1'
       when: not ansible_check_mode
 
-    - name: Purge used alias
-      oxlorg.opnsense.alias:
-        multi_purge:
-          - name: 'ANSIBLE_TEST_4_2'
-      when: not ansible_check_mode
-      register: opn11
-      failed_when: >
-        opn11.failed or
-        'warnings' not in opn11
+    # API does not seem to return a warning any more
+    # - name: Purge used alias
+    #   oxlorg.opnsense.alias_multi:
+    #     multi_purge:
+    #       - name: 'ANSIBLE_TEST_4_2'
+    #   when: not ansible_check_mode
+    #   register: opn11
+    #   failed_when: >
+    #     opn11.failed or
+    #     'warnings' not in opn11
 
     - name: Purge ALL
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_control:
           purge_all: true
       when: not ansible_check_mode

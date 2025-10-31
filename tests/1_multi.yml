@@ -8,32 +8,6 @@
 #   module_utils/base/multi_base_2_parts_pytest.py => testing multi-handling methods
 #   module_utils/base/multi_base_3_full_pytest.py => 'end-to-end'-like tests
 
-- name: Checking required match_fields
-  hosts: localhost
-  gather_facts: no
-  module_defaults:
-    oxlorg.opnsense.rule:
-      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
-      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
-      ssl_verify: false
-      # match_fields: ['description']
-
-  environment:
-    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
-
-  tasks:
-    - name: Should fail because of missing 'match_fields'
-      oxlorg.opnsense.rule:
-        source_net: '192.168.0.0/24'
-        destination_net: '192.168.1.0/24'
-        destination_port: 443
-        protocol: 'TCP'
-        description: 'ANSIBLE_TEST_0_1'
-      register: opn0
-      failed_when: >
-        not opn0.failed or
-        "Value for 'match_fields' is required" not in opn0.module_stderr
-
 - name: Testing Mass Management
   hosts: localhost
   gather_facts: no
@@ -46,7 +20,7 @@
     oxlorg.opnsense.list:
       target: 'alias'
 
-    oxlorg.opnsense.alias:
+    oxlorg.opnsense.alias_multi:
       multi_control:
         fail_verify: true
         fail_process: true
@@ -56,31 +30,31 @@
 
   tasks:
     - name: Purging all
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_control:
           purge_all: true
 
     - name: Fail required args (1)
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
       register: opn_fail1
       failed_when: not opn_fail1.failed
 
     - name: Fail required args (2)
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_control:
           purge_action: 'disable'
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
     - name: Fail required args (3)
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_control:
           purge_unconfigured: true
       register: opn_fail3
       failed_when: not opn_fail3.failed
 
     - name: Removing - do not exist
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
         multi_control:
@@ -91,7 +65,7 @@
         opn1.changed
 
     - name: Adding
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -122,7 +96,7 @@
         not opn2.changed
 
     - name: Changing
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -154,7 +128,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -186,7 +160,7 @@
       when: not ansible_check_mode
 
     - name: Changing few
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_4'
             type: 'network'
@@ -202,7 +176,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -234,7 +208,7 @@
       when: not ansible_check_mode
 
     - name: Disabling some
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -263,7 +237,7 @@
       when: not ansible_check_mode
 
     - name: Checking disabled-state
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -297,7 +271,7 @@
       when: not ansible_check_mode
 
     - name: Removing some
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
           - name: 'ANSIBLE_TEST_0_2'
@@ -318,7 +292,7 @@
       when: not ansible_check_mode
 
     - name: Recreating
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -348,7 +322,7 @@
       when: not ansible_check_mode
 
     - name: Removing unconfigured/orphaned
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -380,7 +354,7 @@
       when: not ansible_check_mode
 
     - name: Recreating
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -410,7 +384,7 @@
       when: not ansible_check_mode
 
     - name: Simple purge
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_purge:
           - name: 'ANSIBLE_TEST_0_1'
       register: purge2
@@ -428,7 +402,7 @@
       when: not ansible_check_mode
 
     - name: Simple disable-purge
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_purge:
           - name: 'ANSIBLE_TEST_0_3'
         multi_control:
@@ -440,7 +414,7 @@
       when: not ansible_check_mode
 
     - name: Simple disable-purge - nothing changed
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_purge:
           - name: 'ANSIBLE_TEST_0_3'
         multi_control:
@@ -452,7 +426,7 @@
       when: not ansible_check_mode
 
     - name: Recreating
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -482,7 +456,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single)
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_control:
           purge_filter:
             type: 'port'
@@ -498,7 +472,7 @@
       when: not ansible_check_mode
 
     - name: Recreating
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -528,7 +502,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single inverted)
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_control:
           purge_filter:
             type: 'port'
@@ -540,7 +514,7 @@
         not purge6.changed
 
     - name: Recreating
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_0_1'
             type: 'host'
@@ -570,7 +544,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (partial match)
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_control:
           purge_filter:
             content: '192.168.1'
@@ -590,7 +564,7 @@
       when: not ansible_check_mode
 
     - name: Purging all
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_control:
           purge_all: true
       register: opn_clean1

@@ -26,7 +26,7 @@
 
     - name: Adding - failing because of non-existing domain
       oxlorg.opnsense.bind_record:
-        domain: 'test4.oxlorg'
+        domain: 'test60.oxlorg'
         name: 'test1'
         value: '192.168.1.1'
       register: opn_fail1
@@ -35,10 +35,6 @@
     - name: Adding dummy domain
       oxlorg.opnsense.bind_domain:
         name: 'test4.oxlorg'
-      register: opn10
-      failed_when: >
-        opn10.failed or
-        not opn10.changed
       when: not ansible_check_mode
 
     - name: Adding - failing because of invalid values

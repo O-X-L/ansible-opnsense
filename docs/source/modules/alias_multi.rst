@@ -60,7 +60,7 @@ Examples
 
       tasks:
         - name: Creation
-          oxlorg.opnsense.alias:
+          oxlorg.opnsense.alias_multi:
             aliases:
               - name: 'test1'
                 content: '1.1.1.1'
@@ -80,7 +80,7 @@ Examples
               # output_info: false
 
         - name: Changes
-          oxlorg.opnsense.alias:
+          oxlorg.opnsense.alias_multi:
             aliases:
               - name: 'test1'
                 content: ['1.1.1.3']
@@ -92,7 +92,7 @@ Examples
                 enabled: false
 
         - name: Change state of all
-          oxlorg.opnsense.alias:
+          oxlorg.opnsense.alias_multi:
             aliases:
               - name: 'test1'
               - name: 'test3'
@@ -111,7 +111,7 @@ Examples
             var: existing_entries.data
 
         - name: Purging all non-configured aliases
-          oxlorg.opnsense.alias:
+          oxlorg.opnsense.alias_multi:
             aliases: {...}
 
             multi_control:
@@ -119,7 +119,7 @@ Examples
               # action: 'disable'  # default = delete
 
         - name: Purging all port aliases
-          oxlorg.opnsense.alias:
+          oxlorg.opnsense.alias_multi:
             multi_control:
               purge_all: true
               filters:  # filtering aliases to purge by alias-parameters

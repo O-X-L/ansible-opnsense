@@ -531,7 +531,7 @@ oxlorg.opnsense.bind_record
             state: 'absent'
 
 oxlorg.opnsense.bind_record (multi)
-=======================================
+===================================
 
 .. code-block:: yaml
 
@@ -542,12 +542,12 @@ oxlorg.opnsense.bind_record (multi)
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        oxlorg.opnsense.bind_record:
+        oxlorg.opnsense.bind_record_multi:
           match_fields: ['domain', 'name', 'type']
   
       tasks:
         - name: Example
-          oxlorg.opnsense.bind_record:
+          oxlorg.opnsense.bind_record_multi:
             records:
               - name: 'example'
                 domain: 'template.opnsense.oxl.app'
@@ -563,7 +563,7 @@ oxlorg.opnsense.bind_record (multi)
             # reload: true
 
         - name: Adding
-          oxlorg.opnsense.bind_record:
+          oxlorg.opnsense.bind_record_multi:
             records:
               - name: 'test1'
                 domain: 'template.opnsense.oxl.app'
@@ -588,7 +588,7 @@ oxlorg.opnsense.bind_record (multi)
                 value: 'test1.test3.opnsense.oxl.app'
 
         - name: Changing
-          oxlorg.opnsense.bind_record:
+          oxlorg.opnsense.bind_record_multi:
             records:
               - name: 'test1'
                 domain: 'template.opnsense.oxl.app'
@@ -614,7 +614,7 @@ oxlorg.opnsense.bind_record (multi)
                 value: 'test2.test3.opnsense.oxl.app'
 
         - name: Disabling all
-          oxlorg.opnsense.bind_record:
+          oxlorg.opnsense.bind_record_multi:
             records:
               - name: 'test1'
                 domain: 'template.opnsense.oxl.app'
@@ -642,7 +642,7 @@ oxlorg.opnsense.bind_record (multi)
               enabled: false
 
         - name: Removing all
-          oxlorg.opnsense.bind_record:
+          oxlorg.opnsense.bind_record_multi:
             records:
               - name: 'test1'
                 domain: 'template.opnsense.oxl.app'

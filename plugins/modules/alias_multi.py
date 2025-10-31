@@ -12,27 +12,79 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import \
+        module_multi_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import \
+        build_multi_mod_args, MultiModuleCallbacks
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
-        OPN_MOD_ARGS, RELOAD_MOD_ARG
+        RELOAD_MOD_ARG_DEF_FALSE, OPN_MOD_ARGS
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.alias import \
+        ALIAS_MOD_ARGS
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.alias import Alias
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import ensure_list
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.alias import \
+        builtin_alias, build_updatefreq
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
+
 
 # DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/alias.html'
 # EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/alias.html'
 
 
+class MultiCallbacks(MultiModuleCallbacks):
+    @staticmethod
+    def build(entry: dict) -> dict:
+        entry['content'] = list(map(str, ensure_list(entry['content'])))
+        if 'updatefreq_days' in entry:
+            entry['updatefreq_days'] = build_updatefreq(entry['updatefreq_days'])
+
+        return entry
+
+    @staticmethod
+    def purge_exclude(entry: dict) -> bool:
+        return builtin_alias(entry['name'])
+
+
 def run_module():
-    module_args = dict(
-        aliases=dict(type='dict', required=True),
-        **RELOAD_MOD_ARG,
-        **OPN_MOD_ARGS,
+    entry_multi_args = build_multi_mod_args(
+        mod_args=ALIAS_MOD_ARGS,
+        aliases=['aliases'],
+        not_required=['name'],
     )
 
-    AnsibleModule(
+    module_args = dict(
+        **entry_multi_args,
+        **OPN_MOD_ARGS,
+        **RELOAD_MOD_ARG_DEF_FALSE,  # default-true takes pretty long sometimes (urltables and so on)
+    )
+
+    module = AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
-    ).fail_json('This module was deprecated in favor of: https://ansible-opnsense.oxl.app/modules/1_multi.html')
+        required_one_of=[
+            ('multi', 'multi_purge', 'multi_control.purge_all'),
+        ],
+    )
+
+    result = dict(
+        changed=False,
+        diff={
+            'before': {},
+            'after': {},
+        }
+    )
+
+    module_multi_wrapper(
+        module=module,
+        result=result,
+        obj=Alias,
+        kind='alias',
+        entry_args=entry_multi_args,
+        callbacks=MultiCallbacks(),
+    )
+    module.exit_json(**result)
 
 
 def main():
