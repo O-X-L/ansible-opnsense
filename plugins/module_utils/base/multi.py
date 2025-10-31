@@ -579,7 +579,11 @@ class MultiModule:
                 str(e1[field]) == str(e2[field])
             )
 
-        return all(matches)
+        res = all(matches)
+        if not res and self.p['debug']:
+            self.m.warn(f"Entries do not match: {e1} != {e2}")
+
+        return res
 
     def _entry_id(self, entry: (dict, BaseModule)) -> str:
         entry_cnf = entry
