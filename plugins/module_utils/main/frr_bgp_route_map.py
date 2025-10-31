@@ -8,7 +8,6 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import Ba
 
 
 class RouteMap(BaseModule):
-    FIELD_ID = 'name'
     CMDS = {
         'add': 'addRoutemap',
         'del': 'delRoutemap',
@@ -24,7 +23,7 @@ class RouteMap(BaseModule):
         'action', 'description', 'id', 'as_path_list', 'prefix_list',
         'community_list', 'set',
     ]
-    FIELDS_ALL = [FIELD_ID, 'enabled']
+    FIELDS_ALL = ['name', 'enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
     FIELDS_TRANSLATE = {
         'as_path_list': 'match',
