@@ -530,11 +530,11 @@ def run_module():
         elif target == 'snapshot':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.snapshot import \
                 Snapshot as Target_Obj
-            
+
         elif target == 'wazuh_agent':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.wazuh_agent import \
                 WazuhAgent as Target_Obj
-            
+
         elif target == 'user':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.user import \
                 User as Target_Obj

@@ -59,7 +59,7 @@ class WazuhAgent(GeneralModule):
         'port': {'min': 1, 'max': 65535},
         'auth_port': {'min': 1, 'max': 65535},
     }
-    
+
     TIMEOUT = 60.0
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):

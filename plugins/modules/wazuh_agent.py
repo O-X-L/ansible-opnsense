@@ -45,7 +45,7 @@ def run_module():
             type='int', required=False, default=0,
             description='Debug level for this agents services.'
         ),
-        
+
         # Authentication settings
         auth_password=dict(
             type='str', required=False, no_log=True,
@@ -55,7 +55,7 @@ def run_module():
             type='int', required=False, default=1515,
             description='Specifies the port to use for communicating with the Wazuh manager during enrollment.'
         ),
-        
+
         # Log collector settings
         remote_commands=dict(
             type='bool', required=False, default=True,
@@ -69,7 +69,7 @@ def run_module():
             type='bool', required=False, default=True,
             description='Send events from the intrusion detection engine to Wazuh'
         ),
-        
+
         # Module enablers
         rootcheck_enabled=dict(
             type='bool', required=False, default=True,
@@ -95,7 +95,7 @@ def run_module():
             type='list', required=False, elements='str', default=[],
             description='Select an alias from which items should be ignored when dropping IP addresses'
         ),
-        
+
         **RELOAD_MOD_ARG,
         **EN_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,
