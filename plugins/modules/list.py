@@ -44,7 +44,7 @@ TARGETS = [
     'frr_ospf3_redistribution', 'frr_ospf3_route_map', 'frr_ospf3_prefix_list', 'frr_ospf3_network',
     'frr_bgp_peer_group', 'user', 'group', 'privilege', 'interface_bridge', 'interface_gif', 'neighbor',
     'dnsmasq_general', 'ipsec_general', 'dnsmasq_domain', 'dnsmasq_host', 'dnsmasq_range', 'dnsmasq_option',
-    'dnsmasq_boot', 'dnsmasq_tag',
+    'dnsmasq_boot', 'dnsmasq_tag', 'wazuh_agent',
 ]
 
 
@@ -530,6 +530,10 @@ def run_module():
         elif target == 'snapshot':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.snapshot import \
                 Snapshot as Target_Obj
+
+        elif target == 'wazuh_agent':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.wazuh_agent import \
+                WazuhAgent as Target_Obj
 
         elif target == 'user':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.user import \
