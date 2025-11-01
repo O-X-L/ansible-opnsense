@@ -33,7 +33,8 @@ def run_module():
         ),
         remote_enabled=dict(
             type='bool', required=False, default=False,
-            description='Enable remote access to HAProxy statistics page. This may be a security risk if authentication is not enabled'
+            description='Enable remote access to HAProxy statistics page. This may be a security risk '
+                        'if authentication is not enabled'
         ),
         remote_bind=dict(
             type='list', elements='str', required=False, default=[],
@@ -49,11 +50,13 @@ def run_module():
         ),
         allowed_users=dict(
             type='list', elements='str', required=False, default=[],
-            description='List of user names that are allowed to access the statistics page. User names will be automatically resolved to UUIDs'
+            description='List of user names that are allowed to access the statistics page. User names will '
+                        'be automatically resolved to UUIDs'
         ),
         allowed_groups=dict(
             type='list', elements='str', required=False, default=[],
-            description='List of group names that are allowed to access the statistics page. Group names will be automatically resolved to UUIDs'
+            description='List of group names that are allowed to access the statistics page. Group names will '
+                        'be automatically resolved to UUIDs'
         ),
         custom_options=dict(
             type='str', required=False, default=None,

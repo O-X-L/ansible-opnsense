@@ -37,7 +37,9 @@ def run_module():
         ),
         password=dict(
             type='str', required=False, default=None, no_log=True,
-            description='Both encrypted and unencrypted passwords can be used. Most systems support MD5, SHA-256, SHA-512, and, of course, the classic DES-based method of encrypting passwords'
+            description='Both encrypted and unencrypted passwords can be used. '
+                        'Most systems support MD5, SHA-256, SHA-512, and, of course, '
+                        'the classic DES-based method of encrypting passwords'
         ),
         **STATE_MOD_ARG,
         **RELOAD_MOD_ARG,

@@ -25,8 +25,8 @@ class HaproxyGeneralStats(GeneralModule):
         'custom_options': 'customOptions'
     }
 
-    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys()) + ['enabled', 'port', 'users', 'prometheus_enabled', 
-                                                     'prometheus_bind', 'prometheus_path']
+    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys())
+    FIELDS_CHANGE += ['enabled', 'port', 'users', 'prometheus_enabled', 'prometheus_bind', 'prometheus_path']
     FIELDS_ALL = FIELDS_CHANGE
 
     FIELDS_TYPING = {
@@ -63,4 +63,4 @@ class HaproxyGeneralStats(GeneralModule):
             field='allowed_groups',
             existing=self.existing_groups,
             existing_field_id='name',
-            )
+        )

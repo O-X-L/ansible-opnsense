@@ -43,7 +43,7 @@ class HaproxyGeneralTuning(GeneralModule):
         'h2_max_concurrent_streams_incoming': 'h2_maxConcurrentStreamsIncoming',
     }
 
-    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys()) + ['root', 'nbthread'] 
+    FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys()) + ['root', 'nbthread']
     FIELDS_ALL = FIELDS_CHANGE
 
     FIELDS_TYPING = {

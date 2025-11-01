@@ -41,7 +41,8 @@ def run_module():
         ),
         add_userlist=dict(
             type='bool', required=False, default=False,
-            description='Usually HAproxy userlists are created automatically in a context sensitive way. This option adds this group as userlist'
+            description='Usually HAproxy userlists are created automatically in a context sensitive way. '
+                        'This option adds this group as userlist'
         ),
         **STATE_MOD_ARG,
         **RELOAD_MOD_ARG,
