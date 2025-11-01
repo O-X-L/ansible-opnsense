@@ -32,3 +32,4 @@
         - 'os-postfix'
         - 'os-nginx'
         - 'os-haproxy'
+        - 'os-wazuh-agent'

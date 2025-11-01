@@ -171,6 +171,8 @@ action_groups:
   hasync:
     - oxlorg.opnsense.hasync_general
     - oxlorg.opnsense.hasync_service
+  wazuh:
+    - oxlorg.opnsense.wazuh_agent
   raw:
     - oxlorg.opnsense.raw
   access:
@@ -215,6 +217,7 @@ action_groups:
           - oxlorg.opnsense.acme
           - oxlorg.opnsense.postfix
           - oxlorg.opnsense.hasync
+          - oxlorg.opnsense.wazuh
           - oxlorg.opnsense.raw
           - oxlorg.opnsense.access
           - oxlorg.opnsense.dnsmasq

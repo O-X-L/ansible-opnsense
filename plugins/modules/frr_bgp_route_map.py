@@ -55,6 +55,13 @@ def run_module():
                         '(http://www.nongnu.org/quagga/docs/docs-multi/'
                         'Route-Map-Set-Command.html#Route-Map-Set-Command)'
         ),
+        match_fields=dict(
+            type='list', required=False, elements='str',
+            description='Fields that are used to match configured PSK with the running config - '
+                        "if any of those fields are changed, the module will think it's a new entry",
+            choices=['name', 'id'],
+            default=['name', 'id'],
+        ),
         **STATE_MOD_ARG,
         **RELOAD_MOD_ARG,
         **OPN_MOD_ARGS,

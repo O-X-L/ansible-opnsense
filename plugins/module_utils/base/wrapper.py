@@ -8,9 +8,16 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import 
     MultiModule, MultiModuleCallbacks
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.utils import profiler
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import diff_remove_empty
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import exit_cnf
 
 
 def _single_module_process(instance: BaseModule):
+    # manually validate as multi-modules disable the requirement (todo: check if possible 'required_if')
+    if 'match_fields' in instance.m.params:
+        match_fields = instance.m.params['match_fields']
+        if match_fields is None or not isinstance(match_fields, list) or len(match_fields) == 0:
+            exit_cnf("Value for 'match_fields' is required!")
+
     instance.check()
     instance.process()
     if 'reload' in instance.m.params and instance.r['changed'] and instance.m.params['reload']:

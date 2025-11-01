@@ -327,14 +327,17 @@
 
     - name: Cleanup FRR BGP route-maps
       oxlorg.opnsense.frr_bgp_route_map:
-        name: "{{ item }}"
+        name: "{{ item.name }}"
+        id: "{{ item.id }}"
         state: 'absent'
       loop:
-        - 'ANSIBLE_TEST_1_1'
-        - 'ANSIBLE_TEST_1_2'
-        - 'ANSIBLE_TEST_2_1'
-        - 'ANSIBLE_TEST_2_2'
-        - 'ANSIBLE_TEST_3_1'
+        - {'name': 'ANSIBLE_TEST_1_1', id: 45}
+        - {'name': 'ANSIBLE_TEST_1_1', id: 51}
+        - {'name': 'ANSIBLE_TEST_1_2', id: 65}
+        - {'name': 'ANSIBLE_TEST_2_1', id: 65}
+        - {'name': 'ANSIBLE_TEST_2_2', id: 66}
+        - {'name': 'ANSIBLE_TEST_2_3', id: 67}
+        - {'name': 'ANSIBLE_TEST_3_1', id: 50}
 
     - name: Cleanup FRR BGP prefix lists
       oxlorg.opnsense.frr_bgp_prefix_list:
@@ -932,6 +935,13 @@
       failed_when:
         - cl_snap2.failed
         - "'Unsupported' not in cl_snap2.msg | default('')"
+
+    - name: Cleanup Wazuh Agent - disable
+      ansibleguy.opnsense.wazuh_agent:
+        enabled: false
+        server_address: '127.0.0.1'  # placeholder
+      register: cl_wazuh
+      failed_when: cl_wazuh.failed
 
     - name: Cleanup Users
       oxlorg.opnsense.user:

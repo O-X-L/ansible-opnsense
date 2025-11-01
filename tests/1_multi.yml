@@ -8,6 +8,32 @@
 #   module_utils/base/multi_base_2_parts_pytest.py => testing multi-handling methods
 #   module_utils/base/multi_base_3_full_pytest.py => 'end-to-end'-like tests
 
+- name: Checking required match_fields
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    oxlorg.opnsense.rule:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+      # match_fields: ['description']
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Should fail because of missing 'match_fields'
+      oxlorg.opnsense.rule:
+        source_net: '192.168.0.0/24'
+        destination_net: '192.168.1.0/24'
+        destination_port: 443
+        protocol: 'TCP'
+        description: 'ANSIBLE_TEST_0_1'
+      register: opn0
+      failed_when: >
+        not opn0.failed or
+        "Value for 'match_fields' is required" not in opn0.module_stderr
+
 - name: Testing Mass Management
   hosts: localhost
   gather_facts: no

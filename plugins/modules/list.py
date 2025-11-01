@@ -46,7 +46,7 @@ TARGETS = [
     'dnsmasq_general', 'ipsec_general', 'dnsmasq_domain', 'dnsmasq_host', 'dnsmasq_range', 'dnsmasq_option',
     'dnsmasq_boot', 'dnsmasq_tag', 'haproxy_general_settings', 'haproxy_general_cache', 'haproxy_general_defaults',
     'haproxy_general_logging', 'haproxy_general_peers', 'haproxy_general_stats', 'haproxy_general_tuning',
-    'haproxy_maintenance', 'haproxy_cpu', 'haproxy_user', 'haproxy_group',
+    'haproxy_maintenance', 'haproxy_cpu', 'haproxy_user', 'haproxy_group', 'wazuh_agent',
 ]
 
 
@@ -532,6 +532,10 @@ def run_module():
         elif target == 'snapshot':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.snapshot import \
                 Snapshot as Target_Obj
+
+        elif target == 'wazuh_agent':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.wazuh_agent import \
+                WazuhAgent as Target_Obj
 
         elif target == 'user':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.user import \
