@@ -3,13 +3,13 @@
 [![Lint Python](https://github.com/O-X-L/ansible-opnsense/actions/workflows/lint-python.yml/badge.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/lint-python.yml)
 [![Lint Ansible](https://github.com/O-X-L/ansible-opnsense/actions/workflows/lint-ansible.yml/badge.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/lint-ansible.yml)
 [![Unit Test Status](https://github.com/O-X-L/ansible-opnsense/actions/workflows/unit_test.yml/badge.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/unit_test.yml)
-[![Ansible Galaxy](https://badges.ansibleguy.net/galaxy.badge.svg)](https://galaxy.ansible.com/ui/repo/published/oxlorg/opnsense)
+[![Ansible Galaxy](https://badges.oss.oxl.app/galaxy.badge.svg)](https://galaxy.ansible.com/ui/repo/published/oxlorg/opnsense)
 
 **Functional Tests**: 
 
-* Status: [![Functional Test Status](https://badges.ansibleguy.net/opnsense.collection.test.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/functional_test_result.yml) |
+* Status: [![Functional Test Status](https://badges.oss.oxl.app/oxlorg.opnsense.collection.test.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/functional_test_result.yml) |
 [![Functional-Tests](https://github.com/O-X-L/ansible-opnsense/actions/workflows/functional_test_result.yml/badge.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/functional_test_result.yml)
-* Logs: [API](https://ci.ansibleguy.net/api/job/ansible-test-collection-opnsense/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000) |
+* Logs: [API](https://ci.oss.oxl.app/api/job/ansible-test-collection-opnsense/logs?token=2b7bba30-9a37-4b57-be8a-99e23016ce70&lines=1000) |
 [Daily Archive](https://github.com/O-X-L/ansible-opnsense/actions/workflows/functional_test_result.yml)
 
 Internal CI: [Tester Role](https://github.com/O-X-L/ansible-role-oxl-cicd) | [Jobs API](https://github.com/O-X-L/github-self-hosted-jobs-systemd)
