@@ -33,12 +33,14 @@
         - {name: 'groupuser1', description: 'Group test user 1', password: 'password1'}
         - {name: 'groupuser2', description: 'Group test user 2', password: 'password2'}
         - {name: 'groupuser3', description: 'Group test user 3', password: 'password3'}
+      when: not ansible_check_mode
 
     - name: Configuring - failing because of invalid name
       oxlorg.opnsense.haproxy_group:
         name: ''
       register: opn_fail1
       failed_when: not opn_fail1.failed
+      when: not ansible_check_mode
 
     - name: Creating HAProxy group
       oxlorg.opnsense.haproxy_group:
@@ -51,6 +53,7 @@
       failed_when: >
         opn1.failed or
         not opn1.changed
+      when: not ansible_check_mode
 
     - name: Creating another HAProxy group
       oxlorg.opnsense.haproxy_group:
@@ -63,6 +66,7 @@
       failed_when: >
         opn2.failed or
         not opn2.changed
+      when: not ansible_check_mode
 
     - name: Changing group settings
       oxlorg.opnsense.haproxy_group:
@@ -75,6 +79,7 @@
       failed_when: >
         opn9.failed or
         not opn9.changed
+      when: not ansible_check_mode
 
     - name: Disabling HAProxy group
       oxlorg.opnsense.haproxy_group:
@@ -139,7 +144,6 @@
       failed_when: >
         opn7.failed or
         not opn7.changed
-      when: not ansible_check_mode
 
     - name: Cleanup groups
       oxlorg.opnsense.haproxy_group:

@@ -28,6 +28,7 @@
         timeout_client: 'invalid'
       register: opn_fail1
       failed_when: not opn_fail1.failed
+      when: not ansible_check_mode
 
     - name: Configuring basic defaults settings
       oxlorg.opnsense.haproxy_general_defaults:
@@ -62,6 +63,7 @@
       failed_when: >
         opn9.failed or
         not opn9.changed
+      when: not ansible_check_mode
 
     - name: Testing edge values
       oxlorg.opnsense.haproxy_general_defaults:

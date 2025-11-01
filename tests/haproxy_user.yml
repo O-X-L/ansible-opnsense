@@ -28,6 +28,7 @@
         name: ''
       register: opn_fail1
       failed_when: not opn_fail1.failed
+      when: not ansible_check_mode
 
     - name: Creating HAProxy user
       oxlorg.opnsense.haproxy_user:
@@ -50,6 +51,7 @@
       failed_when: >
         opn2.failed or
         not opn2.changed
+      when: not ansible_check_mode
 
     - name: Changing user settings
       oxlorg.opnsense.haproxy_user:
@@ -61,6 +63,7 @@
       failed_when: >
         opn9.failed or
         not opn9.changed
+      when: not ansible_check_mode
 
     - name: Disabling HAProxy user
       oxlorg.opnsense.haproxy_user:
