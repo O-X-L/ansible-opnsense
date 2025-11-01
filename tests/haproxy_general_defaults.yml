@@ -1,0 +1,110 @@
+---
+
+- name: Testing HAProxy general defaults settings
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    oxlorg.opnsense.list:
+      target: 'haproxy_general_defaults'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid timeout format
+      oxlorg.opnsense.haproxy_general_defaults:
+        timeout_client: 'invalid'
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+      when: not ansible_check_mode
+
+    - name: Configuring basic defaults settings
+      oxlorg.opnsense.haproxy_general_defaults:
+        max_connections: 2000
+        max_connections_servers: 1000
+        timeout_client: '60s'
+        timeout_connect: '10s'
+        timeout_check: '5s'
+        timeout_server: '60s'
+        retries: 5
+        redispatch: 'x2'
+        init_addr: ['last', 'libc', 'none']
+        custom_options: 'option httplog'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing defaults settings
+      oxlorg.opnsense.haproxy_general_defaults:
+        max_connections: 4000
+        max_connections_servers: 2000
+        timeout_client: '120s'
+        timeout_connect: '30s'
+        timeout_check: '10s'
+        timeout_server: '120s'
+        retries: 10
+        redispatch: 'x1'
+        init_addr: ['libc', 'last']
+        custom_options: 'option tcplog'
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+      when: not ansible_check_mode
+
+    - name: Testing edge values
+      oxlorg.opnsense.haproxy_general_defaults:
+        max_connections: 1
+        max_connections_servers: 1
+        timeout_client: '1s'
+        timeout_connect: '1s'
+        timeout_check: '1s'
+        timeout_server: '1s'
+        retries: 0
+        redispatch: 'x-3'
+        init_addr: ['none']
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      oxlorg.opnsense.haproxy_general_defaults:
+        max_connections: 1
+        max_connections_servers: 1
+        timeout_client: '1s'
+        timeout_connect: '1s'
+        timeout_check: '1s'
+        timeout_server: '1s'
+        retries: 0
+        redispatch: 'x-3'
+        init_addr: ['none']
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      oxlorg.opnsense.haproxy_general_defaults:
+        timeout_client: '30s'
+        timeout_connect: '30s'
+        timeout_server: '30s'
+        retries: 3
+        redispatch: 'x-1'
+        init_addr: ['last', 'libc']
+      when: not ansible_check_mode

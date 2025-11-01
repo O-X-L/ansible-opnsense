@@ -31,4 +31,5 @@
         - 'os-acme-client'
         - 'os-postfix'
         - 'os-nginx'
+        - 'os-haproxy'
         - 'os-wazuh-agent'

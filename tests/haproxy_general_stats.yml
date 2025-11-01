@@ -1,0 +1,185 @@
+---
+
+- name: Testing HAProxy general stats settings
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    oxlorg.opnsense.list:
+      target: 'haproxy_general_stats'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Create test users for stats testing
+      oxlorg.opnsense.haproxy_user:
+        name: "{{ item.name }}"
+        description: "{{ item.description }}"
+        password: "{{ item.password }}"
+        enabled: true
+      loop:
+        - {name: 'stats_admin', description: 'Stats admin user', password: 'password123'}
+        - {name: 'stats_monitor', description: 'Stats monitor user', password: 'monitor123'}
+      when: not ansible_check_mode
+
+    - name: Create test groups for stats testing
+      oxlorg.opnsense.haproxy_group:
+        name: "{{ item.name }}"
+        description: "{{ item.description }}"
+        members: "{{ item.members }}"
+        enabled: true
+      loop:
+        - {name: 'stats_admins', description: 'Stats admins group', members: ['stats_admin']}
+        - {name: 'stats_operators', description: 'Stats operators group', members: ['stats_monitor']}
+      when: not ansible_check_mode
+
+    - name: Configuring - failing because of invalid port
+      oxlorg.opnsense.haproxy_general_stats:
+        port: 70000
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Configuring basic stats settings
+      oxlorg.opnsense.haproxy_general_stats:
+        enabled: true
+        port: 8823
+        remote_enabled: true
+        remote_bind: ['0.0.0.0:8823']
+        auth_enabled: true
+        users: ['admin:password123', 'monitor:monitor123']
+        allowed_users: ['stats_admin', 'stats_monitor']
+        allowed_groups: ['stats_admins', 'stats_operators']
+        custom_options: 'stats enable'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+      when: not ansible_check_mode
+
+    - name: Changing stats settings with Prometheus
+      oxlorg.opnsense.haproxy_general_stats:
+        enabled: true
+        port: 8824
+        remote_enabled: false
+        auth_enabled: false
+        prometheus_enabled: true
+        prometheus_bind: ['*:8405', '127.0.0.1:8405']
+        prometheus_path: '/prometheus-metrics'
+        custom_options: 'stats refresh 10s'
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+      when: not ansible_check_mode
+
+    - name: Disabling HAProxy stats
+      oxlorg.opnsense.haproxy_general_stats:
+        enabled: false
+        port: 8824
+        remote_enabled: false
+        auth_enabled: false
+        prometheus_enabled: false
+        prometheus_bind: ['*:8405']
+        prometheus_path: '/prometheus-metrics'
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+      when: not ansible_check_mode
+
+    - name: Disabling HAProxy stats - nothing changed
+      oxlorg.opnsense.haproxy_general_stats:
+        enabled: false
+        port: 8824
+        remote_enabled: false
+        auth_enabled: false
+        prometheus_enabled: false
+        prometheus_bind: ['*:8405']
+        prometheus_path: '/prometheus-metrics'
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        opn3.changed
+      when: not ansible_check_mode
+
+    - name: Enabling HAProxy stats
+      oxlorg.opnsense.haproxy_general_stats:
+        enabled: true
+        port: 8824
+        remote_enabled: false
+        auth_enabled: false
+        prometheus_enabled: false
+        prometheus_bind: ['*:8405']
+        prometheus_path: '/prometheus-metrics'
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        not opn4.changed
+      when: not ansible_check_mode
+
+    - name: Testing minimal configuration
+      oxlorg.opnsense.haproxy_general_stats:
+        enabled: true
+        port: 8822
+        remote_enabled: false
+        auth_enabled: false
+        prometheus_enabled: false
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      oxlorg.opnsense.haproxy_general_stats:
+        enabled: true
+        port: 8822
+        remote_enabled: false
+        auth_enabled: false
+        prometheus_enabled: false
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup stats configuration
+      oxlorg.opnsense.haproxy_general_stats:
+        enabled: false
+        port: 8822
+        remote_enabled: false
+        auth_enabled: false
+        prometheus_enabled: false
+        prometheus_bind: ['*:8404']
+        prometheus_path: '/metrics'
+      when: not ansible_check_mode
+
+    - name: Cleanup test groups
+      oxlorg.opnsense.haproxy_group:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'stats_admins'
+        - 'stats_operators'
+      when: not ansible_check_mode
+
+    - name: Cleanup test users
+      oxlorg.opnsense.haproxy_user:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'stats_admin'
+        - 'stats_monitor'
+      when: not ansible_check_mode

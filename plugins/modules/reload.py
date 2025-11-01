@@ -51,8 +51,9 @@ def run_module():
                 'openvpn',
                 'dhcrelay',
                 'dhcp', 'kea',
+                'dnsmasq',
+                'haproxy'
                 'wazuh',
-                'dnsmasq'
             ],
             description='What part of the running config should be reloaded'
         ),
@@ -176,6 +177,10 @@ def run_module():
         elif target in ['dnsmasq']:
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.dnsmasq_general import \
                 General as Target_Obj
+
+        elif target in ['haproxy']:
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_settings import \
+                HaproxyGeneralSettings as Target_Obj
 
     except MODULE_EXCEPTIONS:
         module_dependency_error()

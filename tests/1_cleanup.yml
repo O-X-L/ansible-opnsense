@@ -1013,3 +1013,74 @@
         state: 'absent'
       loop:
         - 'AnsibleTest1'
+
+    - name: Cleanup HAProxy general settings
+      oxlorg.opnsense.haproxy_general_settings:
+        enabled: false
+
+    - name: Cleanup HAProxy general cache settings
+      oxlorg.opnsense.haproxy_general_cache:
+        enabled: false
+
+    - name: Cleanup HAProxy general defaults settings
+      oxlorg.opnsense.haproxy_general_defaults:
+        retries: 3
+        redispatch: 'x-1'
+
+    - name: Cleanup HAProxy general logging settings
+      oxlorg.opnsense.haproxy_general_logging:
+        host: '127.0.0.1'
+        facility: 'local0'
+        level: 'info'
+
+    - name: Cleanup HAProxy general peers settings
+      oxlorg.opnsense.haproxy_general_peers:
+        enabled: false
+
+    - name: Cleanup HAProxy general stats settings
+      oxlorg.opnsense.haproxy_general_stats:
+        enabled: false
+
+    - name: Cleanup HAProxy general tuning settings
+      oxlorg.opnsense.haproxy_general_tuning:
+        root: false
+
+    - name: Cleanup HAProxy maintenance settings
+      oxlorg.opnsense.haproxy_maintenance:
+        sync_certs: false
+        reload_service: false
+        restart_service: false
+
+    - name: Cleanup HAProxy CPU rules
+      oxlorg.opnsense.haproxy_cpu:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+
+    - name: Cleanup HAProxy users
+      oxlorg.opnsense.haproxy_user:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'testuser1'
+        - 'testuser2'
+        - 'ansible_test_user'
+        - 'stats_admin'
+        - 'stats_monitor'
+        - 'groupuser1'
+        - 'groupuser2'
+        - 'groupuser3'
+
+    - name: Cleanup HAProxy groups
+      oxlorg.opnsense.haproxy_group:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'testgroup1'
+        - 'testgroup2'
+        - 'emptygroup'
+        - 'ansible_test_group'
+        - 'stats_admins'
+        - 'stats_operators'
