@@ -137,4 +137,4 @@ The tests are run automatically using the [OXL infrastructure](https://github.co
 
 It is based on [some bash scripts](https://github.com/O-X-L/ansible-role-oxl-cicd/blob/latest/templates/usr/local/bin/cicd/collection_test.sh.j2) and systemd timers.
 
-Logs for those functional tests can be found here: [Short](https://badges.ansibleguy.net/log/collection_opnsense_test_short.log), [Full](https://badges.ansibleguy.net/log/collection_opnsense_test.log)
+Logs for those functional tests can be found here: [Short](https://badges.oss.oxl.app/log/collection_oxlorg.opnsense_test_short.log), [Full](https://badges.oss.oxl.app/log/collection_oxlorg.opnsense_test.log)
