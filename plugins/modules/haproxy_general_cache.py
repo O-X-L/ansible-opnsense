@@ -12,7 +12,7 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, EN_ONLY_MOD_ARG, RELOAD_MOD_ARG
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_cache import HaproxyGeneralCache
@@ -33,19 +33,23 @@ def run_module():
         ),
         max_age=dict(
             type='int', required=False, default=60,
-            description='Define the maximum expiration duration. Cache-Control response headers will be respected if they are less than this value'
+            description='Define the maximum expiration duration. '
+                        'Cache-Control response headers will be respected if they are less than this value'
         ),
         max_object_size=dict(
             type='int', required=False, default=None,
-            description='Define the maximum size of the objects to be cached. Must not be greater than an half of the maximum size of the cache'
+            description='Define the maximum size of the objects to be cached. '
+                        'Must not be greater than an half of the maximum size of the cache'
         ),
         process_vary=dict(
             type='bool', required=False, default=False,
-            description='Enable or disable the processing of the Vary header. When disabled, a response containing such a header will never be cached'
+            description='Enable or disable the processing of the Vary header. '
+                        'When disabled, a response containing such a header will never be cached'
         ),
         max_secondary_entries=dict(
             type='int', required=False, default=10,
-            description='Define the maximum number of simultaneous secondary entries with the same primary key in the cache'
+            description='Define the maximum number of simultaneous secondary entries '
+                        'with the same primary key in the cache'
         ),
         **EN_ONLY_MOD_ARG,
         **RELOAD_MOD_ARG,

@@ -76,6 +76,54 @@
         not opn4.changed
       when: not ansible_check_mode
 
+    - name: Disabling
+      oxlorg.opnsense.rule:
+        source_net: '192.168.0.0/24'
+        destination_net: '192.168.2.0/24'
+        destination_port: 8443
+        protocol: 'UDP'
+        description: 'ANSIBLE_TEST_1_1'
+        interface: ['lan']  #  note: 'lo0' not accepted :(
+        log: false
+        enabled: false
+      register: opn69
+      failed_when: >
+        opn69.failed or
+        not opn69.changed
+      when: not ansible_check_mode
+
+    - name: Disabling - nothing changed
+      oxlorg.opnsense.rule:
+        source_net: '192.168.0.0/24'
+        destination_net: '192.168.2.0/24'
+        destination_port: 8443
+        protocol: 'UDP'
+        description: 'ANSIBLE_TEST_1_1'
+        interface: ['lan']  #  note: 'lo0' not accepted :(
+        log: false
+        enabled: false
+      register: opn70
+      failed_when: >
+        opn70.failed or
+        opn70.changed
+      when: not ansible_check_mode
+
+    - name: Enabling
+      oxlorg.opnsense.rule:
+        source_net: '192.168.0.0/24'
+        destination_net: '192.168.2.0/24'
+        destination_port: 8443
+        protocol: 'UDP'
+        description: 'ANSIBLE_TEST_1_1'
+        interface: ['lan']  #  note: 'lo0' not accepted :(
+        log: false
+        enabled: true
+      register: opn71
+      failed_when: >
+        opn71.failed or
+        not opn71.changed
+      when: not ansible_check_mode
+
     - name: Creating IPv6
       oxlorg.opnsense.rule:
         destination_port: 443

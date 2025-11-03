@@ -32,6 +32,7 @@
       loop:
         - {name: 'stats_admin', description: 'Stats admin user', password: 'password123'}
         - {name: 'stats_monitor', description: 'Stats monitor user', password: 'monitor123'}
+      when: not ansible_check_mode
 
     - name: Create test groups for stats testing
       oxlorg.opnsense.haproxy_group:
@@ -42,6 +43,7 @@
       loop:
         - {name: 'stats_admins', description: 'Stats admins group', members: ['stats_admin']}
         - {name: 'stats_operators', description: 'Stats operators group', members: ['stats_monitor']}
+      when: not ansible_check_mode
 
     - name: Configuring - failing because of invalid port
       oxlorg.opnsense.haproxy_general_stats:
@@ -64,6 +66,7 @@
       failed_when: >
         opn1.failed or
         not opn1.changed
+      when: not ansible_check_mode
 
     - name: Changing stats settings with Prometheus
       oxlorg.opnsense.haproxy_general_stats:
@@ -79,6 +82,7 @@
       failed_when: >
         opn9.failed or
         not opn9.changed
+      when: not ansible_check_mode
 
     - name: Disabling HAProxy stats
       oxlorg.opnsense.haproxy_general_stats:

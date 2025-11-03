@@ -12,7 +12,7 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_user import HaproxyUser
@@ -37,7 +37,9 @@ def run_module():
         ),
         password=dict(
             type='str', required=False, default=None, no_log=True,
-            description='Both encrypted and unencrypted passwords can be used. Most systems support MD5, SHA-256, SHA-512, and, of course, the classic DES-based method of encrypting passwords'
+            description='Both encrypted and unencrypted passwords can be used. '
+                        'Most systems support MD5, SHA-256, SHA-512, and, of course, '
+                        'the classic DES-based method of encrypting passwords'
         ),
         **STATE_MOD_ARG,
         **RELOAD_MOD_ARG,

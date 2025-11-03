@@ -12,7 +12,7 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, EN_ONLY_MOD_ARG, RELOAD_MOD_ARG
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_peers import HaproxyGeneralPeers
@@ -29,7 +29,8 @@ def run_module():
     module_args = dict(
         name1=dict(
             type='str', required=False, default=None,
-            description='The name of the peer. Usually the fully qualified domain name. If name matches system hostname, peer is automatically configured as local'
+            description='The name of the peer. Usually the fully qualified domain name. If name matches '
+                        'system hostname, peer is automatically configured as local'
         ),
         listen1=dict(
             type='str', required=False, default=None,
@@ -37,11 +38,13 @@ def run_module():
         ),
         port1=dict(
             type='int', required=False, default=1024,
-            description='The TCP port that should be used for connections to this peer. It must not be used by any other service'
+            description='The TCP port that should be used for connections to this peer. '
+                        'It must not be used by any other service'
         ),
         name2=dict(
             type='str', required=False, default=None,
-            description='The name of the peer. Usually the fully qualified domain name. If name matches system hostname, peer is automatically configured as local'
+            description='The name of the peer. Usually the fully qualified domain name. '
+                        'If name matches system hostname, peer is automatically configured as local'
         ),
         listen2=dict(
             type='str', required=False, default=None,
@@ -49,7 +52,8 @@ def run_module():
         ),
         port2=dict(
             type='int', required=False, default=1024,
-            description='The TCP port that should be used for connections to this peer. It must not be used by any other service'
+            description='The TCP port that should be used for connections to this peer. '
+                        'It must not be used by any other service'
         ),
         **EN_ONLY_MOD_ARG,
         **RELOAD_MOD_ARG,

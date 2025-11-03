@@ -12,7 +12,7 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_group import HaproxyGroup
@@ -41,7 +41,8 @@ def run_module():
         ),
         add_userlist=dict(
             type='bool', required=False, default=False,
-            description='Usually HAproxy userlists are created automatically in a context sensitive way. This option adds this group as userlist'
+            description='Usually HAproxy userlists are created automatically in a context sensitive way. '
+                        'This option adds this group as userlist'
         ),
         **STATE_MOD_ARG,
         **RELOAD_MOD_ARG,

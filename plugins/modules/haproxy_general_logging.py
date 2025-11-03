@@ -12,10 +12,11 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, RELOAD_MOD_ARG
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_logging import HaproxyGeneralLogging
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_logging import \
+        HaproxyGeneralLogging
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
@@ -45,7 +46,8 @@ def run_module():
         ),
         length=dict(
             type='int', required=False, default=None,
-            description='Specify an optional maximum line length in characters. Log lines larger than this value will be truncated'
+            description='Specify an optional maximum line length in characters. Log lines larger than '
+                        'this value will be truncated'
         ),
         **RELOAD_MOD_ARG,
         **OPN_MOD_ARGS,

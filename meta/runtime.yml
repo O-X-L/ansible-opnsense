@@ -188,12 +188,26 @@ action_groups:
     - oxlorg.opnsense.haproxy_lua
     - oxlorg.opnsense.haproxy_fcgi
     - oxlorg.opnsense.haproxy_errorfile
+  wazuh:
+    - oxlorg.opnsense.wazuh_agent
   raw:
     - oxlorg.opnsense.raw
   access:
     - oxlorg.opnsense.user
     - oxlorg.opnsense.group
     - oxlorg.opnsense.privilege
+  haproxy:
+    - oxlorg.opnsense.haproxy_general_settings
+    - oxlorg.opnsense.haproxy_general_cache
+    - oxlorg.opnsense.haproxy_general_defaults
+    - oxlorg.opnsense.haproxy_general_logging
+    - oxlorg.opnsense.haproxy_general_peers
+    - oxlorg.opnsense.haproxy_general_stats
+    - oxlorg.opnsense.haproxy_general_tuning
+    - oxlorg.opnsense.haproxy_maintenance
+    - oxlorg.opnsense.haproxy_cpu
+    - oxlorg.opnsense.haproxy_user
+    - oxlorg.opnsense.haproxy_group
   all:
     - metadata:
         extend_group:
@@ -220,6 +234,7 @@ action_groups:
           - oxlorg.opnsense.acme
           - oxlorg.opnsense.postfix
           - oxlorg.opnsense.hasync
+          - oxlorg.opnsense.wazuh
           - oxlorg.opnsense.raw
           - oxlorg.opnsense.access
           - oxlorg.opnsense.dnsmasq

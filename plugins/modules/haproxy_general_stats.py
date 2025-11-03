@@ -12,7 +12,7 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, EN_ONLY_MOD_ARG, RELOAD_MOD_ARG
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_stats import HaproxyGeneralStats
@@ -33,7 +33,8 @@ def run_module():
         ),
         remote_enabled=dict(
             type='bool', required=False, default=False,
-            description='Enable remote access to HAProxy statistics page. This may be a security risk if authentication is not enabled'
+            description='Enable remote access to HAProxy statistics page. This may be a security risk '
+                        'if authentication is not enabled'
         ),
         remote_bind=dict(
             type='list', elements='str', required=False, default=[],
@@ -49,11 +50,13 @@ def run_module():
         ),
         allowed_users=dict(
             type='list', elements='str', required=False, default=[],
-            description='List of user names that are allowed to access the statistics page. User names will be automatically resolved to UUIDs'
+            description='List of user names that are allowed to access the statistics page. User names will '
+                        'be automatically resolved to UUIDs'
         ),
         allowed_groups=dict(
             type='list', elements='str', required=False, default=[],
-            description='List of group names that are allowed to access the statistics page. Group names will be automatically resolved to UUIDs'
+            description='List of group names that are allowed to access the statistics page. Group names will '
+                        'be automatically resolved to UUIDs'
         ),
         custom_options=dict(
             type='str', required=False, default=None,

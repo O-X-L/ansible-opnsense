@@ -12,7 +12,7 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.wrapper import module_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, EN_ONLY_MOD_ARG
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_maintenance import HaproxyMaintenance
@@ -29,15 +29,19 @@ def run_module():
     module_args = dict(
         sync_certs=dict(
             type='bool', required=False, default=False,
-            description='Periodically sync SSL certificate changes into the running HAProxy service. Useful for short-lived Let\'s Encrypt certificates'
+            description="Periodically sync SSL certificate changes into the running HAProxy service. "
+                        "Useful for short-lived Let's Encrypt certificates"
         ),
         reload_service=dict(
             type='bool', required=False, default=False,
-            description='Periodically perform a reload of the HAProxy service. May cause minor service disruption. Can apply configuration changes outside business hours'
+            description='Periodically perform a reload of the HAProxy service. May cause minor service disruption. '
+                        'Can apply configuration changes outside business hours'
         ),
         restart_service=dict(
             type='bool', required=False, default=False,
-            description='Periodically perform a full restart of the HAProxy service. Causes notable service disruption. Required when reload doesn\'t work due to long-running connections'
+            description="Periodically perform a full restart of the HAProxy service. "
+                        "Causes notable service disruption. "
+                        "Required when reload doesn't work due to long-running connections"
         ),
         **EN_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,
