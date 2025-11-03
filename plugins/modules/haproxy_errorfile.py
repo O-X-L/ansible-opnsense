@@ -38,7 +38,8 @@ def run_module():
         code=dict(
             type='str', required=False, default='x503',
             choices=['x200', 'x400', 'x403', 'x405', 'x408', 'x429', 'x500', 'x502', 'x503', 'x504'],
-            description='HTTP error status code. Select the HTTP status code this error file should handle. Options: x200, x400, x403, x405, x408, x429, x500, x502, x503, x504'
+            description='HTTP error status code. Select the HTTP status code this error file should handle. '
+            'Options: x200, x400, x403, x405, x408, x429, x500, x502, x503, x504'
         ),
         content=dict(
             type='str', required=False, default=None,

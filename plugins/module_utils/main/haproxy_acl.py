@@ -67,11 +67,12 @@ class HaproxyAcl(BaseModule):
                 'src_http_req_cnt', 'src_http_req_rate', 'src_kbytes_in', 'src_kbytes_out',
                 'src_sess_cnt', 'src_sess_rate'],
         'list': ['allowed_users', 'allowed_groups'],
-        'select': ['expression', 'ssl_hello_type', 'nbsrv_backend', 'src_port_comparison', 'src_bytes_in_rate_comparison',
-                   'src_bytes_out_rate_comparison', 'src_conn_cnt_comparison', 'src_conn_cur_comparison',
-                   'src_conn_rate_comparison', 'src_http_err_cnt_comparison', 'src_http_err_rate_comparison',
-                   'src_http_req_cnt_comparison', 'src_http_req_rate_comparison', 'src_kbytes_in_comparison',
-                   'src_kbytes_out_comparison', 'src_sess_cnt_comparison', 'src_sess_rate_comparison']
+        'select': ['expression', 'ssl_hello_type', 'nbsrv_backend', 'src_port_comparison', 
+                   'src_bytes_in_rate_comparison', 'src_bytes_out_rate_comparison', 'src_conn_cnt_comparison',
+                   'src_conn_cur_comparison', 'src_conn_rate_comparison', 'src_http_err_cnt_comparison',
+                   'src_http_err_rate_comparison', 'src_http_req_cnt_comparison', 'src_http_req_rate_comparison',
+                   'src_kbytes_in_comparison', 'src_kbytes_out_comparison', 'src_sess_cnt_comparison',
+                   'src_sess_rate_comparison']
     }
 
     EXIST_ATTR = 'haproxy_acl'

@@ -38,7 +38,8 @@ def run_module():
         test_type=dict(
             type='str', required=False, default=None,
             choices=['if', 'unless'],
-            description='Choose how to test the condition. IF [default] tests if condition is true, UNLESS tests if condition is false'
+            description='Choose how to test the condition. IF [default] tests if condition is true, '
+            'UNLESS tests if condition is false'
         ),
         linked_acls=dict(
             type='list', required=False, default=[],
@@ -153,7 +154,8 @@ def run_module():
         http_request_set_var_scope=dict(
             type='str', required=False, default=None,
             choices=['proc', 'sess', 'txn', 'req', 'res'],
-            description='Variable scope: proc (whole process), sess (whole session), txn (transaction), req (request only), res (response only)'
+            description='Variable scope: proc (whole process), sess (whole session), txn (transaction), '
+            'req (request only), res (response only)'
         ),
         http_request_set_var_name=dict(
             type='str', required=False, default='',
@@ -220,7 +222,8 @@ def run_module():
         http_response_set_var_scope=dict(
             type='str', required=False, default=None,
             choices=['proc', 'sess', 'txn', 'req', 'res'],
-            description='Variable scope: proc (whole process), sess (whole session), txn (transaction), req (request only), res (response only)'
+            description='Variable scope: proc (whole process), sess (whole session), txn (transaction), '
+            'req (request only), res (response only)'
         ),
         http_response_set_var_name=dict(
             type='str', required=False, default='',

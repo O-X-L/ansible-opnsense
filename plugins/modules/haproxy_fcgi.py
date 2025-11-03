@@ -37,7 +37,8 @@ def run_module():
         ),
         docroot=dict(
             type='str', required=False, default='',
-            description='Define the document root on the remote host. Used to build SCRIPT_FILENAME and PATH_TRANSLATED parameters'
+            description='Define the document root on the remote host. '
+            'Used to build SCRIPT_FILENAME and PATH_TRANSLATED parameters'
         ),
         index=dict(
             type='str', required=False, default='',

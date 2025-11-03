@@ -58,7 +58,8 @@ def run_module():
         ),
         custom_acl=dict(
             type='str', required=False, default='',
-            description='Custom HAProxy condition/ACL syntax not supported by other expression types (option pass-through)'
+            description='Custom HAProxy condition/ACL syntax not supported by '
+            'other expression types (option pass-through)'
         ),
         # Host-related fields
         hdr_beg=dict(
@@ -118,7 +119,8 @@ def run_module():
         ssl_hello_type=dict(
             type='str', required=False, default=None,
             choices=['x0', 'x1', 'x2'],
-            description='SSL Hello Type: x0 (no client hello), x1 (client hello) [default], x2 (server hello)'
+            description='SSL Hello Type: x0 (no client hello), x1 (client hello) [default], '
+            'x2 (server hello)'
         ),
         # Source IP fields
         src=dict(
@@ -132,7 +134,8 @@ def run_module():
         src_port_comparison=dict(
             type='str', required=False, default=None,
             choices=['gt', 'ge', 'eq', 'lt', 'le'],
-            description='Source port comparison operator: gt (greater than), ge (greater equal), eq (equal), lt (less than), le (less equal)'
+            description='Source port comparison operator: gt (greater than), ge (greater equal), '
+            'eq (equal), lt (less than), le (less equal)'
         ),
         # Backend-related fields
         nbsrv=dict(
