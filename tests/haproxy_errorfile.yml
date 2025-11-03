@@ -112,9 +112,9 @@
 
     - name: Creating HAProxy Error file for 400
       oxlorg.opnsense.haproxy_errorfile:
-        name: 'ANSIBLE_TEST_1_3'
-        description: 'Custom 400 Bad Request page'
-        code: 'x400'
+        name: ANSIBLE_TEST_1_3
+        description: Custom 400 Bad Request page
+        code: x400
         content: |
           HTTP/1.0 400 Bad Request
           Content-Type: text/html
@@ -126,7 +126,8 @@
           <head>
             <title>Bad Request</title>
             <style>
-              body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 0; height: 100vh; display: flex; align-items: center; justify-content: center; }
+              body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin: 0; padding: 0; height: 100vh;
+              display: flex; align-items: center; justify-content: center; }
               .container { background: rgba(255,255,255,0.9); padding: 40px; border-radius: 15px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.1); }
               h1 { color: #333; font-size: 72px; margin: 0; }
               h2 { color: #555; font-size: 24px; margin: 10px 0; }
@@ -144,9 +145,8 @@
           </body>
           </html>
       register: opn3
-      failed_when: >
-        opn3.failed or
-        not opn3.changed
+      failed_when: |
+        opn3.failed or not opn3.changed
 
     - name: Creating HAProxy Error file for 403
       oxlorg.opnsense.haproxy_errorfile:
