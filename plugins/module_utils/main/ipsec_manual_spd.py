@@ -68,7 +68,7 @@ class ManualSPD(BaseModule):
                 tmp_fix = True
                 break
 
-            elif values['value'].find(' - ') != -1:
+            if values['value'].find(' - ') != -1:
                 connection, child = values['value'].split(' - ', 1)
                 if MATCH_UUID.match(connection.strip()) is not None:
                     tmp_fix = True
