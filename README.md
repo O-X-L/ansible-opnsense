@@ -42,7 +42,7 @@ ansible-galaxy collection install oxlorg.opnsense
 
 See: [Docs](https://ansible-opnsense.oxl.app)
 
-[![Docs Uptime](https://status.oxl.at/api/v1/endpoints/4--ansibleguy_ansible-collection---opnsense-documentation/uptimes/7d/badge.svg)](https://status.oxl.at/endpoints/4--ansibleguy_ansible-collection---opnsense-documentation)
+[![Docs Uptime](https://status.oxl.at/api/v1/endpoints/1--oxl_opnsense-ansible-collection-docs/uptimes/7d/badge.svg)](https://status.oxl.at/endpoints/1--oxl_opnsense-ansible-collection-docs)
 
 If you DO NOT want to use Ansible - [this fork](https://github.com/O-X-L/opnsense-api-client) provides you with a raw Python3 interface.
 
