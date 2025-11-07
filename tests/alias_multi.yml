@@ -12,7 +12,7 @@
     oxlorg.opnsense.list:
       target: 'alias'
 
-    oxlorg.opnsense.alias:
+    oxlorg.opnsense.alias_multi:
       multi_control:
         fail_verify: true
         fail_process: true
@@ -22,12 +22,12 @@
 
   tasks:
     - name: Fail required args (1)
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
       register: opn8
       failed_when: not opn8.failed
 
     - name: Removing - do not exist
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_2_1'
           - name: 'ANSIBLE_TEST_2_2'
@@ -51,7 +51,7 @@
         opn1.changed
 
     - name: Adding
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           # hosts
           - name: 'ANSIBLE_TEST_2_1'
@@ -108,7 +108,7 @@
         not opn2.changed
 
     - name: Changing
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_2_2'
             content: ['192.168.1.1', '192.168.1.3']
@@ -148,7 +148,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_2_2'
             content: ['192.168.1.1', '192.168.1.3']
@@ -188,7 +188,7 @@
       when: not ansible_check_mode
 
     - name: Adding nested aliases
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           # hosts
           - name: 'ANSIBLE_TEST_2_12'
@@ -220,7 +220,7 @@
       when: not ansible_check_mode
 
     - name: Removing nesting
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_2_12'
           - name: 'ANSIBLE_TEST_2_13'
@@ -230,7 +230,7 @@
       when: not ansible_check_mode
 
     - name: Removing
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         aliases:
           - name: 'ANSIBLE_TEST_2_1'
           - name: 'ANSIBLE_TEST_2_2'

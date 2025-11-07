@@ -52,6 +52,9 @@ def get_matching(
                 existing = simplify_func(existing)
 
             try:
+                if not isinstance(match_fields, list):
+                    exit_bug(f"Failed because 'match_fields' are not a list: {type(match_fields)} '{match_fields}'")
+
                 for field in match_fields:
                     _matching.append(str(existing[field]) == str(compare_item[field]))
 

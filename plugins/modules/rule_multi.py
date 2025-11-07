@@ -8,50 +8,66 @@
 
 from ansible.module_utils.basic import AnsibleModule
 
+
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler import \
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.legacy_multi import \
-        STATE_MOD_ARG_MULTI, FAIL_MOD_ARG_MULTI, INFO_MOD_ARG, RULE_MOD_ARG_KEY_FIELD
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import \
+        module_multi_wrapper
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.multi import \
+        build_multi_mod_args
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, RELOAD_MOD_ARG
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.rule import \
-        RULE_MATCH_FIELDS_ARG
+        RULE_MOD_ARGS, RULE_MATCH_FIELDS_ARG
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.rule import Rule
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/rule_multi.html'
-# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/rule_multi.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/rule.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/rule.html'
 
 
 def run_module():
-    FAIL_MOD_ARG_MULTI['fail_verification']['default'] = True
-
-    module_args = dict(
-        rules=dict(type='dict', required=True),
-        override=dict(
-            type='dict', required=False, default={}, description='Parameters to override for all rules'
-        ),
-        defaults=dict(
-            type='dict', required=False, default={}, description='Default values for all rules'
-        ),
-        **FAIL_MOD_ARG_MULTI,
-        **STATE_MOD_ARG_MULTI,
-        **INFO_MOD_ARG,
-        **RULE_MOD_ARG_KEY_FIELD,
-        **RULE_MATCH_FIELDS_ARG,
-        **RELOAD_MOD_ARG,
-        **OPN_MOD_ARGS,
+    entry_multi_args = build_multi_mod_args(
+        mod_args=RULE_MOD_ARGS,
+        aliases=['rules'],
     )
 
-    AnsibleModule(
+    module_args = dict(
+        **entry_multi_args,
+        **OPN_MOD_ARGS,
+        **RELOAD_MOD_ARG,
+        **RULE_MATCH_FIELDS_ARG,
+    )
+
+    module = AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
-    ).fail_json('This module was deprecated in favor of: https://ansible-opnsense.oxl.app/modules/1_multi.html')
+        required_one_of=[
+            ('multi', 'multi_purge', 'multi_control.purge_all'),
+        ],
+    )
 
+    result = dict(
+        changed=False,
+        diff={
+            'before': {},
+            'after': {},
+        },
+    )
+
+    module_multi_wrapper(
+        module=module,
+        result=result,
+        obj=Rule,
+        kind='rule',
+        entry_args=entry_multi_args,
+    )
+    module.exit_json(**result)
 
 
 def main():

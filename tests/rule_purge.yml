@@ -12,7 +12,7 @@
     oxlorg.opnsense.list:
       target: 'rule'
 
-    oxlorg.opnsense.rule:
+    oxlorg.opnsense.rule_multi:
       match_fields: ['description']
       multi_control:
         fail_verify: true
@@ -23,12 +23,12 @@
 
   tasks:
     - name: Purge ALL
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         multi_control:
           purge_all: true
 
     - name: Adding 1
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         rules:
           - name: 'ANSIBLE_TEST_3_1'
             source_net: '192.168.1.0/24'
@@ -48,7 +48,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single)
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         multi_control:
           purge_filter:
             destination_net: '192.168.10.0/24'
@@ -60,7 +60,7 @@
         not opn1.changed
 
     - name: Simple disable-purge
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         multi_purge:
           - name: 'ANSIBLE_TEST_3_1'
         multi_control:
@@ -72,7 +72,7 @@
         not opn2.changed
 
     - name: Simple purge
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         multi_purge:
           - name: 'ANSIBLE_TEST_3_1'
       when: not ansible_check_mode
@@ -90,7 +90,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         rules:
           - name: 'ANSIBLE_TEST_3_1'
             source_net: '192.168.1.0/24'
@@ -110,7 +110,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single)
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         multi_control:
           purge_filter:
             destination_net: '192.168.10.0/24'
@@ -129,7 +129,7 @@
       when: not ansible_check_mode
 
     - name: Adding 3
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         rules:
           - name: 'ANSIBLE_TEST_3_1'
             source_net: '192.168.1.0/24'
@@ -149,7 +149,7 @@
       when: not ansible_check_mode
 
     - name: Filtered purge (single inverted)
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         multi_control:
           purge_filter:
             destination_net: '192.168.10.0/24'
@@ -169,7 +169,7 @@
       when: not ansible_check_mode
 
     - name: Adding 4
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         rules:
           - name: 'ANSIBLE_TEST_3_1'
             source_net: '192.168.1.0/24'
@@ -196,7 +196,7 @@
         not opn8.changed
 
     - name: Filtered purge (multiple)
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         multi_control:
           purge_filter:
             ip_protocol: 'inet'
@@ -216,7 +216,7 @@
       when: not ansible_check_mode
 
     - name: Purge ALL
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         multi_control:
           purge_all: true
       when: not ansible_check_mode

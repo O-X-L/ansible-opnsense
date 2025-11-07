@@ -12,7 +12,7 @@
     oxlorg.opnsense.list:
       target: 'bind_record'
 
-    oxlorg.opnsense.bind_record:
+    oxlorg.opnsense.bind_record_multi:
       multi_control:
         fail_verify: true
         fail_process: true
@@ -21,15 +21,13 @@
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
-
-
     - name: Adding dummy domain
       oxlorg.opnsense.bind_domain:
         name: 'test4.oxlorg'
       when: not ansible_check_mode
 
     - name: Adding 1
-      oxlorg.opnsense.bind_record:
+      oxlorg.opnsense.bind_record_multi:
         records:
           - name: 'test1'
             domain: 'test4.oxlorg'
@@ -80,7 +78,7 @@
       when: not ansible_check_mode
 
     - name: Removing single
-      oxlorg.opnsense.bind_record:
+      oxlorg.opnsense.bind_record_multi:
         records:
           - name: 'test1'
             domain: 'test4.oxlorg'
@@ -125,7 +123,7 @@
       when: not ansible_check_mode
 
     - name: Nothing changed
-      oxlorg.opnsense.bind_record:
+      oxlorg.opnsense.bind_record_multi:
         records:
           - name: 'test1'
             domain: 'test4.oxlorg'
@@ -178,7 +176,7 @@
       when: not ansible_check_mode
 
     - name: Removing - round robin
-      oxlorg.opnsense.bind_record:
+      oxlorg.opnsense.bind_record_multi:
         records:
           - name: 'test5'
             domain: 'test4.oxlorg'
@@ -203,7 +201,7 @@
       when: not ansible_check_mode
 
     - name: Cleanup
-      oxlorg.opnsense.bind_record:
+      oxlorg.opnsense.bind_record_multi:
         records:
           - name: 'test1'
             domain: 'test4.oxlorg'
@@ -236,7 +234,7 @@
       when: not ansible_check_mode
 
     - name: Adding 2
-      oxlorg.opnsense.bind_record:
+      oxlorg.opnsense.bind_record_multi:
         records:
           - name: 'test1'
             domain: 'test4.oxlorg'
@@ -248,7 +246,7 @@
       when: not ansible_check_mode
 
     - name: Purging all
-      oxlorg.opnsense.bind_record:
+      oxlorg.opnsense.bind_record_multi:
         multi_control:
           purge_all: true
       register: opn10
