@@ -87,6 +87,7 @@ MATCH_MAC_ADDRESS = regex_compile(r'^(?:[0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}$')
 MATCH_PARTIAL_MAC_ADDRESS = regex_compile(r'^(?:[0-9a-fA-F]{2}:){1,5}[0-9a-fA-F]{2}$')
 # see: https://en.wikipedia.org/wiki/Hostname#Restrictions_on_valid_host_names
 MATCH_HOSTNAME = regex_compile(r'^[a-zA-Z0-9-\.]{1,253}$')
+MATCH_UUID = regex_compile(r'^[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$')
 
 
 def _is_matching(compiled_regex, value: (str, None)) -> bool:
