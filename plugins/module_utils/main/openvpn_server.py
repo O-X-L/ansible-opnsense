@@ -86,7 +86,7 @@ class Server(BaseModule):
         'select': [
             'certificate', 'ca', 'key', 'authentication', 'carp_depend_on', 'log_level',
             'mode', 'protocol', 'role', 'topology', 'crl', 'verify_client_cert', 'cert_depth',
-            'data_cipher_fallback', 'auth_group',
+            'data_cipher_fallback', 'auth_group', 'domain',
         ],
         'select_opt_list_idx': ['log_level', 'user_cn_strict'],
         'int': ['fragment_size', 'mtu', 'route_metric', 'auth_token_time', 'auth_token_renewal'],
