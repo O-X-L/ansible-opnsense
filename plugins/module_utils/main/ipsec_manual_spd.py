@@ -3,7 +3,8 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
-from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import is_unset
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
+    is_unset, MATCH_UUID
 
 
 class ManualSPD(BaseModule):
@@ -57,12 +58,21 @@ class ManualSPD(BaseModule):
             **self.call_cnf, **{'command': self.CMDS['detail']}
         })['spd']['connection_child']
 
-        # temporary workaround for API-bug: https://github.com/opnsense/core/issues/9224
+        # temporary workaround for API-bug: https://github.com/opnsense/core/issues/9224 & 9365
         tmp_fix = False
         for values in res.values():
-            if 'value' in values and values['value'].startswith(' -'):
+            if 'value' not in values:
+                continue
+
+            if values['value'].startswith(' -'):
                 tmp_fix = True
                 break
+
+            if values['value'].find(' - ') != -1:
+                connection, child = values['value'].split(' - ', 1)
+                if MATCH_UUID.match(connection.strip()) is not None:
+                    tmp_fix = True
+                    values['value'] = f" - {child.strip()}"
 
         if tmp_fix:
             if '-' in self.p['connection_child']:
