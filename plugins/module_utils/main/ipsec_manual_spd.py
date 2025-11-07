@@ -61,11 +61,14 @@ class ManualSPD(BaseModule):
         # temporary workaround for API-bug: https://github.com/opnsense/core/issues/9224 & 9365
         tmp_fix = False
         for values in res.values():
-            if 'value' in values and values['value'].startswith(' -'):
+            if 'value' not in values:
+                continue
+
+            if values['value'].startswith(' -'):
                 tmp_fix = True
                 break
 
-            elif 'value' in values and values['value'].find(' - ') != -1:
+            elif values['value'].find(' - ') != -1:
                 connection, child = values['value'].split(' - ', 1)
                 if MATCH_UUID.match(connection.strip()) is not None:
                     tmp_fix = True
