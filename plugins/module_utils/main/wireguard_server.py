@@ -73,9 +73,9 @@ class Server(BaseModule):
                     f"Gateway '{self.p['gateway']}' is not a valid IP-address!"
                 )
 
-            if is_unset(self.p['private_key']) or is_unset(self.p['public_key']):
+            if is_unset(self.p['private_key']):
                 self.m.fail_json(
-                    "You need to provide a 'public_key' and 'private_key'!"
+                    "You need to provide a 'private_key'!"
                 )
 
         link_peers = not is_unset(self.p['peers']) or self.p['link_peers']
