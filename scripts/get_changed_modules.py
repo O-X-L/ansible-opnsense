@@ -59,7 +59,7 @@ def main(file_changes: (Path, str), file_out: (Path, str)):
 
     valid_modules = []
     for f in listdir(Path(__file__).parent.parent / 'tests'):
-        if not f.startswith('1_') and not f == '_tmpl' and not f == 'README.md':
+        if not f.startswith('1_') and not f == '_tmpl.yml' and not f == 'README.md':
             valid_modules.append(f.replace('.yml', ''))
 
     modules = []
