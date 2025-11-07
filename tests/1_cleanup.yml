@@ -14,13 +14,13 @@
 
   tasks:
     - name: Cleanup Rules
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         multi_control:
           purge_all: true
         match_fields: ['description']
 
     - name: Cleanup Aliases
-      oxlorg.opnsense.alias:
+      oxlorg.opnsense.alias_multi:
         multi_control:
           purge_all: true
 
@@ -492,7 +492,7 @@
         enabled: false
 
     - name: Cleanup BIND Records
-      oxlorg.opnsense.bind_record:
+      oxlorg.opnsense.bind_record_multi:
         multi_control:
           purge_all: true
       register: bind_cleanup1
