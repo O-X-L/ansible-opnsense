@@ -39,6 +39,26 @@ body:
       required: true
 
   - type: textarea
+    id: version-opnsense
+    attributes:
+      label: OPNsense Version
+      description: |
+        What version of OPNsense are you running?
+        Find it in the WebUI at 'System - Firmware - Status'
+      render: bash
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What's the problem?
+      description: |
+        Describe the problem you encountered and tell us what you would have expected to happen
+    validations:
+      required: true
+
+  - type: textarea
     id: version-ansible
     attributes:
       label: Ansible Version
@@ -50,36 +70,16 @@ body:
       required: false
 
   - type: textarea
-    id: version-opnsense
-    attributes:
-      label: OPNSense Version
-      description: |
-        What version of OPNSense are you running?
-        Find it in the WebUI at 'System - Firmware - Status'
-      render: bash
-    validations:
-      required: true
-
-  - type: textarea
     id: version-opnsense-plugin
     attributes:
-      label: OPNSense-Plugin Version
+      label: OPNsense-Plugin Version
       description: |
         If the module targets a non-default plugin:
-        What version of the OPNSense-Plugin are you running?
+        What version of the OPNsense-Plugin are you running?
         Find it in the WebUI at 'System - Firmware - Plugins'
       render: bash
     validations:
       required: false
-
-  - type: textarea
-    id: problem
-    attributes:
-      label: Issue
-      description: |
-        Describe the problem you encountered and tell us what you would have expected to happen
-    validations:
-      required: true
 
   - type: textarea
     id: config-ansible
@@ -94,7 +94,7 @@ body:
   - type: textarea
     id: config-opnsense
     attributes:
-      label: Config OPNSense
+      label: Config OPNsense
       description: |
         Please provide as the configuration you used when the error occurred!
       render: bash
