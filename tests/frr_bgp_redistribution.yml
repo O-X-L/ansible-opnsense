@@ -206,6 +206,7 @@
     - name: Cleanup route-map
       oxlorg.opnsense.frr_bgp_route_map:
         name: 'ANSIBLE_TEST_3_1'
+        id: 50
         state: 'absent'
       when: not ansible_check_mode
 

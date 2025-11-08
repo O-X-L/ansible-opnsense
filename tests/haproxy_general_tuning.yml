@@ -88,6 +88,4 @@
     - name: Cleanup
       oxlorg.opnsense.haproxy_general_tuning:
         root: false
-        max_connections: 2048
-        nbthread: 1
       when: not ansible_check_mode
