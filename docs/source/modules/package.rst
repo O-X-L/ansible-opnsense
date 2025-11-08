@@ -26,8 +26,8 @@ Info
 
 If:
 
-- the package cache is too old, it will take some time - as OPNSense automatically checks for updates beforehand
-- the target firewall runs an outdated version, the actions 'install' and 'reinstall' will fail as OPNSense prevents it
+- the package cache is too old, it will take some time - as OPNsense automatically checks for updates beforehand
+- the target firewall runs an outdated version, the actions 'install' and 'reinstall' will fail as OPNsense prevents it
 
   - in that case - you should run :ref:`oxlorg.opnsense.system <modules_system>` with action 'upgrade'
 

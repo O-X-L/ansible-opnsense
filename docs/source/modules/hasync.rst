@@ -24,7 +24,7 @@ Thanks to `@jiuka <https://github.com/jiuka>`_ for developing this module!
 
 .. warning::
 
-    This feature is only available in OPNSense version >= 25.1
+    This feature is only available in OPNsense version >= 25.1
 
 Definition
 **********

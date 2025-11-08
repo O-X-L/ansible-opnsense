@@ -60,7 +60,7 @@ See also: [Contributing](https://github.com/O-X-L/ansible-opnsense/blob/latest/C
 
 ## Version Support
 
-We try that the `oxlorg.opnsense` modules always support the latest version of OPNSense.
+We try that the `oxlorg.opnsense` modules always support the latest version of OPNsense.
 
 If an API changed, the current module-implementation might fail for firewalls running an older firmware.
 

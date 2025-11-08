@@ -44,7 +44,7 @@ Definition
 Usage
 *****
 
-To add custom cron-job scripts - see: `OPNSense Documentation <https://docs.opnsense.org/development/backend/configd.html>`_ | `OPNSense Forum <https://forum.opnsense.org/index.php?topic=6177.0>`_
+To add custom cron-job scripts - see: `OPNsense Documentation <https://docs.opnsense.org/development/backend/configd.html>`_ | `OPNsense Forum <https://forum.opnsense.org/index.php?topic=6177.0>`_
 
 ----
 

@@ -26,7 +26,7 @@ Thanks to `@jiuka <https://github.com/jiuka>`_ for developing this module!
 
 .. warning::
 
-    This feature is only compatible with OPNSense version >= 25.7
+    This feature is only compatible with OPNsense version >= 25.7
 
 Definition
 **********

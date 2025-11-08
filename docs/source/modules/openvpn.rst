@@ -186,7 +186,7 @@ The instance description/name is used to match your config to the existing entri
 
 **WARNING**: The openvpn_server and openvpn_client module share the same namespace! Be aware that you p.e. CANNOT create an openvpn_server with the same name as an existing openvpn_client (*on the same box*)!
 
-Use can create an manage certificates `using the OPNSense WebUI <https://docs.opnsense.org/manual/how-tos/self-signed-chain.html>`_!
+Use can create an manage certificates `using the OPNsense WebUI <https://docs.opnsense.org/manual/how-tos/self-signed-chain.html>`_!
 
 ----
 

@@ -621,7 +621,7 @@ copy of the Program in return for a fee.
                      END OF TERMS AND CONDITIONS
 
 
-    Ansible Collection to manage OPNSense firewalls using its API.
+    Ansible Collection to manage OPNsense firewalls using its API.
     Copyright (C) 2025 OXL IT Services / AnsibleGuy
 
     This program is free software: you can redistribute it and/or modify

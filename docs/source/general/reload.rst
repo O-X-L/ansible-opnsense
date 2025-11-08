@@ -20,7 +20,7 @@ Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
 Info
 ****
 
-This module can reload the running/loaded configuration for a specified part of the OPNSense system.
+This module can reload the running/loaded configuration for a specified part of the OPNsense system.
 
 Most modules of this collection will automatically reload its relevant running config on change - but you can speed up mass-management of items when disabling reload on single module-calls (*reload: false*), and do it afterward using THIS module.
 

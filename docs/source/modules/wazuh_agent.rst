@@ -40,7 +40,7 @@ You can also install it using the :ref:`oxlorg.opnsense.package <modules_package
 Function
 ********
 
-This module allows you to configure the Wazuh agent on your OPNSense firewall.
+This module allows you to configure the Wazuh agent on your OPNsense firewall.
 
 Wazuh is a comprehensive security platform that provides unified XDR and SIEM protection for endpoints and cloud workloads.
 
@@ -166,7 +166,7 @@ Examples
 Troubleshooting
 ***************
 
-Make sure your Wazuh server is reachable from the OPNSense firewall and that the specified ports are open in your firewall rules.
+Make sure your Wazuh server is reachable from the OPNsense firewall and that the specified ports are open in your firewall rules.
 
 Check the Wazuh agent logs on the firewall for connection issues:
 
