@@ -78,12 +78,12 @@ Examples
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
 
-        oxlorg.opnsense.rule:
+        oxlorg.opnsense.rule_multi:
           match_fields: ['description']  # name == description
 
       tasks:
         - name: Adding & Updating multiple Aliases
-          oxlorg.opnsense.alias:
+          oxlorg.opnsense.alias_multi:
             aliases:
               - name: 'ANSIBLE_TEST_2_2'
                 content: ['192.168.1.1', '192.168.1.3']
@@ -118,13 +118,13 @@ Examples
                 interface: 'lan'
 
         - name: Removing all 'dynipv6host' aliases
-          oxlorg.opnsense.alias:
+          oxlorg.opnsense.alias_multi:
             multi_control:
               purge_filter:
                 type: 'dynipv6host'
 
         - name: Adding & Updating multiple Aliases
-          oxlorg.opnsense.rule:
+          oxlorg.opnsense.rule_multi:
             rules:
               - name: 'ANSIBLE_TEST_2_1'
                 source_net: '192.168.1.0/24'
@@ -161,7 +161,7 @@ To simplify troubleshooting of bad configuration there are some troubleshooting 
 .. code-block:: yaml
 
     - name: Changing
-      oxlorg.opnsense.rule:
+      oxlorg.opnsense.rule_multi:
         rules: {...}
 
         multi_control:
