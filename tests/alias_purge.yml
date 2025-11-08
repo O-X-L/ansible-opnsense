@@ -21,6 +21,11 @@
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
+    - name: Purge ALL
+      oxlorg.opnsense.alias_multi:
+        multi_control:
+          purge_all: true
+
     - name: Adding 1
       oxlorg.opnsense.alias_multi:
         multi:
@@ -151,18 +156,19 @@
             content: 'ANSIBLE_TEST_4_1'
       when: not ansible_check_mode
 
-    # API does not seem to return a warning any more
-    # - name: Purge used alias
-    #   oxlorg.opnsense.alias_multi:
-    #     multi_purge:
-    #       - name: 'ANSIBLE_TEST_4_2'
-    #   when: not ansible_check_mode
-    #   register: opn11
-    #   failed_when: >
-    #     opn11.failed or
-    #     'warnings' not in opn11
+    - name: Purge used alias
+      oxlorg.opnsense.alias_multi:
+        multi_purge:
+          - name: 'ANSIBLE_TEST_4_1'
+        multi_control:
+          fail_process: true  # default
+      when: not ansible_check_mode
+      register: opn11
+      failed_when: >
+        not opn11.failed or
+        'currently referenced' not in opn11.msg
 
-    - name: Purge ALL
+    - name: Purge ALL (except referenced by other)
       oxlorg.opnsense.alias_multi:
         multi_control:
           purge_all: true
@@ -171,6 +177,16 @@
       failed_when: >
         opn9.failed or
         not opn9.changed
+
+    - name: Purge ALL (previously referenced)
+      oxlorg.opnsense.alias_multi:
+        multi_control:
+          purge_all: true
+      when: not ansible_check_mode
+      register: opn12
+      failed_when: >
+        opn12.failed or
+        not opn12.changed
 
     - name: Checking cleanup
       oxlorg.opnsense.list:

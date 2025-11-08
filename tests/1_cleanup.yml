@@ -19,10 +19,17 @@
           purge_all: true
         match_fields: ['description']
 
-    - name: Cleanup Aliases
+    - name: Cleanup Aliases (skips referenced by other)
       oxlorg.opnsense.alias_multi:
         multi_control:
           purge_all: true
+          fail_process: false
+
+    - name: Cleanup Aliases (previously referenced)
+      oxlorg.opnsense.alias_multi:
+        multi_control:
+          purge_all: true
+          fail_process: false
 
     - name: Cleanup packages
       oxlorg.opnsense.package:
@@ -55,6 +62,7 @@
 
     - name: Cleanup Unbound General
       oxlorg.opnsense.unbound_general:
+        enabled: false
         reload: false  # speed
 
     - name: Cleanup Unbound DNS ACLs
@@ -687,7 +695,7 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
 
-    - name: Cleanup Client-Overwrite
+    - name: Cleanup OpenVPN Client-Overwrite
       oxlorg.opnsense.openvpn_client_override:
         name: "{{ item }}"
         state: 'absent'

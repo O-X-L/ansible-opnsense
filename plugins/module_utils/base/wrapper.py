@@ -38,6 +38,10 @@ def module_multi_wrapper(
         module_name = inspect_getfile(inspect_stack()[1][0]).rsplit('/', 1)[1].rsplit('.', 1)[0]
         return profiler(check=m.process, module_name=module_name, kwargs={})
 
+    # if the user wants to purge every entry - it makes no sense to hinder it for a single one
+    if module.params['multi_control']['purge_all']:
+        module.params['multi_control']['fail_process'] = False
+
     return m.process()
 
 
