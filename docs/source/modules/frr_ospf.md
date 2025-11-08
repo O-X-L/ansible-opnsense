@@ -20,7 +20,7 @@
 
 **Service Docs**: [Dynamic Routing](https://docs.opnsense.org/manual/dynamic_routing.html)
 
-**FRR Docs**: [FRRouting](https://docs.frrouting.org/) (_make sure you are looking at the current OPNSense package version!_)
+**FRR Docs**: [FRRouting](https://docs.frrouting.org/) (_make sure you are looking at the current OPNsense package version!_)
 
 ## Contribution
 

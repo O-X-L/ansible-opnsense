@@ -6,7 +6,7 @@ version: 25.7.3
 readme: 'README.md'
 authors:
   - 'OXL IT Services <contact+opnsense@OXL.at>'
-description: "Ansible Collection to manage OPNSense firewalls using its API"
+description: "Ansible Collection to manage OPNsense firewalls using its API"
 license_file: 'LICENSE.txt'
 tags:
   - 'firewall'

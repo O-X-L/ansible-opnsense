@@ -15,7 +15,7 @@ If you DO NOT want to use Ansible - `this fork <https://github.com/O-X-L/opnsens
 Prerequisites
 *************
 
-You need to create API credentials as described in the `OPNSense documentation <https://docs.opnsense.org/development/how-tos/api.html#creating-keys>`_.
+You need to create API credentials as described in the `OPNsense documentation <https://docs.opnsense.org/development/how-tos/api.html#creating-keys>`_.
 
 **Menu**: System - Access - Users - Edit {admin user} - Add api key
 
@@ -24,7 +24,7 @@ You need to create API credentials as described in the `OPNSense documentation <
 Inventory & Playbook
 ====================
 
-Make sure to set :code:`connection: local` in your OPNSense-Playbook, so the Module gets executed on your Ansible-Controller machine!
+Make sure to set :code:`connection: local` in your OPNsense-Playbook, so the Module gets executed on your Ansible-Controller machine!
 
 See also: `How Ansible Works <https://www.ansible.com/how-ansible-works/>`_
 
@@ -60,7 +60,7 @@ To make a connection trusted you need either:
 - a valid public certificate for the DNS-Name your firewall has (*LetsEncrypt/ACME*)
 - an internal certificate authority that is used to create signed certificates
 
-  - you could create such internal certificates using OPNSense. See the `OPNSense documentation for self-signed certificates <https://docs.opnsense.org/manual/how-tos/self-signed-chain.html>`_.
+  - you could create such internal certificates using OPNsense. See the `OPNsense documentation for self-signed certificates <https://docs.opnsense.org/manual/how-tos/self-signed-chain.html>`_.
   - if you do so - it is important that the IP-address and/or DNS-Name of your firewall is included in the 'Subject Alternative Name' (*SAN*) for it to be valid
 
 After you got a valid certificate - you need to import and activate it:

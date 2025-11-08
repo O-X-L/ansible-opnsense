@@ -145,7 +145,7 @@ oxlorg.opnsense.interface_lagg
 
 .. warning::
 
-    This feature is only available in OPNSense version >= 23.7
+    This feature is only available in OPNsense version >= 23.7
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"

@@ -1,0 +1,23 @@
+---
+
+- name: System Info
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Query System-Info
+      oxlorg.opnsense.raw:
+        url: 'core/firmware/info'
+      register: system_info
+
+    - name: OPNsense Version
+      ansible.builtin.debug:
+        var: system_info.response.product_version

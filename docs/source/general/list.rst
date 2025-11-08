@@ -20,7 +20,7 @@ Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
 Info
 ****
 
-This module can list existing items/entries of a specified part of the OPNSense system.
+This module can list existing items/entries of a specified part of the OPNsense system.
 
 In most cases the returned type of this module ist a list of dictionaries.
 

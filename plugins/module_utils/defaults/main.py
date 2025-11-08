@@ -49,7 +49,7 @@ OPN_MOD_ARGS = dict(
     api_retries=dict(
         type='int', required=False, default=0, aliases=['connect_retries'],
         description='Number of retries on API requests, in case there is an error when establishing the connection. '
-                    'This does not handle errors returned by the OPNSense system'
+                    'This does not handle errors returned by the OPNsense system'
     ),
 )
 

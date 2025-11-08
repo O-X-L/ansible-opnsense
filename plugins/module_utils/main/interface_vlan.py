@@ -51,7 +51,7 @@ class Vlan(BaseModule):
                 self.m.fail_json("You need to provide a 'vlan' to create a vlan-interface!")
 
             if is_unset(self.p['device']):
-                self.p['device'] = f"vlan0.{self.p['vlan']}"  # OPNSense forces us to start with 'vlan0' for some reason
+                self.p['device'] = f"vlan0.{self.p['vlan']}"  # OPNsense forces us to start with 'vlan0' for some reason
 
         self._base_check()
 

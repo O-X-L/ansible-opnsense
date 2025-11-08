@@ -23,7 +23,7 @@ All modules
     "debug","boolean","false","false","\-","Used to en-/disable the debug mode. All API requests and responses will be shown as Ansible warnings at runtime. Will be hidden if the tasks 'no_log' parameter is set to 'true'"
     "profiling","boolean","false","false","\-","Used to en-/disable the profiling mode. Time consumption of the module will be logged to '/tmp/oxlorg.opnsense'"
     "api_timeout","float","false","\-","timeout","Manually override the modules default API-request timeout"
-    "api_retries","integer","false","0","connect_retries","Number of retries on API requests, in case there is an error when ESTABLISHING the connection. This does not handle errors returned by the OPNSense system"
+    "api_retries","integer","false","0","connect_retries","Number of retries on API requests, in case there is an error when ESTABLISHING the connection. This does not handle errors returned by the OPNsense system"
 
 Modules managing multiple entries
 *********************************

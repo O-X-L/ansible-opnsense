@@ -33,7 +33,7 @@ Of course you can always place the repository at :code:`${PLAYBOOK_DIR}/collecti
 API Definition
 ##############
 
-To get to know the API - you will have to read into the API's XML-config that is linked in `the OPNSense docs <https://docs.opnsense.org/development/api.html#introduction>`_.
+To get to know the API - you will have to read into the API's XML-config that is linked in `the OPNsense docs <https://docs.opnsense.org/development/api.html#introduction>`_.
 
 Per example: `Alias.xml <https://github.com/opnsense/core/blob/master/src/opnsense/mvc/app/models/OPNsense/Firewall/Alias.xml>`_
 
@@ -75,7 +75,7 @@ There are some required attributes:
 
 * :code:`API_KEY_PATH`
 
-  OPNSense puts the actual API-data inside a nested-dict.
+  OPNsense puts the actual API-data inside a nested-dict.
 
   This attribute is used to dynamically extract the data we need.
 
@@ -128,11 +128,11 @@ There are some required attributes:
 
 * :code:`API_MOD`
 
-  The OPNSense API-Module to call.
+  The OPNsense API-Module to call.
 
 * :code:`API_CONT`
 
-  The OPNSense API-Controller to call.
+  The OPNsense API-Controller to call.
 
 * :code:`FIELDS_ALL`
 
@@ -148,7 +148,7 @@ There are some required attributes:
 
 * :code:`CMDS`
 
-  This attribute configures the OPNSense API-commands we need to execute.
+  This attribute configures the OPNsense API-commands we need to execute.
 
   Note: There is `a current/old and new API-handling <https://github.com/O-X-L/ansible-opnsense/issues/51>`_.
 
@@ -337,7 +337,7 @@ Optional
 
 * :code:`FIELDS_VALUE_MAPPING` and :code:`FIELDS_VALUE_MAPPING_RCV`
 
-  This is basically a workaround for `the OPNSense-API having inconsistent GET/POST values <https://github.com/O-X-L/ansible-opnsense/discussions/37>`_.
+  This is basically a workaround for `the OPNsense-API having inconsistent GET/POST values <https://github.com/O-X-L/ansible-opnsense/discussions/37>`_.
 
   It maps the user-friendly ansible-values to the generic API-values.
 
@@ -387,7 +387,7 @@ Adding new module
 
   You can copy some other module at :code:`<COLLECTION>/plugins/modules/`
 
-  Note: When adding module-parameters - you can copy/paste the field-description from the OPNSense web-ui! We don't have to reinvent the wheel. (*'full help' toggle*)
+  Note: When adding module-parameters - you can copy/paste the field-description from the OPNsense web-ui! We don't have to reinvent the wheel. (*'full help' toggle*)
 
 - For most modules you should create a sub-file to handle the actual logic so the main module-file is kept clean:
 
@@ -618,7 +618,7 @@ Most modules will use a session to perform multiple API calls:
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import single_get, single_post
     single_get(module=module, cnf={'module': 'wireguard', 'controller': 'service', 'command': 'show'})
 
-For the controller/command/params/data definition - check the `OPNSense API Docs <https://docs.opnsense.org/development/api.html#core-api>`_!
+For the controller/command/params/data definition - check the `OPNsense API Docs <https://docs.opnsense.org/development/api.html#core-api>`_!
 
 ----
 

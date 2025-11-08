@@ -57,7 +57,7 @@ class Vip(BaseModule):
     def update(self) -> None:
         self.b.update(enable_switch=False)
 
-    # NOTE: workaround for OPNSense handling 'get' differently than 'add' and 'set'
+    # NOTE: workaround for OPNsense handling 'get' differently than 'add' and 'set'
     #   https://github.com/opnsense/core/issues/7041
     def get_existing(self) -> list:
         existing = []

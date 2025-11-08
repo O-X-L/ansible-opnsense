@@ -15,9 +15,9 @@ body:
 
         - [ ] Only API-Enabled configuration can be implemented!
 
-            Make sure the feature is already implemented on the OPNSense-side: [API Docs](https://docs.opnsense.org/development/api.html)
+            Make sure the feature is already implemented on the OPNsense-side: [API Docs](https://docs.opnsense.org/development/api.html)
 
-            Else you may want to create an issue in one of the [OPNSense repositories](https://github.com/opnsense)
+            Else you may want to create an issue in one of the [OPNsense repositories](https://github.com/opnsense)
 
   - type: textarea
     id: api
@@ -26,7 +26,7 @@ body:
       description: |
         Please provide the link to the API that should be implemented! (https://docs.opnsense.org/development/api/PLACEHOLDER/PLACEHOLDER.html)
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: description

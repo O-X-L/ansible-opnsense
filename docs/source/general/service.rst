@@ -20,7 +20,7 @@ Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
 Info
 ****
 
-This module can interact with a specified service running on the OPNSense system.
+This module can interact with a specified service running on the OPNsense system.
 
 Definition
 **********

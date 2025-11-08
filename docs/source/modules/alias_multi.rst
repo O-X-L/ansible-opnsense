@@ -29,7 +29,7 @@ Thanks to `@Rath <https://github.com/superstes>`_ for developing these modules!
 Info
 ****
 
-For more detailed information on what alias types are supported - see the `OPNSense documentation <https://docs.opnsense.org/manual/aliases.html>`_.
+For more detailed information on what alias types are supported - see the `OPNsense documentation <https://docs.opnsense.org/manual/aliases.html>`_.
 
 Multi
 *****
