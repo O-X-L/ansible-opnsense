@@ -76,6 +76,8 @@ echo '        STARTING TESTS!'
 echo '##############################'
 echo ''
 
+run_test_soft '1_version' 0
+
 run_test_soft 'list' 0
 run_test_soft 'reload' 0
 run_test_soft 'service' 1
@@ -238,6 +240,8 @@ run_test_soft 'haproxy_general_logging' 1
 run_test_soft 'haproxy_general_peers' 1
 run_test_soft 'haproxy_general_settings' 1
 run_test_soft 'haproxy_general_tuning' 1
+
+run_test_soft '1_version' 0
 
 echo ''
 echo '##############################'

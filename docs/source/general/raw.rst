@@ -20,7 +20,7 @@ Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
 Info
 ****
 
-This module can perform any OPNSense API-query or -action.
+This module can perform any OPNsense API-query or -action.
 
 It is meant to be used for your custom needs or provide you with features that are not yet implemented as dedicated modules.
 
@@ -68,7 +68,7 @@ Examples
           register: interfaces
 
         - ansible.builtin.debug:
-            var: interfaces.rows
+            var: interfaces.response.rows
 
         - name: Execute action
           oxlorg.opnsense.raw:
