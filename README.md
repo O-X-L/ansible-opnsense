@@ -1,5 +1,13 @@
 # Ansible Collection to manage OPNsense Firewalls
 
+<p align="center">
+    <a title="Support this Project (Donate, Support-Licenses)" href="https://shop.oxl.app/collections/open-source">
+        <img src="https://files.oxl.at/img/badge-oss-support.svg" alt="Support Badge (Donate, Support-Licenses)"/>
+    </a>
+</p>
+
+----
+
 [![Lint Python](https://github.com/O-X-L/ansible-opnsense/actions/workflows/lint-python.yml/badge.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/lint-python.yml)
 [![Lint Ansible](https://github.com/O-X-L/ansible-opnsense/actions/workflows/lint-ansible.yml/badge.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/lint-ansible.yml)
 [![Unit Test Status](https://github.com/O-X-L/ansible-opnsense/actions/workflows/unit_test.yml/badge.svg)](https://github.com/O-X-L/ansible-opnsense/actions/workflows/unit_test.yml)
