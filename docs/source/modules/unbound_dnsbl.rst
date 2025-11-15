@@ -83,14 +83,14 @@ Examples
             # wildcards: ['example.net']
             # address: 192.168.254.254
             # nxdomain: false
-            # enable: false
+            # enabled: false
             # state: 'absent'
             # debug: false
 
         - name: Configuring DNS Blocklists
           oxlorg.opnsense.unbound_dnsbl:
             type: atl
-            enable: true
+            enabled: true
 
         - name: Listing current config
           oxlorg.opnsense.list:
@@ -100,3 +100,4 @@ Examples
         - name: Printing
           ansible.builtin.debug:
             var: dnsbl_config.data
+
