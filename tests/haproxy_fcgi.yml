@@ -35,6 +35,7 @@
         description: 'Test FCGI app 1'
       register: opn_fail2
       failed_when: not opn_fail2.failed
+      when: not ansible_check_mode
 
     # Create prerequisite actions for testing
     - name: Create test action for FCGI testing
@@ -135,6 +136,7 @@
       failed_when: >
         opn9.failed or
         not opn9.changed
+      when: not ansible_check_mode
 
     - name: Disabling HAProxy FCGI application
       oxlorg.opnsense.haproxy_fcgi:
@@ -214,36 +216,20 @@
 
     - name: Cleanup FCGI app 1
       oxlorg.opnsense.haproxy_fcgi:
-        name: 'ANSIBLE_TEST_1_1'
+        name: "{{ item }}"
         state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup FCGI app 2
-      oxlorg.opnsense.haproxy_fcgi:
-        name: 'ANSIBLE_TEST_1_2'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup FCGI app 3
-      oxlorg.opnsense.haproxy_fcgi:
-        name: 'ANSIBLE_TEST_1_3'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup FCGI app 4
-      oxlorg.opnsense.haproxy_fcgi:
-        name: 'ANSIBLE_TEST_1_4'
-        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
       when: not ansible_check_mode
 
     - name: Cleanup test action 1
       oxlorg.opnsense.haproxy_action:
-        name: 'ANSIBLE_TEST_FCGI_ACTION_1'
+        name: "{{ item }}"
         state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup test action 2
-      oxlorg.opnsense.haproxy_action:
-        name: 'ANSIBLE_TEST_FCGI_ACTION_2'
-        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_FCGI_ACTION_1'
+        - 'ANSIBLE_TEST_FCGI_ACTION_2'
       when: not ansible_check_mode

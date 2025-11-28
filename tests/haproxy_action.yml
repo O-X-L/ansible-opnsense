@@ -28,6 +28,7 @@
         name: ''
       register: opn_fail1
       failed_when: not opn_fail1.failed
+      when: not ansible_check_mode
 
     - name: Configuring - failing because of missing type
       oxlorg.opnsense.haproxy_action:
@@ -35,6 +36,7 @@
         description: 'Test Action 1'
       register: opn_fail2
       failed_when: not opn_fail2.failed
+      when: not ansible_check_mode
 
     # Create prerequisite ACL for testing
     - name: Create test ACL for Action testing
@@ -110,6 +112,7 @@
       failed_when: >
         opn9.failed or
         not opn9.changed
+      when: not ansible_check_mode
 
     - name: Changing Action operator
       oxlorg.opnsense.haproxy_action:

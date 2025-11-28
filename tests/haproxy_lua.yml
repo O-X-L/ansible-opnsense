@@ -28,6 +28,7 @@
         name: ''
       register: opn_fail1
       failed_when: not opn_fail1.failed
+      when: not ansible_check_mode
 
     - name: Configuring - failing because of missing content
       oxlorg.opnsense.haproxy_lua:
@@ -35,6 +36,7 @@
         description: 'Test Lua script 1'
       register: opn_fail2
       failed_when: not opn_fail2.failed
+      when: not ansible_check_mode
 
     - name: Creating HAProxy Lua script with ID filename
       oxlorg.opnsense.haproxy_lua:
