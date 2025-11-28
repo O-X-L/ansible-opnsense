@@ -21,76 +21,86 @@
       register: opn_pre1
       failed_when: >
         opn_pre1.failed or
-        'data' not in opn_pre1
+        opn_pre1.data | length != 0
 
     - name: Configuring - failing because of invalid type
       oxlorg.opnsense.unbound_dnsbl:
-        type:
-          - ANSIBLE_TEST_1
+        name: 'ANSIBLE_TEST_1'
+        providers:
+          - 'INVALID'
       register: opn_fail1
       failed_when: not opn_fail1.failed
       when: not ansible_check_mode
 
     - name: Configuring - failing because of invalid address
       oxlorg.opnsense.unbound_dnsbl:
-        address: INVALID
+        name: 'ANSIBLE_TEST_1'
+        address: 'INVALID'
       register: opn_fail2
       failed_when: not opn_fail2.failed
       when: not ansible_check_mode
 
-    - name: Reset Configuring
+    - name: Adding 1
       oxlorg.opnsense.unbound_dnsbl:
-      when: not ansible_check_mode
-
-    - name: Configuring
-      oxlorg.opnsense.unbound_dnsbl:
-        type:
-          - atf
-        lists: ['https://example.com/dns.blocklist']
-        whitelists:
-          - opnsense.org
-          - oxlorg.net
-        blocklists:
-          - example.tor
-        wildcards:
-          - example.tor
-        address: 192.168.255.255
+        name: 'ANSIBLE_TEST_1'
+        providers: 'atf'
+        download_urls: ['https://example.com/dns.blocklist']
+        domains_allow:
+          - 'opnsense.org'
+          - 'oxlorg.net'
+        domains_block:
+          - 'example.tor'
+        wildcard_domains_block:
+          - 'example.tor'
+        source_networks:
+          - '10.0.10.0/24'
+          - '10.2.10.0/24'
+        nxdomain_address: '192.168.255.255'
         nxdomain: false
         enabled: true
+        reload: false  # speed
       register: opn1
       failed_when: >
         opn1.failed or
         not opn1.changed
 
-    - name: Changing
+    - name: Changing 1
       oxlorg.opnsense.unbound_dnsbl:
-        type:
-          - atf
-        whitelists:
-          - opnsense.org
-          - oxlorg.net
-        blocklists:
-          - example.tor
-        wildcards:
-          - example.tor
+        name: 'ANSIBLE_TEST_1'
+        providers: 'atf'
+        domains_allow:
+          - 'opnsense.org'
+          - 'oxl.at'
+        domains_block:
+          - 'example.tor'
+        wildcard_domains_block:
+          - 'example.tor'
+        source_networks:
+          - '10.10.10.0/24'
+          - '10.3.10.0/24'
         nxdomain: true
         enabled: true
+        reload: false  # speed
       register: opn2
       failed_when: >
         opn2.failed or
         not opn2.changed
+      when: not ansible_check_mode
 
     - name: Disabling 1
       oxlorg.opnsense.unbound_dnsbl:
-        type:
-          - atf
-        whitelists:
-          - opnsense.org
-          - oxlorg.net
-        blocklists:
-          - example.tor
-        wildcards:
-          - example.tor
+        name: 'ANSIBLE_TEST_1'
+        providers: 'atf'
+        domains_allow:
+          - 'opnsense.org'
+          - 'oxl.at'
+        domains_block:
+          - 'example.tor'
+        wildcard_domains_block:
+          - 'example.tor'
+        source_networks:
+          - '10.10.10.0/24'
+          - '10.3.10.0/24'
         nxdomain: true
         enabled: false
         reload: false  # speed
@@ -102,15 +112,18 @@
 
     - name: Nothing changed
       oxlorg.opnsense.unbound_dnsbl:
-        type:
-          - atf
-        whitelists:
-          - opnsense.org
-          - oxlorg.net
-        blocklists:
-          - example.tor
-        wildcards:
-          - example.tor
+        name: 'ANSIBLE_TEST_1'
+        providers: 'atf'
+        domains_allow:
+          - 'opnsense.org'
+          - 'oxl.at'
+        domains_block:
+          - 'example.tor'
+        wildcard_domains_block:
+          - 'example.tor'
+        source_networks:
+          - '10.10.10.0/24'
+          - '10.3.10.0/24'
         nxdomain: true
         enabled: false
         reload: false  # speed
@@ -120,7 +133,47 @@
         opn4.changed
       when: not ansible_check_mode
 
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.data | length != 1
+      when: not ansible_check_mode
+
+    - name: Adding 2
+      oxlorg.opnsense.unbound_dnsbl:
+        name: 'ANSIBLE_TEST_2'
+        providers: 'atf'
+        download_urls: ['https://example.com/dns.blocklist']
+        domains_block:
+          - 'example.tor'
+        source_networks:
+          - '10.0.10.0/24'
+          - '10.2.10.0/24'
+        nxdomain: false
+        cache_ttl: 1000000
+        enabled: true
+        reload: false  # speed
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        opn7.data | length != 2
+      when: not ansible_check_mode
+
     - name: Cleanup
       oxlorg.opnsense.unbound_dnsbl:
-        reload: false
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1'
+        - 'ANSIBLE_TEST_2'
       when: not ansible_check_mode

@@ -123,6 +123,14 @@
         - 'ANSIBLE_TEST_1_3'
         - 'ANSIBLE_TEST_2_1'
 
+    - name: Cleanup
+      oxlorg.opnsense.unbound_dnsbl:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1'
+        - 'ANSIBLE_TEST_2'
+
     - name: Cleanup syslog
       oxlorg.opnsense.syslog:
         description: "{{ item }}"
