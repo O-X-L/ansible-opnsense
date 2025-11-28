@@ -43,7 +43,7 @@ Definition
     "wildcard_domains_block","list of strings","false","[]","wildcards_block,wildcard_domains,wildcards","List of wildcard domains to blocklist. All subdomains of the given domain will be blocked. Blocking first-level domains is not supported"
     "source_networks","list of strings","false","[]","networks,source_nets,src_nets","Source networks to apply policy on. Examples are 192.168.1.0/24 or 192.168.1.1. Leave empty to apply on everything. All specified networks should use the same protocol family and have equal sizes to avoid priority issue"
     "cache_ttl","int","false","72000","ttl","TTL-seconds for the blocklists cache. Remote blocklists don't usually update more often than once a day. Therefore, when blocklists are downloaded, they are cached locally to prevent unnecessary fetches over the internet. You can change this behavior here if you know the remote files rotate faster than this"
-    "nxdomain_address","string","false","\-","address,redirect_to","Destination ip address for entries in the blocklist (leave empty to use default: 0.0.0.0). Not used when "Return NXDOMAIN" is checked"
+    "nxdomain_address","string","false","\-","address,redirect_to","Destination ip address for entries in the blocklist (leave empty to use default: 0.0.0.0). Not used when 'Return NXDOMAIN' is checked"
     "nxdomain","bool","false","false","\-","Use the DNS response code NXDOMAIN instead of a destination address"
 
 .. include:: ../_include/param_basic.rst

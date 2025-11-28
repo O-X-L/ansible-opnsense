@@ -2,9 +2,9 @@
 
 .. include:: ../_include/head.rst
 
-============================
+==============================
 HAProxy authentication modules
-============================
+==============================
 
 **STATE**: unstable
 
@@ -23,7 +23,7 @@ These modules manage HAProxy authentication users and groups for access control.
 .. _haproxy_user:
 
 oxlorg.opnsense.haproxy_user
-=================================
+============================
 
 Manages HAProxy authentication users.
 
@@ -53,7 +53,7 @@ Examples
 .. _haproxy_group:
 
 oxlorg.opnsense.haproxy_group
-===================================
+=============================
 
 Manages HAProxy authentication groups.
 
@@ -80,4 +80,4 @@ Examples
         enabled: true
 
 
-See also: :ref:`modules_haproxy` and :ref:`troubleshooting <troubleshooting>`
+See also: :ref:`modules_haproxy <modules_haproxy>` and :ref:`troubleshooting <modules_haproxy_troubleshooting>`

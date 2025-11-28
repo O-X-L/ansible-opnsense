@@ -194,4 +194,4 @@ Examples
         type: 'http-request_allow'
 
 
-See also: :ref:`modules_haproxy` and :ref:`troubleshooting <troubleshooting>`
+See also: :ref:`modules_haproxy <modules_haproxy>` and :ref:`troubleshooting <modules_haproxy_troubleshooting>`

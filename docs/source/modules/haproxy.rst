@@ -234,6 +234,8 @@ Usage examples
 
 ----
 
+.. _modules_haproxy_troubleshooting:
+
 Troubleshooting
 ***************
 
@@ -260,4 +262,4 @@ For high-traffic scenarios:
 - Increase ``buffer_size`` for large requests/responses
 - Adjust ``timeout_*`` values based on your application needs
 
-See: :ref:`troubleshooting <troubleshooting>`
+See: :ref:`troubleshooting <modules_haproxy_troubleshooting>`

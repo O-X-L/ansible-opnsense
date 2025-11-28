@@ -2,9 +2,9 @@
 
 .. include:: ../_include/head.rst
 
-============================
+====================================
 HAProxy performance & system modules
-============================
+====================================
 
 **STATE**: unstable
 
@@ -23,7 +23,7 @@ These modules manage HAProxy system performance and maintenance settings.
 .. _haproxy_cpu:
 
 oxlorg.opnsense.haproxy_cpu
-=================================
+===========================
 
 Manages CPU affinity rules for HAProxy processes.
 
@@ -54,7 +54,7 @@ Examples
 .. _haproxy_maintenance:
 
 oxlorg.opnsense.haproxy_maintenance
-========================================
+===================================
 
 Manages HAProxy maintenance and monitoring settings.
 
@@ -78,6 +78,6 @@ Examples
         restart_service: false
 
 
-**Note**: For general HAProxy configuration like tuning, logging, cache, and other settings, see :ref:`modules_haproxy_general`.
+**Note**: For general HAProxy configuration like tuning, logging, cache, and other settings, see :ref:`modules_haproxy_general <modules_haproxy_general>`.
 
-See also: :ref:`modules_haproxy` and :ref:`troubleshooting <troubleshooting>`
+See also: :ref:`modules_haproxy <modules_haproxy>` and :ref:`troubleshooting <modules_haproxy_troubleshooting>`

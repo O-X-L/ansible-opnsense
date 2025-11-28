@@ -2,9 +2,9 @@
 
 .. include:: ../_include/head.rst
 
-=================================
+====================================
 HAProxy advanced & extended features
-=================================
+====================================
 
 **STATE**: unstable
 
@@ -24,7 +24,7 @@ These modules manage advanced HAProxy features including Lua scripts, FastCGI ap
 .. _haproxy_lua:
 
 oxlorg.opnsense.haproxy_lua
-=================================
+===========================
 
 Manages HAProxy Lua scripts for custom logic and processing.
 
@@ -66,7 +66,7 @@ Examples
 .. _haproxy_fcgi:
 
 oxlorg.opnsense.haproxy_fcgi
-==================================
+============================
 
 Manages HAProxy FastCGI applications for dynamic content processing.
 
@@ -108,7 +108,7 @@ Examples
 .. _haproxy_errorfile:
 
 oxlorg.opnsense.haproxy_errorfile
-======================================
+=================================
 
 Manages HAProxy custom error pages for better user experience.
 
@@ -147,4 +147,4 @@ Examples
           </html>
 
 
-See also: :ref:`modules_haproxy` and :ref:`troubleshooting <troubleshooting>`
+See also: :ref:`modules_haproxy <modules_haproxy>` and :ref:`troubleshooting <modules_haproxy_troubleshooting>`
