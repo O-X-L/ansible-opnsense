@@ -36,7 +36,7 @@ jobs:
 
       - name: Building docs => failing on errors
         run: |
-          if bash docs/html.sh 2>&1 | grep -q 'ERROR:'
+          if bash docs/html.sh 2>&1 | grep -E 'WARNING:|ERROR:'
           then
             echo 'GOT ERROR ON BUILDING-DOCS: "bash docs/html.sh"'
             exit 1

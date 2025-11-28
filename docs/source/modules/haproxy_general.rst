@@ -28,7 +28,7 @@ These modules manage the general HAProxy configuration including settings, stati
 .. _haproxy_general_settings:
 
 oxlorg.opnsense.haproxy_general_settings
-==============================================
+========================================
 
 Manages the basic operational settings for HAProxy.
 
@@ -60,7 +60,7 @@ Examples
 .. _haproxy_general_stats:
 
 oxlorg.opnsense.haproxy_general_stats
-==========================================
+=====================================
 
 Manages HAProxy statistics and monitoring configuration.
 
@@ -69,7 +69,7 @@ Manages HAProxy statistics and monitoring configuration.
     :widths: 15 10 10 10 10 45
 
     "enabled","boolean","false","true","\-","Enable or disable HAProxy statistics"
-    "port","integer","false","8822","\-","TCP port for local statistics page (1024-65535)"
+    "port","integer","false","8822","\-","TCP port for local statistics page (1024\-65535)"
     "remote_enabled","boolean","false","false","\-","Enable remote access to HAProxy statistics page"
     "remote_bind","list","false","[]","\-","Configure listen addresses for statistics page remote access"
     "auth_enabled","boolean","false","false","\-","Enable authentication"
@@ -78,7 +78,7 @@ Manages HAProxy statistics and monitoring configuration.
     "allowed_groups","list","false","[]","\-","List of group names allowed to access statistics page (automatically resolved to UUIDs)"
     "custom_options","string","false","\-","\-","Additional lines for HAProxy statistics settings"
     "prometheus_enabled","boolean","false","false","\-","Enable HAProxy Prometheus exporter"
-    "prometheus_bind","list","false","['*:8404']","\-","Listen addresses for prometheus exporter"
+    "prometheus_bind","list","false","['\*:8404']","\-","Listen addresses for prometheus exporter"
     "prometheus_path","string","false","/metrics","\-","Path where Prometheus exporter can be accessed"
 
 Examples
@@ -100,7 +100,7 @@ Examples
 .. _haproxy_general_defaults:
 
 oxlorg.opnsense.haproxy_general_defaults
-=============================================
+========================================
 
 Manages HAProxy default connection and timeout settings.
 
@@ -137,7 +137,7 @@ Examples
 .. _haproxy_general_tuning:
 
 oxlorg.opnsense.haproxy_general_tuning
-===========================================
+======================================
 
 Manages HAProxy performance tuning and advanced configuration.
 
@@ -190,7 +190,7 @@ Examples
 .. _haproxy_general_logging:
 
 oxlorg.opnsense.haproxy_general_logging
-============================================
+=======================================
 
 Manages HAProxy logging configuration.
 
@@ -220,7 +220,7 @@ Examples
 .. _haproxy_general_peers:
 
 oxlorg.opnsense.haproxy_general_peers
-==========================================
+=====================================
 
 Manages HAProxy peer synchronization for high availability.
 
@@ -256,7 +256,7 @@ Examples
 .. _haproxy_general_cache:
 
 oxlorg.opnsense.haproxy_general_cache
-==========================================
+=====================================
 
 Manages HAProxy caching configuration.
 
@@ -285,4 +285,4 @@ Examples
         max_secondary_entries: 20
 
 
-See also: :ref:`modules_haproxy` and :ref:`troubleshooting <troubleshooting>`
+See also: :ref:`modules_haproxy <modules_haproxy>` and :ref:`troubleshooting <modules_haproxy_troubleshooting>`
