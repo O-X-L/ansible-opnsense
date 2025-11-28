@@ -14,7 +14,7 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
 try:
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
-        OPN_MOD_ARGS, EN_ONLY_MOD_ARG, RELOAD_MOD_ARG
+        OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.unbound_dnsbl import DnsBL
 
 except MODULE_EXCEPTIONS:
@@ -27,33 +27,53 @@ except MODULE_EXCEPTIONS:
 
 def run_module():
     module_args = dict(
-        safesearch=dict(
-            type='bool', required=False, default=False,
-            description='Force the usage of SafeSearch on Google, DuckDuckGo, Bing, Qwant, PixaBay and YouTube'
+        name=dict(
+            type='str', required=True, aliases=['description', 'desc'],
+            description='Unique name to identify the entry',
         ),
-        type=dict(
-            type='list', elements='str', required=False, default=[], aliases=['bl'],
-            description='Select which kind of DNSBL you want to use'
+        providers=dict(
+            type='list', elements='str', required=False, default=[],
+            aliases=['type', 'dnsbl', 'bl'],
+            description='Select which kind of DNSBL you want to use.'
         ),
-        lists=dict(
-            type='list', elements='str', required=False, default=[], aliases=['list'],
-            description='List of urls from where blocklist will be downloaded'
+        download_urls=dict(
+            type='list', elements='str', required=False, default=[],
+            aliases=['download', 'lists'],
+            description='List of URLs/domains from where blocklist will be downloaded'
         ),
-        whitelists=dict(
-            type='list', elements='str', required=False, default=[], aliases=['whitelist', 'allowlist', 'allowlists'],
-            description='List of domains to whitelist. You can use regular expressions'
+        domains_allow=dict(
+            type='list', elements='str', required=False, default=[], aliases=['allowlists'],
+            description='List of domains to allow. You can use regular expressions. '
+                        'This allow list only applies to blocklist matches on items in this policy'
         ),
-        blocklists=dict(
-            type='list', elements='str', required=False, default=[], aliases=['blocklist'],
+        domains_block=dict(
+            type='list', elements='str', required=False, default=[], aliases=['blocklists'],
             description='List of domains to blocklist. Only exact matches are supported'
         ),
-        wildcards=dict(
-            type='list', elements='str', required=False, default=[], aliases=['wildcard'],
+        wildcard_domains_block=dict(
+            type='list', elements='str', required=False, default=[],
+            aliases=['wildcards_block', 'wildcard_domains', 'wildcards'],
             description='List of wildcard domains to blocklist. All subdomains of the given domain will be blocked. '
                         'Blocking first-level domains is not supported'
         ),
-        address=dict(
-            type='str', required=False,
+        source_networks=dict(
+            type='list', elements='str', required=False, default=[],
+            aliases=['networks', 'source_nets', 'src_nets'],
+            description='Source networks to apply policy on. '
+                        'Examples are 192.168.1.0/24 or 192.168.1.1. Leave empty to apply on everything. '
+                        'All specified networks should use the same protocol family and '
+                        'have equal sizes to avoid priority issue'
+        ),
+        cache_ttl=dict(
+            type='int', required=False, default=72_000, aliases=['ttl'],
+            description="TTL-seconds for the blocklists cache. "
+                        "Remote blocklists don't usually update more often than once a day. "
+                        "Therefore, when blocklists are downloaded, they are cached locally to prevent "
+                        "unnecessary fetches over the internet. You can change this behavior here if you know "
+                        "the remote files rotate faster than this"
+        ),
+        nxdomain_address=dict(
+            type='str', required=False, aliases=['address', 'redirect_to'],
             description='Destination ip address for entries in the blocklist (leave empty to use default: 0.0.0.0). '
                         'Not used when "Return NXDOMAIN" is checked'
         ),
@@ -61,7 +81,7 @@ def run_module():
             type='bool', required=False, default=False,
             description='Use the DNS response code NXDOMAIN instead of a destination address'
         ),
-        **EN_ONLY_MOD_ARG,
+        **STATE_MOD_ARG,
         **OPN_MOD_ARGS,
         **RELOAD_MOD_ARG,
     )
