@@ -1075,11 +1075,11 @@
         - 'testuser1'
         - 'testuser2'
         - 'ansible_test_user'
-        - 'stats_admin'
-        - 'stats_monitor'
         - 'groupuser1'
         - 'groupuser2'
         - 'groupuser3'
+        - 'stats_admin'
+        - 'stats_monitor'
 
     - name: Cleanup HAProxy groups
       oxlorg.opnsense.haproxy_group:
@@ -1091,4 +1091,56 @@
         - 'emptygroup'
         - 'ansible_test_group'
         - 'stats_admins'
-        - 'stats_operators'
+        - 'stats_monitor'
+
+    - name: Cleanup HAProxy ACLs
+      oxlorg.opnsense.haproxy_acl:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_ACL_1'
+
+    - name: Cleanup HAProxy Actions
+      oxlorg.opnsense.haproxy_action:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_FCGI_ACTION_1'
+        - 'ANSIBLE_TEST_FCGI_ACTION_2'
+
+    - name: Cleanup HAProxy Lua scripts
+      oxlorg.opnsense.haproxy_lua:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+
+    - name: Cleanup HAProxy FCGI applications
+      oxlorg.opnsense.haproxy_fcgi:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+
+    - name: Cleanup HAProxy Error files
+      oxlorg.opnsense.haproxy_errorfile:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'

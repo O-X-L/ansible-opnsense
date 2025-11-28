@@ -61,6 +61,8 @@ The HAProxy functionality is split into multiple modules organized by function:
    haproxy_auth
    haproxy_system
    haproxy_general
+   haproxy_rules
+   haproxy_advanced
 
 Quick overview
 **************
@@ -84,6 +86,17 @@ Quick overview
 - :ref:`haproxy_general_logging <haproxy_general_logging>` - Manage HAProxy logging configuration
 - :ref:`haproxy_general_peers <haproxy_general_peers>` - Manage HAProxy peer synchronization
 - :ref:`haproxy_general_cache <haproxy_general_cache>` - Manage HAProxy caching configuration
+
+**Rules & traffic control:**
+
+- :ref:`haproxy_acl <haproxy_acl>` - Manage HAProxy Access Control Lists (ACLs) for traffic filtering and condition matching
+- :ref:`haproxy_action <haproxy_action>` - Manage HAProxy Actions that execute when ACL conditions are met
+
+**Advanced features:**
+
+- :ref:`haproxy_lua <haproxy_lua>` - Manage HAProxy Lua scripts for custom logic and processing
+- :ref:`haproxy_fcgi <haproxy_fcgi>` - Manage HAProxy FastCGI applications for dynamic content processing
+- :ref:`haproxy_errorfile <haproxy_errorfile>` - Manage HAProxy custom error pages for better user experience
 
 ----
 
@@ -156,6 +169,68 @@ Usage examples
             sync_certs: true
             reload_service: false
             restart_service: false
+
+**Advanced HAProxy setup with ACLs, Actions, and custom features:**
+
+.. code-block:: yaml
+
+    - name: Advanced HAProxy configuration with ACLs and Actions
+      hosts: opnsense_firewalls
+      tasks:
+        # Create ACLs for traffic filtering
+        - name: Create HAProxy ACL for URL path matching
+          oxlorg.opnsense.haproxy_acl:
+            name: 'acl_api_path'
+            description: 'Match API paths'
+            expression: 'path_beg'
+            value: '/api/'
+            enabled: true
+
+        - name: Create HAProxy ACL for header matching
+          oxlorg.opnsense.haproxy_acl:
+            name: 'acl_mobile_user'
+            description: 'Match mobile user agents'
+            expression: 'hdr_sub(user-agent)'
+            value: 'Mobile'
+            enabled: true
+
+        # Create Actions based on ACL conditions
+        - name: Create HAProxy Action for custom header
+          oxlorg.opnsense.haproxy_action:
+            name: 'action_add_api_header'
+            description: 'Add custom header for API traffic'
+            operator: 'http-request'
+            action: 'set-header'
+            header_name: 'X-API-Request'
+            header_value: 'true'
+            acl: ['acl_api_path']
+            enabled: true
+
+        # Add Lua scripts for custom logic
+        - name: Add HAProxy Lua script
+          oxlorg.opnsense.haproxy_lua:
+            name: 'custom_routing'
+            description: 'Custom routing logic'
+            script: "{{ lookup('file', 'haproxy_scripts/routing.lua') }}"
+            enabled: true
+
+        # Configure FastCGI application
+        - name: Configure HAProxy FastCGI application
+          oxlorg.opnsense.haproxy_fcgi:
+            name: 'php_app'
+            description: 'PHP FastCGI application'
+            docroot: '/var/www/html'
+            pass_header: ['HTTP_AUTHORIZATION']
+            enabled: true
+
+        # Add custom error pages
+        - name: Add HAProxy custom error page
+          oxlorg.opnsense.haproxy_errorfile:
+            name: 'custom_503'
+            description: 'Custom 503 error page'
+            code: '503'
+            content: "{{ lookup('file', 'error_pages/503.html') }}"
+            enabled: true
 
 ----
 

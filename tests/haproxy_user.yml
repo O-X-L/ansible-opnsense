@@ -113,14 +113,11 @@
         opn6.changed
       when: not ansible_check_mode
 
-    - name: Cleanup user 1
+    - name: Cleanup
       oxlorg.opnsense.haproxy_user:
-        name: 'testuser1'
+        name: "{{ item }}"
         state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup user 2
-      oxlorg.opnsense.haproxy_user:
-        name: 'testuser2'
-        state: 'absent'
+      loop:
+        - 'testuser1'
+        - 'testuser2'
       when: not ansible_check_mode
