@@ -2,6 +2,7 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import Session
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import is_unset
 
 
 class HaproxyAcl(BaseModule):
@@ -102,6 +103,9 @@ class HaproxyAcl(BaseModule):
         self._base_check()
 
         if self.p['state'] == 'present':
+            if is_unset(self.p['expression']):
+                self.m.fail_json("You need to provide an 'expression' to create an ACL!")
+
             if self.p.get('allowed_users'):
                 self.b.find_multiple_links(
                     field='allowed_users',

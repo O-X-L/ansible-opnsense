@@ -45,7 +45,7 @@ def run_module():
                      'src_conn_cnt', 'src_conn_cur', 'src_conn_rate', 'src_http_err_cnt', 'src_http_err_rate',
                      'src_http_req_cnt', 'src_http_req_rate', 'src_sess_cnt', 'src_sess_rate', 'nbsrv',
                      'traffic_is_http', 'traffic_is_ssl', 'ssl_fc', 'ssl_fc_sni', 'ssl_sni', 'ssl_sni_sub',
-                     'ssl_sni_beg', 'ssl_sni_end', 'ssl_sni_reg', 'custom_acl'],
+                     'ssl_sni_beg', 'ssl_sni_end', 'ssl_sni_reg', 'custom_acl', ''],
             description='Select condition type to evaluate for this ACL rule'
         ),
         negate=dict(

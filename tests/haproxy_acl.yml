@@ -156,30 +156,14 @@
         opn8.changed
       when: not ansible_check_mode
 
-    - name: Cleanup ACL 1
+    - name: Cleanup
       oxlorg.opnsense.haproxy_acl:
-        name: 'ANSIBLE_TEST_1_1'
-        expression: 'hdr'
+        name: "{{ item }}"
         state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup ACL 2
-      oxlorg.opnsense.haproxy_acl:
-        name: 'ANSIBLE_TEST_1_2'
-        expression: 'path_beg'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup ACL 3
-      oxlorg.opnsense.haproxy_acl:
-        name: 'ANSIBLE_TEST_1_3'
-        expression: 'src_conn_rate'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup ACL 4
-      oxlorg.opnsense.haproxy_acl:
-        name: 'ANSIBLE_TEST_1_4'
-        expression: 'cust_hdr'
-        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_ACL_1'
       when: not ansible_check_mode
