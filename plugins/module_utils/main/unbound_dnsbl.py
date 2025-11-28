@@ -38,7 +38,10 @@ class DnsBL(BaseModule):
     FIELDS_TYPING = {
         'bool': ['enabled', 'nxdomain'],
         'int': ['cache_ttl'],
-        'list': ['providers', 'download_urls', 'domains_allow', 'domains_block', 'wildcard_domains_block', 'source_networks'],
+        'list': [
+            'providers', 'download_urls', 'domains_allow', 'domains_block',
+            'wildcard_domains_block', 'source_networks',
+        ],
     }
     EXIST_ATTR = 'bl'
     TIMEOUT = 60.0  # 'reload' timeout
