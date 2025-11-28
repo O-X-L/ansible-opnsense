@@ -1067,6 +1067,11 @@
         - 'testuser1'
         - 'testuser2'
         - 'ansible_test_user'
+        - 'groupuser1'
+        - 'groupuser2'
+        - 'groupuser3'
+        - 'stats_admin'
+        - 'stats_monitor'
 
     - name: Cleanup HAProxy groups
       oxlorg.opnsense.haproxy_group:
@@ -1075,7 +1080,10 @@
       loop:
         - 'testgroup1'
         - 'testgroup2'
+        - 'emptygroup'
         - 'ansible_test_group'
+        - 'stats_admins'
+        - 'stats_monitor'
 
     - name: Cleanup HAProxy ACLs
       oxlorg.opnsense.haproxy_acl:
