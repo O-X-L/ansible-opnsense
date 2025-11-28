@@ -56,6 +56,15 @@ If you DO NOT want to use Ansible - [this fork](https://github.com/O-X-L/opnsens
 
 ----
 
+## Support the project(s)
+
+Support the Open-Source projects that make these modules possible:
+
+* [Donate to OPNsense](https://opnsense.org/donate/) or [Buy the Business-Edition](https://shop.opnsense.com/product-categorie/software_and_licenses/)
+* [Donate to the Ansible-Module Maintainers](https://shop.oxl.app/products/open-source-spende) or [Buy a Support-License](https://shop.oxl.app/products/open-source-support-opnsense-ansible-collection)
+
+----
+
 ## Contribute
 
 Feel free to contribute to this project using [pull-requests](https://github.com/O-X-L/ansible-opnsense/pulls), [issues](https://github.com/O-X-L/ansible-opnsense/issues) and [discussions](https://github.com/O-X-L/ansible-opnsense/discussions)!
