@@ -36,7 +36,7 @@ If you are running the modules over hosts in your inventory - you would do it li
 
     - hosts: firewalls
       connection: local  # execute modules on controller
-      gather_facts: no
+      gather_facts: false
       tasks:
         - name: Example
           oxlorg.opnsense.alias:
@@ -87,8 +87,9 @@ If some parameters will be the same every time - use 'module_defaults':
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         oxlorg.opnsense.alias:
             firewall: 'opnsense.template.opnsense.oxl.app'
@@ -136,8 +137,9 @@ And refer to it in the module calls or module-defaults:
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         oxlorg.opnsense.route:
           firewall: '...'
@@ -175,8 +177,9 @@ The module's HTTP-Traffic can be forwarded over a forward-proxy like Squid by sp
 .. code-block:: yaml
 
     - name: Example Playbook
-      hosts: localhost
-      gather_facts: no
+      hosts: firewalls
+      connection: local
+      gather_facts: false
       environment:
         HTTPS_PROXY: 'http://user:password@squid.template.opnsense.oxl.app:3128'
 

@@ -40,7 +40,8 @@ Examples
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:

@@ -166,8 +166,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### oxlorg.opnsense.frr_bgp_general
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -214,8 +215,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### oxlorg.opnsense.frr_bgp_neighbor
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -303,8 +305,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### oxlorg.opnsense.frr_bgp_prefix_list
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -357,8 +360,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### oxlorg.opnsense.frr_bgp_route_map
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -414,8 +418,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### oxlorg.opnsense.frr_bgp_community_list
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -470,8 +475,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### oxlorg.opnsense.frr_bgp_as_path
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -523,8 +529,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### oxlorg.opnsense.frr_bgp_redistribution
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -570,8 +577,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### oxlorg.opnsense.frr_bgp_peer_group
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'

@@ -152,8 +152,9 @@ Basic
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -228,8 +229,9 @@ With inventory config
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -312,8 +314,9 @@ You can also use the :ref:`oxlorg.opnsense.rule_purge <modules_rule_multi>` modu
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'

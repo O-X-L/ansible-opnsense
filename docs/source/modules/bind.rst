@@ -222,8 +222,9 @@ oxlorg.opnsense.bind_general
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -295,8 +296,9 @@ oxlorg.opnsense.bind_blocklist
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -346,8 +348,9 @@ oxlorg.opnsense.bind_acl
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -400,8 +403,9 @@ oxlorg.opnsense.bind_domain
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -474,8 +478,9 @@ oxlorg.opnsense.bind_record
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -535,8 +540,9 @@ oxlorg.opnsense.bind_record (multi)
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'

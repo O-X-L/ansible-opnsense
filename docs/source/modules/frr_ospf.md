@@ -211,8 +211,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 #### oxlorg.opnsense.frr_ospf_general
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -263,8 +264,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 #### oxlorg.opnsense.frr_ospf_prefix_list
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -315,8 +317,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 #### oxlorg.opnsense.frr_ospf_route_map
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -368,8 +371,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 #### oxlorg.opnsense.frr_ospf_network
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -422,8 +426,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 #### oxlorg.opnsense.frr_ospf_interface
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -504,8 +509,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 #### oxlorg.opnsense.frr_ospf_redistribution
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -555,8 +561,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 #### oxlorg.opnsense.frr_ospf3_general
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -594,8 +601,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 #### oxlorg.opnsense.frr_ospf3_prefix_list
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -646,8 +654,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 #### oxlorg.opnsense.frr_ospf3_route_map
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -699,8 +708,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 #### oxlorg.opnsense.frr_ospf3_network
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -753,8 +763,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 #### oxlorg.opnsense.frr_ospf3_interface
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -829,8 +840,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 #### oxlorg.opnsense.frr_ospf3_redistribution
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'

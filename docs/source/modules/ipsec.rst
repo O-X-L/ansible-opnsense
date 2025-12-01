@@ -275,7 +275,8 @@ oxlorg.opnsense.ipsec_connection
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
@@ -340,7 +341,8 @@ oxlorg.opnsense.ipsec_pool
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
@@ -375,8 +377,9 @@ oxlorg.opnsense.ipsec_cert
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -431,8 +434,9 @@ oxlorg.opnsense.ipsec_psk
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -466,8 +470,9 @@ oxlorg.opnsense.ipsec_manual_spd
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -521,8 +526,9 @@ oxlorg.opnsense.ipsec_general
 .. code-block:: yaml
 
   
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.oxlorg.net'

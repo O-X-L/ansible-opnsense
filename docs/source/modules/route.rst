@@ -109,8 +109,9 @@ oxlorg.opnsense.route
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -170,7 +171,8 @@ oxlorg.opnsense.gateway
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
