@@ -77,7 +77,8 @@ oxlorg.opnsense.hasync_general
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
@@ -137,7 +138,8 @@ oxlorg.opnsense.hasync_service
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:

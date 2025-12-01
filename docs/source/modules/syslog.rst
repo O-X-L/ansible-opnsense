@@ -45,8 +45,9 @@ Examples
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -96,7 +97,9 @@ In this example the description is used as unique identifier!
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
+
       gather_facts: no
       module_defaults:
         group/oxlorg.opnsense.all:

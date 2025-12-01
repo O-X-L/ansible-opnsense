@@ -205,7 +205,8 @@ oxlorg.opnsense.dnsmasq_general
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
@@ -287,7 +288,8 @@ oxlorg.opnsense.dnsmasq_domain
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
@@ -337,7 +339,8 @@ oxlorg.opnsense.dnsmasq_host
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
@@ -395,7 +398,8 @@ oxlorg.opnsense.dnsmasq_range
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
@@ -472,7 +476,8 @@ oxlorg.opnsense.dnsmasq_option
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
@@ -534,7 +539,8 @@ oxlorg.opnsense.dnsmasq_boot
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
@@ -583,7 +589,8 @@ oxlorg.opnsense.dnsmasq_tag
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:

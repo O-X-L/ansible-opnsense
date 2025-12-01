@@ -396,8 +396,9 @@ oxlorg.opnsense.webproxy_general
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -443,8 +444,9 @@ oxlorg.opnsense.webproxy_cache
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -484,8 +486,9 @@ oxlorg.opnsense.webproxy_parent
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -522,8 +525,9 @@ oxlorg.opnsense.webproxy_traffic
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -560,8 +564,9 @@ oxlorg.opnsense.webproxy_forward
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -598,8 +603,9 @@ oxlorg.opnsense.webproxy_acl
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -652,8 +658,9 @@ oxlorg.opnsense.webproxy_icap
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -693,8 +700,9 @@ oxlorg.opnsense.webproxy_auth
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -731,8 +739,9 @@ oxlorg.opnsense.webproxy_remote_acl
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -795,8 +804,9 @@ oxlorg.opnsense.webproxy_pac_proxy
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -840,8 +850,9 @@ oxlorg.opnsense.webproxy_pac_match
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
@@ -904,8 +915,9 @@ oxlorg.opnsense.webproxy_pac_rule
 
 .. code-block:: yaml
 
-    - hosts: localhost
-      gather_facts: no
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'

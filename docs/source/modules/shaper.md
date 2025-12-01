@@ -102,8 +102,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### Pipes
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -165,8 +166,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### Queues
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -230,8 +232,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### Rules
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'

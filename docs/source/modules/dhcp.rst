@@ -101,7 +101,8 @@ oxlorg.opnsense.dhcp_general
 
 .. code-block:: yaml
 
-      - hosts: localhost
+      - hosts: firewalls
+      connection: local
         gather_facts: no
         module_defaults:
           group/oxlorg.opnsense.all:
@@ -124,7 +125,8 @@ oxlorg.opnsense.dhcp_reservation
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: no
       module_defaults:
         group/oxlorg.opnsense.all:
@@ -173,7 +175,8 @@ oxlorg.opnsense.dhcp_controlagent
 
 .. code-block:: yaml
 
-    - hosts: localhost
+    - hosts: firewalls
+      connection: local
       gather_facts: no
       module_defaults:
         group/oxlorg.opnsense.all:
@@ -201,8 +204,9 @@ oxlorg.opnsense.dhcp_subnet
 
 .. code-block:: yaml
 
-    - host: localhost
-      gather_facts: no
+    - host: firewalls
+      connection: local
+      gather_facts: false
       module_defaults:
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'

@@ -79,8 +79,9 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
 ### oxlorg.opnsense.wireguard_general
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -99,8 +100,9 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
 ### oxlorg.opnsense.wireguard_show
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -119,8 +121,9 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
 ### oxlorg.opnsense.wireguard_peer
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -175,8 +178,9 @@ To make a dynamic WireGuard endpoint to re-connect you may want to create a [gat
 ### oxlorg.opnsense.wireguard_server
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'

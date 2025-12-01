@@ -77,8 +77,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### Alerts
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -147,8 +148,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### Tests
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -216,8 +218,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 ### Services
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
@@ -295,8 +298,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 Mail notification on IDS alert: see [documentation](https://docs.opnsense.org/manual/monit.html#example-3)
 
 ```yaml
-- hosts: localhost
-  gather_facts: no
+- hosts: firewalls
+  connection: local
+  gather_facts: false
   module_defaults:
     group/oxlorg.opnsense.all:
       firewall: 'opnsense.template.opnsense.oxl.app'
