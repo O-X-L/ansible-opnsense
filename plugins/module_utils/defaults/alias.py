@@ -12,11 +12,11 @@ ALIAS_MOD_ARGS = dict(
     ),
     type=dict(type='str', required=False, default='host', aliases=['t'], choices=[
         'host', 'network', 'port', 'url', 'urltable', 'geoip', 'networkgroup',
-        'mac', 'dynipv6host', 'internal', 'external',
+        'mac', 'dynipv6host', 'internal', 'external', 'urljson',
     ]),
     updatefreq_days=dict(
         type='str', default='', required=False,
-        description="Update frequency used by type 'urltable' in days - per example '0.5' for 12 hours"
+        description="Update frequency used by type 'urltable' or 'urljson' in days - per example '0.5' for 12 hours"
     ),
     interface=dict(
         type='str', default=None, aliases=['int', 'if'], required=False,

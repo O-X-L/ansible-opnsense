@@ -51,11 +51,11 @@ class Alias(BaseModule):
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['updatefreq_days']
             self.p['updatefreq_days'] = build_updatefreq(self.p['updatefreq_days'], default=True)
 
-        if self.p['type'] == 'urljson':
+        elif self.p['type'] == 'urljson':
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['updatefreq_days', 'path_expression']
             self.p['updatefreq_days'] = build_updatefreq(self.p['updatefreq_days'], default=True)
 
-        if self.p['type'] == 'dynipv6host':
+        elif self.p['type'] == 'dynipv6host':
             if is_unset(self.p['interface']):
                 self.m.fail_json('You need to provide an interface to create a dynipv6host alias!')
 

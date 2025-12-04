@@ -84,7 +84,7 @@ Examples
             # type: 'host'  # default
             # updatefreq_days: 3  # used only for type 'urltable' and 'urljson'
             # interface: lan # used only for the type 'dynipv6host'
-            # path_expression: # used only for type 'urljson'
+            # path_expression: '' # used only for type 'urljson'
             # ssl_ca_file: '/etc/ssl/certs/custom/ca.crt'
             # ssl_verify: False
             # api_key: !vault ...  # alternative to 'api_credential_file'
