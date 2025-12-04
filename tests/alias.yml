@@ -366,18 +366,18 @@
     - name: Adding urljson
       oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URLJSON1'
-        type: 'urltable'
+        type: 'urljson'
         updatefreq_days: 2
         content: 'https://api.github.com/meta'
-        path_expression: .web + .api + .git | .[]
+        path_expression: '.web + .api + .git | .[]'
 
     - name: Adding urljson - nothing changed
       oxlorg.opnsense.alias:
         name: 'ANSIBLE_TEST_1_2_URLJSON1'
-        type: 'urltable'
+        type: 'urljson'
         updatefreq_days: 2
         content: 'https://api.github.com/meta'
-        path_expression: .web + .api + .git | .[]
+        path_expression: '.web + .api + .git | .[]'
       register: opn16
       failed_when: >
         opn16.failed or
