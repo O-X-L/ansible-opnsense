@@ -38,7 +38,7 @@ Definition
 .. include:: ../_include/param_basic.rst
 
 oxlorg.opnsense.ipsec_connection
-====================================
+================================
 
 Module alias: oxlorg.opnsense.ipsec_tunnel
 
@@ -69,7 +69,7 @@ Module alias: oxlorg.opnsense.ipsec_tunnel
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_pool
-==============================
+==========================
 
 Module alias: oxlorg.opnsense.ipsec_network
 
@@ -83,7 +83,7 @@ Module alias: oxlorg.opnsense.ipsec_network
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_child
-===============================
+===========================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -105,7 +105,7 @@ oxlorg.opnsense.ipsec_child
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_vti
-=============================
+=========================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -123,7 +123,7 @@ oxlorg.opnsense.ipsec_vti
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_auth_local
-====================================
+================================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -140,12 +140,26 @@ oxlorg.opnsense.ipsec_auth_local
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_auth_remote
-=====================================
+=================================
 
-See: oxlorg.opnsense.ipsec_auth_local
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "name","string","true","\-","description, desc","Unique name to identify the entry"
+    "connection","string","false for state changes, else true","\-","tunnel, conn, tun","Connection to use this local authentication with"
+    "round","integer","false","0","\-","Numeric identifier by which authentication rounds are sorted"
+    "authentication","string","false","psk","auth","One of: 'psk', 'pubkey', 'eap-tls', 'eap-mschapv2', 'xauth-pam', 'eap-radius'; Authentication to perform for this round, when using Pre-Shared key make sure to define one under 'VPN->IPsec->Pre-Shared Keys'"
+    "id","string","false","\-","ike_id","IKE identity to use for authentication round. When using certificate authentication. The IKE identity must be contained in the certificate, either as the subject DN or as a subjectAltName (the identity will default to the certificate’s subject DN if not specified). Refer to https://docs.strongswan.org/docs/5.9/config/identityParsing.html for details on how identities are parsed and may be configured"
+    "eap_id","string","false","\-","\-","Must be defined if authentication is set to one of: ['eap-tls', 'eap-mschapv2', 'eap-radius']; Client EAP-Identity to use in EAP-Identity exchange and the EAP method"
+    "certificates","list","false","\-","certs","Certificate or public-key must be defined if authentication is set to 'pubkey'; List of certificate candidates to use for authentication"
+    "public_keys","list","false","\-","pubkeys","Certificate or public-key must be defined if authentication is set to 'pubkey'; List of raw public key candidates to use for authentication"
+    "ca_certificates","list","false","\-","ca_certs","List of certificate authority candidates to use for authentication"
+    "eap_radius_groups","list","false","\-","radius_groups, groups","List of group memberships to require. The client must prove membership to at least one of the specified groups"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_cert
-==============================
+==========================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -158,7 +172,7 @@ oxlorg.opnsense.ipsec_cert
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_psk
-=============================
+=========================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -171,7 +185,7 @@ oxlorg.opnsense.ipsec_psk
     "match_fields","list of strings","false","identity_local","\-","At least one of: 'identity_local', 'identity_remote'. Fields that are used to match configured routes with the running config - if any of those fields are changed, the module will think it's a new route"
 
 oxlorg.opnsense.ipsec_manual_spd
-====================================
+================================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -184,7 +198,7 @@ oxlorg.opnsense.ipsec_manual_spd
     "destination","string","false","\-","d, dest, destination_net","Destination network, leave empty to use the networks propagated in the child sa."
 
 oxlorg.opnsense.ipsec_general
-=================================
+=============================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -271,7 +285,7 @@ Examples
 ********
 
 oxlorg.opnsense.ipsec_connection
-====================================
+================================
 
 .. code-block:: yaml
 
@@ -337,7 +351,7 @@ oxlorg.opnsense.ipsec_connection
 ----
 
 oxlorg.opnsense.ipsec_pool
-==============================
+==========================
 
 .. code-block:: yaml
 
@@ -373,7 +387,7 @@ oxlorg.opnsense.ipsec_pool
 ----
 
 oxlorg.opnsense.ipsec_cert
-==============================
+==========================
 
 .. code-block:: yaml
 
@@ -430,7 +444,7 @@ oxlorg.opnsense.ipsec_cert
 ----
 
 oxlorg.opnsense.ipsec_psk
-=============================
+=========================
 
 .. code-block:: yaml
 
@@ -466,7 +480,7 @@ oxlorg.opnsense.ipsec_psk
 ----
 
 oxlorg.opnsense.ipsec_manual_spd
-====================================
+================================
 
 .. code-block:: yaml
 
@@ -521,7 +535,7 @@ oxlorg.opnsense.ipsec_manual_spd
 ----
 
 oxlorg.opnsense.ipsec_general
-=================================
+=============================
 
 .. code-block:: yaml
 
