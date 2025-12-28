@@ -42,3 +42,5 @@
         - 'dhcrelay'
         - 'dhcp'
         - 'gateway'  # issue 88
+        - 'nat_source'
+        - 'nat_one_to_one'
