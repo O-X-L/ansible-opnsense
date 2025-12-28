@@ -54,6 +54,8 @@ def run_module():
                 'dnsmasq',
                 'haproxy'
                 'wazuh',
+                'nat_source',
+                'nat_one_to_one',
             ],
             description='What part of the running config should be reloaded'
         ),
@@ -181,6 +183,14 @@ def run_module():
         elif target in ['haproxy']:
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_general_settings import \
                 HaproxyGeneralSettings as Target_Obj
+
+        elif target == 'nat_source':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.nat_source import \
+                SNat as Target_Obj
+
+        elif target == 'nat_one_to_one':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.nat_one_to_one import \
+                OneToOne as Target_Obj
 
     except MODULE_EXCEPTIONS:
         module_dependency_error()
