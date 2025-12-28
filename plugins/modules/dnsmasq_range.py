@@ -80,7 +80,7 @@ def run_module():
             description='Ignore this range from being transfered or updated by ha sync.',
         ),
         ra_mode=dict(
-            type='list', elements='str', required=False,
+            type='list', elements='str', required=False, default=[],
             options=['ra-only', 'slaac', 'ra-names', 'ra-stateless', 'ra-advrouter', 'off-link'],
             description='Control how IPv6 clients receive their addresses.',
         ),
