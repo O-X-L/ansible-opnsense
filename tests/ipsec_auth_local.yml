@@ -206,6 +206,7 @@
       failed_when: >
         opn7.failed or
         not opn7.changed
+      when: not ansible_check_mode
 
     - name: Adding 2 - nothing changed
       oxlorg.opnsense.ipsec_auth_local:

@@ -29,6 +29,15 @@ except MODULE_EXCEPTIONS:
 def run_module():
     module_args = dict(
         **IPSEC_AUTH_MOD_ARGS,
+        ca_certificates=dict(
+            type='list', elements='str', required=False, aliases=['ca_certs'], default=[],
+            description='List of certificate authority candidates to use for authentication.'
+        ),
+        eap_radius_groups=dict(
+            type='list', elements='str', required=False, aliases=['radius_groups', 'groups'], default=[],
+            description='List of group memberships to require. '
+                        'The client must prove membership to at least one of the specified groups.'
+        ),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,
         **OPN_MOD_ARGS,
