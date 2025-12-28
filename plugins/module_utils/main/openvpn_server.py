@@ -3,7 +3,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import \
-    get_key_by_value_from_selection, get_key_by_value_end_from_selection
+    get_key_by_value_from_selection, get_key_by_value_beg_from_selection, get_key_by_value_end_from_selection
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_unset
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
@@ -117,7 +117,6 @@ class Server(BaseModule):
                     "You need to either provide a 'certificate' or 'ca' to create an openvpn-server!"
                 )
 
-
         self._base_check()
 
         if not is_unset(self.p['ca']):
@@ -139,10 +138,22 @@ class Server(BaseModule):
             )
 
         if not is_unset(self.p['key']):
-            self.p['key'] = get_key_by_value_end_from_selection(
+            # checking beginning or end because select-value changed (WebUI priority)
+            #   see: https://github.com/O-X-L/ansible-opnsense/issues/381
+            key_id = get_key_by_value_beg_from_selection(
                 selection=self.b.raw[self.FIELDS_TRANSLATE['key']],
                 value=self.p['key'],
             )
+            if key_id is not None:
+                self.p['key'] = key_id
+
+            else:
+                key_id = get_key_by_value_end_from_selection(
+                    selection=self.b.raw[self.FIELDS_TRANSLATE['key']],
+                    value=self.p['key'],
+                )
+                if key_id is not None:
+                    self.p['key'] = key_id
 
         if self.p['state'] == 'present':
             if 'before' in self.r['diff'] and 'mode' in self.r['diff']['before']:

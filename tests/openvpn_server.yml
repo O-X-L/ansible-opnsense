@@ -283,6 +283,23 @@
         not opn10.changed
       when: not ansible_check_mode
 
+    - name: Adding 1 with link to static-key - nothing changed
+      oxlorg.opnsense.openvpn_server:
+        name: 'ANSIBLE_TEST_2_1'
+        port: 20000
+        protocol: 'udp'
+        mode: 'tun'
+        server: '192.168.77.0/29'
+        network_local: ['192.168.78.128/27']
+        ca: 'OpenVPN'
+        certificate: 'OpenVPN Server'
+        key: 'ANSIBLE_TEST_3_1'
+      register: opn11
+      failed_when: >
+        opn11.failed or
+        opn11.changed
+      when: not ansible_check_mode
+
     - name: Cleanup
       oxlorg.opnsense.openvpn_server:
         name: 'ANSIBLE_TEST_2_1'
