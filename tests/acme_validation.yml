@@ -312,7 +312,7 @@
         opn23.failed or
         not opn23.changed
 
-    - name: Adding 10 - Unifi - nothing changed
+    - name: Adding 10 - DNS Cloudflare - nothing changed
       oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_10'
         dns_service: dns_cf
@@ -327,12 +327,22 @@
         opn24.changed
       when: not ansible_check_mode
 
+    - name: Adding 11 - DNS Cloudflare
+      oxlorg.opnsense.acme_validation:
+        name: 'ANSIBLE_TEST_1_11'
+        dns_service: 'dns_hetznercloud'
+        dns_hetznercloud_token: 'SECRET'
+      register: opn25
+      failed_when: >
+        opn25.failed or
+        not opn25.changed
+
     - name: Listing
       oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
-        opn8.data | length != 10
+        opn8.data | length != 11
       when: not ansible_check_mode
 
     - name: Cleanup
@@ -350,6 +360,7 @@
         - 'ANSIBLE_TEST_1_8'
         - 'ANSIBLE_TEST_1_9'
         - 'ANSIBLE_TEST_1_10'
+        - 'ANSIBLE_TEST_1_11'
       when: not ansible_check_mode
 
     - name: Listing

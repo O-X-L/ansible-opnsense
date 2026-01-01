@@ -61,6 +61,7 @@ class Validation(BaseModule):
         'dns_variomedia_key', 'dns_schlundtech_user', 'dns_schlundtech_password', 'dns_easydns_apitoken',
         'dns_easydns_apikey', 'dns_euserv_user', 'dns_euserv_password', 'dns_leaseweb_key', 'dns_cn_user',
         'dns_cn_password', 'dns_arvan_token', 'dns_artfiles_username', 'dns_artfiles_password', 'dns_hetzner_token',
+        'dns_hetznercloud_token',
         'dns_hexonet_login', 'dns_hexonet_password', 'dns_1984hosting_user', 'dns_1984hosting_password',
         'dns_kas_login', 'dns_kas_authdata', 'dns_kas_authtype', 'dns_desec_token', 'dns_desec_name',
         'dns_infomaniak_token', 'dns_zone_username', 'dns_zone_key', 'dns_dynv6_token', 'dns_cpanel_user',
