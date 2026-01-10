@@ -60,4 +60,5 @@
    <url><loc>https://ansible-opnsense.oxl.app/modules/webproxy.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/wireguard.html</loc></url>
    <url><loc>https://ansible-opnsense.oxl.app/modules/nut.html</loc></url>
+   <url><loc>https://ansible-opnsense.oxl.app/modules/nut_diagnostics.html</loc></url>
 </urlset>

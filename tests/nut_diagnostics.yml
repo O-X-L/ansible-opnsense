@@ -1,0 +1,24 @@
+---
+
+- name: Testing NUT Diagnostics
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    # Testing only if not faild, and not change enthing
+    # We can't test output without real UPS device
+    - name: Read UPS status
+      oxlorg.opnsense.nut_diagnostics:
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        opn1.changed or
+        opn1.data != {}
