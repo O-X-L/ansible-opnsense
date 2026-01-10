@@ -145,4 +145,4 @@ Troubleshooting
 
 Check Service -> Nut -> Diagnostics view to check UPS status.
 
-You can use :ref:`oxlorg.opnsense.nut_diagnostics` to acces status from ansible.
+You can use :ref:`oxlorg.opnsense.nut_diagnostics <modules_nut>` to acces status from ansible.
