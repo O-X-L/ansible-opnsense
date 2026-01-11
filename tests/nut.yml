@@ -1,0 +1,218 @@
+---
+
+- name: Testing NUT
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+        target: nut
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1 or
+        opn_pre1.data | length == 0
+
+    - name: Configure - failing because of invalid listen address
+      oxlorg.opnsense.nut:
+        listen: abc
+        reload: false
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+      when: not ansible_check_mode
+
+    - name: Configure - failing because of invalid listen address (on of many)
+      oxlorg.opnsense.nut:
+        listen:
+          - 127.0.0.1
+          - abs
+          - ::1
+        reload: false
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+      when: not ansible_check_mode
+
+    - name: Configure - failing because of invalid apcupsd_host
+      oxlorg.opnsense.nut:
+        apcupsd_host: abc
+        reload: false
+      register: opn_fail3
+      failed_when: not opn_fail3.failed
+      when: not ansible_check_mode
+
+    - name: Configure - failing because of invalid netclient_address
+      oxlorg.opnsense.nut:
+        netclient_address: abc
+        reload: false
+      register: opn_fail4
+      failed_when: not opn_fail4.failed
+      when: not ansible_check_mode
+
+    - name: Configuring - standalone USBHID driver
+      oxlorg.opnsense.nut:
+        enabled: true
+        mode: standalone
+        usbhid_enable: true
+        usbhid_args:
+          - port=auto
+          - lowbatt=10
+        reload: false
+      register: opn1
+      failed_when: opn1.failed or not opn1.changed
+
+    - name: Configuring - standalone APCSMART driver
+      oxlorg.opnsense.nut:
+        enabled: true
+        mode: standalone
+        apcsmart_enable: true
+        apcsmart_args:
+          - port=auto
+          - override.battery.charge.low=10
+        reload: false
+      register: opn2
+      failed_when: opn2.failed or not opn2.changed
+
+    - name: Configuring - standalone APCUPSD driver
+      oxlorg.opnsense.nut:
+        enabled: true
+        mode: standalone
+        apcupsd_enable: true
+        apcupsd_host: 192.168.1.100
+        apcupsd_port: 3551
+        reload: false
+      register: opn3
+      failed_when: opn3.failed or not opn3.changed
+
+    - name: Configuring - standalone BCMXCPUSB driver
+      oxlorg.opnsense.nut:
+        enabled: true
+        mode: standalone
+        bcmxcpusb_enable: true
+        bcmxcpusb_args:
+          - port=auto
+        reload: false
+      register: opn4
+      failed_when: opn4.failed or not opn4.changed
+
+    - name: Configuring - standalone BlazerUSB driver
+      oxlorg.opnsense.nut:
+        enabled: true
+        mode: standalone
+        blazerusb_enable: true
+        blazerusb_args:
+          - port=auto
+          - norating
+          - override.battery.packs=2
+        reload: false
+      register: opn5
+      failed_when: opn5.failed or not opn5.changed
+
+    - name: Configuring - standalone BlazerSerial driver
+      oxlorg.opnsense.nut:
+        enabled: true
+        mode: standalone
+        blazerser_enable: true
+        blazerser_args:
+          - port=auto
+          - offdelay=45
+          - override.battery.packs=2
+        reload: false
+      register: opn6
+      failed_when: opn6.failed or not opn6.changed
+
+    - name: Configuring - Netclient driver
+      oxlorg.opnsense.nut:
+        enabled: true
+        mode: netclient
+        netclient_address: 192.168.1.200
+        netclient_port: 3494
+        netclient_user: remotemon
+        netclient_password: some password
+        reload: false
+      register: opn7
+      failed_when: opn7.failed or not opn7.changed
+
+    - name: Configuring - standalone QX driver
+      oxlorg.opnsense.nut:
+        enabled: true
+        mode: standalone
+        qx_enable: true
+        qx_args:
+          - port=auto
+          - stayoff
+        reload: false
+      register: opn8
+      failed_when: opn8.failed or not opn8.changed
+
+    - name: Configuring - standalone Riello driver
+      oxlorg.opnsense.nut:
+        enabled: true
+        mode: standalone
+        riello_enable: true
+        riello_args:
+          - port=auto
+          - localcalculation
+        reload: false
+      register: opn9
+      failed_when: opn9.failed or not opn9.changed
+
+    - name: Configuring - standalone SNMP driver
+      oxlorg.opnsense.nut:
+        enabled: true
+        mode: standalone
+        snmp_enable: true
+        snmp_args:
+          - community=port
+          - snmp_version=v2c
+          - port=192.168.1.150
+        reload: false
+      register: opn10
+      failed_when: opn10.failed or not opn10.changed
+
+    - name: Configuring - remote access
+      oxlorg.opnsense.nut:
+        enabled: true
+        mode: standalone
+        listen:
+          - 192.168.1.1
+          - 10.0.0.1
+        admin_password: some admin password
+        monitor_password: some monitor password
+        usbhid_enable: true
+        usbhid_args:
+          - port=auto
+          - lowbatt=10
+        reload: false
+      register: opn11
+      failed_when: opn11.failed or not opn11.changed
+
+    - name: Configuring - nothing changed
+      oxlorg.opnsense.nut:
+        enabled: true
+        mode: standalone
+        listen:
+          - 192.168.1.1
+          - 10.0.0.1
+        admin_password: some admin password
+        monitor_password: some monitor password
+        usbhid_enable: true
+        usbhid_args:
+          - port=auto
+          - lowbatt=10
+        reload: false
+      register: opn12
+      failed_when: opn12.failed or opn12.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      oxlorg.opnsense.nut:
+        enabled: false

@@ -196,6 +196,9 @@ action_groups:
     - oxlorg.opnsense.user
     - oxlorg.opnsense.group
     - oxlorg.opnsense.privilege
+  nut:
+    - oxlorg.opnsense.nut
+    - oxlorg.opnsense.nut_diagnostics
   all:
     - metadata:
         extend_group:
@@ -227,6 +230,8 @@ action_groups:
           - oxlorg.opnsense.access
           - oxlorg.opnsense.dnsmasq
           - oxlorg.opnsense.haproxy
+          - oxlorg.opnsense.nut
+          - oxlorg.opnsense.nut_diagnostics
 
 plugin_routing:
   modules:

@@ -245,6 +245,8 @@ run_test_soft 'haproxy_action' 1
 run_test_soft 'haproxy_lua' 1
 run_test_soft 'haproxy_fcgi' 1
 run_test_soft 'haproxy_errorfile' 1
+run_test_soft 'nut' 1
+run_test_soft 'nut_diagnostics' 1
 
 run_test_soft '1_version' 0
 

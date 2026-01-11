@@ -47,7 +47,7 @@ TARGETS = [
     'dnsmasq_boot', 'dnsmasq_tag', 'haproxy_general_settings', 'haproxy_general_cache', 'haproxy_general_defaults',
     'haproxy_general_logging', 'haproxy_general_peers', 'haproxy_general_stats', 'haproxy_general_tuning',
     'haproxy_maintenance', 'haproxy_cpu', 'haproxy_user', 'haproxy_group', 'haproxy_acl', 'haproxy_action',
-    'haproxy_lua', 'haproxy_fcgi', 'haproxy_errorfile', 'wazuh_agent',
+    'haproxy_lua', 'haproxy_fcgi', 'haproxy_errorfile', 'wazuh_agent', 'nut',
 ]
 
 
@@ -645,6 +645,10 @@ def run_module():
         elif target == 'haproxy_errorfile':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_errorfile import \
                 HaproxyErrorfile as Target_Obj
+
+        elif target == 'nut':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.nut import \
+                Nut as Target_Obj
 
     except AttributeError:
         module_dependency_error()

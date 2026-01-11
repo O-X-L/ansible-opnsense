@@ -1153,3 +1153,7 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_1_3'
         - 'ANSIBLE_TEST_1_4'
+
+    - name: Cleanup NUT
+      oxlorg.opnsense.nut:
+        enabled: false
