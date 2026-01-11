@@ -97,7 +97,7 @@
         enabled: true
         mode: standalone
         bcmxcpusb_enable: true
-        bcmxcpusb_args: 
+        bcmxcpusb_args:
           - port=auto
         reload: false
       register: opn4
@@ -108,7 +108,7 @@
         enabled: true
         mode: standalone
         blazerusb_enable: true
-        blazerusb_args: 
+        blazerusb_args:
           - port=auto
           - norating
           - override.battery.packs=2
@@ -121,7 +121,7 @@
         enabled: true
         mode: standalone
         blazerser_enable: true
-        blazerser_args: 
+        blazerser_args:
           - port=auto
           - offdelay=45
           - override.battery.packs=2

@@ -2,7 +2,9 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import Session
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import GeneralModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import is_unset
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import is_ip, is_valid_domain
+
 
 class Nut(GeneralModule):
     CMDS = {
@@ -99,14 +101,13 @@ class Nut(GeneralModule):
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         GeneralModule.__init__(self=self, m=module, r=result, s=session)
 
-
-    def _is_ip_or_domain(self, value) -> bool:
+    @staticmethod
+    def _is_ip_or_domain(value) -> bool:
         # Ignoring empty
-        if value is None or value.strip() == '':
+        if is_unset(value):
             return True
 
         return is_ip(value, ignore_empty=True) or is_valid_domain(value)
-
 
     def check(self) -> None:
         self._base_check()
@@ -116,6 +117,7 @@ class Nut(GeneralModule):
                     self.m.fail_json(
                         f"It seems you provided a invalid IP address as 'listen': '{ip}'"
                     )
+
         else:
             ip = self.p['listen']
             if not is_ip(ip, ignore_empty=True):
@@ -133,5 +135,3 @@ class Nut(GeneralModule):
                 self.m.fail_json(
                     f"It seems you provided a invalid IP or domain as '{field}': '{ip}'"
                 )
-
-

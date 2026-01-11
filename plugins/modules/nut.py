@@ -24,11 +24,15 @@ except MODULE_EXCEPTIONS:
 # DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/nut.html'
 # EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/nut.html'
 
+
 def _std_driver_args(
         driver_name: str, display_name: str,
         extra_enable_description: str = '',
-        default_extra_args: dict = ['port=auto']
+        default_extra_args: list = None
 ) -> dict:
+    if default_extra_args is None:
+        default_extra_args = ['port=auto']
+
     res = {}
     res[f"{driver_name}_enable"]=dict(
         type='bool', required=False, default=False,
@@ -40,6 +44,7 @@ def _std_driver_args(
         description=f'Extra arguments for {display_name} driver, e.g. "{default_extra_args}"'
     )
     return res
+
 
 def run_module():
     module_args = dict(
@@ -111,7 +116,7 @@ def run_module():
         ),
         **_std_driver_args('qx', 'QX'),
         **_std_driver_args('riello', 'Riello'),
-        **_std_driver_args('snmp', 'SNMP', default_extra_args=['community=public']), 
+        **_std_driver_args('snmp', 'SNMP', default_extra_args=['community=public']),
         **EN_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,
         **RELOAD_MOD_ARG,
@@ -132,7 +137,7 @@ def run_module():
 
     module_wrapper(Nut(module=module, result=result))
     module.exit_json(**result)
-    
+
 
 def main():
     run_module()
