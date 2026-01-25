@@ -82,12 +82,10 @@ class HaproxyAcl(BaseModule):
         'name': r'^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$',
     }
 
-    ### TODO : Uncomment backends when implemented
-
     SEARCH_ADDITIONAL = {
         'existing_users': 'haproxy.users.user',
         'existing_groups': 'haproxy.groups.group',
-        # 'existing_backends': 'haproxy.backends.backend',
+        'existing_backends': 'haproxy.backends.backend',
     }
 
     TIMEOUT = 60.0
@@ -97,7 +95,7 @@ class HaproxyAcl(BaseModule):
         self.haproxy_acl = {}
         self.existing_users = {}
         self.existing_groups = {}
-        # self.existing_backends = {}
+        self.existing_backends = {}
 
     def check(self) -> None:
         self._base_check()
@@ -118,9 +116,9 @@ class HaproxyAcl(BaseModule):
                     existing=self.existing_groups,
                     existing_field_id='name',
                 )
-            # if self.p.get('nbsrv_backend'):
-            #     self.b.find_single_link(
-            #         field='nbsrv_backend',
-            #         existing=self.existing_backends,
-            #         existing_field_id='name',
-            #     )
+            if self.p.get('nbsrv_backend'):
+                self.b.find_single_link(
+                    field='nbsrv_backend',
+                    existing=self.existing_backends,
+                    existing_field_id='name',
+                )

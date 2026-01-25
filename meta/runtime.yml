@@ -188,6 +188,13 @@ action_groups:
     - oxlorg.opnsense.haproxy_lua
     - oxlorg.opnsense.haproxy_fcgi
     - oxlorg.opnsense.haproxy_errorfile
+    - oxlorg.opnsense.haproxy_mailer
+    - oxlorg.opnsense.haproxy_mapfile
+    - oxlorg.opnsense.haproxy_resolver
+    - oxlorg.opnsense.haproxy_backend
+    - oxlorg.opnsense.haproxy_frontend
+    - oxlorg.opnsense.haproxy_healthcheck
+    - oxlorg.opnsense.haproxy_server
   wazuh:
     - oxlorg.opnsense.wazuh_agent
   raw:
