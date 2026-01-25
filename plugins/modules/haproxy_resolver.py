@@ -29,59 +29,59 @@ def run_module():
     module_args = dict(
         name=dict(
             type='str', required=True,
-            description='Choose a name for this resolver configuration. Must be 1-255 characters, cannot contain tabs, commas, semicolons, dots, or brackets.'
+            description='Choose a name for this resolver configuration.'
         ),
         description=dict(
             type='str', required=False,
-            description='Choose a optional description for this resolver configuration. Must be 1-255 characters if provided.'
+            description='Choose a optional description for this resolver configuration.'
         ),
         nameservers=dict(
             type='list', elements='str', required=False, default=[],
-            description='Add nameservers to this resolver configuration. They may be prefixed with either tcp@ or udp@ to use the TCP or UDP protocol respectively. Format: [protocol@]address:port[-port_range], e.g. 127.0.0.1:53, [::1]:53, tcp@192.168.1.1:53.'
+            description='Add nameservers to this resolver. Format: [protocol@]address:port.'
         ),
         parse_resolv_conf=dict(
             type='bool', required=False, default=False,
-            description='Add all nameservers found in /etc/resolv.conf to this resolver configuration.'
+            description='Add all nameservers found in /etc/resolv.conf.'
         ),
         resolve_retries=dict(
             type='int', required=False,
-            description='This configures the number of queries to send to resolve a server name before giving up.'
+            description='Number of queries to send to resolve a server name before giving up.'
         ),
         timeout_resolve=dict(
             type='str', required=False,
-            description='This configures the default time to trigger name resolutions when no other time applied. Format: 1-8 digit number optionally followed by time unit (us, ms, s, m, h, d). Default: 1s.'
+            description='Default time to trigger name resolutions. Format: number + unit (us/ms/s/m/h/d).'
         ),
         timeout_retry=dict(
             type='str', required=False,
-            description='This configures the default time between two DNS queries, when no valid response has been received. Format: 1-8 digit number optionally followed by time unit (us, ms, s, m, h, d). Default: 1s.'
+            description='Time between two DNS queries when no valid response received.'
         ),
         accepted_payload_size=dict(
             type='int', required=False,
-            description='Defines the maximum payload size accepted by HAProxy and announced to all the name servers configured in this resolvers section.'
+            description='Maximum payload size accepted by HAProxy for DNS responses.'
         ),
         hold_valid=dict(
             type='str', required=False,
-            description='When haproxy receives a valid NS response it will not query DNS until valid time expires. Format: 1-8 digit number optionally followed by time unit (us, ms, s, m, h, d).'
+            description='Time HAProxy will not query DNS after receiving valid response.'
         ),
         hold_obsolete=dict(
             type='str', required=False,
-            description='As a DNS server may not answer all the IPs in one DNS request, haproxy keeps a cache of previous answers. An answer will be considered obsolete after hold obsolete seconds without the IP returned. Format: 1-8 digit number optionally followed by time unit (us, ms, s, m, h, d).'
+            description='Time after which a cached DNS answer is considered obsolete.'
         ),
         hold_refused=dict(
             type='str', required=False,
-            description='When the DNS server refuses the resolve request haproxy will not retry until hold refused elapses. Format: 1-8 digit number optionally followed by time unit (us, ms, s, m, h, d).'
+            description='Time to wait before retrying after DNS server refuses request.'
         ),
         hold_nx=dict(
             type='str', required=False,
-            description='When haproxy receives a NXDOMAIN error message (domain does not exist) from the resolver it will not retry until hold nx elapses. Format: 1-8 digit number optionally followed by time unit (us, ms, s, m, h, d).'
+            description='Time to wait before retrying after NXDOMAIN error.'
         ),
         hold_timeout=dict(
             type='str', required=False,
-            description='When a DNS resolve request times out haproxy will not retry until hold timeout elapses. Format: 1-8 digit number optionally followed by time unit (us, ms, s, m, h, d).'
+            description='Time to wait before retrying after DNS request times out.'
         ),
         hold_other=dict(
             type='str', required=False,
-            description='Sets the hold other timeout value for the resolver. Format: 1-8 digit number optionally followed by time unit (us, ms, s, m, h, d).'
+            description='Hold other timeout value for the resolver.'
         ),
         **STATE_MOD_ARG,
         **RELOAD_MOD_ARG,

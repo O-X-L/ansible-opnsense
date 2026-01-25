@@ -24,7 +24,7 @@ class HaproxyMailer(BaseModule):
         'recipient', 'loglevel', 'timeout', 'hostname'
     ]
     FIELDS_ALL = FIELDS_CHANGE
-    
+
     FIELDS_TYPING = {
         'bool': ['enabled'],
         'list': ['mailservers'],
