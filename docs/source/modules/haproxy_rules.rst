@@ -23,7 +23,7 @@ These modules manage HAProxy traffic control through ACLs (Access Control Lists)
 .. _haproxy_acl:
 
 oxlorg.opnsense.haproxy_acl
-=================================
+===========================
 
 Manages HAProxy Access Control Lists for traffic filtering and condition matching.
 
@@ -120,7 +120,7 @@ Examples
 .. _haproxy_action:
 
 oxlorg.opnsense.haproxy_action
-====================================
+==============================
 
 Manages HAProxy Actions that execute when ACL conditions are met.
 

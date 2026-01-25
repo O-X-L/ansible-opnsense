@@ -1,0 +1,185 @@
+---
+
+- name: Testing HAProxy Resolver management
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    oxlorg.opnsense.list:
+      target: 'haproxy_resolver'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid name
+      oxlorg.opnsense.haproxy_resolver:
+        name: ''
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Creating HAProxy Resolver with basic config
+      oxlorg.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Test resolver for basic DNS'
+        nameservers:
+          - '8.8.8.8:53'
+          - '8.8.4.4:53'
+        resolve_retries: 3
+        timeout_resolve: '1s'
+        timeout_retry: '1s'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Creating HAProxy Resolver with advanced config
+      oxlorg.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_2'
+        description: 'Test resolver for advanced DNS'
+        nameservers:
+          - 'tcp@192.168.1.1:53'
+          - 'udp@192.168.1.2:53'
+        parse_resolv_conf: true
+        resolve_retries: 5
+        timeout_resolve: '2s'
+        timeout_retry: '3s'
+        accepted_payload_size: 1024
+        hold_valid: '10s'
+        hold_obsolete: '30s'
+        hold_refused: '30s'
+        hold_nx: '30s'
+        hold_timeout: '30s'
+        hold_other: '30s'
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Creating HAProxy Resolver with minimal config
+      oxlorg.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_3'
+        description: 'Test resolver minimal'
+        nameservers:
+          - '1.1.1.1:53'
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Changing Resolver settings
+      oxlorg.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test resolver for basic DNS'
+        nameservers:
+          - '8.8.8.8:53'
+          - '1.1.1.1:53'
+        resolve_retries: 2
+        timeout_resolve: '3s'
+        timeout_retry: '2s'
+        hold_valid: '15s'
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+
+    - name: Disabling HAProxy Resolver
+      oxlorg.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test resolver for basic DNS'
+        nameservers:
+          - '8.8.8.8:53'
+          - '1.1.1.1:53'
+        resolve_retries: 2
+        timeout_resolve: '3s'
+        timeout_retry: '2s'
+        hold_valid: '15s'
+        enabled: false
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Disabling HAProxy Resolver - nothing changed
+      oxlorg.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test resolver for basic DNS'
+        nameservers:
+          - '8.8.8.8:53'
+          - '1.1.1.1:53'
+        resolve_retries: 2
+        timeout_resolve: '3s'
+        timeout_retry: '2s'
+        hold_valid: '15s'
+        enabled: false
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: not ansible_check_mode
+
+    - name: Enabling HAProxy Resolver
+      oxlorg.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test resolver for basic DNS'
+        nameservers:
+          - '8.8.8.8:53'
+          - '1.1.1.1:53'
+        resolve_retries: 2
+        timeout_resolve: '3s'
+        timeout_retry: '2s'
+        hold_valid: '15s'
+        enabled: true
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      oxlorg.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test resolver for basic DNS'
+        nameservers:
+          - '8.8.8.8:53'
+          - '1.1.1.1:53'
+        resolve_retries: 2
+        timeout_resolve: '3s'
+        timeout_retry: '2s'
+        hold_valid: '15s'
+        enabled: true
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        opn8.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup Resolver 1
+      oxlorg.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Resolver 2
+      oxlorg.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_2'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Resolver 3
+      oxlorg.opnsense.haproxy_resolver:
+        name: 'ANSIBLE_TEST_1_3'
+        state: 'absent'
+      when: not ansible_check_mode

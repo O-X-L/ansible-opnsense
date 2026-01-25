@@ -1,0 +1,120 @@
+---
+
+- name: Testing HAProxy Map file management
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    oxlorg.opnsense.list:
+      target: 'haproxy_mapfile'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid name
+      oxlorg.opnsense.haproxy_mapfile:
+        name: ''
+        content: 'test content'
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Configuring - failing because of missing content
+      oxlorg.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Test map file'
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Creating HAProxy Map file for domain routing
+      oxlorg.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Test map file for domain routing'
+        content: |
+          www.example.com backend_web
+          api.example.com backend_api
+          admin.example.com backend_admin
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Creating HAProxy Map file for path routing
+      oxlorg.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_2'
+        description: 'Test map file for path routing'
+        content: |
+          /api/ backend_api
+          /admin/ backend_admin
+          /static/ backend_static
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Creating HAProxy Map file with minimal config
+      oxlorg.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_3'
+        description: 'Minimal mapfile'
+        content: |
+          default backend_default
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Changing Map file content
+      oxlorg.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test map file for domain routing'
+        content: |
+          www.example.com backend_web_v2
+          api.example.com backend_api_v2
+          new.example.com backend_new
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+
+    - name: Changing Map file content - nothing changed
+      oxlorg.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test map file for domain routing'
+        content: |
+          www.example.com backend_web_v2
+          api.example.com backend_api_v2
+          new.example.com backend_new
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        opn5.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup Map file 1
+      oxlorg.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Map file 2
+      oxlorg.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_2'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Map file 3
+      oxlorg.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_1_3'
+        state: 'absent'
+      when: not ansible_check_mode

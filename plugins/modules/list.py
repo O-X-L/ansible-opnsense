@@ -47,7 +47,8 @@ TARGETS = [
     'dnsmasq_boot', 'dnsmasq_tag', 'haproxy_general_settings', 'haproxy_general_cache', 'haproxy_general_defaults',
     'haproxy_general_logging', 'haproxy_general_peers', 'haproxy_general_stats', 'haproxy_general_tuning',
     'haproxy_maintenance', 'haproxy_cpu', 'haproxy_user', 'haproxy_group', 'haproxy_acl', 'haproxy_action',
-    'haproxy_lua', 'haproxy_fcgi', 'haproxy_errorfile', 'wazuh_agent', 'nut',
+    'haproxy_lua', 'haproxy_fcgi', 'haproxy_errorfile', 'haproxy_mailer', 'haproxy_mapfile', 'haproxy_resolver',
+    'wazuh_agent', 'nut',
 ]
 
 
@@ -645,6 +646,18 @@ def run_module():
         elif target == 'haproxy_errorfile':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_errorfile import \
                 HaproxyErrorfile as Target_Obj
+
+        elif target == 'haproxy_mailer':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_mailer import \
+                HaproxyMailer as Target_Obj
+
+        elif target == 'haproxy_mapfile':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_mapfile import \
+                HaproxyMapfile as Target_Obj
+
+        elif target == 'haproxy_resolver':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.haproxy_resolver import \
+                HaproxyResolver as Target_Obj
 
         elif target == 'nut':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.nut import \

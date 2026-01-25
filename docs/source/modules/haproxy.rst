@@ -63,6 +63,7 @@ The HAProxy functionality is split into multiple modules organized by function:
    haproxy_general
    haproxy_rules
    haproxy_advanced
+   haproxy_support
 
 Quick overview
 **************
@@ -97,6 +98,12 @@ Quick overview
 - :ref:`haproxy_lua <haproxy_lua>` - Manage HAProxy Lua scripts for custom logic and processing
 - :ref:`haproxy_fcgi <haproxy_fcgi>` - Manage HAProxy FastCGI applications for dynamic content processing
 - :ref:`haproxy_errorfile <haproxy_errorfile>` - Manage HAProxy custom error pages for better user experience
+
+**Infrastructure & support:**
+
+- :ref:`haproxy_mailer <haproxy_mailer>` - Manage HAProxy email notifications for alerts and monitoring
+- :ref:`haproxy_mapfile <haproxy_mapfile>` - Manage HAProxy map files for dynamic configuration and content routing
+- :ref:`haproxy_resolver <haproxy_resolver>` - Manage HAProxy DNS resolvers for dynamic server resolution and health checking
 
 ----
 

@@ -1154,6 +1154,33 @@
         - 'ANSIBLE_TEST_1_3'
         - 'ANSIBLE_TEST_1_4'
 
+    - name: Cleanup HAProxy Mailers
+      oxlorg.opnsense.haproxy_mailer:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+
+    - name: Cleanup HAProxy Map files
+      oxlorg.opnsense.haproxy_mapfile:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+
+    - name: Cleanup HAProxy Resolvers
+      oxlorg.opnsense.haproxy_resolver:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+
     - name: Cleanup NUT
       oxlorg.opnsense.nut:
         enabled: false

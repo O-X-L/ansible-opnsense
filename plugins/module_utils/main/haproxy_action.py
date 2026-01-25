@@ -116,14 +116,14 @@ class HaproxyAction(BaseModule):
         'name': r'^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$',
     }
 
-    ### TODO : Uncomment backends, servers, and mapping files when implemented
+    ### TODO : Uncomment backends and servers when implemented
 
     SEARCH_ADDITIONAL = {
         'existing_acls': 'haproxy.acls.acl',
         # 'existing_backends': 'haproxy.backends.backend',
         # 'existing_servers': 'haproxy.servers.server',
         'existing_luas': 'haproxy.luas.lua',
-        # 'existing_mapfiles': 'haproxy.mapfiles.mapfile',
+        'existing_mapfiles': 'haproxy.mapfiles.mapfile',
     }
 
     TIMEOUT = 60.0
@@ -135,7 +135,7 @@ class HaproxyAction(BaseModule):
         # self.existing_backends = {}
         # self.existing_servers = {}
         self.existing_luas = {}
-        # self.existing_mapfiles = {}
+        self.existing_mapfiles = {}
 
     def check(self) -> None:
         self._base_check()
@@ -175,11 +175,11 @@ class HaproxyAction(BaseModule):
                     field='tcp_response_content_lua',
                     existing=self.existing_luas,
                 )
-            # if self.p.get('map_use_backend_file'):
-            #     self.b.find_single_link(
-            #         field='map_use_backend_file',
-            #         existing=self.existing_mapfiles,
-            #     )
+            if self.p.get('map_use_backend_file'):
+                self.b.find_single_link(
+                    field='map_use_backend_file',
+                    existing=self.existing_mapfiles,
+                )
             # if self.p.get('map_use_backend_default'):
             #     self.b.find_single_link(
             #         field='map_use_backend_default',

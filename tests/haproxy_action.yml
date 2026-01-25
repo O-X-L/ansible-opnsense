@@ -38,7 +38,7 @@
       failed_when: not opn_fail2.failed
       when: not ansible_check_mode
 
-    # Create prerequisite ACL for testing
+    # Create prerequisites for testing
     - name: Create test ACL for Action testing
       oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_ACL_1'
@@ -46,6 +46,17 @@
         expression: 'hdr'
         hdr: 'test.example.com'
       register: test_acl
+      when: not ansible_check_mode
+
+    - name: Create test Map file for Action testing
+      oxlorg.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_MAP_1'
+        description: 'Test Map file for Action'
+        content: |
+          www.example.com backend_web
+          api.example.com backend_api
+          default backend_default
+      register: test_mapfile
       when: not ansible_check_mode
 
     - name: Creating HAProxy Action with deny
@@ -100,6 +111,19 @@
       failed_when: >
         opn4.failed or
         not opn4.changed
+
+    - name: Creating HAProxy Action with map file
+      oxlorg.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_1_5'
+        description: 'Test Action with Map file'
+        test_type: 'if'
+        type: 'use_backend'
+        map_use_backend_file: 'ANSIBLE_TEST_MAP_1'
+      register: opn_map
+      failed_when: >
+        opn_map.failed or
+        not opn_map.changed
+      when: not ansible_check_mode
 
     - name: Changing Action settings
       oxlorg.opnsense.haproxy_action:
@@ -190,9 +214,21 @@
         state: 'absent'
       when: not ansible_check_mode
 
+    - name: Cleanup Action 5
+      oxlorg.opnsense.haproxy_action:
+        name: 'ANSIBLE_TEST_1_5'
+        state: 'absent'
+      when: not ansible_check_mode
+
     - name: Cleanup test ACL
       oxlorg.opnsense.haproxy_acl:
         name: 'ANSIBLE_TEST_ACL_1'
         expression: 'path_beg'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup test Map file
+      oxlorg.opnsense.haproxy_mapfile:
+        name: 'ANSIBLE_TEST_MAP_1'
         state: 'absent'
       when: not ansible_check_mode
