@@ -208,5 +208,4 @@ Examples
         timeout_resolve: '3s'
         hold_valid: '15s'
 
-
 See also: :ref:`modules_haproxy <modules_haproxy>` and :ref:`troubleshooting <modules_haproxy_troubleshooting>`
