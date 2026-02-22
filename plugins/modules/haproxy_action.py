@@ -53,11 +53,7 @@ def run_module():
         type=dict(
             type='str', required=False, default=None,
             choices=['use_backend', 'use_server', 'map_use_backend', 'fcgi_pass_header', 'fcgi_set_param',
-                     'http-request_allow', 'http-request_deny', 'http-request_tarpit', 'http-request_auth',
-                     'http-request_redirect', 'http-request_lua', 'http-request_use-service',
-                     'http-request_add-header', 'http-request_set-header', 'http-request_del-header',
-                     'http-request_replace-header', 'http-request_replace-value', 'http-request_set-path',
-                     'http-request_set-var', 'http-response_allow', 'http-response_deny', 'http-response_lua',
+                     'http-request', 'http-response_allow', 'http-response_deny', 'http-response_lua',
                      'http-response_add-header', 'http-response_set-header', 'http-response_del-header',
                      'http-response_replace-header', 'http-response_replace-value', 'http-response_set-status',
                      'http-response_set-var', 'monitor_fail', 'tcp-request_connection_accept',
