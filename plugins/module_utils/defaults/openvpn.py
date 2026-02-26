@@ -15,10 +15,10 @@ OPENVPN_INSTANCE_MOD_ARGS = dict(
                     'If unspecified, OpenVPN will bind to all interfaces.'
     ),
     mode=dict(
-        type='str', required=False, default='tun', aliases=['type'], choices=['tun', 'tap'],
+        type='str', required=False, default='tun', aliases=['type'], choices=['tun', 'tap', 'dco'],
         description='Choose the type of tunnel, OSI Layer 3 [tun] is the most common option '
                     'to route IPv4 or IPv6 traffic, [tap] offers Ethernet 802.3 (OSI Layer 2) connectivity '
-                    'between hosts and is usually combined with a bridge.'
+                    'between hosts and is usually combined with a bridge, [dco] offers the best speed between hosts.'
     ),
     log_level=dict(
         type='int', required=False, default=3, aliases=['verbosity', 'verb'],
