@@ -108,6 +108,7 @@ action_groups:
     - oxlorg.opnsense.gateway
   nat:
     - oxlorg.opnsense.nat_source
+    - oxlorg.opnsense.nat_destination
     - oxlorg.opnsense.nat_one_to_one
   system:
     - oxlorg.opnsense.list
@@ -285,6 +286,10 @@ plugin_routing:
       redirect: oxlorg.opnsense.acme_action
     source_nat:
       redirect: oxlorg.opnsense.nat_source
+    destination_nat:
+      redirect: oxlorg.opnsense.nat_destination
+    dnat:
+      redirect: oxlorg.opnsense.nat_destination
     one_to_one:
       redirect: oxlorg.opnsense.nat_one_to_one
     wireguard_client:
