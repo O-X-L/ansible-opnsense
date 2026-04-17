@@ -104,6 +104,9 @@ class Base:
                 **self.i.call_cnf,
                 'command': self.i.CMDS['search'],
             }):
+                if hasattr(self.i, '_filter_search_entry') and not self.i._filter_search_entry(base_entry):
+                    continue
+
                 if not force_details and match_fields is not None and not base_match_fields_checked:
                     base_match_fields_checked = True
                     base_match_fields = all(field in base_entry for field in match_fields)
