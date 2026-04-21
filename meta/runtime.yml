@@ -16,6 +16,7 @@ action_groups:
     - oxlorg.opnsense.unbound_general
     - oxlorg.opnsense.unbound_acl
     - oxlorg.opnsense.unbound_forward
+    - oxlorg.opnsense.unbound_forwarding
     - oxlorg.opnsense.unbound_dot
     - oxlorg.opnsense.unbound_host
     - oxlorg.opnsense.unbound_host_alias
