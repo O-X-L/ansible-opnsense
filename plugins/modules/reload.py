@@ -55,6 +55,7 @@ def run_module():
                 'haproxy'
                 'wazuh',
                 'nat_source',
+                'nat_destination',
                 'nat_one_to_one',
                 'nut',
             ],
@@ -188,6 +189,10 @@ def run_module():
         elif target == 'nat_source':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.nat_source import \
                 SNat as Target_Obj
+            
+        elif target == 'nat_destination':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.nat_destination import \
+                DNat as Target_Obj
 
         elif target == 'nat_one_to_one':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.nat_one_to_one import \
