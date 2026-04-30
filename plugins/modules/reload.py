@@ -58,6 +58,7 @@ def run_module():
                 'nat_destination',
                 'nat_one_to_one',
                 'nut',
+                'tunable',
             ],
             description='What part of the running config should be reloaded'
         ),
@@ -201,6 +202,10 @@ def run_module():
         elif target == 'nut':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.nut import \
                 Nut as Target_Obj
+            
+        elif target == 'tunable':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.tunable import \
+                Tunable as Target_Obj
 
     except MODULE_EXCEPTIONS:
         module_dependency_error()
