@@ -18,19 +18,18 @@ class Tunable(BaseModule):
     API_CONT = 'tunables'
     API_CONT_REL = 'tunables'
     FIELDS_CHANGE = [
-        'tunable', 'description', 'value', 'default_value', 'type'
+        'tunable', 'description', 'value',
     ]
     FIELDS_ALL = FIELDS_CHANGE
     FIELDS_TRANSLATE = {
         'description': 'descr'
     }
     FIELDS_TYPING = {
-        'select': ['type'],
-        'int': ['value', 'default_value'],
+        'int': ['value'],
     }
     FIELD_ID = 'tunable'
     EXIST_ATTR = 'sysctl'
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
-        self.existing = {}
+        self.sysctl = {}

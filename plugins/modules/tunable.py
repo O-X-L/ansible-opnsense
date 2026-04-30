@@ -25,13 +25,6 @@ def run_module():
         value=dict(
             type='int', required=True, aliases=['val'],
         ),
-        default_value=dict(
-            type='int', required=False, aliases=['default', 'def_val'],
-        ),
-        type=dict(
-            type='str', required=False, elements='str', choices=['', 'w', 't'], default='',
-            description="Type of tunable. Can be the following values: Runtime('w'), Boot-time('t'), Environment('').",
-        ),
         **RELOAD_MOD_ARG,
         **STATE_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,
@@ -49,9 +42,6 @@ def run_module():
         argument_spec=module_args,
         supports_check_mode=True,
     )
-
-    if not module.params.get('default_value'):
-        module.params['default_value'] = module.params.get('value')
 
     module_wrapper(Tunable(module=module, result=result))
     module.exit_json(**result)
