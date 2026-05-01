@@ -236,7 +236,7 @@ oxlorg.opnsense.dnsmasq_general
             # strict_order: true
             # domain_needed: true
             # resolv_system: false
-            # no_private_reverse: true
+            # forward_private_reverse: false
             # add_mac: ''
             # add_subnet: false
             # strip_subnet: false
@@ -266,7 +266,7 @@ oxlorg.opnsense.dnsmasq_general
             no_ident: false
             strict_order: true
             domain_needed: true
-            no_private_reverse: true
+            forward_private_reverse: false
             regdhcp: True
             regdhcpdomain: 'test.domain'
             regdhcpstatic: true
