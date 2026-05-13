@@ -336,6 +336,9 @@ def simplify_translate(
                 if f in ignore:
                     continue
 
+                if f not in simple:
+                    continue
+
                 if t == 'bool':
                     simple[f] = is_true(simple[f])
 
