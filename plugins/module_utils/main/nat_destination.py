@@ -78,11 +78,6 @@ class DNat(BaseModule):
 
     def check(self) -> None:
         if self.p['state'] == 'present':
-            if is_unset(self.p['interface']):
-                self.m.fail_json(
-                    "You need to provide an 'interface' to create a destination-nat rule!"
-                )
-
             if is_unset(self.p['target']):
                 self.m.fail_json(
                     "You need to provide a 'target' to create a destination-nat rule!"
