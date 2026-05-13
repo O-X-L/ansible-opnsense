@@ -45,7 +45,7 @@ def run_module():
 
     module_args = dict(
 
-        interface=dict(type='str', required=False),
+        interface=dict(type='str', required=False, default='', aliases=['int', 'i']),
         target=dict(
             type='str', required=False,
             description='NAT translation target - Packets matching this rule will be '

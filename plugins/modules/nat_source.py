@@ -49,7 +49,7 @@ def run_module():
             description='Enabling this option will disable NAT for traffic matching '
                         'this rule and stop processing Outbound NAT rules.'
         ),
-        interface=dict(type='str', required=False, aliases=['int', 'i']),
+        interface=dict(type='str', required=False, default='', aliases=['int', 'i']),
         target=dict(
             type='str', required=False, aliases=['tgt', 't'],
             description='NAT translation target - Packets matching this rule will be '
