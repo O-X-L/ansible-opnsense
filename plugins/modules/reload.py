@@ -40,6 +40,7 @@ def run_module():
                 'shaper',
                 'monit',
                 'wireguard',
+                'interface_bridge',
                 'interface_vlan',
                 'interface_vxlan',
                 'interface_vip',
@@ -130,6 +131,10 @@ def run_module():
         elif target == 'wireguard':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.wireguard_server import \
                 Server as Target_Obj
+
+        elif target == 'interface_bridge':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.interface_bridge import \
+                Bridge as Target_Obj
 
         elif target == 'interface_vlan':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.interface_vlan import \
