@@ -667,9 +667,7 @@
 
     - name: Updating Source Routing firewall
       oxlorg.opnsense.rule:
-        gateway: TEST-GW
-        replyto: TEST-GW
-        disable_replyto: true
+        replyto: 'TEST-GW'
         description: 'ANSIBLE_TEST_4_1'
       register: opn4
       failed_when: >
@@ -678,14 +676,33 @@
 
     - name: Updating Source Routing - nothing changed
       oxlorg.opnsense.rule:
-        gateway: TEST-GW
-        replyto: TEST-GW
-        disable_replyto: true
+        replyto: 'TEST-GW'
         description: 'ANSIBLE_TEST_4_1'
       register: opn5
       failed_when: >
         opn5.failed or
         opn5.changed
+      when: not ansible_check_mode
+
+    - name: Updating Source Routing firewall 2
+      oxlorg.opnsense.rule:
+        gateway: 'TEST-GW'
+        disable_replyto: true
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn4_2
+      failed_when: >
+        opn4_2.failed or
+        not opn4_2.changed
+
+    - name: Updating Source Routing 2 - nothing changed
+      oxlorg.opnsense.rule:
+        gateway: 'TEST-GW'
+        disable_replyto: true
+        description: 'ANSIBLE_TEST_4_1'
+      register: opn5_2
+      failed_when: >
+        opn5_2.failed or
+        opn5_2.changed
       when: not ansible_check_mode
 
     - name: Updating Internal tagging
