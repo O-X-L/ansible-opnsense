@@ -123,11 +123,8 @@ class Validation(BaseModule):
                 ]
 
             elif self.p['method'] == 'dns01':
-                self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['dns_service'] + [
-                    field
-                    for field in self.FIELDS_ALL
-                    if field.startswith(self.p['dns_service'])
-                ]
+                # OPNsense API does not seem to return the access-tokens anymore - no way to compare it
+                self.r['changed'] = True
 
         self._base_check()
 
