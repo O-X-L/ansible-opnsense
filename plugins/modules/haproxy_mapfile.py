@@ -36,7 +36,7 @@ def run_module():
             description='Description for this map file.'
         ),
         content=dict(
-            type='str', required=True,
+            type='str', required=False,
             description='Paste the content of your map file here.'
         ),
         **STATE_MOD_ARG,

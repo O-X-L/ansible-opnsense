@@ -74,7 +74,7 @@
         checkport: 8080
         http_method: 'post'
         http_uri: '/api/health'
-        http_version: 'HTTP/1.1'
+        http_version: 'http11'
         http_host: 'api.example.com'
         http_expression_enabled: true
         http_expression: 'status'
@@ -162,50 +162,17 @@
         opn8.failed or opn8.changed
       when: not ansible_check_mode
 
-    - name: Cleanup Healthcheck 1
+    - name: Cleanup
       oxlorg.opnsense.haproxy_healthcheck:
-        name: 'ANSIBLE_TEST_1_1'
+        name: "{{ item }}"
         state: 'absent'
       when: not ansible_check_mode
-
-    - name: Cleanup Healthcheck 2
-      oxlorg.opnsense.haproxy_healthcheck:
-        name: 'ANSIBLE_TEST_1_2'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup Healthcheck 3
-      oxlorg.opnsense.haproxy_healthcheck:
-        name: 'ANSIBLE_TEST_1_3'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup Healthcheck 4
-      oxlorg.opnsense.haproxy_healthcheck:
-        name: 'ANSIBLE_TEST_1_4'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup Healthcheck 5
-      oxlorg.opnsense.haproxy_healthcheck:
-        name: 'ANSIBLE_TEST_1_5'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup Healthcheck 6
-      oxlorg.opnsense.haproxy_healthcheck:
-        name: 'ANSIBLE_TEST_1_6'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup Healthcheck 7
-      oxlorg.opnsense.haproxy_healthcheck:
-        name: 'ANSIBLE_TEST_1_7'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup Healthcheck 8
-      oxlorg.opnsense.haproxy_healthcheck:
-        name: 'ANSIBLE_TEST_1_8'
-        state: 'absent'
-      when: not ansible_check_mode
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_1_5'
+        - 'ANSIBLE_TEST_1_6'
+        - 'ANSIBLE_TEST_1_7'
+        - 'ANSIBLE_TEST_1_8'

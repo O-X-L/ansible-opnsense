@@ -1,6 +1,8 @@
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import Session
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import \
+    is_unset
 
 
 class HaproxyMapfile(BaseModule):
@@ -36,3 +38,10 @@ class HaproxyMapfile(BaseModule):
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session)
         self.haproxy_mapfile = {}
+
+    def check(self) -> None:
+        if self.p['state'] == 'present':
+            if is_unset(self.p['content']):
+                self.m.fail_json("You need to provide a 'content' to create a haproxy_mapfile!")
+
+        self._base_check()

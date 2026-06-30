@@ -29,6 +29,7 @@ class HaproxyMailer(BaseModule):
         'bool': ['enabled'],
         'list': ['mailservers'],
         'int': ['timeout'],
+        'select': ['loglevel'],
     }
 
     EXIST_ATTR = 'haproxy_mailer'

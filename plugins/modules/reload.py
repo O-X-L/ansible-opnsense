@@ -52,7 +52,7 @@ def run_module():
                 'dhcrelay',
                 'dhcp', 'kea',
                 'dnsmasq',
-                'haproxy'
+                'haproxy',
                 'wazuh',
                 'nat_source',
                 'nat_one_to_one',
