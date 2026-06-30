@@ -31,9 +31,17 @@ function run_test() {
   echo "RUNNING TESTS of module: '$module'"
   echo ''
 
-  ansible-playbook "tests/$module.yml" --extra-vars="ansible_python_interpreter=$(which python)" $VERBOSITY
+  if ! ansible-playbook "tests/$module.yml" --extra-vars="ansible_python_interpreter=$(which python)" $VERBOSITY
+  then
+    return 1
+  fi
+
   if [[ "$check_mode" == '1' ]]
   then
-    ansible-playbook "tests/$module.yml" --check --extra-vars="ansible_python_interpreter=$(which python)" $VERBOSITY
+    if ! ansible-playbook "tests/$module.yml" --check --extra-vars="ansible_python_interpreter=$(which python)" $VERBOSITY
+    then
+      return 1
+    fi
   fi
+  return 0
 }

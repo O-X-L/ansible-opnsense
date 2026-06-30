@@ -51,7 +51,8 @@ source "$(dirname "$0")/test_prep.sh"  # shared between single/multi test
 function run_test_soft() {
   module="$1"
   check_mode="$2"
-  if run_test "$module" "$check_mode"
+  run_test "$module" "$check_mode"
+  if [[ "$?" == '0' ]]
   then
     if [[ -n "$SUCCEEDED" ]]
     then
@@ -75,6 +76,8 @@ echo '##############################'
 echo '        STARTING TESTS!'
 echo '##############################'
 echo ''
+
+set +e
 
 run_test_soft '1_version' 0
 
