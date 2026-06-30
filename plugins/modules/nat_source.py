@@ -56,6 +56,14 @@ def run_module():
                         'mapped to the IP address given here.',
         ),
         target_port=dict(type='int', required=False, aliases=['nat_port', 'np']),
+        static_port=dict(
+            type='bool', required=False, default=False,
+            aliases=['staticnatport', 'static_nat_port'],
+            description='Preserve the source port instead of randomizing it. '
+                        'Required for protocols that embed the source port in '
+                        'their payload (e.g. some game consoles needing NAT '
+                        'type B/Open).'
+        ),
         match_fields=dict(
             type='list', required=True, elements='str',
             description='Fields that are used to match configured rules with the running config - '
@@ -63,7 +71,7 @@ def run_module():
             choices=[
                 'sequence', 'interface', 'target', 'target_port', 'ip_protocol', 'protocol',
                 'source_invert', 'source_net', 'source_port', 'destination_invert', 'destination_net',
-                'destination_port', 'description', 'uuid',
+                'destination_port', 'description', 'uuid', 'static_port',
             ]
         ),
         **shared_rule_args,

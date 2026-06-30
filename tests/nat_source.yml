@@ -154,12 +154,67 @@
         not opn7.changed
       when: not ansible_check_mode
 
+    - name: Adding 3 - with static_port
+      oxlorg.opnsense.source_nat:
+        description: 'ANSIBLE_TEST_1_3'
+        interface: 'lan'
+        protocol: 'UDP'
+        source: 'any'
+        target: '192.168.3.1'
+        static_port: true
+      register: opn_sp1
+      failed_when: >
+        opn_sp1.failed or
+        not opn_sp1.changed
+
+    - name: Adding 3 - nothing changed
+      oxlorg.opnsense.source_nat:
+        description: 'ANSIBLE_TEST_1_3'
+        interface: 'lan'
+        protocol: 'UDP'
+        source: 'any'
+        target: '192.168.3.1'
+        static_port: true
+      register: opn_sp2
+      failed_when: >
+        opn_sp2.failed or
+        opn_sp2.changed
+      when: not ansible_check_mode
+
+    - name: Disabling static_port on 3
+      oxlorg.opnsense.source_nat:
+        description: 'ANSIBLE_TEST_1_3'
+        interface: 'lan'
+        protocol: 'UDP'
+        source: 'any'
+        target: '192.168.3.1'
+        static_port: false
+      register: opn_sp3
+      failed_when: >
+        opn_sp3.failed or
+        not opn_sp3.changed
+      when: not ansible_check_mode
+
+    - name: Re-enabling static_port on 3 (idempotent toggle)
+      oxlorg.opnsense.source_nat:
+        description: 'ANSIBLE_TEST_1_3'
+        interface: 'lan'
+        protocol: 'UDP'
+        source: 'any'
+        target: '192.168.3.1'
+        static_port: true
+      register: opn_sp4
+      failed_when: >
+        opn_sp4.failed or
+        not opn_sp4.changed
+      when: not ansible_check_mode
+
     - name: Listing
       oxlorg.opnsense.list:
       register: opn8
       failed_when: >
         'data' not in opn8 or
-        opn8.data | length != 1
+        opn8.data | length != 2
       when: not ansible_check_mode
 
     - name: Cleanup
@@ -169,6 +224,7 @@
       loop:
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
       when: not ansible_check_mode
 
     - name: Listing

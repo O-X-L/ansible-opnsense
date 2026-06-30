@@ -23,7 +23,7 @@ class SNat(BaseModule):
     FIELDS_CHANGE = [
         'sequence', 'no_nat', 'interface', 'target', 'target_port', 'description',
         'ip_protocol', 'protocol', 'source_invert', 'source_net', 'source_port',
-        'destination_invert', 'destination_net', 'destination_port', 'log',
+        'destination_invert', 'destination_net', 'destination_port', 'log', 'static_port',
     ]
     FIELDS_ALL = ['enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
@@ -32,9 +32,10 @@ class SNat(BaseModule):
         'source_invert': 'source_not',
         'destination_invert': 'destination_not',
         'no_nat': 'nonat',
+        'static_port': 'staticnatport',
     }
     FIELDS_TYPING = {
-        'bool': ['enabled', 'log', 'source_invert', 'no_nat', 'destination_invert'],
+        'bool': ['enabled', 'log', 'source_invert', 'no_nat', 'destination_invert', 'static_port'],
         'list': [],
         'select': ['interface', 'ip_protocol', 'protocol'],
         'int': [],
