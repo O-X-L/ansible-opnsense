@@ -108,7 +108,7 @@ RULE_MOD_ARGS = dict(
     ),
     direction=dict(
         type='str', required=False, default=RULE_DEFAULTS['direction'], aliases=RULE_MOD_ARG_ALIASES['direction'],
-        choices=['in', 'out']
+        choices=['in', 'out', 'any']
     ),
     ip_protocol=dict(
         type='str', required=False, choices=['inet', 'inet6', 'inet46'],

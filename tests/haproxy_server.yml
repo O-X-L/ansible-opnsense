@@ -1,0 +1,157 @@
+---
+
+- name: Testing HAProxy Server management
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    oxlorg.opnsense.list:
+      target: 'haproxy_server'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or 'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid name
+      oxlorg.opnsense.haproxy_server:
+        name: ''
+        address: '192.168.1.10'
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Creating HAProxy Server with basic config
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Test web server 1'
+        address: '192.168.1.10'
+        port: 80
+        weight: 100
+        mode: 'active'
+      register: opn1
+      failed_when: >
+        opn1.failed or not opn1.changed
+
+    - name: Creating HAProxy Server with SSL
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_2'
+        description: 'Test SSL server'
+        address: '192.168.1.20'
+        port: 443
+        weight: 50
+        ssl_enabled: true
+        ssl_verify_cert: false
+        mode: 'active'
+      register: opn2
+      failed_when: >
+        opn2.failed or not opn2.changed
+
+    - name: Creating HAProxy Backup Server
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_3'
+        description: 'Test backup server'
+        address: '192.168.1.30'
+        port: 8080
+        weight: 10
+        mode: 'backup'
+      register: opn3
+      failed_when: >
+        opn3.failed or not opn3.changed
+
+    - name: Creating HAProxy Server with advanced SSL settings
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_4'
+        description: 'Test server with advanced SSL'
+        address: '192.168.1.40'
+        port: 443
+        ssl_enabled: true
+        ssl_verify_cert: true
+        ssl_sni: 'example.com'
+        max_connections: 1000
+        checkport: 8080
+        check_interval: '5s'
+        check_down_interval: '30s'
+        multiplexer_protocol: 'h2'
+      register: opn4
+      failed_when: >
+        opn4.failed or not opn4.changed
+
+    - name: Creating HAProxy Server with service name and resolver
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_5'
+        description: 'Test server with service name'
+        address: 'backend.service.consul'
+        port: 80
+        service_name: 'web-backend'
+        resolve_prefer: 'ipv4'
+        type: 'server'
+        weight: 75
+        source: '192.168.1.1'
+        advanced: 'rise 2 fall 3'
+      register: opn5
+      failed_when: >
+        opn5.failed or not opn5.changed
+
+    - name: Changing Server settings
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test web server 1'
+        address: '192.168.1.11'
+        port: 8080
+        weight: 150
+        mode: 'active'
+      register: opn9
+      failed_when: >
+        opn9.failed or not opn9.changed
+
+    - name: Nothing changed
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test web server 1'
+        address: '192.168.1.11'
+        port: 8080
+        weight: 150
+        mode: 'active'
+      register: opn8
+      failed_when: >
+        opn8.failed or opn8.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup Server 1
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Server 2
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_2'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Server 3
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_3'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Server 4
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_4'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Server 5
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_1_5'
+        state: 'absent'
+      when: not ansible_check_mode

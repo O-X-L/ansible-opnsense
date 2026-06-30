@@ -230,6 +230,33 @@
         opn24.changed
       when: not ansible_check_mode
 
+    - name: Test direction any
+      oxlorg.opnsense.rule:
+        source_net: '192.168.0.0/24'
+        destination_net: '192.168.2.0/24'
+        destination_port: 443
+        protocol: 'TCP'
+        direction: 'any'
+        description: 'ANSIBLE_TEST_1_16'
+      register: opn25
+      failed_when: >
+        opn25.failed or
+        not opn25.changed
+
+    - name: Test direction any - Nothing changed
+      oxlorg.opnsense.rule:
+        source_net: '192.168.0.0/24'
+        destination_net: '192.168.2.0/24'
+        destination_port: 443
+        protocol: 'TCP'
+        direction: 'any'
+        description: 'ANSIBLE_TEST_1_16'
+      register: opn26
+      failed_when: >
+        opn26.failed or
+        opn26.changed
+      when: not ansible_check_mode
+
     - name: Cleanup
       oxlorg.opnsense.rule:
         description: "{{ item }}"
@@ -244,6 +271,7 @@
         - 'ANSIBLE_TEST_1_13'
         - 'ANSIBLE_TEST_1_14'
         - 'ANSIBLE_TEST_1_15'
+        - 'ANSIBLE_TEST_1_16'
 
 - name: Testing Rules - aliases
   hosts: localhost

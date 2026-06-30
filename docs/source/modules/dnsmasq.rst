@@ -111,7 +111,7 @@ oxlorg.opnsense.dnsmasq_host
     "local","boolean","false","false","\-","Set the domain as local. This will configure this DNS server as authoritative."
     "ip","list","false","\-","\-","IP addresses of the host. Can be multiple IPv4 and IPv6 addresses for dual stack configurations."
     "alias","list","false","\-","\-","Adds additional static A, AAAA and PTR records for the given alternative names (FQDN). Please note that these records are only created if IP addresses are configured in this host entry."
-    "cname","list","false","\-","\-","Adds additional static A, AAAA and PTR records for the given alternative names (FQDN)."
+    "cnames","list","false","\-","\-","Adds additional static A, AAAA and PTR records for the given alternative names (FQDN)."
     "client_id","string","false","\-","\-","Match the identifier of the client. Setting the special character '*'' will ignore the client identifier for DHCPv4 leases if a client offers both as choice."
     "hardware_addr","list","false","\-","mac","Match the hardware address of the client. Can be multiple addresses, e.g., if the client has multiple network cards."
     "lease_time","int","false","\-","\-"," Defines how long the addresses (leases) given out by the server are valid (in seconds). Set 0 for infinite."
@@ -236,7 +236,7 @@ oxlorg.opnsense.dnsmasq_general
             # strict_order: true
             # domain_needed: true
             # resolv_system: false
-            # no_private_reverse: true
+            # forward_private_reverse: false
             # add_mac: ''
             # add_subnet: false
             # strip_subnet: false
@@ -266,7 +266,7 @@ oxlorg.opnsense.dnsmasq_general
             no_ident: false
             strict_order: true
             domain_needed: true
-            no_private_reverse: true
+            forward_private_reverse: false
             regdhcp: True
             regdhcpdomain: 'test.domain'
             regdhcpstatic: true
@@ -359,7 +359,7 @@ oxlorg.opnsense.dnsmasq_host
             # local: false
             ip: 192.168.0.1
             # alias:
-            # cname:
+            # cnames:
             # client_id:
             # hardware_addr:
             # lease_time:
@@ -420,7 +420,7 @@ oxlorg.opnsense.dnsmasq_range
             # mode: static
             # lease_time: 86400
             # domain_type: range
-            # damin:
+            # domain:
             # sync: true
             # state: 'absent'
             # debug: false
@@ -432,7 +432,7 @@ oxlorg.opnsense.dnsmasq_range
             # set_tag:
             start_addr: 2000::100
             end_addr: 2000::100
-            # contructor:
+            # constructor:
             # prefix_len: 64
             # ra_mode:
             # ra_priority:
@@ -442,7 +442,7 @@ oxlorg.opnsense.dnsmasq_range
             # mode: static
             # lease_time: 86400
             # domain_type: range
-            # damin:
+            # domain:
             # sync: true
             # state: 'absent'
             # debug: false

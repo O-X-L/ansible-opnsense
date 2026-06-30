@@ -1,0 +1,211 @@
+---
+
+- name: Testing HAProxy Healthcheck management
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    oxlorg.opnsense.list:
+      target: 'haproxy_healthcheck'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or 'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid name
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: ''
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Creating HAProxy Healthcheck with HTTP
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Test HTTP healthcheck'
+        type: 'http'
+        interval: '5s'
+        http_method: 'get'
+        http_uri: '/health'
+        http_expression: 'status'
+      register: opn1
+      failed_when: >
+        opn1.failed or not opn1.changed
+
+    - name: Creating HAProxy Healthcheck with TCP
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_2'
+        description: 'Test TCP healthcheck'
+        type: 'tcp'
+        interval: '3s'
+        tcp_send_value: 'GET / HTTP/1.0\r\n\r\n'
+        tcp_match_value: 'HTTP/1'
+      register: opn2
+      failed_when: >
+        opn2.failed or not opn2.changed
+
+    - name: Creating HAProxy Healthcheck with MySQL
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_3'
+        description: 'Test MySQL healthcheck'
+        type: 'mysql'
+        interval: '10s'
+        mysql_user: 'monitor'
+        mysql_post41: true
+      register: opn3
+      failed_when: >
+        opn3.failed or not opn3.changed
+
+    - name: Creating HAProxy Healthcheck with advanced HTTP features
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_4'
+        description: 'Test HTTP healthcheck with advanced features'
+        type: 'http'
+        interval: '5s'
+        checkport: 8080
+        http_method: 'post'
+        http_uri: '/api/health'
+        http_version: 'HTTP/1.1'
+        http_host: 'api.example.com'
+        http_expression_enabled: true
+        http_expression: 'status'
+        http_value: '200-299'
+        http_negate: false
+        ssl: 'ssl'
+        ssl_sni: 'api.example.com'
+      register: opn4
+      failed_when: >
+        opn4.failed or not opn4.changed
+
+    - name: Creating HAProxy Healthcheck with TCP advanced options
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_5'
+        description: 'Test TCP healthcheck with advanced options'
+        type: 'tcp'
+        interval: '3s'
+        tcp_enabled: true
+        tcp_send_value: 'PING\r\n'
+        tcp_match_type: 'string'
+        tcp_match_value: 'PONG'
+        tcp_negate: false
+      register: opn5
+      failed_when: >
+        opn5.failed or not opn5.changed
+
+    - name: Creating HAProxy Healthcheck with SMTP settings
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_6'
+        description: 'Test SMTP healthcheck'
+        type: 'smtp'
+        interval: '15s'
+        smtp_domain: 'mail.example.com'
+        esmtp_domain: 'mail.example.com'
+      register: opn6
+      failed_when: >
+        opn6.failed or not opn6.changed
+
+    - name: Creating HAProxy Healthcheck with PostgreSQL
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_7'
+        description: 'Test PostgreSQL healthcheck'
+        type: 'pgsql'
+        interval: '10s'
+        pgsql_user: 'postgres'
+      register: opn7
+      failed_when: >
+        opn7.failed or not opn7.changed
+
+    - name: Creating HAProxy Healthcheck with agent port
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_8'
+        description: 'Test agent healthcheck'
+        type: 'agent'
+        interval: '5s'
+        agent_port: 9090
+      register: opn8
+      failed_when: >
+        opn8.failed or not opn8.changed
+
+    - name: Changing Healthcheck settings
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test HTTP healthcheck'
+        type: 'http'
+        interval: '10s'
+        http_method: 'head'
+        http_uri: '/status'
+        http_expression: 'status'
+      register: opn9
+      failed_when: >
+        opn9.failed or not opn9.changed
+
+    - name: Nothing changed
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test HTTP healthcheck'
+        type: 'http'
+        interval: '10s'
+        http_method: 'head'
+        http_uri: '/status'
+        http_expression: 'status'
+      register: opn8
+      failed_when: >
+        opn8.failed or opn8.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup Healthcheck 1
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Healthcheck 2
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_2'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Healthcheck 3
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_3'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Healthcheck 4
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_4'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Healthcheck 5
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_5'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Healthcheck 6
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_6'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Healthcheck 7
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_7'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Healthcheck 8
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: 'ANSIBLE_TEST_1_8'
+        state: 'absent'
+      when: not ansible_check_mode

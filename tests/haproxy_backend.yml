@@ -1,0 +1,182 @@
+---
+
+- name: Testing HAProxy Backend management
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    oxlorg.opnsense.list:
+      target: 'haproxy_backend'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or 'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid name
+      oxlorg.opnsense.haproxy_backend:
+        name: ''
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    # Create prerequisite servers for testing
+    - name: Create test server for Backend testing
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_SERVER_1'
+        description: 'Test server for backend'
+        address: '192.168.1.10'
+        port: 80
+      register: test_server
+      when: not ansible_check_mode
+
+    - name: Creating HAProxy Backend with basic config
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Test backend for web servers'
+        mode: 'http'
+        algorithm: 'roundrobin'
+      register: opn1
+      failed_when: >
+        opn1.failed or not opn1.changed
+
+    - name: Creating HAProxy Backend with servers
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_1_2'
+        description: 'Test backend with servers'
+        mode: 'http'
+        algorithm: 'leastconn'
+        linked_servers: ['ANSIBLE_TEST_SERVER_1']
+        health_check_enabled: true
+        http2_enabled: true
+        forward_for: true
+      register: opn2
+      failed_when: >
+        opn2.failed or not opn2.changed
+      when: not ansible_check_mode
+
+    - name: Creating HAProxy Backend for SSL
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_1_3'
+        description: 'Test SSL backend'
+        mode: 'http'
+        algorithm: 'source'
+        health_check_enabled: false
+        http2_enabled: true
+        forwarded_header: true
+      register: opn3
+      failed_when: >
+        opn3.failed or not opn3.changed
+
+    - name: Creating HAProxy Backend with advanced features
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_1_4'
+        description: 'Test backend with advanced features'
+        mode: 'http'
+        algorithm: 'roundrobin'
+        health_check_enabled: true
+        forwarded_header_parameters:
+          - 'for'
+          - 'proto'
+        stickiness_data_types:
+          - 'conn_rate'
+          - 'sess_rate'
+        stickiness_conn_rate_period: '10s'
+        stickiness_sess_rate_period: '30s'
+        stickiness_expire: '30m'
+        stickiness_size: '100k'
+        basic_auth_enabled: true
+        tuning_timeout_connect: '5s'
+        tuning_timeout_server: '30s'
+        tuning_retries: 3
+        tuning_caching: true
+      register: opn4
+      failed_when: >
+        opn4.failed or not opn4.changed
+
+    - name: Creating HAProxy Backend with stickiness rate periods
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_1_5'
+        description: 'Test backend with rate period settings'
+        mode: 'http'
+        algorithm: 'leastconn'
+        stickiness_http_req_rate_period: '60s'
+        stickiness_http_err_rate_period: '120s'
+        stickiness_bytes_in_rate_period: '300s'
+        stickiness_bytes_out_rate_period: '300s'
+        persistence: 'sticktable'
+        persistence_cookiename: 'JSESSIONID'
+        persistence_stripquotes: true
+      register: opn5
+      failed_when: >
+        opn5.failed or not opn5.changed
+
+    - name: Changing Backend settings
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test backend for web servers'
+        mode: 'http'
+        algorithm: 'uri'
+        health_check_enabled: false
+        tuning_retries: 3
+      register: opn9
+      failed_when: >
+        opn9.failed or not opn9.changed
+
+    - name: Nothing changed
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test backend for web servers'
+        mode: 'http'
+        algorithm: 'uri'
+        health_check_enabled: false
+        tuning_retries: 3
+      register: opn8
+      failed_when: >
+        opn8.failed or opn8.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup Backend 1
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Backend 2
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_1_2'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Backend 3
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_1_3'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Backend 4
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_1_4'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Backend 5
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_1_5'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup test server
+      oxlorg.opnsense.haproxy_server:
+        name: 'ANSIBLE_TEST_SERVER_1'
+        address: '192.168.1.10'
+        state: 'absent'
+      when: not ansible_check_mode

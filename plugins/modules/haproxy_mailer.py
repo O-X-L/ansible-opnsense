@@ -45,7 +45,7 @@ def run_module():
         ),
         recipient=dict(
             type='str', required=False,
-            description='Recipient address in the envelope and to address in email alerts.'
+            description='Recipient email address for alerts.'
         ),
         loglevel=dict(
             type='str', required=False,
@@ -53,7 +53,7 @@ def run_module():
         ),
         timeout=dict(
             type='str', required=False,
-            description='Time in seconds for mail/connection to be made and sent.'
+            description='Time in seconds to connect and send email to mail server.'
         ),
         hostname=dict(
             type='str', required=False,

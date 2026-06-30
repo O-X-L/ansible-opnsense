@@ -116,12 +116,10 @@ class HaproxyAction(BaseModule):
         'name': r'^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$',
     }
 
-    ### TODO : Uncomment backends and servers when implemented
-
     SEARCH_ADDITIONAL = {
         'existing_acls': 'haproxy.acls.acl',
-        # 'existing_backends': 'haproxy.backends.backend',
-        # 'existing_servers': 'haproxy.servers.server',
+        'existing_backends': 'haproxy.backends.backend',
+        'existing_servers': 'haproxy.servers.server',
         'existing_luas': 'haproxy.luas.lua',
         'existing_mapfiles': 'haproxy.mapfiles.mapfile',
     }
@@ -132,8 +130,8 @@ class HaproxyAction(BaseModule):
         BaseModule.__init__(self=self, m=module, r=result, s=session)
         self.haproxy_action = {}
         self.existing_acls = {}
-        # self.existing_backends = {}
-        # self.existing_servers = {}
+        self.existing_backends = {}
+        self.existing_servers = {}
         self.existing_luas = {}
         self.existing_mapfiles = {}
 
@@ -145,16 +143,16 @@ class HaproxyAction(BaseModule):
                     field='linked_acls',
                     existing=self.existing_acls,
                 )
-            # if self.p.get('use_backend'):
-            #     self.b.find_single_link(
-            #         field='use_backend',
-            #         existing=self.existing_backends,
-            #     )
-            # if self.p.get('use_server'):
-            #     self.b.find_single_link(
-            #         field='use_server',
-            #         existing=self.existing_servers,
-            #     )
+            if self.p.get('use_backend'):
+                self.b.find_single_link(
+                    field='use_backend',
+                    existing=self.existing_backends,
+                )
+            if self.p.get('use_server'):
+                self.b.find_single_link(
+                    field='use_server',
+                    existing=self.existing_servers,
+                )
             if self.p.get('http_request_lua'):
                 self.b.find_single_link(
                     field='http_request_lua',
@@ -180,8 +178,8 @@ class HaproxyAction(BaseModule):
                     field='map_use_backend_file',
                     existing=self.existing_mapfiles,
                 )
-            # if self.p.get('map_use_backend_default'):
-            #     self.b.find_single_link(
-            #         field='map_use_backend_default',
-            #         existing=self.existing_backends,
-            #     )
+            if self.p.get('map_use_backend_default'):
+                self.b.find_single_link(
+                    field='map_use_backend_default',
+                    existing=self.existing_backends,
+                )

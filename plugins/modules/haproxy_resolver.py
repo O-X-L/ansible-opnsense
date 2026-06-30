@@ -29,59 +29,59 @@ def run_module():
     module_args = dict(
         name=dict(
             type='str', required=True,
-            description='Choose a name for this resolver configuration.'
+            description='Name for this resolver configuration (1-255 chars).'
         ),
         description=dict(
             type='str', required=False,
-            description='Choose a optional description for this resolver configuration.'
+            description='Optional description for this resolver (1-255 chars).'
         ),
         nameservers=dict(
             type='list', elements='str', required=False, default=[],
-            description='Add nameservers to this resolver. Format: [protocol@]address:port.'
+            description='Nameservers (e.g. 127.0.0.1:53, tcp@192.168.1.1:53).'
         ),
         parse_resolv_conf=dict(
             type='bool', required=False, default=False,
-            description='Add all nameservers found in /etc/resolv.conf.'
+            description='Add all nameservers found in /etc/resolv.conf to this resolver configuration.'
         ),
         resolve_retries=dict(
             type='int', required=False,
-            description='Number of queries to send to resolve a server name before giving up.'
+            description='This configures the number of queries to send to resolve a server name before giving up.'
         ),
         timeout_resolve=dict(
             type='str', required=False,
-            description='Default time to trigger name resolutions. Format: number + unit (us/ms/s/m/h/d).'
+            description='Default time for name resolution (e.g. 1s, 500ms). Default: 1s.'
         ),
         timeout_retry=dict(
             type='str', required=False,
-            description='Time between two DNS queries when no valid response received.'
+            description='Time between DNS retries (e.g. 1s, 500ms). Default: 1s.'
         ),
         accepted_payload_size=dict(
             type='int', required=False,
-            description='Maximum payload size accepted by HAProxy for DNS responses.'
+            description='Maximum DNS payload size accepted by HAProxy.'
         ),
         hold_valid=dict(
             type='str', required=False,
-            description='Time HAProxy will not query DNS after receiving valid response.'
+            description='Cache time for valid DNS responses (e.g. 10s, 1m).'
         ),
         hold_obsolete=dict(
             type='str', required=False,
-            description='Time after which a cached DNS answer is considered obsolete.'
+            description='Time before cached DNS entry is considered obsolete.'
         ),
         hold_refused=dict(
             type='str', required=False,
-            description='Time to wait before retrying after DNS server refuses request.'
+            description='Wait time after DNS refuses request before retry.'
         ),
         hold_nx=dict(
             type='str', required=False,
-            description='Time to wait before retrying after NXDOMAIN error.'
+            description='Wait time after NXDOMAIN error before retry.'
         ),
         hold_timeout=dict(
             type='str', required=False,
-            description='Time to wait before retrying after DNS request times out.'
+            description='Wait time after DNS timeout before retry.'
         ),
         hold_other=dict(
             type='str', required=False,
-            description='Hold other timeout value for the resolver.'
+            description='Hold timeout for other DNS errors.'
         ),
         **STATE_MOD_ARG,
         **RELOAD_MOD_ARG,

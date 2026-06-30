@@ -248,6 +248,10 @@ run_test_soft 'haproxy_errorfile' 1
 run_test_soft 'haproxy_mailer' 1
 run_test_soft 'haproxy_mapfile' 1
 run_test_soft 'haproxy_resolver' 1
+run_test_soft 'haproxy_backend' 1
+run_test_soft 'haproxy_frontend' 1
+run_test_soft 'haproxy_healthcheck' 1
+run_test_soft 'haproxy_server' 1
 run_test_soft 'nut' 1
 run_test_soft 'nut_diagnostics' 1
 
