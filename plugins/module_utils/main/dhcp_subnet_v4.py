@@ -20,10 +20,14 @@ class SubnetV4(BaseModule):
     API_MOD = 'kea'
     API_CONT = 'dhcpv4'
     API_CONT_REL = 'service'
-    FIELDS_CHANGE = [
-        'subnet', 'description', 'pools', 'auto_options',
+    FIELDS_ALL = [
+        'subnet', 'description', 'pools', 'auto_options', 'next_server',
     ]
-    FIELDS_ALL = FIELDS_CHANGE
+    FIELDS_CHANGE = FIELDS_ALL.copy()
+    FIELDS_CHANGE.extend([
+        'gateway', 'dns', 'domain_search', 'ntp_servers', 'time_servers', 'auto_options', 'v6_only_preferred',
+        'routes', 'domain', 'tftp_server', 'tftp_file',
+    ])
     FIELDS_TYPING = {
         'list': ['gateway', 'dns', 'domain_search', 'ntp_servers', 'time_servers'],  # 'pools',
         'bool': ['auto_options'],
@@ -35,7 +39,7 @@ class SubnetV4(BaseModule):
     API_ATTR_OPTIONS = 'option_data'
     API_FIELDS_OPTIONS = [
         'gateway', 'routes', 'dns', 'domain', 'domain_search', 'ntp_servers', 'time_servers',
-        'next_server', 'tftp_server', 'tftp_file', 'v6_only_preferred',
+        'tftp_server', 'tftp_file', 'v6_only_preferred',
     ]
     POOL_JOIN_CHAR = '\n'
     FIELDS_TRANSLATE_SPECIAL = {
@@ -67,13 +71,13 @@ class SubnetV4(BaseModule):
             opts = entry[self.API_ATTR_OPTIONS]
             return {
                 **simple,
-                'dns': get_selected_list(opts[self.FIELDS_TRANSLATE_SPECIAL['dns']]),
-                'domain_search': get_selected_list(opts['domain_search']),
-                'gateway': get_selected_list(opts[self.FIELDS_TRANSLATE_SPECIAL['gateway']]),
+                'dns': get_selected_list(opts[self.FIELDS_TRANSLATE_SPECIAL['dns']], remove_empty=True),
+                'domain_search': get_selected_list(opts['domain_search'], remove_empty=True),
+                'gateway': get_selected_list(opts[self.FIELDS_TRANSLATE_SPECIAL['gateway']], remove_empty=True),
                 'routes': opts[self.FIELDS_TRANSLATE_SPECIAL['routes']],
                 'domain': opts[self.FIELDS_TRANSLATE_SPECIAL['domain']],
-                'ntp_servers': get_selected_list(opts['ntp_servers']),
-                'time_servers': get_selected_list(opts['time_servers']),
+                'ntp_servers': get_selected_list(opts['ntp_servers'], remove_empty=True),
+                'time_servers': get_selected_list(opts['time_servers'], remove_empty=True),
                 'tftp_server': opts[self.FIELDS_TRANSLATE_SPECIAL['tftp_server']],
                 'tftp_file': opts[self.FIELDS_TRANSLATE_SPECIAL['tftp_file']],
                 'v6_only_preferred': opts['v6_only_preferred'],
