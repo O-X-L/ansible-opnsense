@@ -401,4 +401,4 @@ Examples
         mysql_post41: true
         interval: '10s'
 
-See also: :ref:`modules_haproxy` and :ref:`troubleshooting <modules_haproxy_troubleshooting>`
+See also: :ref:`HAProxy <modules_haproxy>` and :ref:`troubleshooting <modules_haproxy_troubleshooting>`

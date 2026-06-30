@@ -1,5 +1,3 @@
----
-
 # tests disabled until fixed: https://github.com/O-X-L/ansible-opnsense/issues/413
 
 # - name: Testing HAProxy Action management
@@ -40,7 +38,7 @@
 #       failed_when: not opn_fail2.failed
 #       when: not ansible_check_mode
 #
-#     # Create prerequisite ACL for testing
+#     # Create prerequisites for testing
 #     - name: Create test ACL for Action testing
 #       oxlorg.opnsense.haproxy_acl:
 #         name: 'ANSIBLE_TEST_ACL_1'
@@ -50,14 +48,24 @@
 #       register: test_acl
 #       when: not ansible_check_mode
 #
+#     - name: Create test Map file for Action testing
+#       oxlorg.opnsense.haproxy_mapfile:
+#         name: 'ANSIBLE_TEST_MAP_1'
+#         description: 'Test Map file for Action'
+#         content: |
+#           www.example.com backend_web
+#           api.example.com backend_api
+#           default backend_default
+#       register: test_mapfile
+#       when: not ansible_check_mode
+#
 #     - name: Creating HAProxy Action with deny
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_1'
 #         description: 'Test Action for deny'
 #         test_type: 'if'
-#         kind: 'http-response_deny'
+#         kind: 'http-request_deny'
 #         operator: 'and'
-#         debug: true
 #       register: opn1
 #       failed_when: >
 #         opn1.failed or
@@ -70,7 +78,7 @@
 #         test_type: 'if'
 #         linked_acls: ['ANSIBLE_TEST_ACL_1']
 #         operator: 'and'
-#         kind: 'http-response_allow'
+#         kind: 'http-request_allow'
 #       register: opn2
 #       failed_when: >
 #         opn2.failed or
@@ -82,7 +90,7 @@
 #         name: 'ANSIBLE_TEST_1_3'
 #         description: 'Test Action for header add'
 #         test_type: 'if'
-#         kind: 'http-response_add-header'
+#         kind: 'http-request_add-header'
 #         http_request_add_header_name: 'X-Custom-Header'
 #         http_request_add_header_content: 'TestValue123'
 #       register: opn3
@@ -95,7 +103,7 @@
 #         name: 'ANSIBLE_TEST_1_4'
 #         description: 'Test Action for set variable'
 #         test_type: 'if'
-#         kind: 'http-response_set-var'
+#         kind: 'http-request_set-var'
 #         http_request_set_var_scope: 'txn'
 #         http_request_set_var_name: 'test_var'
 #         http_request_set_var_expr: 'str(authenticated)'
@@ -104,12 +112,25 @@
 #         opn4.failed or
 #         not opn4.changed
 #
+#     - name: Creating HAProxy Action with map file
+#       oxlorg.opnsense.haproxy_action:
+#         name: 'ANSIBLE_TEST_1_5'
+#         description: 'Test Action with Map file'
+#         test_type: 'if'
+#         kind: 'use_backend'
+#         map_use_backend_file: 'ANSIBLE_TEST_MAP_1'
+#       register: opn_map
+#       failed_when: >
+#         opn_map.failed or
+#         not opn_map.changed
+#       when: not ansible_check_mode
+#
 #     - name: Changing Action settings
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_1'
 #         description: 'Modified test Action for deny'
 #         test_type: 'unless'
-#         kind: 'http-response_deny'
+#         kind: 'http-request_deny'
 #         operator: 'or'
 #       register: opn9
 #       failed_when: >
@@ -122,7 +143,7 @@
 #         name: 'ANSIBLE_TEST_1_1'
 #         description: 'Modified test Action for deny'
 #         test_type: 'if'
-#         kind: 'http-response_deny'
+#         kind: 'http-request_deny'
 #         operator: 'and'
 #       register: opn5
 #       failed_when: >
@@ -135,7 +156,7 @@
 #         name: 'ANSIBLE_TEST_1_1'
 #         description: 'Modified test Action for deny'
 #         test_type: 'if'
-#         kind: 'http-response_deny'
+#         kind: 'http-request_deny'
 #         operator: 'and'
 #       register: opn6
 #       failed_when: >
@@ -148,7 +169,7 @@
 #         name: 'ANSIBLE_TEST_1_1'
 #         description: 'Test Action for deny'
 #         test_type: 'if'
-#         kind: 'http-response_deny'
+#         kind: 'http-request_deny'
 #         operator: 'and'
 #       register: opn7
 #       failed_when: >
@@ -161,7 +182,7 @@
 #         name: 'ANSIBLE_TEST_1_1'
 #         description: 'Test Action for deny'
 #         test_type: 'if'
-#         kind: 'http-response_deny'
+#         kind: 'http-request_deny'
 #         operator: 'and'
 #       register: opn8
 #       failed_when: >
@@ -171,31 +192,25 @@
 #
 #     - name: Cleanup Action 1
 #       oxlorg.opnsense.haproxy_action:
-#         name: 'ANSIBLE_TEST_1_1'
+#         name: "{{ item }}"
 #         state: 'absent'
 #       when: not ansible_check_mode
-#
-#     - name: Cleanup Action 2
-#       oxlorg.opnsense.haproxy_action:
-#         name: 'ANSIBLE_TEST_1_2'
-#         state: 'absent'
-#       when: not ansible_check_mode
-#
-#     - name: Cleanup Action 3
-#       oxlorg.opnsense.haproxy_action:
-#         name: 'ANSIBLE_TEST_1_3'
-#         state: 'absent'
-#       when: not ansible_check_mode
-#
-#     - name: Cleanup Action 4
-#       oxlorg.opnsense.haproxy_action:
-#         name: 'ANSIBLE_TEST_1_4'
-#         state: 'absent'
-#       when: not ansible_check_mode
+#       loop:
+#         - 'ANSIBLE_TEST_1_1'
+#         - 'ANSIBLE_TEST_1_2'
+#         - 'ANSIBLE_TEST_1_3'
+#         - 'ANSIBLE_TEST_1_4'
+#         - 'ANSIBLE_TEST_1_5'
 #
 #     - name: Cleanup test ACL
 #       oxlorg.opnsense.haproxy_acl:
 #         name: 'ANSIBLE_TEST_ACL_1'
 #         expression: 'path_beg'
+#         state: 'absent'
+#       when: not ansible_check_mode
+#
+#     - name: Cleanup test Map file
+#       oxlorg.opnsense.haproxy_mapfile:
+#         name: 'ANSIBLE_TEST_MAP_1'
 #         state: 'absent'
 #       when: not ansible_check_mode
