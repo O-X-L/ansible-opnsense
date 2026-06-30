@@ -9,3 +9,5 @@ venv/
 .coverage
 .coverage.*
 __pycache__
+/test.log
+/test.sh

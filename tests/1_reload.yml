@@ -22,6 +22,7 @@
         - 'alias'
         - 'rule'
         - 'route'
+        - 'gateway'  # issue 88
         - 'cron'  # issue 88
         # - 'unbound'  taking way too long for testing (90+ sec)
         - 'syslog'
@@ -41,6 +42,9 @@
         - 'openvpn'
         - 'dhcrelay'
         - 'dhcp'
-        - 'gateway'  # issue 88
+        - 'dnsmasq'
+        - 'haproxy'
+        - 'wazuh'
         - 'nat_source'
         - 'nat_one_to_one'
+        - 'nut'
