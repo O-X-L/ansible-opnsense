@@ -8,13 +8,13 @@
 #       firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
 #       api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
 #       ssl_verify: false
-# 
+#
 #     oxlorg.opnsense.list:
 #       target: 'haproxy_action'
-# 
+#
 #   environment:
 #     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
-# 
+#
 #   tasks:
 #     - name: Listing
 #       oxlorg.opnsense.list:
@@ -22,14 +22,14 @@
 #       failed_when: >
 #         opn_pre1.failed or
 #         'data' not in opn_pre1
-# 
+#
 #     - name: Configuring - failing because of invalid name
 #       oxlorg.opnsense.haproxy_action:
 #         name: ''
 #       register: opn_fail1
 #       failed_when: not opn_fail1.failed
 #       when: not ansible_check_mode
-# 
+#
 #     - name: Configuring - failing because of missing type
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_1'
@@ -37,7 +37,7 @@
 #       register: opn_fail2
 #       failed_when: not opn_fail2.failed
 #       when: not ansible_check_mode
-# 
+#
 #     # Create prerequisites for testing
 #     - name: Create test ACL for Action testing
 #       oxlorg.opnsense.haproxy_acl:
@@ -47,7 +47,7 @@
 #         hdr: 'test.example.com'
 #       register: test_acl
 #       when: not ansible_check_mode
-# 
+#
 #     - name: Create test Map file for Action testing
 #       oxlorg.opnsense.haproxy_mapfile:
 #         name: 'ANSIBLE_TEST_MAP_1'
@@ -58,7 +58,7 @@
 #           default backend_default
 #       register: test_mapfile
 #       when: not ansible_check_mode
-# 
+#
 #     - name: Creating HAProxy Action with deny
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_1'
@@ -70,7 +70,7 @@
 #       failed_when: >
 #         opn1.failed or
 #         not opn1.changed
-# 
+#
 #     - name: Creating HAProxy Action with ACL link
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_2'
@@ -84,7 +84,7 @@
 #         opn2.failed or
 #         not opn2.changed
 #       when: not ansible_check_mode
-# 
+#
 #     - name: Creating HAProxy Action with header manipulation
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_3'
@@ -97,7 +97,7 @@
 #       failed_when: >
 #         opn3.failed or
 #         not opn3.changed
-# 
+#
 #     - name: Creating HAProxy Action with variable setting
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_4'
@@ -111,7 +111,7 @@
 #       failed_when: >
 #         opn4.failed or
 #         not opn4.changed
-# 
+#
 #     - name: Creating HAProxy Action with map file
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_5'
@@ -124,7 +124,7 @@
 #         opn_map.failed or
 #         not opn_map.changed
 #       when: not ansible_check_mode
-# 
+#
 #     - name: Changing Action settings
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_1'
@@ -137,7 +137,7 @@
 #         opn9.failed or
 #         not opn9.changed
 #       when: not ansible_check_mode
-# 
+#
 #     - name: Changing Action operator
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_1'
@@ -150,7 +150,7 @@
 #         opn5.failed or
 #         not opn5.changed
 #       when: not ansible_check_mode
-# 
+#
 #     - name: Changing Action operator - nothing changed
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_1'
@@ -163,7 +163,7 @@
 #         opn6.failed or
 #         opn6.changed
 #       when: not ansible_check_mode
-# 
+#
 #     - name: Changing Action back to original
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_1'
@@ -176,7 +176,7 @@
 #         opn7.failed or
 #         not opn7.changed
 #       when: not ansible_check_mode
-# 
+#
 #     - name: Nothing changed
 #       oxlorg.opnsense.haproxy_action:
 #         name: 'ANSIBLE_TEST_1_1'
@@ -189,7 +189,7 @@
 #         opn8.failed or
 #         opn8.changed
 #       when: not ansible_check_mode
-# 
+#
 #     - name: Cleanup Action 1
 #       oxlorg.opnsense.haproxy_action:
 #         name: "{{ item }}"
@@ -201,14 +201,14 @@
 #         - 'ANSIBLE_TEST_1_3'
 #         - 'ANSIBLE_TEST_1_4'
 #         - 'ANSIBLE_TEST_1_5'
-# 
+#
 #     - name: Cleanup test ACL
 #       oxlorg.opnsense.haproxy_acl:
 #         name: 'ANSIBLE_TEST_ACL_1'
 #         expression: 'path_beg'
 #         state: 'absent'
 #       when: not ansible_check_mode
-# 
+#
 #     - name: Cleanup test Map file
 #       oxlorg.opnsense.haproxy_mapfile:
 #         name: 'ANSIBLE_TEST_MAP_1'
