@@ -151,15 +151,15 @@ Manages HAProxy DNS resolvers for dynamic server resolution and health checking.
     "nameservers","list","false","[]","\-","DNS nameservers. Add nameservers to this resolver configuration. They may be prefixed with either tcp@ or udp@ to use the TCP or UDP protocol respectively"
     "parse_resolv_conf","boolean","false","false","\-","Use resolv.conf. Add all nameservers found in /etc/resolv.conf to this resolver configuration"
     "resolve_retries","integer","false","\-","\-","Resolve retries. This configures the number of queries to send to resolve a server name before giving up (0-100000)"
-    "timeout_resolve","string","false","\-","\-","Resolve timeout. This configures the default time to trigger name resolutions when no other time applied. Enter a number followed by one of the supported suffixes \"d\" (days), \"h\" (hour), \"m\" (minute), \"s\" (seconds), \"ms\" (milliseconds)"
-    "timeout_retry","string","false","\-","\-","Retry timeout. This configures the default time between two DNS queries, when no valid response has been received. Enter a number followed by one of the supported suffixes \"d\" (days), \"h\" (hour), \"m\" (minute), \"s\" (seconds), \"ms\" (milliseconds)"
+    "timeout_resolve","string","false","\-","\-","Resolve timeout. This configures the default time to trigger name resolutions when no other time applied. Enter a number followed by one of the supported suffixes ""d"" (days), ""h"" (hour), ""m"" (minute), ""s"" (seconds), ""ms"" (milliseconds)"
+    "timeout_retry","string","false","\-","\-","Retry timeout. This configures the default time between two DNS queries, when no valid response has been received. Enter a number followed by one of the supported suffixes ""d"" (days), ""h"" (hour), ""m"" (minute), ""s"" (seconds), ""ms"" (milliseconds)"
     "accepted_payload_size","integer","false","\-","\-","Max DNS answer size. Defines the maximum payload size accepted by HAProxy and announced to all the name servers configured in this resolvers section. The default is 512 bytes, the maximum allowed is 8192 for UDP and 65535 for TCP (0-65535)"
-    "hold_valid","string","false","\-","\-","Valid hold time. When haproxy receives a valid NS response it will not query DNS until valid time expires. Default is \"10s\""
-    "hold_obsolete","string","false","\-","\-","Obsolete hold time. As a DNS server may not answer all the IPs in one DNS request, haproxy keeps a cache of previous answers. An answer will be considered obsolete after [hold obsolete] seconds without the IP returned. Default is \"30s\""
-    "hold_refused","string","false","\-","\-","Refused hold time. When the DNS server refuses the resolve request haproxy will not retry until [hold refused] elapses. Default \"30s\""
-    "hold_nx","string","false","\-","\-","NX hold time. When haproxy receives a NXDOMAIN error message (domain does not exist) from the resolver it will not retry until [hold nx] elapses. Default \"30s\""
-    "hold_timeout","string","false","\-","\-","Timeout hold time. When a DNS resolve request times out haproxy will not retry until [hold timeout] elapses. Default \"30s\""
-    "hold_other","string","false","\-","\-","Other hold time. Sets the \"hold other\" timeout value for the resolver. Default \"30s\""
+    "hold_valid","string","false","\-","\-","Valid hold time. When haproxy receives a valid NS response it will not query DNS until valid time expires. Default is ""10s"""
+    "hold_obsolete","string","false","\-","\-","Obsolete hold time. As a DNS server may not answer all the IPs in one DNS request, haproxy keeps a cache of previous answers. An answer will be considered obsolete after [hold obsolete] seconds without the IP returned. Default is ""30s"""
+    "hold_refused","string","false","\-","\-","Refused hold time. When the DNS server refuses the resolve request haproxy will not retry until [hold refused] elapses. Default ""30s"""
+    "hold_nx","string","false","\-","\-","NX hold time. When haproxy receives a NXDOMAIN error message (domain does not exist) from the resolver it will not retry until [hold nx] elapses. Default ""30s"""
+    "hold_timeout","string","false","\-","\-","Timeout hold time. When a DNS resolve request times out haproxy will not retry until [hold timeout] elapses. Default ""30s"""
+    "hold_other","string","false","\-","\-","Other hold time. Sets the ""hold other"" timeout value for the resolver. Default ""30s"""
 
 Examples
 --------
@@ -209,4 +209,4 @@ Examples
         hold_valid: '15s'
 
 
-See also: :ref:`modules_haproxy` and :ref:`troubleshooting <modules_haproxy_troubleshooting>`
+See also: :ref:`HAProxy <modules_haproxy>` and :ref:`troubleshooting <modules_haproxy_troubleshooting>`
