@@ -4,7 +4,7 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.cls import BaseModule
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import \
-    to_digit
+    to_digit, is_true
 
 
 class Rule(BaseModule):
@@ -64,7 +64,7 @@ class Rule(BaseModule):
                 if rule[self.FIELD_PK] == self.p[self.FIELD_PK]:
                     self.exists = True
                     self.rule[self.FIELD_PK] = rule[self.FIELD_PK]
-                    self.rule['enabled'] = rule['status'] == 'enabled'
+                    self.rule['enabled'] = is_true(rule['enabled'])
                     self.rule['action'] = rule['action']
                     self.r['diff']['before'] = self.rule
 

@@ -80,9 +80,12 @@ echo ''
 set +e
 
 run_test_soft '1_version' 0
+run_test '1_cleanup' 0
+run_test_soft '1_reload' 0
+
+set +e
 
 run_test_soft 'list' 0
-run_test_soft 'reload' 0
 run_test_soft 'service' 1
 run_test_soft 'system' 1
 run_test_soft 'package' 1
@@ -258,6 +261,8 @@ run_test_soft 'haproxy_server' 1
 run_test_soft 'nut' 1
 run_test_soft 'nut_diagnostics' 1
 
+run_test_soft '1_cleanup' 0
+run_test_soft '1_reload' 0
 run_test_soft '1_version' 0
 
 echo ''

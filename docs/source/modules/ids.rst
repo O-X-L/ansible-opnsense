@@ -33,7 +33,7 @@ Definition
 .. include:: ../_include/param_basic.rst
 
 oxlorg.opnsense.ids_action
-==============================
+==========================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -43,7 +43,7 @@ oxlorg.opnsense.ids_action
     "alert_id","string","false","\-","alert","Parameter Alert-ID needed for 'get_alert_info'"
 
 oxlorg.opnsense.ids_general
-===============================
+===========================
 
 Interfaces for 'ids_general' must be provided as used in the network config (*p.e. 'opt1' instead of 'DMZ'*)
 
@@ -53,9 +53,10 @@ Interfaces for 'ids_general' must be provided as used in the network config (*p.
 
     "interfaces","list","true","\-","ints","Select interface(s) to use. When enabling IPS, only use physical interfaces here (no vlans etc)"
     "enabled","boolean","false","true","\-","Enable intrusion detection system"
-    "block","boolean","false","false","protection, ips","Enable protection mode (block traffic). Before enabling, please disable all hardware offloading first in advanced network!"
+    "mode","string","false","pcap","\-","One of: pcap, netmap, divert. In mode 'pcap' no traffic is blocked."
     "promiscuous","boolean","false","\-","physical, vlan","For certain setups (like IPS with vlans), this is required to actually capture data on the physical interface"
     "default_packet_size","int","false","(system default)","packet_size","With this option, you can set the size of the packets on your network. It is possible that bigger packets have to be processed sometimes. The engine can still process these bigger packets, but processing it will lower the performance. Unset = system default"
+    "divert_listeners","int","false","1","\-",""
     "local_networks","list","false","['192.168.0.0/16', '10.0.0.0/8', '172.16.0.0/12']","home_networks","Networks to interpret as local"
     "pattern_matcher","string","false","(system default)","algorithm, matcher, algo","One of: 'ac', 'ac-bs', 'ac-ks', 'hs'. Select the multi-pattern matcher algorithm to use. Options: unset = system default, 'ac' = 'Aho-Corasick', 'ac-bs' = 'Aho-Corasick, reduced memory implementation', 'ac-ks' = 'Aho-Corasick, Ken Steele variant', 'hs' = 'Hyperscan'"
     "profile","string","false","(system default)","detect_profile","One of: 'low', 'medium', 'high', 'custom'. The detection engine builds internal groups of signatures. The engine allow us to specify the profile to use for them, to manage memory on an efficient way keeping a good performance. Unset = system default"
@@ -225,7 +226,7 @@ oxlorg.opnsense.ids_general
           oxlorg.opnsense.ids_general:
             interfaces: ['opt1']
             # enabled: true
-            # block: true
+            # mode: 'pcap'
             # promiscuous: false
             # default_packet_size: ''
             # local_networks: ['192.168.0.0/16', '10.0.0.0/8', '172.16.0.0/12']
@@ -259,7 +260,7 @@ oxlorg.opnsense.ids_general
           oxlorg.opnsense.ids_general:
             interfaces: ['opt1']
             enabled: true
-            block: true
+            mode: 'netmap'
             pattern_matcher: 'ac'
             profile: 'low'
             local_networks: ['10.0.0.0/16']

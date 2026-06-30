@@ -115,6 +115,7 @@
       failed_when: >
         opn9_2.failed or
         opn9_2.changed
+      when: not ansible_check_mode
 
     - name: Disabling HAProxy Mailer
       oxlorg.opnsense.haproxy_mailer:
