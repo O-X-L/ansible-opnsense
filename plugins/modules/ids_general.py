@@ -31,10 +31,12 @@ def run_module():
             description='Select interface(s) to use. When enabling IPS, only use physical interfaces here '
                         '(no vlans etc)'
         ),
-        block=dict(
-            type='bool', required=False, default=False, aliases=['protection', 'ips'],
-            description='Enable protection mode (block traffic). '
-                        'Before enabling, please disable all hardware offloading first in advanced network!'
+        mode=dict(
+            type='str', required=False, default='pcap', choices=['pcap', 'netmap', 'divert'],
+            description="In mode 'pcap' no traffic is blocked."
+        ),
+        divert_listeners=dict(
+            type='int', required=False, default=1,
         ),
         promiscuous=dict(
             type='bool', required=False, default=False, aliases=['physical', 'vlan'],
@@ -78,11 +80,10 @@ def run_module():
                         'from the default. Unset = system default'
         ),
         pattern_matcher=dict(
-            type='str', required=False, aliases=['algorithm', 'matcher', 'algo'],
-            choices=['ac', 'ac-bs', 'ac-ks', 'hs'],
-            description="Select the multi-pattern matcher algorithm to use. Options: unset = system default, "
-                        "'ac' = 'Aho-Corasick', 'ac-bs' = 'Aho-Corasick, reduced memory implementation', "
-                        "'ac-ks' = 'Aho-Corasick, Ken Steele variant', 'hs' = 'Hyperscan'"
+            type='str', required=False, aliases=['algorithm', 'matcher', 'algo'], default='ac',
+            choices=['ac', 'ac-ks', 'hs'],
+            description="Select the multi-pattern matcher algorithm to use. Options:"
+                        "'ac' = 'Aho-Corasick', 'ac-ks' = 'Aho-Corasick, Ken Steele variant', 'hs' = 'Hyperscan'"
         ),
         log_rotate=dict(
             type='str', required=False, default='weekly',
