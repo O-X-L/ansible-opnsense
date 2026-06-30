@@ -249,4 +249,6 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible-opn
 
 ### Roadmap
 
-See: [Feature Requests](https://github.com/O-X-L/ansible-opnsense/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement)
+New features can currently only be supplied as [Pull Requests](https://github.com/O-X-L/ansible-opnsense/pulls) which have to follow the [Contribution Guidelines](https://github.com/O-X-L/ansible-opnsense/blob/latest/CONTRIBUTING.md) & [Developer Docs](https://ansible-opnsense.oxl.app/usage/4_develop.html).
+
+As there are very few maintainer-resources available for this project, it might take a long time for responses.

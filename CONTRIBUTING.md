@@ -4,6 +4,7 @@ Thank you for considering to contribute to this project!
 
 ## What to contribute
 
+* supply PR's for [issues/features in the "backlog"](https://github.com/O-X-L/ansible-opnsense/issues?q=label%3Ano-resources%20OR%20label%3A%22help%20wanted%22)
 * report errors as [issues](https://github.com/O-X-L/ansible-opnsense/issues)
 * test unstable modules and [report if they work as expected](https://github.com/O-X-L/ansible-opnsense/discussions/new?category=general)
 * add [ansible-based tests](https://github.com/O-X-L/ansible-opnsense/blob/latest/tests) for some error-case(s) you have encountered
