@@ -71,8 +71,8 @@
       oxlorg.opnsense.ids_general:
         interfaces: ['opt1']
         enabled: true
-        block: true
-        pattern_matcher: 'ac-bs'
+        mode: 'netmap'
+        pattern_matcher: 'ac'
         profile: 'medium'
         local_networks: ['10.0.0.0/16']
         log_rotate: 'daily'
@@ -89,8 +89,8 @@
       oxlorg.opnsense.ids_general:
         interfaces: ['opt1']
         enabled: false
-        block: true
-        pattern_matcher: 'ac-bs'
+        mode: 'netmap'
+        pattern_matcher: 'ac'
         profile: 'medium'
         local_networks: ['10.0.0.0/16']
         log_rotate: 'daily'
@@ -108,8 +108,8 @@
       oxlorg.opnsense.ids_general:
         interfaces: ['opt1']
         enabled: false
-        block: true
-        pattern_matcher: 'ac-bs'
+        mode: 'netmap'
+        pattern_matcher: 'ac'
         profile: 'medium'
         local_networks: ['10.0.0.0/16']
         log_rotate: 'daily'
@@ -126,8 +126,8 @@
     - name: Enabling 1
       oxlorg.opnsense.ids_general:
         interfaces: ['opt1']
-        block: true
-        pattern_matcher: 'ac-bs'
+        mode: 'netmap'
+        pattern_matcher: 'ac'
         profile: 'medium'
         local_networks: ['10.0.0.0/16']
         log_rotate: 'daily'

@@ -141,8 +141,8 @@ def run_module():
             description='Enable HTTP/2 even without TLS.'
         ),
         advertised_protocols=dict(
-            type='list', elements='str', required=False, default=['h2', 'http/1.1'],
-            choices=['h2', 'http/1.1', 'http/1.0'],
+            type='list', elements='str', required=False, default=['h2', 'http11'],
+            choices=['h3', 'h2', 'http11', 'http10'],
             description='Advertise these protocols via ALPN.'
         ),
         forwarded_header=dict(

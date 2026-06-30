@@ -1184,3 +1184,60 @@
     - name: Cleanup NUT
       oxlorg.opnsense.nut:
         enabled: false
+
+    - name: Cleanup HAProxy Mailer
+      oxlorg.opnsense.haproxy_mailer:
+        name: "{{ item }}"
+        state: 'absent'
+      when: not ansible_check_mode
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+
+    - name: Cleanup Healthchecks
+      oxlorg.opnsense.haproxy_healthcheck:
+        name: "{{ item }}"
+        state: 'absent'
+      when: not ansible_check_mode
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_1_5'
+        - 'ANSIBLE_TEST_1_6'
+        - 'ANSIBLE_TEST_1_7'
+        - 'ANSIBLE_TEST_1_8'
+
+    - name: Cleanup HAProxy Mapfiles
+      oxlorg.opnsense.haproxy_mapfile:
+        name: "{{ item }}"
+        state: 'absent'
+      when: not ansible_check_mode
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+
+    - name: Cleanup HAProxy Resolver
+      oxlorg.opnsense.haproxy_resolver:
+        name: "{{ item }}"
+        state: 'absent'
+      when: not ansible_check_mode
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+
+    - name: Cleanup HAProxy Server
+      oxlorg.opnsense.haproxy_server:
+        name: "{{ item }}"
+        state: 'absent'
+      when: not ansible_check_mode
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_1_5'

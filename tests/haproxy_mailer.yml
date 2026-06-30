@@ -16,6 +16,16 @@
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
+    - name: Cleanup
+      oxlorg.opnsense.haproxy_mailer:
+        name: "{{ item }}"
+        state: 'absent'
+      when: not ansible_check_mode
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+
     - name: Listing
       oxlorg.opnsense.list:
       register: opn_pre1
@@ -91,6 +101,21 @@
         opn9.failed or
         not opn9.changed
 
+    - name: Mailer settings - nothing changed
+      oxlorg.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test mailer for basic alerts'
+        mailservers:
+          - '192.168.1.10:25'
+        sender: 'modified@test.local'
+        recipient: 'modified-admin@test.local'
+        loglevel: 'info'
+        timeout: 15
+      register: opn9_2
+      failed_when: >
+        opn9_2.failed or
+        opn9_2.changed
+
     - name: Disabling HAProxy Mailer
       oxlorg.opnsense.haproxy_mailer:
         name: 'ANSIBLE_TEST_1_1'
@@ -159,20 +184,12 @@
         opn8.changed
       when: not ansible_check_mode
 
-    - name: Cleanup Mailer 1
+    - name: Cleanup
       oxlorg.opnsense.haproxy_mailer:
-        name: 'ANSIBLE_TEST_1_1'
+        name: "{{ item }}"
         state: 'absent'
       when: not ansible_check_mode
-
-    - name: Cleanup Mailer 2
-      oxlorg.opnsense.haproxy_mailer:
-        name: 'ANSIBLE_TEST_1_2'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup Mailer 3
-      oxlorg.opnsense.haproxy_mailer:
-        name: 'ANSIBLE_TEST_1_3'
-        state: 'absent'
-      when: not ansible_check_mode
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'

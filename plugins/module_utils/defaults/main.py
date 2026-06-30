@@ -73,7 +73,7 @@ STATE_MOD_ARG = dict(
 
 RELOAD_MOD_ARG = dict(
     reload=dict(
-        type='bool', required=False, default=True, aliases=['apply'],
+        type='bool', required=False, default=False, aliases=['apply'],
         description='If the running config should be reloaded/applied on change - '
                     'will take some time'
     )

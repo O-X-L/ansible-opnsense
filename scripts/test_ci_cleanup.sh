@@ -26,7 +26,8 @@ source 'scripts/test_prep.sh'  # shared between single/multi test
 function run_test_soft() {
   module="$1"
   check_mode="$2"
-  if run_test "$module" "$check_mode"
+  run_test "$module" "$check_mode"
+  if [[ "$?" == '0' ]]
   then
     if [[ -n "$SUCCEEDED" ]]
     then
@@ -51,6 +52,7 @@ echo '           CLEANUP'
 echo '##############################'
 echo ''
 
+set +e
 run_test_soft '1_cleanup' 0
 
 rm -rf "$TMP_DIR"

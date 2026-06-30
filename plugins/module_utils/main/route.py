@@ -24,10 +24,8 @@ class Route(BaseModule):
     FIELDS_CHANGE = ['network', 'gateway', 'description']
     FIELDS_ALL = ['enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
-    FIELDS_BOOL_INVERT = ['enabled']
     FIELDS_TRANSLATE = {
         'description': 'descr',
-        'enabled': 'disabled',
     }
     FIELDS_TYPING = {
         'bool': ['enabled'],
@@ -53,7 +51,6 @@ class Route(BaseModule):
             existing=route,
             typing=self.FIELDS_TYPING,
             translate=self.FIELDS_TRANSLATE,
-            bool_invert=self.FIELDS_BOOL_INVERT,
         )
         if simple['gateway'].find(' - ') != -1:
             simple['gateway'] = simple['gateway'].rsplit('-', 1)[0].strip()

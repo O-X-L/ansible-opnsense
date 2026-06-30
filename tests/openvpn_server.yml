@@ -75,6 +75,7 @@
         cert_depth: 1
         data_ciphers: ['AES-256-GCM', 'CHACHA20-POLY1305']
         max_connections: 100
+        auth_mode: ['Local Database']
         user_as_cn: true
         user_cn_strict: true
         push_options: ['block-outside-dns', 'register-dns']
@@ -97,6 +98,7 @@
         cert_depth: 1
         data_ciphers: ['AES-256-GCM', 'CHACHA20-POLY1305']
         max_connections: 100
+        auth_mode: ['Local Database']
         user_as_cn: true
         user_cn_strict: true
         push_options: ['block-outside-dns', 'register-dns']
@@ -121,6 +123,7 @@
         cert_depth: 1
         data_ciphers: ['AES-256-GCM', 'CHACHA20-POLY1305']
         max_connections: 100
+        auth_mode: ['Local Database']
         user_as_cn: true
         user_cn_strict: true
         push_options: ['block-outside-dns', 'register-dns']
@@ -145,6 +148,7 @@
         cert_depth: 1
         data_ciphers: ['AES-256-GCM', 'CHACHA20-POLY1305']
         max_connections: 100
+        auth_mode: ['Local Database']
         user_as_cn: true
         user_cn_strict: true
         push_options: ['block-outside-dns', 'register-dns']
@@ -169,6 +173,7 @@
         verify_remote_certificate: true
         data_cipher_fallback: 'CHACHA20-POLY1305'
         max_connections: 10
+        auth_mode: ['Local Database']
         user_as_cn: true
         auth_token_time: 3600
         auth_token_renewal: 5
@@ -198,6 +203,7 @@
         verify_remote_certificate: true
         data_cipher_fallback: 'CHACHA20-POLY1305'
         max_connections: 10
+        auth_mode: ['Local Database']
         user_as_cn: true
         auth_token_time: 3600
         auth_token_renewal: 5

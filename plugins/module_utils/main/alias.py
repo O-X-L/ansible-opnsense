@@ -26,9 +26,16 @@ class Alias(BaseModule):
     FIELDS_CHANGE = ['content', 'description']
     FIELDS_ALL = ['name', 'type', 'enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
-    FIELDS_ALL.extend(['updatefreq_days', 'interface', 'path_expression'])
+    FIELDS_ALL.extend([
+        'updatefreq_days', 'interface', 'path_expression',
+        'url_auth_type', 'url_username', 'url_password',
+    ])
+    FIELDS_DIFF_NO_LOG = ['url_password']
     FIELDS_TRANSLATE = {
         'updatefreq_days': 'updatefreq',
+        'url_auth_type': 'authtype',
+        'url_username': 'username',
+        'url_password': 'password',
     }
     FIELDS_TYPING = {
         'bool': ['enabled'],

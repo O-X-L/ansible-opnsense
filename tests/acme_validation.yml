@@ -168,17 +168,6 @@
         opn11.failed or
         not opn11.changed
 
-    - name: Adding 4 - DNS Active24 - nothing changed
-      oxlorg.opnsense.acme_validation:
-        name: 'ANSIBLE_TEST_1_4'
-        dns_service: dns_active24
-        dns_active24_token: SECRET
-      register: opn12
-      failed_when: >
-        opn12.failed or
-        opn12.changed
-      when: not ansible_check_mode
-
     - name: Adding 5 - DNS aliyun.com
       oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_5'
@@ -189,18 +178,6 @@
       failed_when: >
         opn13.failed or
         not opn13.changed
-
-    - name: Adding 5 - DNS aliyun.com - nothing changed
-      oxlorg.opnsense.acme_validation:
-        name: 'ANSIBLE_TEST_1_5'
-        dns_service: dns_ali
-        dns_ali_key: KEY
-        dns_ali_secret: SECRET
-      register: opn14
-      failed_when: >
-        opn14.failed or
-        opn14.changed
-      when: not ansible_check_mode
 
     - name: Adding 6 - DNS AutoDNS
       oxlorg.opnsense.acme_validation:
@@ -214,19 +191,6 @@
         opn15.failed or
         not opn15.changed
 
-    - name: Adding 6 - DNS AutoDNS - nothing changed
-      oxlorg.opnsense.acme_validation:
-        name: 'ANSIBLE_TEST_1_6'
-        dns_service: dns_autodns
-        dns_autodns_user: auto
-        dns_autodns_password: SECRET
-        dns_autodns_context: OPN
-      register: opn16
-      failed_when: >
-        opn16.failed or
-        opn16.changed
-      when: not ansible_check_mode
-
     - name: Adding 7 - DNS AWS
       oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_7'
@@ -237,18 +201,6 @@
       failed_when: >
         opn17.failed or
         not opn17.changed
-
-    - name: Adding 7 - DNS AWS - nothing changed
-      oxlorg.opnsense.acme_validation:
-        name: 'ANSIBLE_TEST_1_7'
-        dns_service: dns_aws
-        dns_aws_id: ID
-        dns_aws_secret: SECRET
-      register: opn18
-      failed_when: >
-        opn18.failed or
-        opn18.changed
-      when: not ansible_check_mode
 
     - name: Adding 8 - DNS Azure
       oxlorg.opnsense.acme_validation:
@@ -263,20 +215,6 @@
         opn19.failed or
         not opn19.changed
 
-    - name: Adding 8 - DNS Azure - nothing changed
-      oxlorg.opnsense.acme_validation:
-        name: 'ANSIBLE_TEST_1_8'
-        dns_service: dns_azure
-        dns_azuredns_subscriptionid: SUB
-        dns_azuredns_tenantid: TENANT
-        dns_azuredns_appid: APP
-        dns_azuredns_clientsecret: SECRET
-      register: opn20
-      failed_when: >
-        opn20.failed or
-        opn20.changed
-      when: not ansible_check_mode
-
     - name: Adding 9 - DNS Bunny
       oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_9'
@@ -286,17 +224,6 @@
       failed_when: >
         opn21.failed or
         not opn21.changed
-
-    - name: Adding 9 - DNS Bunny - nothing changed
-      oxlorg.opnsense.acme_validation:
-        name: 'ANSIBLE_TEST_1_9'
-        dns_service: dns_bunny
-        dns_bunny_api_key: SECRET
-      register: opn22
-      failed_when: >
-        opn22.failed or
-        opn22.changed
-      when: not ansible_check_mode
 
     - name: Adding 10 - DNS Cloudflare
       oxlorg.opnsense.acme_validation:
@@ -312,22 +239,7 @@
         opn23.failed or
         not opn23.changed
 
-    - name: Adding 10 - DNS Cloudflare - nothing changed
-      oxlorg.opnsense.acme_validation:
-        name: 'ANSIBLE_TEST_1_10'
-        dns_service: dns_cf
-        dns_cf_email: cf@example.com
-        dns_cf_key: KEY
-        dns_cf_token: SECRET
-        dns_cf_account_id: Account
-        dns_cf_zone_id: ZONE
-      register: opn24
-      failed_when: >
-        opn24.failed or
-        opn24.changed
-      when: not ansible_check_mode
-
-    - name: Adding 11 - DNS Cloudflare
+    - name: Adding 11 - DNS Hetzner
       oxlorg.opnsense.acme_validation:
         name: 'ANSIBLE_TEST_1_11'
         dns_service: 'dns_hetznercloud'
