@@ -39,10 +39,10 @@ def run_module():
             type='str', required=False, default=None,
             choices=['if', 'unless'],
             description='Choose how to test the condition. IF [default] tests if condition is true, '
-            'UNLESS tests if condition is false'
+                        'UNLESS tests if condition is false'
         ),
         linked_acls=dict(
-            type='list', required=False, default=[],
+            type='list', required=False, default=None,
             description='Select one or more conditions to be used for this rule'
         ),
         operator=dict(
@@ -50,8 +50,8 @@ def run_module():
             choices=['and', 'or'],
             description='Choose a logical operator to combine conditions: AND [default] or OR'
         ),
-        type=dict(
-            type='str', required=False, default=None,
+        kind=dict(
+            type='str', required=False, default=None, aliases=['type'],
             choices=['use_backend', 'use_server', 'map_use_backend', 'fcgi_pass_header', 'fcgi_set_param',
                      'http-request', 'http-response_allow', 'http-response_deny', 'http-response_lua',
                      'http-response_add-header', 'http-response_set-header', 'http-response_del-header',
