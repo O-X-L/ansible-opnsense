@@ -43,6 +43,7 @@ class Override(BaseModule):
             'servers', 'redirect_gateway', 'network_local', 'network_remote', 'domain_list',
             'dns_servers', 'ntp_servers', 'wins_servers',
         ],
+        'select': ['domain'],
     }
     EXIST_ATTR = 'override'
 

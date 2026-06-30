@@ -344,11 +344,34 @@
         not opn15.changed
       when: not ansible_check_mode
 
-    - name: Adding multiple urltables
+    - name: Adding urltable with auth
       oxlorg.opnsense.alias:
-        name: 'ANSIBLE_TEST_1_2_URLTABLE2'
+        name: 'ANSIBLE_TEST_1_2_URLTABLE1'
         type: 'urltable'
-        content: ['https://www.spamhaus.org/drop/drop.txt']
+        updatefreq_days: 2
+        content: 'https://www.spamhaus.org/drop/drop.txt'
+        url_auth_type: 'Basic'
+        url_username: 'test'
+        url_password: 'test'
+      register: opnurlauth
+      failed_when: >
+        opnurlauth.failed or
+        not opnurlauth.changed
+
+    - name: Adding urltable with auth - nothing changed
+      oxlorg.opnsense.alias:
+        name: 'ANSIBLE_TEST_1_2_URLTABLE1'
+        type: 'urltable'
+        updatefreq_days: 2
+        content: 'https://www.spamhaus.org/drop/drop.txt'
+        url_auth_type: 'Basic'
+        url_username: 'test'
+        url_password: 'test'
+      register: opnurlauth
+      failed_when: >
+        opnurlauth.failed or
+        opnurlauth.changed
+      when: not ansible_check_mode
 
     - name: Adding invalid urltable
       oxlorg.opnsense.alias:

@@ -139,6 +139,10 @@
         ntp_servers: '192.168.1.1'
         register_dns: true
         domain_list: ['internal', 'test.local']
+      register: opn5_2
+      failed_when: >
+        opn5_2.failed or
+        opn5_2.changed
       when: not ansible_check_mode
 
     - name: Removing 2

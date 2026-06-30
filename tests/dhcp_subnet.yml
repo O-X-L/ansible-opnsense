@@ -100,6 +100,44 @@
         opn4.changed
       when: not ansible_check_mode
 
+    - name: Changing 2 - only options
+      oxlorg.opnsense.dhcp_subnet:
+        subnet: '192.168.89.0/24'
+        pools:
+          - '192.168.89.40-192.168.89.60'
+          - '192.168.89.110-192.168.89.120'
+        auto_options: false
+        gateway: '192.168.89.241'
+        dns: ['1.1.1.2', '1.0.0.2']
+        domain: 't3st.lan'
+        time_servers: '192.168.89.240'
+        tftp_server: '192.168.89.210'
+        tftp_file: 'openwrt.bin'
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Changing 2 - nothing changed
+      oxlorg.opnsense.dhcp_subnet:
+        subnet: '192.168.89.0/24'
+        pools:
+          - '192.168.89.40-192.168.89.60'
+          - '192.168.89.110-192.168.89.120'
+        auto_options: false
+        gateway: '192.168.89.241'
+        dns: ['1.1.1.2', '1.0.0.2']
+        domain: 't3st.lan'
+        time_servers: '192.168.89.240'
+        tftp_server: '192.168.89.210'
+        tftp_file: 'openwrt.bin'
+      register: opn5_2
+      failed_when: >
+        opn5_2.failed or
+        opn5_2.changed
+      when: not ansible_check_mode
+
     - name: Listing
       oxlorg.opnsense.list:
       register: opn8

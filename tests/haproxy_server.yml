@@ -93,7 +93,7 @@
         port: 80
         service_name: 'web-backend'
         resolve_prefer: 'ipv4'
-        type: 'server'
+        type: 'static'
         weight: 75
         source: '192.168.1.1'
         advanced: 'rise 2 fall 3'
@@ -126,32 +126,14 @@
         opn8.failed or opn8.changed
       when: not ansible_check_mode
 
-    - name: Cleanup Server 1
+    - name: Cleanup
       oxlorg.opnsense.haproxy_server:
-        name: 'ANSIBLE_TEST_1_1'
+        name: "{{ item }}"
         state: 'absent'
       when: not ansible_check_mode
-
-    - name: Cleanup Server 2
-      oxlorg.opnsense.haproxy_server:
-        name: 'ANSIBLE_TEST_1_2'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup Server 3
-      oxlorg.opnsense.haproxy_server:
-        name: 'ANSIBLE_TEST_1_3'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup Server 4
-      oxlorg.opnsense.haproxy_server:
-        name: 'ANSIBLE_TEST_1_4'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup Server 5
-      oxlorg.opnsense.haproxy_server:
-        name: 'ANSIBLE_TEST_1_5'
-        state: 'absent'
-      when: not ansible_check_mode
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_1_5'

@@ -27,7 +27,7 @@ class HaproxyAction(BaseModule):
     }
 
     FIELDS_CHANGE = list(FIELDS_TRANSLATE.keys()) + [
-        'name', 'description', 'operator', 'type',
+        'name', 'description', 'operator', 'kind',
         'use_backend', 'use_server', 'fcgi_pass_header', 'fcgi_set_param',
         'http_request_auth', 'http_request_redirect', 'http_request_lua',
         'http_request_use_service', 'http_request_add_header_name',
@@ -96,7 +96,7 @@ class HaproxyAction(BaseModule):
         "select": [
             "test_type",
             "operator",
-            "type",
+            "kind",
             "http_request_set_var_scope",
             "http_response_set_var_scope",
             "use_backend",
@@ -108,6 +108,9 @@ class HaproxyAction(BaseModule):
             "map_use_backend_file",
             "map_use_backend_default",
         ],
+    }
+    FIELDS_TRANSLATE = {
+        'kind': 'type',
     }
 
     EXIST_ATTR = 'haproxy_action'
