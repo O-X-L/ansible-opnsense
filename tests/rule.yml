@@ -212,6 +212,19 @@
         ip_protocol: 'inet46'
         protocol: 'ICMP'
         icmp_type: ['echoreq', 'echorep']
+        icmpv6_type: ['echoreq', 'echorep']
+        description: 'ANSIBLE_TEST_1_15'
+      register: opn23
+      failed_when: >
+        opn23.failed or
+        not opn23.changed
+
+    - name: Test ICMP-type - change
+      oxlorg.opnsense.rule:
+        ip_protocol: 'inet46'
+        protocol: 'ICMP'
+        icmp_type: ['echoreq', 'echorep', 'paramprob']
+        icmpv6_type: ['echoreq', 'echorep', 'paramprob']
         description: 'ANSIBLE_TEST_1_15'
       register: opn23
       failed_when: >
@@ -222,7 +235,8 @@
       oxlorg.opnsense.rule:
         ip_protocol: 'inet46'
         protocol: 'ICMP'
-        icmp_type: ['echoreq', 'echorep']
+        icmp_type: ['echoreq', 'echorep', 'paramprob']
+        icmpv6_type: ['echoreq', 'echorep', 'paramprob']
         description: 'ANSIBLE_TEST_1_15'
       register: opn24
       failed_when: >

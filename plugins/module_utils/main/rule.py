@@ -58,6 +58,7 @@ class Rule(BaseModule):
         'tcp_flags_clear': 'tcpflags2',
         'schedule': 'sched',
         'icmp_type': 'icmptype',
+        'icmpv6_type': 'icmp6type',
     }
     FIELDS_TYPING = {
         'bool': [
@@ -68,7 +69,7 @@ class Rule(BaseModule):
             'action', 'direction', 'ip_protocol', 'protocol', 'gateway', 'replyto', 'state_type', 'state_policy',
             'overload', 'prio', 'set_prio', 'set_prio_low', 'schedule', 'tos',
         ],
-        'list': ['interface', 'tcp_flags', 'tcp_flags_clear', 'icmp_type'],
+        'list': ['interface', 'tcp_flags', 'tcp_flags_clear', 'icmp_type', 'icmpv6_type'],
         'int': ['sequence', 'state_timeout'],
     }
     EXIST_ATTR = 'rule'
