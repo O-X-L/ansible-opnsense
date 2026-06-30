@@ -1,0 +1,178 @@
+---
+
+- name: Testing HAProxy Mailer management
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    oxlorg.opnsense.list:
+      target: 'haproxy_mailer'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid name
+      oxlorg.opnsense.haproxy_mailer:
+        name: ''
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Creating HAProxy Mailer with basic config
+      oxlorg.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Test mailer for basic alerts'
+        mailservers:
+          - '192.168.1.10:25'
+          - '192.168.1.11:25'
+        sender: 'haproxy@test.local'
+        recipient: 'admin@test.local'
+        loglevel: 'warning'
+        timeout: 30
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Creating HAProxy Mailer with advanced config
+      oxlorg.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_2'
+        description: 'Test mailer for advanced alerts'
+        mailservers:
+          - '192.168.1.20:587'
+        sender: 'alerts@test.local'
+        recipient: 'monitoring@test.local'
+        loglevel: 'warning'
+        timeout: 30
+        hostname: 'haproxy.test.local'
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.changed
+
+    - name: Creating HAProxy Mailer with minimal config
+      oxlorg.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_3'
+        description: 'Test mailer minimal'
+        mailservers:
+          - '127.0.0.1:25'
+        sender: 'test@test.local'
+        recipient: 'test@test.local'
+        loglevel: 'alert'
+        timeout: 30
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Changing Mailer settings
+      oxlorg.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test mailer for basic alerts'
+        mailservers:
+          - '192.168.1.10:25'
+        sender: 'modified@test.local'
+        recipient: 'modified-admin@test.local'
+        loglevel: 'info'
+        timeout: 15
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+
+    - name: Disabling HAProxy Mailer
+      oxlorg.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test mailer for basic alerts'
+        mailservers:
+          - '192.168.1.10:25'
+        sender: 'modified@test.local'
+        recipient: 'modified-admin@test.local'
+        loglevel: 'info'
+        timeout: 15
+        enabled: false
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
+    - name: Disabling HAProxy Mailer - nothing changed
+      oxlorg.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test mailer for basic alerts'
+        mailservers:
+          - '192.168.1.10:25'
+        sender: 'modified@test.local'
+        recipient: 'modified-admin@test.local'
+        loglevel: 'info'
+        timeout: 15
+        enabled: false
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: not ansible_check_mode
+
+    - name: Enabling HAProxy Mailer
+      oxlorg.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test mailer for basic alerts'
+        mailservers:
+          - '192.168.1.10:25'
+        sender: 'modified@test.local'
+        recipient: 'modified-admin@test.local'
+        loglevel: 'info'
+        timeout: 15
+        enabled: true
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+      when: not ansible_check_mode
+
+    - name: Nothing changed
+      oxlorg.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Modified test mailer for basic alerts'
+        mailservers:
+          - '192.168.1.10:25'
+        sender: 'modified@test.local'
+        recipient: 'modified-admin@test.local'
+        loglevel: 'info'
+        timeout: 15
+        enabled: true
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        opn8.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup Mailer 1
+      oxlorg.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Mailer 2
+      oxlorg.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_2'
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Mailer 3
+      oxlorg.opnsense.haproxy_mailer:
+        name: 'ANSIBLE_TEST_1_3'
+        state: 'absent'
+      when: not ansible_check_mode

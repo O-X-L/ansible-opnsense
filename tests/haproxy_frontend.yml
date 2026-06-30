@@ -1,0 +1,239 @@
+---
+
+- name: Testing HAProxy Frontend management
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    oxlorg.opnsense.list:
+      target: 'haproxy_frontend'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or 'data' not in opn_pre1
+
+    - name: Configuring - failing because of invalid name
+      oxlorg.opnsense.haproxy_frontend:
+        name: ''
+        bind: ['127.0.0.1:8080']
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    # Create prerequisite backend for testing
+    - name: Create test backend for Frontend testing
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_BACKEND_1'
+        description: 'Test backend for frontend'
+        mode: 'http'
+        algorithm: 'roundrobin'
+      register: test_backend
+      when: not ansible_check_mode
+
+    - name: Creating HAProxy Frontend with basic config
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_1'
+        description: 'Test frontend for HTTP'
+        bind:
+          - '127.0.0.1:8080'
+          - '127.0.0.1:8081'
+        mode: 'http'
+        default_backend: 'ANSIBLE_TEST_BACKEND_1'
+      register: opn1
+      failed_when: >
+        opn1.failed or not opn1.changed
+      when: not ansible_check_mode
+
+    - name: Creating HAProxy Frontend without backend (for testing)
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_1_NO_BACKEND'
+        description: 'Test frontend without backend'
+        bind:
+          - '127.0.0.1:8082'
+        mode: 'http'
+      register: opn1_no_backend
+      failed_when: >
+        opn1_no_backend.failed or not opn1_no_backend.changed
+
+    - name: Creating HAProxy Frontend with SSL
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_2'
+        description: 'Test SSL frontend'
+        bind:
+          - '127.0.0.1:8443'
+        mode: 'http'
+        ssl_enabled: true
+        ssl_advanced_enabled: false
+        http2_enabled: true
+        forward_for: true
+      register: opn2
+      failed_when: >
+        opn2.failed or not opn2.changed
+
+    - name: Creating HAProxy Frontend with advanced settings
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_3'
+        description: 'Test frontend with advanced settings'
+        bind:
+          - '127.0.0.1:9080'
+        mode: 'tcp'
+        forwarded_header: true
+        http2_enabled: false
+      register: opn3
+      failed_when: >
+        opn3.failed or not opn3.changed
+
+    - name: Creating HAProxy Frontend with SSL and authentication
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_4'
+        description: 'Test frontend with SSL and auth'
+        bind:
+          - '127.0.0.1:8445'
+        mode: 'http'
+        ssl_enabled: true
+        ssl_advanced_enabled: true
+        ssl_min_version: 'TLSv1.2'
+        ssl_max_version: 'TLSv1.3'
+        ssl_hsts_enabled: true
+        ssl_hsts_max_age: 31536000
+        ssl_hsts_include_sub_domains: true
+        ssl_client_auth_enabled: true
+        ssl_client_auth_verify: 'required'
+        basic_auth_enabled: true
+      register: opn4
+      failed_when: >
+        opn4.failed or not opn4.changed
+
+    - name: Creating HAProxy Frontend with tuning and logging
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_5'
+        description: 'Test frontend with tuning and logging'
+        bind:
+          - '127.0.0.1:8446'
+        mode: 'http'
+        tuning_max_connections: 2000
+        tuning_timeout_client: '50s'
+        tuning_timeout_http_req: '10s'
+        tuning_shards: 4
+        logging_dont_log_null: true
+        logging_log_separate_errors: true
+        logging_detailed_log: true
+        logging_socket_stats: true
+        prometheus_enabled: true
+        prometheus_path: '/metrics'
+      register: opn5
+      failed_when: >
+        opn5.failed or not opn5.changed
+
+    - name: Creating HAProxy Frontend with stickiness
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_6'
+        description: 'Test frontend with stickiness table'
+        bind:
+          - '127.0.0.1:8447'
+        mode: 'http'
+        stickiness_pattern: 'src'
+        stickiness_data_types:
+          - 'conn_rate'
+          - 'http_req_rate'
+        stickiness_expire: '30m'
+        stickiness_size: '100k'
+        stickiness_counter: true
+        stickiness_length: 8
+        connection_behaviour: 'http-keep-alive'
+      register: opn6
+      failed_when: >
+        opn6.failed or not opn6.changed
+
+    - name: Changing Frontend settings
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_1_NO_BACKEND'
+        description: 'Modified test frontend for HTTP'
+        bind:
+          - '127.0.0.1:8083'
+          - '127.0.0.1:8084'
+        mode: 'http'
+        http2_enabled: false
+        forward_for: true
+      register: opn9
+      failed_when: >
+        opn9.failed or not opn9.changed
+
+    - name: Nothing changed
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_1_NO_BACKEND'
+        description: 'Modified test frontend for HTTP'
+        bind:
+          - '127.0.0.1:8083'
+          - '127.0.0.1:8084'
+        mode: 'http'
+        http2_enabled: false
+        forward_for: true
+      register: opn8
+      failed_when: >
+        opn8.failed or opn8.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup Frontend 1
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_1'
+        bind: ['127.0.0.1:8080']
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Frontend 1 no backend
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_1_NO_BACKEND'
+        bind: ['127.0.0.1:8082']
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Frontend 2
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_2'
+        bind: ['127.0.0.1:8443']
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Frontend 3
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_3'
+        bind: ['127.0.0.1:9080']
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Frontend 4
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_4'
+        bind: ['127.0.0.1:8445']
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Frontend 5
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_5'
+        bind: ['127.0.0.1:8446']
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup Frontend 6
+      oxlorg.opnsense.haproxy_frontend:
+        name: 'ANSIBLE_TEST_1_6'
+        bind: ['127.0.0.1:8447']
+        state: 'absent'
+      when: not ansible_check_mode
+
+    - name: Cleanup test backend
+      oxlorg.opnsense.haproxy_backend:
+        name: 'ANSIBLE_TEST_BACKEND_1'
+        state: 'absent'
+      when: not ansible_check_mode

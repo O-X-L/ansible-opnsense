@@ -79,5 +79,4 @@ Examples
         members: ['admin', 'operator']
         enabled: true
 
-
 See also: :ref:`modules_haproxy <modules_haproxy>` and :ref:`troubleshooting <modules_haproxy_troubleshooting>`

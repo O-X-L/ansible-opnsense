@@ -284,5 +284,4 @@ Examples
         process_vary: true
         max_secondary_entries: 20
 
-
 See also: :ref:`modules_haproxy <modules_haproxy>` and :ref:`troubleshooting <modules_haproxy_troubleshooting>`
