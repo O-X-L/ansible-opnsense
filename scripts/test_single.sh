@@ -25,7 +25,7 @@ then
   exit 1
 else
   export TEST_FIREWALL="$1"
-  export TEST_API_KEY="$2"
+  export TEST_API_CREDS_FILE="$2"
 fi
 
 LOCAL_COLLECTION="$3"

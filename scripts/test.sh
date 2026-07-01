@@ -23,7 +23,7 @@ then
   exit 1
 else
   export TEST_FIREWALL="$1"
-  export TEST_API_KEY="$2"
+  export TEST_API_CREDS_FILE="$2"
 fi
 
 LOCAL_COLLECTION="$3"
@@ -79,6 +79,7 @@ echo ''
 
 set +e
 
+run_test '0_credentials' 0
 run_test_soft '1_version' 0
 run_test '1_cleanup' 0
 run_test_soft '1_reload' 0

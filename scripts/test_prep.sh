@@ -22,6 +22,11 @@ else
   fi
 fi
 
+TEST_API_KEY="$(cat "$TEST_API_CREDS_FILE" | grep '^key=' | cut -d '=' -f2)"
+TEST_API_SECRET="$(cat "$TEST_API_CREDS_FILE" | grep '^secret=' | cut -d '=' -f2)"
+export TEST_API_KEY
+export TEST_API_SECRET
+
 function run_test() {
   module="$1"
   check_mode="$2"
