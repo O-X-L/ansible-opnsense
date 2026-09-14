@@ -52,7 +52,7 @@ class Gw(BaseModule):
     }
     FIELDS_OPTIONAL = [
         'far_gw', 'latency_low', 'latency_high', 'loss_low', 'loss_high',
-        'interval', 'time_period', 'loss_interval', 'data_length',
+        'interval', 'time_period', 'loss_interval', 'data_length', 'force_down'
     ]
     INT_VALIDATIONS = {
         'priority': {'min': 0, 'max': 255},
