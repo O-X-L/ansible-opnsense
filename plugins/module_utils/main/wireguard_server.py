@@ -80,8 +80,10 @@ class Server(BaseModule):
 
         link_peers = not is_unset(self.p['peers']) or self.p['link_peers']
         if not link_peers:
-            self.FIELDS_CHANGE.remove('peers')
-            self.FIELDS_DIFF_EXCLUDE.append('peers')
+            # copy to instance attributes - the class attributes are shared
+            # between module runs when using persistent execution (e.g. mitogen)
+            self.FIELDS_CHANGE = [f for f in self.FIELDS_CHANGE if f != 'peers']
+            self.FIELDS_DIFF_EXCLUDE = [*self.FIELDS_DIFF_EXCLUDE, 'peers']
 
         for entry in self.p['allowed_ips']:
             if not is_ip_or_network(entry):
