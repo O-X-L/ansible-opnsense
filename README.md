@@ -64,9 +64,11 @@ See also: [Contributing](https://github.com/O-X-L/ansible-opnsense/blob/latest/C
 
 ## Version Support
 
-We try that the `oxlorg.opnsense` modules always support the latest version of OPNsense.
+Currently, these modules have no multi-version support!
 
-If an API changed, the current module-implementation might fail for firewalls running an older firmware.
+That means [each release of the collection](https://github.com/O-X-L/ansible-opnsense/releases) is only compatible with the same OPNsense version!
+
+If you need to use these modules - ensure that there is a supported release BEFORE upgrading your OPNsense firewalls!
 
 I currently try to create a stable release once or twice a year - as this takes 10-20h of work each time for implementing API-fixes.
 
