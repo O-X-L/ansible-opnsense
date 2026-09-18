@@ -64,6 +64,10 @@ class Certificate(BaseModule):
             if is_unset(self.p['name']):
                 self.m.fail_json('You need to provide a name to create/update certificates!')
 
+            # copy to instance attributes - the class attributes are shared
+            # between module runs when using persistent execution (e.g. mitogen)
+            self.FIELDS_CHANGE = [*self.FIELDS_CHANGE]
+
             if self.p['aliasmode'] == 'domain':
                 self.FIELDS_CHANGE.append('domainalias')
 

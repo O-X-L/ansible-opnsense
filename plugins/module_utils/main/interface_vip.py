@@ -68,7 +68,9 @@ class Vip(BaseModule):
         except ValueError as e:
             self.m.fail_json(f'The address needs to be a valid IP+CIDR combination! {e}')
 
-        self.FIELDS_OPTIONAL.append('network')
+        # copy to instance attributes - the class attributes are shared
+        # between module runs when using persistent execution (e.g. mitogen)
+        self.FIELDS_OPTIONAL = [*self.FIELDS_OPTIONAL, 'network']
         self.existing_entries = self.get_existing()
         self._base_check()
         self.FIELDS_OPTIONAL = []
@@ -80,7 +82,9 @@ class Vip(BaseModule):
     #   https://github.com/opnsense/core/issues/7041
     def get_existing(self) -> list:
         existing = []
-        self.FIELDS_OPTIONAL.append('network')
+        # copy to instance attributes - the class attributes are shared
+        # between module runs when using persistent execution (e.g. mitogen)
+        self.FIELDS_OPTIONAL = [*self.FIELDS_OPTIONAL, 'network']
 
         for entry in self._base_get_existing():
             entry['address'] = entry['address']
