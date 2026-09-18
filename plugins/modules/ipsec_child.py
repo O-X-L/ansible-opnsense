@@ -96,6 +96,15 @@ def run_module():
         rekey_seconds=dict(
             type='int', default=3600, required=False, aliases=['rekey_time', 'rekey'],
         ),
+        match_fields=dict(
+            type='list', required=False, elements='str',
+            choices=[
+                'name', 'connection', 'mode', 'request_id', 'esp_proposals',
+                'sha256_96', 'start_action', 'close_action', 'dpd_action',
+                'policies', 'local_net', 'remote_net', 'rekey_seconds', 'enabled',
+            ],
+            description='Fields used to match existing child entries before updating them',
+        ),
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,
         **OPN_MOD_ARGS,
