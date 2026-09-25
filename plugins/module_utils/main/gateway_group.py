@@ -51,6 +51,13 @@ class GatewayGroup(BaseModule):
             self.m.fail_json('Invalid gateway group detail response; requires the OPNsense 26.7 API.')
         return raw
 
+    def simplify_existing(self, existing: dict) -> dict:
+        # The shared translator casts numeric strings to integers, but these are text fields.
+        text_fields = {'name': existing['name'], 'description': existing['descr']}
+        simplified = super().simplify_existing(existing)
+        simplified.update(text_fields)
+        return simplified
+
     def get_existing(self):
         return [self.simplify_existing(dict(self._detail(row['uuid']), uuid=row['uuid']))
                 for row in self._rows()]

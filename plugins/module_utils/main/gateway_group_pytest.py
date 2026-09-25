@@ -202,3 +202,19 @@ def test_all_module_defaults_keep_existing_groups():
     assert 'oxlorg.opnsense.system' in groups
     assert 'oxlorg.opnsense.nut_diagnostics' in groups
     assert 'oxlorg.opnsense.gateway_group' in metadata['action_groups']['route']
+
+
+def test_numeric_description_create_and_repeat():
+    api = GatewayAPI()
+    assert run(api, tier_1=['WAN_A'], description='123', reload=True)['changed']
+    assert api.entries[UUID]['descr'] == '123'
+    assert api.mutations[-1]['command'] == 'reconfigure'
+    assert not run(api, description='123')['changed']
+
+
+def test_omitted_description_preserves_leading_zeros_on_update():
+    entry = group()
+    entry['descr'] = '00123'
+    api = GatewayAPI({UUID: entry})
+    assert run(api, tier_2=['WAN_B'])['changed']
+    assert api.entries[UUID]['descr'] == '00123'

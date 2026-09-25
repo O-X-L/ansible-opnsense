@@ -30,7 +30,7 @@ options:
   description:
     type: str
     description:
-    - Description. Trust modules match this exactly and reject duplicate descriptions.
+    - Gateway group description. Omitted values preserve the existing description.
   tier_1:
     type: list
     elements: str
@@ -86,7 +86,7 @@ options:
     - absent
     default: present
     description:
-    - Desired state. Trust modules support present only and never delete or reissue.
+    - Whether the gateway group should exist. Deletion must be requested explicitly.
   reload:
     type: bool
     required: false
