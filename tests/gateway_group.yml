@@ -1,0 +1,74 @@
+---
+- name: Test gateway group lifecycle on a dedicated firewall
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    test_group_name: ansible_test_gateway_group
+    test_primary: "{{ lookup('ansible.builtin.env', 'TEST_GATEWAY_PRIMARY') }}"
+    test_backup: "{{ lookup('ansible.builtin.env', 'TEST_GATEWAY_BACKUP') }}"
+  module_defaults:
+    oxlorg.opnsense.gateway_group:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+    oxlorg.opnsense.list:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+  tasks:
+    - name: Require two existing test gateways and normal execution
+      ansible.builtin.assert:
+        that:
+          - not ansible_check_mode
+          - test_primary | length > 0
+          - test_backup | length > 0
+          - test_primary != test_backup
+    - name: Inspect existing gateway groups
+      oxlorg.opnsense.list:
+        target: gateway_group
+      register: initial_groups
+    - name: Refuse to adopt a pre-existing test group
+      ansible.builtin.assert:
+        that:
+          - initial_groups.data | selectattr('name', 'equalto', test_group_name) | list | length == 0
+    - name: Exercise gateway group lifecycle
+      block:
+        - name: Predict creation without writing
+          oxlorg.opnsense.gateway_group:
+            name: "{{ test_group_name }}"
+            tier_1: ["{{ test_primary }}"]
+            tier_2: ["{{ test_backup }}"]
+          check_mode: true
+          register: predicted
+        - name: Create test gateway group
+          oxlorg.opnsense.gateway_group:
+            name: "{{ test_group_name }}"
+            tier_1: ["{{ test_primary }}"]
+            tier_2: ["{{ test_backup }}"]
+            reload: true
+          register: created
+        - name: Repeat gateway configuration
+          oxlorg.opnsense.gateway_group:
+            name: "{{ test_group_name }}"
+            tier_1: ["{{ test_primary }}"]
+            tier_2: ["{{ test_backup }}"]
+          register: repeated
+        - name: Update the test description
+          oxlorg.opnsense.gateway_group:
+            uuid: "{{ created.uuid }}"
+            description: Updated test description
+            reload: true
+          register: updated
+        - name: Verify lifecycle results
+          ansible.builtin.assert:
+            that:
+              - predicted.changed
+              - created.changed
+              - not repeated.changed
+              - updated.changed
+      always:
+        - name: Remove only the group created by this test
+          oxlorg.opnsense.gateway_group:
+            uuid: "{{ created.uuid }}"
+            state: absent
+            reload: true
+          when: created is defined and created.changed | default(false) and created.uuid is defined
