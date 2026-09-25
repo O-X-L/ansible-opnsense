@@ -1,0 +1,19 @@
+---
+- name: Inspect SSH runtime status on a test firewall
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Read registered SSH service status
+      oxlorg.opnsense.service:
+        firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+        api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+        name: openssh
+        action: status
+      register: ssh_status
+    - name: Verify status is a read-only operation
+      ansible.builtin.assert:
+        that:
+          - not ssh_status.changed
+          - ssh_status.data.name == 'openssh'
+          - ssh_status.data.running | int in [0, 1]

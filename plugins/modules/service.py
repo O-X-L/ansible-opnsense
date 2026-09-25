@@ -27,6 +27,7 @@ except MODULE_EXCEPTIONS:
 # c = api-module, m = custom action-mapping, a = limited actions
 SERVICES = {
     # core api
+    'openssh': {'a': ['start', 'stop', 'restart', 'status']},
     'captive_portal': {'c': 'captiveportal', 'a': ['reload']},
     'cron': {'a': ['reload']},
     'ipsec_legacy': {'c': 'legacy_subsystem', 'a': ['reload'], 'm': {'reload': 'applyConfig'}},
@@ -75,6 +76,46 @@ API_CONTROLLER = 'service'
 
 
 # pylint: disable=R0915
+
+def _openssh_status(module):
+    response = single_get(module=module, cnf={
+        'module': 'core', 'controller': 'service', 'command': 'search',
+    })
+    rows = response.get('rows', [])
+    # The endpoint is paginated; never interpret a truncated result as absence.
+    if int(response.get('total', len(rows))) > len(rows):
+        module.fail_json('Core service list is truncated; unable to determine openssh state.')
+    matches = [row for row in rows if row.get('id') == 'openssh' and row.get('name') == 'openssh']
+    if len(matches) != 1:
+        module.fail_json('openssh is not registered uniquely in core/service; check SSH configuration.')
+    if str(matches[0].get('running')) not in ('0', '1'):
+        module.fail_json('Core service API returned an invalid openssh running state.')
+    return matches[0]
+
+
+def _openssh(module, result):
+    action = module.params['action']
+    current = _openssh_status(module)
+    result['data'] = current
+    result['executed'] = action
+    if action == 'status':
+        return
+    running = str(current['running']) == '1'
+    if (action == 'start' and running) or (action == 'stop' and not running):
+        return
+    result['changed'] = True
+    if module.check_mode:
+        return
+    response = single_post(module=module, cnf={
+        'module': 'core', 'controller': 'service', 'command': action, 'params': ['openssh'],
+    })
+    if response.get('result') != 'ok':
+        module.fail_json('Core service API did not accept the openssh action.')
+    result['data'] = _openssh_status(module)
+    if (str(result['data']['running']) == '1') != (action != 'stop'):
+        module.fail_json('openssh did not reach the requested runtime state; inspect the service logs.')
+
+
 def run_module():
     service_choices = list(SERVICES.keys())
     service_choices.sort()
@@ -113,6 +154,11 @@ def run_module():
             f"provided action '{action}'! "
             f"Supported ones are: {service['a']}"
         )
+
+    if name == 'openssh':
+        _openssh(module, result)
+        module.exit_json(**result)
+        return
 
     # translate actions to api-commands
     # pylint: disable=R1715
