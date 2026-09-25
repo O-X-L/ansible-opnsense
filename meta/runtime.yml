@@ -111,6 +111,9 @@ action_groups:
     - oxlorg.opnsense.nat_source
     - oxlorg.opnsense.nat_one_to_one
     - oxlorg.opnsense.nat_destination
+  trust:
+    - oxlorg.opnsense.trust_ca
+    - oxlorg.opnsense.trust_cert
   system:
     - oxlorg.opnsense.list
     - oxlorg.opnsense.reload
@@ -227,6 +230,7 @@ action_groups:
           - oxlorg.opnsense.gateway
           - oxlorg.opnsense.nat
           - oxlorg.opnsense.system
+          - oxlorg.opnsense.trust
           - oxlorg.opnsense.ids
           - oxlorg.opnsense.openvpn
           - oxlorg.opnsense.dhcrelay

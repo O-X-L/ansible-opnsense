@@ -106,6 +106,8 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible-opn
 | **Routes**                | oxlorg.opnsense.route                                          | [Docs](https://ansible-opnsense.oxl.app/modules/routing.html)                                                   | stable   |
 | **Gateways**              | oxlorg.opnsense.gateway                                        | [Docs](https://ansible-opnsense.oxl.app/modules/routing.html)                                                   | stable   |
 | **Gateway groups** | oxlorg.opnsense.gateway_group | [Docs](docs/source/modules/gateway_group.rst) | experimental |
+| **Certificate authorities** | oxlorg.opnsense.trust_ca | [Docs](docs/source/modules/trust.rst) | experimental |
+| **Certificates** | oxlorg.opnsense.trust_cert | [Docs](docs/source/modules/trust.rst) | experimental |
 | **DNS**                   | oxlorg.opnsense.unbound_general                                | [Docs](https://ansible-opnsense.oxl.app/modules/unbound_general.html)                                           | stable   |
 | **DNS**                   | oxlorg.opnsense.unbound_acl                                    | [Docs](https://ansible-opnsense.oxl.app/modules/unbound_acl.html)                                               | stable   |
 | **DNS**                   | oxlorg.opnsense.unbound_forward                                | [Docs](https://ansible-opnsense.oxl.app/modules/unbound_forwarding.html)                                        | stable   |

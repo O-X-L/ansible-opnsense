@@ -1,0 +1,107 @@
+---
+- name: Test trust creation and safe reruns on a dedicated firewall
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    test_ca_description: ansible_test_internal_ca
+    test_cert_description: ansible_test_internal_cert
+  module_defaults:
+    group/oxlorg.opnsense.trust:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+    oxlorg.opnsense.list:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+    oxlorg.opnsense.raw:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+  tasks:
+    - name: Require normal execution because this playbook exercises check mode internally
+      ansible.builtin.assert:
+        that: not ansible_check_mode
+    - name: List existing CAs
+      oxlorg.opnsense.list:
+        target: trust_ca
+      register: initial_cas
+    - name: List existing certificates
+      oxlorg.opnsense.list:
+        target: trust_cert
+      register: initial_certs
+    - name: Refuse pre-existing test resources
+      ansible.builtin.assert:
+        that:
+          - initial_cas.data | selectattr('description', 'equalto', test_ca_description) | list | length == 0
+          - initial_certs.data | selectattr('description', 'equalto', test_cert_description) | list | length == 0
+    - name: Exercise trust creation
+      block:
+        - name: Predict CA creation
+          oxlorg.opnsense.trust_ca:
+            description: "{{ test_ca_description }}"
+            common_name: Ansible Test CA
+            country: DE
+          check_mode: true
+          register: predicted
+        - name: Create test CA
+          oxlorg.opnsense.trust_ca:
+            description: "{{ test_ca_description }}"
+            common_name: Ansible Test CA
+            country: DE
+            lifetime: 30
+          register: created_ca
+        - name: Repeat test CA configuration
+          oxlorg.opnsense.trust_ca:
+            description: "{{ test_ca_description }}"
+            common_name: Ansible Test CA
+            country: DE
+            lifetime: 30
+          register: repeated_ca
+        - name: Create test certificate
+          oxlorg.opnsense.trust_cert:
+            description: "{{ test_cert_description }}"
+            common_name: vpn.example.test
+            country: DE
+            ca_refid: "{{ created_ca.refid }}"
+            certificate_type: server
+            san_dns: [vpn.example.test]
+            lifetime: 10
+          register: created_cert
+        - name: Repeat test certificate configuration
+          oxlorg.opnsense.trust_cert:
+            description: "{{ test_cert_description }}"
+            common_name: vpn.example.test
+            country: DE
+            ca_refid: "{{ created_ca.refid }}"
+            certificate_type: server
+            san_dns: [vpn.example.test]
+            lifetime: 10
+          register: repeated_cert
+        - name: Verify stable references and no-op reruns
+          ansible.builtin.assert:
+            that:
+              - predicted.changed
+              - created_ca.changed
+              - not repeated_ca.changed
+              - created_ca.refid == repeated_ca.refid
+              - created_cert.changed
+              - not repeated_cert.changed
+              - created_cert.refid == repeated_cert.refid
+      always:
+        - name: Remove only the certificate created by this invocation
+          oxlorg.opnsense.raw:
+            module: trust
+            controller: cert
+            command: del
+            parameters: ["{{ created_cert.uuid }}"]
+            action: post
+          no_log: true
+          when: created_cert is defined and created_cert.changed | default(false) and created_cert.uuid is defined
+        - name: Remove only the CA created by this invocation
+          oxlorg.opnsense.raw:
+            module: trust
+            controller: ca
+            command: del
+            parameters: ["{{ created_ca.uuid }}"]
+            action: post
+          no_log: true
+          when: created_ca is defined and created_ca.changed | default(false) and created_ca.uuid is defined

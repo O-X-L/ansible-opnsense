@@ -158,7 +158,8 @@ def debug_api(
 
 
 def check_response(module: AnsibleModule, cnf: dict, response) -> dict:
-    debug_api(module=module, response=response)
+    if not cnf.get('sensitive_response', False):
+        debug_api(module=module, response=response)
 
     if 'allowed_http_stati' not in cnf:
         cnf['allowed_http_stati'] = [200]
@@ -168,6 +169,20 @@ def check_response(module: AnsibleModule, cnf: dict, response) -> dict:
 
     except JSONDecodeError:
         json = {}
+
+    if cnf.get('sensitive_response', False):
+        # Trust responses can contain private keys, including inside error bodies.
+        # Never pass these responses to debug_api or interpolate them into errors.
+        failed = (response.status_code not in cnf['allowed_http_stati'] or
+                  not isinstance(json, dict) or not json or
+                  json.get('result') == 'failed' or json.get('status') == 'failed' or
+                  bool(json.get('validations')))
+        if failed:
+            module.fail_json(
+                f"Trust API call failed (HTTP {response.status_code}); response suppressed. "
+                "Check API availability, privileges and the request fields in System / Trust."
+            )
+        return json
 
     if response.status_code not in cnf['allowed_http_stati'] or \
             ('result' in json and json['result'] == 'failed'):
