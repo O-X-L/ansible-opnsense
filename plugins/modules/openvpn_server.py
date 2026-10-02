@@ -152,7 +152,7 @@ def run_module():
             description='How often the auth token will be renewed, token expire after 2 * renewal time.'
         ),
         auth_token_secret=dict(
-            type='string', required=False, aliases=['auth_secret', 'token_secret'], no_log=True,
+            type='str', required=False, aliases=['auth_secret', 'token_secret'], no_log=True,
             description=' Optional secret for use with auth-gen-token. This is useful to allow failover between '
                         'multiple servers without user interaction.'
         ),
