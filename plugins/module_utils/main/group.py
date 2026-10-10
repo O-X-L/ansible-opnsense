@@ -52,9 +52,15 @@ class Group(BaseModule):
 
         if not is_unset(self.p['member']):
             # translate user-names to user-id's
-            raw_request[self.API_KEY_PATH]['member'] = self.RESP_JOIN_CHAR.join([
-                get_key_by_value_from_selection(self.raw['member'], m)
-                for m in self.p['member']
-            ])
+            member_ids = []
+            for member_name in self.p['member']:
+                member_id = get_key_by_value_from_selection(self.raw['member'], member_name)
+                if member_id is None:
+                    self.m.fail_json(
+                        f"Unable to find user '{member_name}' to assign "
+                        f"as member of group '{self.p['name']}'"
+                    )
+                member_ids.append(member_id)
+            raw_request[self.API_KEY_PATH]['member'] = self.RESP_JOIN_CHAR.join(member_ids)
 
         return raw_request
