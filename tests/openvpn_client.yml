@@ -137,6 +137,44 @@
         not opn4.changed
       when: not ansible_check_mode
 
+    - name: Adding 1 - legacy data-ciphers
+      oxlorg.opnsense.openvpn_client:
+        name: 'ANSIBLE_TEST_1_1'
+        remote: 'openvpn.test.oxlorg.net:20000'
+        protocol: 'udp'
+        mode: 'tun'
+        network_remote: ['192.168.77.128/27', '192.168.89.64/27']
+        log_level: 5
+        ca: 'OpenVPN'
+        certificate: 'OpenVPN Client'
+        mtu: 1400
+        mss_fix: true
+        data_ciphers: ['AES-128-CBC']
+      register: opn_ciphers1
+      failed_when: >
+        opn_ciphers1.failed or
+        not opn_ciphers1.changed
+      when: not ansible_check_mode
+
+    - name: Adding 1 - legacy data-ciphers - nothing changed
+      oxlorg.opnsense.openvpn_client:
+        name: 'ANSIBLE_TEST_1_1'
+        remote: 'openvpn.test.oxlorg.net:20000'
+        protocol: 'udp'
+        mode: 'tun'
+        network_remote: ['192.168.77.128/27', '192.168.89.64/27']
+        log_level: 5
+        ca: 'OpenVPN'
+        certificate: 'OpenVPN Client'
+        mtu: 1400
+        mss_fix: true
+        data_ciphers: ['AES-128-CBC']
+      register: opn_ciphers2
+      failed_when: >
+        opn_ciphers2.failed or
+        opn_ciphers2.changed
+      when: not ansible_check_mode
+
     - name: Adding 2
       oxlorg.opnsense.openvpn_client:
         name: 'ANSIBLE_TEST_1_2'

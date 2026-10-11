@@ -56,6 +56,18 @@ def run_module():
             type='str', required=False, aliases=['proxy'],
             description='Use a http proxy to connect to the selected server, define as host:port'
         ),
+        data_ciphers=dict(
+            type='list', elements='str', required=False, default=[], aliases=['ciphers'],
+            description='Restrict the allowed ciphers to be negotiated to the ciphers in this list. '
+                        'Legacy ciphers (like AES-128-CBC) can be used if the server requires them.'
+        ),
+        data_cipher_fallback=dict(
+            type='str', required=False, aliases=['cipher_fallback'],
+            description='Configure a cipher that is used to fall back to if we could not determine which cipher the '
+                        'peer is willing to use. This option should only be needed to connect to peers that are '
+                        'running OpenVPN 2.3 or older versions, and have been configured with --enable-small '
+                        '(typically used on routers or other embedded devices).'
+        ),
         **OPENVPN_INSTANCE_MOD_ARGS,
         **RELOAD_MOD_ARG,
         **STATE_MOD_ARG,

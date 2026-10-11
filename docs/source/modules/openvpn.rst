@@ -127,6 +127,8 @@ oxlorg.opnsense.openvpn_client
     "fragment_size","integer","false","\-","frag_size","Enable internal datagram fragmentation so that no UDP datagrams are sent which are larger than the specified byte size."
     "mss_fix","boolean","false","false","mss","Announce to TCP sessions running over the tunnel that they should limit their send packet sizes such that after OpenVPN has encapsulated them, the resulting UDP packet size that OpenVPN sends to its peer will not exceed the recommended size."
     "http_proxy","string","false","\-","proxy","Use a http proxy to connect to the selected server, define as host:port."
+    "data_ciphers","list","false","\-","ciphers","Restrict the allowed ciphers to be negotiated to the ciphers in this list. Legacy ciphers (like AES-128-CBC) can be used if the server requires them."
+    "data_cipher_fallback","string","false","\-","cipher_fallback","Configure a cipher that is used to fall back to if we could not determine which cipher the peer is willing to use. This option should only be needed to connect to peers that are running OpenVPN 2.3 or older versions, and have been configured with --enable-small (typically used on routers or other embedded devices)."
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.openvpn_static_key
