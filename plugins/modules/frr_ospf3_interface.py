@@ -30,7 +30,7 @@ def run_module():
         interface=dict(type='str', required=True, aliases=['name', 'int']),
         area=dict(
             type='str', required=False,
-            description='Area in wildcard mask style like 0.0.0.0 and no decimal 0'
+            description='ID of an existing area in wildcard mask style like 0.0.0.0 and no decimal 0'
         ),
         passive=dict(type='bool', required=False, default=False),
         cost=dict(type='int', required=False),
