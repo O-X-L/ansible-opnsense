@@ -73,9 +73,16 @@ def run_module():
                         'hops away. When the neighbor is not directly connected '
                         'and this knob is not enabled, the session will not establish.'
         ),
+        family=dict(
+            type='list', elements='str', required=False, choices=['ipv4', 'ipv6'],
+            aliases=['address_family'],
+            description='Address families to activate for this neighbor. '
+                        'Defaults to the family of the neighbor IP'
+        ),
         multi_protocol=dict(
-            type='bool', required=False, default=False,
-            description='Is this neighbour multiprotocol capable per RFC 2283'
+            type='bool', required=False,
+            description="Deprecated: replaced by 'family' in os-frr 2.0 (OPNsense 26.7). "
+                        "'true' is the same as setting 'family' to both 'ipv4' and 'ipv6'"
         ),
         rrclient=dict(
             type='bool', required=False, default=False,

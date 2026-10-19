@@ -108,7 +108,37 @@ class RouteMap(BaseModule):
 
         else:
             self.p[key] = []
-        self.r['diff']['after'][key] = self.p[key]
+
+        self._keep_unchanged_groups()
+
+    def _keep_unchanged_groups(self) -> None:
+        # FRR matches as-path and community lists by number and prefix-lists by name. Since os-frr 2.0
+        # (OPNsense 26.7) the API also returns only one entry per such group, so the referenced groups
+        # are compared instead of the single entries
+        links = {
+            'as_path_list': (self.existing_paths, 'number', 'description'),
+            'community_list': (self.existing_communities, 'number', 'description'),
+            'prefix_list': (self.existing_prefixes, 'name', 'name'),
+        }
+
+        for field, (existing, group_field, label_field) in links.items():
+            if self.exists:
+                current = self.route_map[field]
+                if self._get_groups(self.p[field], existing, group_field) == \
+                        self._get_groups(current, existing, group_field):
+                    self.p[field] = current
+
+                self.r['diff']['before'][field] = self._get_labels(current, existing, label_field)
+
+            self.r['diff']['after'][field] = self._get_labels(self.p[field], existing, label_field)
+
+    @staticmethod
+    def _get_groups(uuids: list, existing: dict, group_field: str) -> set:
+        return {str(existing[uuid][group_field]) for uuid in uuids if uuid in existing}
+
+    @staticmethod
+    def _get_labels(uuids: list, existing: dict, label_field: str) -> list:
+        return sorted({str(existing[uuid][label_field]) for uuid in uuids if uuid in existing})
 
     def get_existing(self) -> list:
         existing = []

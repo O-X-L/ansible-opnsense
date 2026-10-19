@@ -94,7 +94,7 @@
         weight: 200
         local_ip: '10.0.0.254'
         source_int: 'opt1'
-        multi_protocol: true
+        family: ['ipv4', 'ipv6']
         keepalive: 45
         hold_down: 135
       register: opn9
@@ -111,7 +111,7 @@
         weight: 200
         local_ip: '10.0.0.254'
         source_int: 'opt1'
-        multi_protocol: true
+        family: ['ipv4', 'ipv6']
         keepalive: 45
         hold_down: 135
         enabled: false
@@ -130,7 +130,7 @@
         weight: 200
         local_ip: '10.0.0.254'
         source_int: 'opt1'
-        multi_protocol: true
+        family: ['ipv4', 'ipv6']
         keepalive: 45
         hold_down: 135
         enabled: false
@@ -149,7 +149,7 @@
         weight: 200
         local_ip: '10.0.0.254'
         source_int: 'opt1'
-        multi_protocol: true
+        family: ['ipv4', 'ipv6']
         keepalive: 45
         hold_down: 135
       register: opn4
@@ -183,6 +183,72 @@
         opn6.changed
       when: not ansible_check_mode
 
+    - name: Adding 3 - failing because of family and multi_protocol
+      oxlorg.opnsense.frr_bgp_neighbor:
+        description: 'ANSIBLE_TEST_1_3'
+        as_number: 1339
+        ip: 'fd00:1::1'
+        family: ['ipv6']
+        multi_protocol: true
+      register: opn_fail6
+      failed_when: not opn_fail6.failed
+
+    - name: Adding 3 - IPv6 neighbor
+      oxlorg.opnsense.frr_bgp_neighbor:
+        description: 'ANSIBLE_TEST_1_3'
+        as_number: 1339
+        ip: 'fd00:1::1'
+      register: opn_af1
+      failed_when: >
+        opn_af1.failed or
+        not opn_af1.changed
+
+    - name: Adding 3 - family defaults to the family of the neighbor IP
+      oxlorg.opnsense.frr_bgp_neighbor:
+        description: 'ANSIBLE_TEST_1_3'
+        as_number: 1339
+        ip: 'fd00:1::1'
+        family: ['ipv6']
+      register: opn_af2
+      failed_when: >
+        opn_af2.failed or
+        opn_af2.changed
+      when: not ansible_check_mode
+
+    - name: Changing 3 - deprecated multi_protocol
+      oxlorg.opnsense.frr_bgp_neighbor:
+        description: 'ANSIBLE_TEST_1_3'
+        as_number: 1339
+        ip: 'fd00:1::1'
+        multi_protocol: true
+      register: opn_af3
+      failed_when: >
+        opn_af3.failed or
+        not opn_af3.changed
+      when: not ansible_check_mode
+
+    - name: Changing 3 - multi_protocol is the same as both families
+      oxlorg.opnsense.frr_bgp_neighbor:
+        description: 'ANSIBLE_TEST_1_3'
+        as_number: 1339
+        ip: 'fd00:1::1'
+        family: ['ipv6', 'ipv4']
+      register: opn_af4
+      failed_when: >
+        opn_af4.failed or
+        opn_af4.changed
+      when: not ansible_check_mode
+
+    - name: Removing 3
+      oxlorg.opnsense.frr_bgp_neighbor:
+        description: 'ANSIBLE_TEST_1_3'
+        state: 'absent'
+      register: opn_af5
+      failed_when: >
+        opn_af5.failed or
+        not opn_af5.changed
+      when: not ansible_check_mode
+
     - name: Removing 2
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_2'
@@ -208,6 +274,7 @@
       loop:
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
       when: not ansible_check_mode
 
     - name: Listing
