@@ -1,0 +1,204 @@
+---
+
+- name: Testing FRR OSPF Areas
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    oxlorg.opnsense.list:
+      target: 'frr_ospf_area'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | length != 0
+
+    - name: Removing - does not exist
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.1.1'
+        state: 'absent'
+      register: opn_pre2
+      failed_when: >
+        opn_pre2.failed or
+        opn_pre2.changed
+
+    - name: Adding 1 - failing because of invalid area
+      oxlorg.opnsense.frr_ospf_area:
+        area: '1'
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Adding 1 - failing because of non-existent prefix-list
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.1.1'
+        prefix_list_in: 'DOES-NOT-EXIST'
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Adding 1
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.1.1'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Adding 1 - nothing changed
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.1.1'
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        opn2.changed
+      when: not ansible_check_mode
+
+    - name: Changing 1
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.1.1'
+        type: 'stub'
+        ranges: ['10.1.0.0/16']
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Disabling 1
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.1.1'
+        type: 'stub'
+        ranges: ['10.1.0.0/16']
+        enabled: false
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        not opn4.changed
+      when: not ansible_check_mode
+
+    - name: Disabling 1 - nothing changed
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.1.1'
+        type: 'stub'
+        ranges: ['10.1.0.0/16']
+        enabled: false
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        opn5.changed
+      when: not ansible_check_mode
+
+    - name: Enabling 1
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.1.1'
+        type: 'stub'
+        ranges: ['10.1.0.0/16']
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        not opn6.changed
+      when: not ansible_check_mode
+
+    - name: Adding dummy prefix-lists
+      oxlorg.opnsense.frr_ospf_prefix_list:
+        name: "{{ item.name }}"
+        seq: "{{ item.seq }}"
+        action: 'permit'
+        network: "{{ item.net }}"
+      loop:
+        - {'name': 'ANSIBLE_TEST_4_1', 'seq': 10, 'net': '10.2.0.0/24'}
+        - {'name': 'ANSIBLE_TEST_4_2', 'seq': 10, 'net': '10.2.0.0/24'}
+      when: not ansible_check_mode
+
+    - name: Adding 2
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.1.2'
+        type: 'nssa'
+        ranges: ['10.2.0.0/16', '10.3.0.0/16']
+        prefix_list_in: 'ANSIBLE_TEST_4_1'
+        prefix_list_out: 'ANSIBLE_TEST_4_2'
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+      when: not ansible_check_mode
+
+    - name: Adding 2 - nothing changed
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.1.2'
+        type: 'nssa'
+        ranges: ['10.3.0.0/16', '10.2.0.0/16']
+        prefix_list_in: 'ANSIBLE_TEST_4_1'
+        prefix_list_out: 'ANSIBLE_TEST_4_2'
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        opn8.changed
+      when: not ansible_check_mode
+
+    - name: Changing 2 - swapping prefix-lists
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.1.2'
+        type: 'nssa'
+        ranges: ['10.2.0.0/16', '10.3.0.0/16']
+        prefix_list_in: 'ANSIBLE_TEST_4_2'
+        prefix_list_out: ''
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed or
+        opn9.diff.after.prefix_list_in != 'ANSIBLE_TEST_4_2'
+      when: not ansible_check_mode
+
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn10
+      failed_when: >
+        'data' not in opn10 or
+        opn10.data | length != 2 or
+        (opn10.data | selectattr('area', 'equalto', '0.0.1.2') | first).prefix_list_in != 'ANSIBLE_TEST_4_2'
+      when: not ansible_check_mode
+
+    - name: Removing 2
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.1.2'
+        state: 'absent'
+      register: opn11
+      failed_when: >
+        opn11.failed or
+        not opn11.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      oxlorg.opnsense.frr_ospf_area:
+        area: "{{ item }}"
+        state: 'absent'
+      loop:
+        - '0.0.1.1'
+        - '0.0.1.2'
+      when: not ansible_check_mode
+
+    - name: Cleanup prefix-lists
+      oxlorg.opnsense.frr_ospf_prefix_list:
+        name: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_4_1'
+        - 'ANSIBLE_TEST_4_2'
+      when: not ansible_check_mode
+
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_clean1
+      failed_when: >
+        'data' not in opn_clean1 or
+        opn_clean1.data | length != 0
+      when: not ansible_check_mode

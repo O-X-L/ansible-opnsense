@@ -144,12 +144,14 @@ run_test_soft 'frr_bgp_neighbor' 1
 run_test_soft 'frr_bgp_redistribution' 1
 run_test_soft 'frr_bgp_peer_group' 1
 run_test_soft 'frr_ospf_general' 1
+run_test_soft 'frr_ospf_area' 1
 run_test_soft 'frr_ospf_prefix_list' 1
 run_test_soft 'frr_ospf_interface' 1
 run_test_soft 'frr_ospf_route_map' 1
 run_test_soft 'frr_ospf_network' 1
 run_test_soft 'frr_ospf_redistribution' 1
 run_test_soft 'frr_ospf3_general' 1
+run_test_soft 'frr_ospf3_area' 1
 run_test_soft 'frr_ospf3_prefix_list' 1
 run_test_soft 'frr_ospf3_interface' 1
 run_test_soft 'frr_ospf3_route_map' 1

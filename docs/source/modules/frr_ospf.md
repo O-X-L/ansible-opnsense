@@ -3,12 +3,14 @@
 **STATE**: stable
 
 **TESTS**: [frr_ospf_general](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_general.yml) |
+[frr_ospf_area](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_area.yml) |
 [frr_ospf_prefix_list](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_prefix_list.yml) |
 [frr_ospf_interface](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_interface.yml) |
 [frr_ospf_route_map](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_route_map.yml) |
 [frr_ospf_network](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_network.yml) |
 [frr_ospf_redistribution](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf_redistribution.yml) |
 [frr_ospf3_general](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf3_general.yml) |
+[frr_ospf3_area](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf3_area.yml) |
 [frr_ospf3_prefix_list](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf3_prefix_list.yml) |
 [frr_ospf3_interface](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf3_interface.yml) |
 [frr_ospf3_route_map](https://github.com/oxlorg/collection_opnsense/blob/latest/tests/frr_ospf3_route_map.yml) |
@@ -97,6 +99,19 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | network_type        | string  | false                                  | -                     | nw_type         | One of: 'broadcast', 'non-broadcast', 'point-to-multipoint', 'point-to-point'                                                                                                                                                                                    |
 | reload              | boolean | false                                  | true                  | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
+#### oxlorg.opnsense.frr_ospf_area
+
+Since OPNsense 26.7 (os-frr 2.0) areas are separate entries. Networks and interfaces reference them by their ID, so an area needs to exist before it can be used there.
+
+| Parameter       | Type    | Required | Default value | Aliases                | Comment                                                                                                                  |
+|:----------------|:--------|:---------|:--------------|:-----------------------|:-------------------------------------------------------------------------------------------------------------------------|
+| area            | string  | true     | -             | id, area_id            | Area ID in wildcard mask style like 0.0.0.0 and no decimal 0. Used to match existing areas                               |
+| type            | string  | false    | 'normal'      | -                      | Area type. One of: 'normal', 'stub', 'stub no-summary', 'nssa', 'nssa no-summary'                                                                                               |
+| ranges          | list    | false    | []            | range, area_range      | Networks to summarize for this area like 192.168.0.0/23                                                                           |
+| prefix_list_in  | string  | false    | -             | prefix_in, pre_in      | Name of the prefix-list to filter routes coming into this area                                                           |
+| prefix_list_out | string  | false    | -             | prefix_out, pre_out    | Name of the prefix-list to filter routes going out of this area                                                          |
+| reload          | boolean | false    | false         | apply                  | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
+
 #### oxlorg.opnsense.frr_ospf_prefix_list
 
 | Parameter | Type    | Required | Default value | Aliases    | Comment                                                                                                                                                                                                                                                        |
@@ -171,6 +186,19 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | priority       | integer  | false    | -                     | prio     | Integer between 0 and 4294967295                                                                                                                                                                                                                                 |
 | network_type       | string  | false    | -                     | nw_type         | One of: 'broadcast', 'point-to-point'                                                                                                                                                                                                                            |
 | reload       | boolean | false    | true                  | -         | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
+
+#### oxlorg.opnsense.frr_ospf3_area
+
+Since OPNsense 26.7 (os-frr 2.0) areas are separate entries. Networks and interfaces reference them by their ID, so an area needs to exist before it can be used there.
+
+| Parameter       | Type    | Required | Default value | Aliases                | Comment                                                                                                                  |
+|:----------------|:--------|:---------|:--------------|:-----------------------|:-------------------------------------------------------------------------------------------------------------------------|
+| area            | string  | true     | -             | id, area_id            | Area ID in wildcard mask style like 0.0.0.0 and no decimal 0. Used to match existing areas                               |
+| type            | string  | false    | 'normal'      | -                      | Area type. One of: 'normal', 'nssa', 'nssa no-summary'                                                                                               |
+| ranges          | list    | false    | []            | range, area_range      | Networks to summarize for this area like 2001:db8::/48                                                                           |
+| prefix_list_in  | string  | false    | -             | prefix_in, pre_in      | Name of the prefix-list to filter routes coming into this area                                                           |
+| prefix_list_out | string  | false    | -             | prefix_out, pre_out    | Name of the prefix-list to filter routes going out of this area                                                          |
+| reload          | boolean | false    | false         | apply                  | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
 #### oxlorg.opnsense.frr_ospf3_prefix_list
 
@@ -259,6 +287,71 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
     - name: Printing settings
       ansible.builtin.debug:
         var: existing_entries.data
+```
+
+#### oxlorg.opnsense.frr_ospf_area
+
+```yaml
+- hosts: firewalls
+  connection: local
+  gather_facts: false
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
+      api_credential_file: '/home/guy/.secret/opn.key'
+
+    oxlorg.opnsense.list:
+      target: 'frr_ospf_area'
+
+  tasks:
+    - name: Example
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.0.1'
+        # type: 'normal'
+        # ranges: []
+        # prefix_list_in: ''
+        # prefix_list_out: ''
+        # enabled: true
+
+    - name: Adding the backbone area
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.0.0'
+
+    - name: Adding prefix-list
+      oxlorg.opnsense.frr_ospf_prefix_list:
+        name: 'area1-in'
+        seq: 10
+        action: 'permit'
+        network: '10.0.0.0/24'
+
+    - name: Configuring area
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.0.1'
+        type: 'stub'
+        ranges: ['192.168.0.0/23']
+        prefix_list_in: 'area1-in'
+
+    - name: Disabling area
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.0.1'
+        type: 'stub'
+        ranges: ['192.168.0.0/23']
+        prefix_list_in: 'area1-in'
+        enabled: false
+
+    - name: Pulling areas
+      oxlorg.opnsense.list:
+      #  target: 'frr_ospf_area'
+      register: existing_entries
+
+    - name: Printing areas
+      ansible.builtin.debug:
+        var: existing_entries.data
+
+    - name: Removing area
+      oxlorg.opnsense.frr_ospf_area:
+        area: '0.0.0.1'
+        state: 'absent'
 ```
 
 #### oxlorg.opnsense.frr_ospf_prefix_list
@@ -596,6 +689,71 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
     - name: Printing settings
       ansible.builtin.debug:
         var: existing_entries.data
+```
+
+#### oxlorg.opnsense.frr_ospf3_area
+
+```yaml
+- hosts: firewalls
+  connection: local
+  gather_facts: false
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: 'opnsense.template.opnsense.oxl.app'
+      api_credential_file: '/home/guy/.secret/opn.key'
+
+    oxlorg.opnsense.list:
+      target: 'frr_ospf3_area'
+
+  tasks:
+    - name: Example
+      oxlorg.opnsense.frr_ospf3_area:
+        area: '0.0.0.1'
+        # type: 'normal'
+        # ranges: []
+        # prefix_list_in: ''
+        # prefix_list_out: ''
+        # enabled: true
+
+    - name: Adding the backbone area
+      oxlorg.opnsense.frr_ospf3_area:
+        area: '0.0.0.0'
+
+    - name: Adding prefix-list
+      oxlorg.opnsense.frr_ospf3_prefix_list:
+        name: 'area1-in'
+        seq: 10
+        action: 'permit'
+        network: '2001:db8:1::/64'
+
+    - name: Configuring area
+      oxlorg.opnsense.frr_ospf3_area:
+        area: '0.0.0.1'
+        type: 'nssa'
+        ranges: ['2001:db8::/48']
+        prefix_list_in: 'area1-in'
+
+    - name: Disabling area
+      oxlorg.opnsense.frr_ospf3_area:
+        area: '0.0.0.1'
+        type: 'nssa'
+        ranges: ['2001:db8::/48']
+        prefix_list_in: 'area1-in'
+        enabled: false
+
+    - name: Pulling areas
+      oxlorg.opnsense.list:
+      #  target: 'frr_ospf3_area'
+      register: existing_entries
+
+    - name: Printing areas
+      ansible.builtin.debug:
+        var: existing_entries.data
+
+    - name: Removing area
+      oxlorg.opnsense.frr_ospf3_area:
+        area: '0.0.0.1'
+        state: 'absent'
 ```
 
 #### oxlorg.opnsense.frr_ospf3_prefix_list

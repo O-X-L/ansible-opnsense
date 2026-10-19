@@ -51,7 +51,7 @@ TARGETS = [
     'haproxy_maintenance', 'haproxy_cpu', 'haproxy_user', 'haproxy_group', 'haproxy_acl', 'haproxy_action',
     'haproxy_lua', 'haproxy_fcgi', 'haproxy_errorfile', 'haproxy_mailer', 'haproxy_mapfile',
     'haproxy_resolver', 'haproxy_backend', 'haproxy_frontend', 'haproxy_healthcheck', 'haproxy_server',
-    'wazuh_agent', 'nut',
+    'wazuh_agent', 'nut', 'frr_ospf_area', 'frr_ospf3_area',
 ]
 
 
@@ -289,6 +289,14 @@ def run_module():
         elif target == 'frr_ospf_network':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.frr_ospf_network \
                 import Network as Target_Obj
+
+        elif target == 'frr_ospf_area':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.frr_ospf_area \
+                import Area as Target_Obj
+
+        elif target == 'frr_ospf3_area':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.frr_ospf3_area \
+                import Area as Target_Obj
 
         elif target == 'frr_ospf_redistribution':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.frr_ospf_redistribution \
