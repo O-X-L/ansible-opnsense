@@ -44,13 +44,6 @@ This plugin has some limitations you need to know of:
 Info
 ****
 
-Savepoint
-=========
-
-You can prevent lockout-situations using the savepoint systems:
-
-- :ref:`oxlorg.opnsense.savepoint <modules_savepoint>`
-
 Web-UI
 ======
 

@@ -13,7 +13,6 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
 
 try:
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import OPN_MOD_ARGS
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.savepoint import SavePoint
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
@@ -40,38 +39,14 @@ def run_module():
         **OPN_MOD_ARGS
     )
 
-    result = dict(
-        changed=False,
-        diff={
-            'before': {},
-            'after': {},
-        },
-        revision='',
-    )
-
-    module = AnsibleModule(
+    AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
+    ).fail_json(
+        'This module was removed as OPNsense 26.7 dropped the firewall savepoint API '
+        '(savepoint, revert, cancelRollback and the rollback timer of apply) without a replacement. '
+        'See: https://github.com/opnsense/core/pull/10411'
     )
-
-    sp = SavePoint(module=module, result=result)
-
-    if module.params['action'] == 'create':
-        result['revision'] = sp.create()
-
-    else:
-        if module.params['revision'] is None:
-            module.fail_json('You need to provide a revision to execute this action!')
-
-        if module.params['action'] == 'apply':
-            sp.apply()
-
-        elif module.params['action'] == 'revert':
-            sp.revert()
-
-        else:
-            sp.cancel_rollback()
-    module.exit_json(**result)
 
 
 def main():
