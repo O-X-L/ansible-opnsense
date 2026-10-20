@@ -15,7 +15,7 @@ class General(GeneralModule):
     API_CONT = 'ospfsettings'
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
-        'carp', 'id', 'cost', 'enabled', 'passive_ints',
+        'carp', 'id', 'cost', 'enabled',
         'originate', 'originate_always', 'originate_metric',
     ]
     FIELDS_ALL = FIELDS_CHANGE
@@ -25,11 +25,9 @@ class General(GeneralModule):
         'cost': 'costreference',
         'originate_always': 'originatealways',
         'originate_metric': 'originatemetric',
-        'passive_ints': 'passiveinterfaces',
     }
     FIELDS_TYPING = {
         'bool': ['enabled', 'carp', 'originate', 'originate_always'],
-        'list': ['passive_ints'],
         'int': ['originate_metric', 'cost'],
     }
     INT_VALIDATIONS = {

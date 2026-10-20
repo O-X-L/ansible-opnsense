@@ -33,7 +33,12 @@ def run_module():
         auth_key_id=dict(type='int', required=False, default=1),
         area=dict(
             type='str', required=False,
-            description='Area in wildcard mask style like 0.0.0.0 and no decimal 0'
+            description='ID of an existing area in wildcard mask style like 0.0.0.0 and no decimal 0. '
+                        'Can be omitted if the area is assigned by a network'
+        ),
+        passive=dict(
+            type='bool', required=False, default=False,
+            description='Do not send OSPF packets on this interface, but still advertise its network'
         ),
         cost=dict(type='int', required=False),
         cost_demoted=dict(type='int', required=False, default=65535),
