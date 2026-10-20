@@ -255,7 +255,7 @@ oxlorg.opnsense.ipsec_general
     "unity_split_include","list of strings","False","[]","\-","Comma-separated list of subnets to tunnel. The unity plugin provides a connection specific approach to assign this attribute"
     "unity_dns_search","strings","False","\-","\-","Default search domain used when resolving host names via the assigned DNS servers"
     "unity_dns_split","strings","False","\-","\-","If split tunneling is used clients might not install the assigned DNS servers globally. This space-separated list of domain names allows clients, such as macOS, to selectively query the assigned DNS servers"
-    "unity_login_banner","strings","False","\-","\-","Message displayed on certain clients after login"
+    "unity_login_banner","strings","False","\-","\-","Message displayed on certain clients after login. OPNsense no longer accepts spaces, tabs or line breaks in it"
     "unity_save_password","boolean","False","False","\-","Allow client to save Xauth password in local storage"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 

@@ -245,7 +245,8 @@ def run_module():
         ),
         unity_login_banner=dict(
           type='str', required=False,
-          description='Message displayed on certain clients after login',
+          description='Message displayed on certain clients after login. '
+                      'OPNsense no longer accepts spaces, tabs or line breaks in it',
         ),
         unity_save_password=dict(
           type='bool', required=False, default=False,
