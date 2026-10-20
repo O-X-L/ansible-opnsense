@@ -455,22 +455,6 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
 
-    - name: Cleanup OSPF areas
-      oxlorg.opnsense.frr_ospf_area:
-        area: "{{ item }}"
-        state: 'absent'
-      loop:
-        - '0.0.1.1'
-        - '0.0.1.2'
-
-    - name: Cleanup OSPFv3 areas
-      oxlorg.opnsense.frr_ospf3_area:
-        area: "{{ item }}"
-        state: 'absent'
-      loop:
-        - '0.0.1.1'
-        - '0.0.1.2'
-
     - name: Cleanup OSPF networks
       oxlorg.opnsense.frr_ospf_network:
         ip: "{{ item.ip }}"
@@ -481,6 +465,36 @@
         - {'ip': '10.0.1.0', 'mask': 30}
         - {'ip': '10.0.2.0', 'mask': 24}
         - {'ip': '10.0.3.0', 'mask': 24}
+
+    - name: Cleanup OSPF interfaces
+      oxlorg.opnsense.frr_ospf_interface:
+        interface: "{{ item }}"
+        state: 'absent'
+        match_fields: ['interface']
+      loop:
+        - 'opt1'
+        - 'lan'
+
+    # areas can only be removed once no network or interface links to them
+    - name: Cleanup OSPF areas
+      oxlorg.opnsense.frr_ospf_area:
+        area: "{{ item }}"
+        state: 'absent'
+      loop:
+        - '0.0.0.0'
+        - '0.0.0.1'
+        - '0.0.10.1'
+        - '0.0.1.1'
+        - '0.0.1.2'
+
+    - name: Cleanup OSPFv3 areas
+      oxlorg.opnsense.frr_ospf3_area:
+        area: "{{ item }}"
+        state: 'absent'
+      loop:
+        - '0.0.0.0'
+        - '0.0.1.1'
+        - '0.0.1.2'
 
     - name: Cleanup OSPF prefix-lists
       oxlorg.opnsense.frr_ospf_prefix_list:
