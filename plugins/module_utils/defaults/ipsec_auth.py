@@ -1,6 +1,6 @@
 IPSEC_AUTH_MOD_ARGS = dict(
     match_fields=dict(
-        type='list', required=False, elements='str',
+        type='list', required=False, elements='str', default=['name'],
         choices=['name', 'connection', 'round', 'authentication', 'id', 'eap_id'],
         description='Fields used to match existing auth entries before updating them'
     ),

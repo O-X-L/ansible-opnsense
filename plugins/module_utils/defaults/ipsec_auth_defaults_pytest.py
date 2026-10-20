@@ -3,3 +3,5 @@ def test_match_fields_is_exposed():
 
     assert 'match_fields' in IPSEC_AUTH_MOD_ARGS
     assert IPSEC_AUTH_MOD_ARGS['match_fields']['type'] == 'list'
+    # without a default the module never matches existing entries and creates duplicates
+    assert IPSEC_AUTH_MOD_ARGS['match_fields']['default'] == ['name']

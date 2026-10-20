@@ -137,6 +137,7 @@ oxlorg.opnsense.ipsec_auth_local
     "eap_id","string","false","\-","\-","Must be defined if authentication is set to one of: ['eap-tls', 'eap-mschapv2', 'eap-radius']; Client EAP-Identity to use in EAP-Identity exchange and the EAP method"
     "certificates","list","false","\-","certs","Certificate or public-key must be defined if authentication is set to 'pubkey'; List of certificate candidates to use for authentication"
     "public_keys","list","false","\-","pubkeys","Certificate or public-key must be defined if authentication is set to 'pubkey'; List of raw public key candidates to use for authentication"
+    "match_fields","list of strings","false","['name']","\-","One or more of: 'name', 'connection', 'round', 'authentication', 'id', 'eap_id'. Fields that are used to match configured entries with the running config - if any of those fields are changed, the module will think it's a new entry"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_auth_remote
@@ -156,6 +157,7 @@ oxlorg.opnsense.ipsec_auth_remote
     "public_keys","list","false","\-","pubkeys","Certificate or public-key must be defined if authentication is set to 'pubkey'; List of raw public key candidates to use for authentication"
     "ca_certificates","list","false","\-","ca_certs","List of certificate authority candidates to use for authentication"
     "eap_radius_groups","list","false","\-","radius_groups, groups","List of group memberships to require. The client must prove membership to at least one of the specified groups"
+    "match_fields","list of strings","false","['name']","\-","One or more of: 'name', 'connection', 'round', 'authentication', 'id', 'eap_id'. Fields that are used to match configured entries with the running config - if any of those fields are changed, the module will think it's a new entry"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_cert
