@@ -1,6 +1,8 @@
+import pytest
+
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.nat_source import SNat
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.test.mock_pytest import \
-    MockAnsibleModule
+    MockAnsibleModule, AnsibleError
 
 
 def test_nat_source_uses_rule_endpoints():
@@ -35,6 +37,7 @@ def test_nat_source_normalizes_protocol_to_existing_opnsense_case(mocker):
     result = {'changed': False, 'diff': {'before': {}, 'after': {}}}
     snat = SNat(module=module, result=result)
 
+    mocker.patch.object(snat, '_check_mode')
     mocker.patch.object(snat, 'find')
     mocker.patch.object(snat, '_base_check')
 
@@ -90,6 +93,7 @@ def test_nat_source_existing_uppercase_protocol_stays_idempotent(mocker):
         'static_port': False,
     }
 
+    mocker.patch.object(snat, '_check_mode')
     mocker.patch.object(snat, 'find')
     mocker.patch.object(snat, '_base_check')
 
@@ -125,9 +129,56 @@ def test_nat_source_any_protocol_stays_lowercase(mocker):
     result = {'changed': False, 'diff': {'before': {}, 'after': {}}}
     snat = SNat(module=module, result=result)
 
+    mocker.patch.object(snat, '_check_mode')
     mocker.patch.object(snat, 'find')
     mocker.patch.object(snat, '_base_check')
 
     snat.check()
 
     assert snat.p['protocol'] == 'any'
+
+
+def _mode_response(mode: str, path: str = 'general') -> dict:
+    modes = {m: {'value': m, 'selected': int(m == mode)} for m in ['automatic', 'hybrid', 'advanced', 'disabled']}
+    if path == 'general':
+        return {'filter': {'general': {'snat_mode': modes}}}
+
+    return {'filter': {'settings': {'nat': {'snat_mode': modes}}}}
+
+
+def test_nat_source_manual_mode_passes(mocker):
+    module = MockAnsibleModule()
+    module.params.update({'state': 'present'})
+    snat = SNat(module=module, result={'changed': False, 'diff': {'before': {}, 'after': {}}})
+    snat.s = mocker.Mock()
+
+    for path in ['general', 'settings']:
+        for mode in SNat.MANUAL_MODES:
+            snat.s.get.return_value = _mode_response(mode, path)
+            snat._check_mode()
+
+
+def test_nat_source_automatic_mode_fails_on_present(mocker):
+    module = MockAnsibleModule()
+    module.params.update({'state': 'present'})
+    snat = SNat(module=module, result={'changed': False, 'diff': {'before': {}, 'after': {}}})
+    snat.s = mocker.Mock()
+    snat.s.get.return_value = _mode_response('automatic')
+
+    with pytest.raises(AnsibleError, match="'automatic'"):
+        snat._check_mode()
+
+
+def test_nat_source_automatic_mode_warns_on_absent(mocker):
+    module = MockAnsibleModule()
+    module.params.update({'state': 'absent'})
+    module.warn = mocker.Mock()
+    module.fail_json = mocker.Mock()
+    snat = SNat(module=module, result={'changed': False, 'diff': {'before': {}, 'after': {}}})
+    snat.s = mocker.Mock()
+    snat.s.get.return_value = _mode_response('disabled')
+
+    snat._check_mode()
+
+    module.fail_json.assert_not_called()
+    module.warn.assert_called_once()
