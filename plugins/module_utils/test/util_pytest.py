@@ -1,6 +1,8 @@
+import os
+import tempfile
 from datetime import datetime
 
-FILE_TEST_LOG = '/tmp/ansible-opnsense-test.log'
+FILE_TEST_LOG = os.path.join(tempfile.gettempdir(), 'ansible-opnsense-test.log')
 
 
 def log_test(msg: str):
