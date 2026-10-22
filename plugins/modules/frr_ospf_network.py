@@ -31,7 +31,8 @@ def run_module():
         mask=dict(type='int', required=True, aliases=['nw_mask', 'network_mask']),
         area=dict(
             type='str', required=False,
-            description='ID of an existing area in wildcard mask style like 0.0.0.0 and no decimal 0. '
+            description='ID of an existing area in dotted-quad format (A.B.C.D) like 0.0.0.0, '
+                        'not in decimal format (0). '
                         'Only use Area in Interface tab or in Network tab once'
         ),
         match_fields=dict(

@@ -33,7 +33,8 @@ def run_module():
         auth_key_id=dict(type='int', required=False, default=1),
         area=dict(
             type='str', required=False,
-            description='ID of an existing area in wildcard mask style like 0.0.0.0 and no decimal 0. '
+            description='ID of an existing area in dotted-quad format (A.B.C.D) like 0.0.0.0, '
+                        'not in decimal format (0). '
                         'Can be omitted if the area is assigned by a network'
         ),
         passive=dict(
