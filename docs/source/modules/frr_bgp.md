@@ -191,7 +191,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   tasks:
     - name: Example
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         # id: '10.0.0.1'
         # graceful: false
         # networks: []
@@ -200,14 +200,14 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 
     - name: Configuring general settings
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         id: '10.0.0.1'
         graceful: true
         networks: ['10.0.10.0/24']
 
     - name: Disabling BGP
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         id: '10.0.0.1'
         graceful: true
         networks: ['10.0.10.0/24']
@@ -243,7 +243,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   tasks:
     - name: Example
       oxlorg.opnsense.frr_bgp_neighbor:
-        as_number: 1337
+        as_number: 64496
         ip: '10.0.0.1'
         # password: "{{ 'random' | hash('md5') }}"
         # weight: 200
@@ -274,7 +274,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
     - name: Creating neighbor
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'test2'
-        as_number: 1337
+        as_number: 64496
         ip: '10.0.0.1'
         password: "{{ 'random' | hash('md5') }}"
         weight: 200
@@ -287,7 +287,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
     - name: Disabling neighbor
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'test2'
-        as_number: 1337
+        as_number: 64496
         ip: '10.0.0.1'
         password: "{{ 'random' | hash('md5') }}"
         weight: 200
@@ -604,7 +604,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'test1'
         # as_mode:
-        as_number: 1337
+        as_number: 64496
         # source_int: 'opt1'
         # next_hop_self: false
         # send_default_route: false
@@ -618,13 +618,13 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
     - name: Creating peer group
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'test2'
-        as_number: 1337
+        as_number: 64496
         source_int: 'opt1'
 
     - name: Disabling peer group
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'test2'
-        as_number: 1337
+        as_number: 64496
         source_int: 'opt1'
         enabled: false
 

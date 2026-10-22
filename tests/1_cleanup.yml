@@ -336,7 +336,7 @@
 
     - name: Cleanup FRR BGP general settings
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         enabled: false
 
     - name: Cleanup FRR BGP neighbors

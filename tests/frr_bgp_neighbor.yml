@@ -38,7 +38,7 @@
     - name: Adding 1 - failing because of invalid keepalive
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
         keepalive: 3000
       register: opn_fail1
       failed_when: not opn_fail1.failed
@@ -46,7 +46,7 @@
     - name: Adding 1 - failing because of invalid ip-address
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
         ip: 'INVALID-IP'
       register: opn_fail2
       failed_when: not opn_fail2.failed
@@ -54,7 +54,7 @@
     - name: Adding 1 - failing because of invalid local ip-address
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
         local_ip: 'INVALID-IP'
       register: opn_fail3
       failed_when: not opn_fail3.failed
@@ -62,7 +62,7 @@
     - name: Adding 1 - failing because of non-existent prefix-list
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
         prefix_list_in: 'DOES-NOT-EXIST'
       register: opn_fail4
       failed_when: not opn_fail4.failed
@@ -70,7 +70,7 @@
     - name: Adding 1 - failing because of non-existent route-map
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
         route_map_out: 'DOES-NOT-EXIST'
       register: opn_fail5
       failed_when: not opn_fail5.failed
@@ -78,7 +78,7 @@
     - name: Adding 1
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
         ip: '10.0.0.1'
       register: opn1
       failed_when: >
@@ -88,7 +88,7 @@
     - name: Changing 1
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
         ip: '10.0.0.1'
         password: "{{ 'random' | hash('md5') }}"
         weight: 200
@@ -105,7 +105,7 @@
     - name: Disabling 1
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
         ip: '10.0.0.1'
         password: "{{ 'random' | hash('md5') }}"
         weight: 200
@@ -124,7 +124,7 @@
     - name: Disabling 1 - nothing changed
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
         ip: '10.0.0.1'
         password: "{{ 'random' | hash('md5') }}"
         weight: 200
@@ -143,7 +143,7 @@
     - name: Enabling 1
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
         ip: '10.0.0.1'
         password: "{{ 'random' | hash('md5') }}"
         weight: 200
@@ -161,7 +161,7 @@
     - name: Adding 2
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_2'
-        as_number: 1338
+        as_number: 64497
         ip: '10.0.1.1'
         password: "{{ 'oh-so-random' | hash('md5') }}"
         local_ip: '10.0.1.254'
@@ -173,7 +173,7 @@
     - name: Adding 2 - nothing changed
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_2'
-        as_number: 1338
+        as_number: 64497
         ip: '10.0.1.1'
         password: "{{ 'oh-so-random' | hash('md5') }}"
         local_ip: '10.0.1.254'
@@ -186,7 +186,7 @@
     - name: Adding 3 - failing because of family and multi_protocol
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_3'
-        as_number: 1339
+        as_number: 64498
         ip: 'fd00:1::1'
         family: ['ipv6']
         multi_protocol: true
@@ -196,7 +196,7 @@
     - name: Adding 3 - IPv6 neighbor
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_3'
-        as_number: 1339
+        as_number: 64498
         ip: 'fd00:1::1'
       register: opn_af1
       failed_when: >
@@ -206,7 +206,7 @@
     - name: Adding 3 - family defaults to the family of the neighbor IP
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_3'
-        as_number: 1339
+        as_number: 64498
         ip: 'fd00:1::1'
         family: ['ipv6']
       register: opn_af2
@@ -218,7 +218,7 @@
     - name: Changing 3 - deprecated multi_protocol
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_3'
-        as_number: 1339
+        as_number: 64498
         ip: 'fd00:1::1'
         multi_protocol: true
       register: opn_af3
@@ -230,7 +230,7 @@
     - name: Changing 3 - multi_protocol is the same as both families
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_1_3'
-        as_number: 1339
+        as_number: 64498
         ip: 'fd00:1::1'
         family: ['ipv6', 'ipv4']
       register: opn_af4
@@ -332,7 +332,7 @@
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_2_1'
         prefix_list_in: 'ANSIBLE_TEST_2_1'
-        as_number: 1337
+        as_number: 64496
         ip: '10.0.0.1'
       register: opn11
       failed_when: >
@@ -351,7 +351,7 @@
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'ANSIBLE_TEST_2_2'
         route_map_out: 'ANSIBLE_TEST_3_1'
-        as_number: 1338
+        as_number: 64497
         ip: '10.0.1.1'
       register: opn13
       failed_when: >
