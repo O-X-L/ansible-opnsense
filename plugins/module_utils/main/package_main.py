@@ -10,7 +10,7 @@ def process(m: AnsibleModule, p: dict, r: dict) -> None:
     s = Session(module=m)
 
     # pulling stati of all packages
-    package_stati = Package(module=m, session=s, name='').search_call()
+    package_stati = Package(module=m, session=s, name='').search_all()
 
     for pkg_name in p['name']:
         pkg = Package(module=m, name=pkg_name, session=s)

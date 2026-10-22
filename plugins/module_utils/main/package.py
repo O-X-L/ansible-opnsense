@@ -32,7 +32,7 @@ class Package:
 
     def check(self) -> None:
         if self.package_stati is None:
-            self.package_stati = self.search_call()
+            self.package_stati = self.search_all()
 
         self.r['diff']['before'] = {'installed': False, 'locked': False}
 
@@ -81,7 +81,7 @@ class Package:
     def get_existing(self) -> list:
         entries = []
 
-        for entry in self.search_call():
+        for entry in self.search_all():
             if is_true(entry['installed']):
                 entries.append({
                     'name': entry['name'],
@@ -91,7 +91,8 @@ class Package:
 
         return entries
 
-    def search_call(self) -> dict:
+    # not named search_call - the list module would prefer it over get_existing (installed packages only)
+    def search_all(self) -> dict:
         return self.s.get(cnf={'command': 'info', **self.call_cnf})['package']
 
     def change_state(self) -> None:
