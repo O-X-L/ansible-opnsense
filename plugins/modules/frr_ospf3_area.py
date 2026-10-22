@@ -29,7 +29,7 @@ def run_module():
     module_args = dict(
         area=dict(
             type='str', required=True, aliases=['id', 'area_id'],
-            description='Area ID in wildcard mask style like 0.0.0.0 and no decimal 0'
+            description='Area ID in dotted-quad format (A.B.C.D) like 0.0.0.0, not in decimal format (0)'
         ),
         type=dict(
             type='str', required=False, default='normal',

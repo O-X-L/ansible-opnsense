@@ -109,7 +109,7 @@ Since OPNsense 26.7 (os-frr 2.0) areas are separate entries. Networks and interf
 
 | Parameter       | Type    | Required | Default value | Aliases                | Comment                                                                                                                  |
 |:----------------|:--------|:---------|:--------------|:-----------------------|:-------------------------------------------------------------------------------------------------------------------------|
-| area            | string  | true     | -             | id, area_id            | Area ID in wildcard mask style like 0.0.0.0 and no decimal 0. Used to match existing areas                               |
+| area            | string  | true     | -             | id, area_id            | Area ID in dotted-quad format (A.B.C.D) like 0.0.0.0, not in decimal format (0). Used to match existing areas                               |
 | type            | string  | false    | 'normal'      | -                      | Area type. One of: 'normal', 'stub', 'stub no-summary', 'nssa', 'nssa no-summary'                                                                                               |
 | ranges          | list    | false    | []            | range, area_range      | Networks to summarize for this area like 192.168.0.0/23                                                                           |
 | prefix_list_in  | string  | false    | -             | prefix_in, pre_in      | Name of the prefix-list to filter routes coming into this area                                                           |
@@ -188,7 +188,7 @@ Since OPNsense 26.7 (os-frr 2.0) areas are separate entries. Networks and interf
 
 | Parameter       | Type    | Required | Default value | Aliases                | Comment                                                                                                                  |
 |:----------------|:--------|:---------|:--------------|:-----------------------|:-------------------------------------------------------------------------------------------------------------------------|
-| area            | string  | true     | -             | id, area_id            | Area ID in wildcard mask style like 0.0.0.0 and no decimal 0. Used to match existing areas                               |
+| area            | string  | true     | -             | id, area_id            | Area ID in dotted-quad format (A.B.C.D) like 0.0.0.0, not in decimal format (0). Used to match existing areas                               |
 | type            | string  | false    | 'normal'      | -                      | Area type. One of: 'normal', 'nssa', 'nssa no-summary'                                                                                               |
 | ranges          | list    | false    | []            | range, area_range      | Networks to summarize for this area like 2001:db8::/48                                                                           |
 | prefix_list_in  | string  | false    | -             | prefix_in, pre_in      | Name of the prefix-list to filter routes coming into this area                                                           |
