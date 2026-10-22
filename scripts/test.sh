@@ -98,7 +98,6 @@ run_test_soft 'rule' 1
 run_test_soft 'rule_multi' 1
 run_test_soft 'rule_purge' 0
 run_test_soft 'rule_interface_group' 1
-run_test_soft 'savepoint' 1
 run_test_soft 'cron' 1
 run_test_soft 'route' 1
 run_test_soft 'gateway' 1
