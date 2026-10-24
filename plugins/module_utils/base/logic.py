@@ -192,7 +192,7 @@ class BaseLogic:
                 if getattr(self, self.ATTR_SKIP_AUTO_ENTRIES, False) and base_entry.get('is_automatic'):
                     continue
 
-                elif force_details or not base_match_fields or \
+                if force_details or not base_match_fields or \
                         all(base_entry[field] == self.p[field] for field in match_fields):
                     detail_entry = self._search_path_handling(
                         self._api_get({
