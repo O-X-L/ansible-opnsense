@@ -97,7 +97,7 @@ def run_module():
             type='int', default=3600, required=False, aliases=['rekey_time', 'rekey'],
         ),
         match_fields=dict(
-            type='list', required=False, elements='str',
+            type='list', required=False, elements='str', default=['name'],
             choices=[
                 'name', 'connection', 'mode', 'request_id', 'esp_proposals',
                 'sha256_96', 'start_action', 'close_action', 'dpd_action',

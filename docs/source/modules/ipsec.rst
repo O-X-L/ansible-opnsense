@@ -102,6 +102,7 @@ oxlorg.opnsense.ipsec_child
     "request_id","integer","false","\-","req_id, reqid","This might be helpful in some scenarios, like route based tunnels (VTI), but works only if each CHILD_SA configuration is instantiated not more than once. The default uses dynamic reqids, allocated incrementally"
     "esp_proposals","list","false","['default']","esp_props, esp","Choose 'default' or at least one of the options shown in the Web-UI"
     "rekey_seconds","integer","false","3600","rekey_time, rekey","Time to schedule CHILD_SA rekeying. CHILD_SA rekeying refreshes key material, optionally using a Diffie-Hellman exchange if a group is specified in the proposal. To avoid rekey collisions initiated by both ends simultaneously, a value in the range of rand_time gets subtracted to form the effective soft lifetime. By default CHILD_SA rekeying is scheduled every hour, minus rand_time"
+    "match_fields","list of strings","false","['name']","\-","One or more of: 'name', 'connection', 'mode', 'request_id', 'esp_proposals', 'sha256_96', 'start_action', 'close_action', 'dpd_action', 'policies', 'local_net', 'remote_net', 'rekey_seconds', 'enabled'. Fields that are used to match configured entries with the running config - if any of those fields are changed, the module will think it's a new entry"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_vti
