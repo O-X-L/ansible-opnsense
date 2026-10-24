@@ -286,6 +286,18 @@
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
 
+    - name: Cleanup Assigned Interfaces 1/2
+      oxlorg.opnsense.interface_assignment:
+        identifier: 'opt3'
+        state: 'absent'
+
+    - name: Cleanup Assigned Interfaces 2/2
+      oxlorg.opnsense.interface_assignment:
+        identifier: 'opt2'
+        description: 'TEST2'
+        device: 'vtnet3'
+        enabled: false
+
     - name: Cleanup source-nat
       oxlorg.opnsense.source_nat:
         description: "{{ item }}"

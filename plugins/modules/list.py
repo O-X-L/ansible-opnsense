@@ -40,17 +40,18 @@ TARGETS = [
     'interface_lagg', 'interface_loopback', 'unbound_dnsbl', 'dhcp_reservation', 'acme_general', 'acme_account',
     'acme_validation', 'acme_action', 'acme_certificate', 'postfix_general', 'postfix_domain', 'postfix_recipient',
     'postfix_recipientbcc', 'postfix_sender', 'postfix_senderbcc', 'postfix_sendercanonical', 'postfix_headercheck',
-    'postfix_address', 'dhcp_subnet', 'dhcp_general', 'dhcp_ha_peer', 'interface_gre', 'nat_one_to_one',
-    'nat_source', 'nat_destination', 'ipsec_manual_spd', 'hasync_general', 'snapshot', 'frr_bgp_redistribution',
-    'frr_ospf_redistribution', 'frr_ospf3_redistribution', 'frr_ospf3_route_map', 'frr_ospf3_prefix_list',
-    'frr_ospf3_network', 'frr_bgp_peer_group', 'user', 'group', 'privilege', 'interface_bridge', 'interface_gif',
-    'neighbor', 'dnsmasq_general', 'ipsec_general', 'dnsmasq_domain', 'dnsmasq_host', 'dnsmasq_range',
-    'dnsmasq_option', 'dnsmasq_boot', 'dnsmasq_tag', 'haproxy_general_settings', 'haproxy_general_cache',
-    'haproxy_general_defaults', 'haproxy_general_logging', 'haproxy_general_peers', 'haproxy_general_stats',
-    'haproxy_general_tuning', 'haproxy_maintenance', 'haproxy_cpu', 'haproxy_user', 'haproxy_group', 'haproxy_acl',
-    'haproxy_action', 'haproxy_lua', 'haproxy_fcgi', 'haproxy_errorfile', 'haproxy_mailer', 'haproxy_mapfile',
+    'postfix_address', 'dhcp_subnet', 'dhcp_general', 'interface_gre', 'nat_one_to_one', 'nat_source',
+    'nat_destination',
+    'ipsec_manual_spd', 'hasync_general', 'snapshot', 'frr_bgp_redistribution', 'frr_ospf_redistribution',
+    'frr_ospf3_redistribution', 'frr_ospf3_route_map', 'frr_ospf3_prefix_list', 'frr_ospf3_network',
+    'frr_bgp_peer_group', 'user', 'group', 'privilege', 'interface_bridge', 'interface_gif', 'neighbor',
+    'dnsmasq_general', 'ipsec_general', 'dnsmasq_domain', 'dnsmasq_host', 'dnsmasq_range', 'dnsmasq_option',
+    'dnsmasq_boot', 'dnsmasq_tag', 'haproxy_general_settings', 'haproxy_general_cache', 'haproxy_general_defaults',
+    'haproxy_general_logging', 'haproxy_general_peers', 'haproxy_general_stats', 'haproxy_general_tuning',
+    'haproxy_maintenance', 'haproxy_cpu', 'haproxy_user', 'haproxy_group', 'haproxy_acl', 'haproxy_action',
+    'haproxy_lua', 'haproxy_fcgi', 'haproxy_errorfile', 'haproxy_mailer', 'haproxy_mapfile',
     'haproxy_resolver', 'haproxy_backend', 'haproxy_frontend', 'haproxy_healthcheck', 'haproxy_server',
-    'wazuh_agent', 'nut',
+    'wazuh_agent', 'nut', 'interface_assignment',
 ]
 
 
@@ -473,10 +474,6 @@ def run_module():
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.dhcp_general import \
                 General as Target_Obj
 
-        elif target == 'dhcp_ha_peer':
-            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.dhcp_ha_peer import \
-                Peer as Target_Obj
-
         elif target == 'dhcp_subnet':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.dhcp_subnet_v4 import \
                 SubnetV4 as Target_Obj
@@ -688,6 +685,10 @@ def run_module():
         elif target == 'nut':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.nut import \
                 Nut as Target_Obj
+
+        elif target == 'interface_assignment':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.interface_assignment import \
+                Assignment as Target_Obj
 
     except AttributeError:
         module_dependency_error()

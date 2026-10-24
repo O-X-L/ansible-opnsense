@@ -35,6 +35,7 @@ Add dummy interfaces:
 * vtnet1 => assigned as `TEST`/`opt1` (should be in a dedicated layer-2 network)
 * vtnet2 => leave unassigned
 * vtnet3 => assigned as `TEST2`/`opt2` (interface down)
+* vtnet4 => unassigned - it gets dynamically managed by the `interface_assignment` tests as `opt3`
 
 You need to add a `opt1` dummy-interface named `TEST`. The assigned IPs do not matter.
 
