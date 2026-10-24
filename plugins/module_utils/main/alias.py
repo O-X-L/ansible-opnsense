@@ -123,15 +123,6 @@ class Alias(BaseModule):
                 verification=False,
             )
 
-    def delete(self) -> None:
-        response = self._base_delete()
-
-        if 'in_use' in response:
-            self._error(
-                msg=f"Unable to delete alias '{self.p[self.FIELD_ID]}' as it is currently referenced!",
-                verification=False,
-            )
-
     def _error(self, msg: str, verification: bool = True) -> None:
         if (verification and self.fail_verify) or (not verification and self.fail_process):
             self.m.fail_json(msg)
