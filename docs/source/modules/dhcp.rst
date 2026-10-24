@@ -12,7 +12,8 @@ DHCP
 `ControlAgent <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_controlagent.yml>`_ |
 `Subnet <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_subnet.yml>`_ |
 `General <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_general.yml>`_ |
-`HA-Peer <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_ha_peer.yml>`_
+`HA-Peer <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_ha_peer.yml>`_ |
+`DHCPv4 Option <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_option.yml>`_
 
 **API Docs**: `Core - KEA <https://docs.opnsense.org/development/api/core/kea.html>`_
 
@@ -31,7 +32,7 @@ Definition
 .. include:: ../_include/param_basic.rst
 
 oxlorg.opnsense.dhcp_general
-================================
+============================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -44,7 +45,7 @@ oxlorg.opnsense.dhcp_general
     "ha","dictionary","false","\-","\-","High-availability settings. Left untouched if not supplied. Sub-parameters: 'enabled' (boolean, default false) - enable high-availability on this server, requires the control agent to be enabled as well; 'this_server_name' (string, default '') - name of this server, should match one of the configured peers - when left empty, the hostname of the machine is used; 'max_unacked_clients' (int, default 0) - number of clients which send messages to the partner but appear to not receive any response"
 
 oxlorg.opnsense.dhcp_ha_peer
-================================
+============================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -56,7 +57,7 @@ oxlorg.opnsense.dhcp_ha_peer
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.dhcp_reservation
-====================================
+================================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -70,7 +71,7 @@ oxlorg.opnsense.dhcp_reservation
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.dhcp_controlagent
-=====================================
+=================================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -82,7 +83,7 @@ oxlorg.opnsense.dhcp_controlagent
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.dhcp_subnet
-===============================
+===========================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -105,13 +106,33 @@ oxlorg.opnsense.dhcp_subnet
     "ipv","int","false","4","ip_version","IP version - one of '4', '6'"
     "v6_only_preferred","boolean","false","false","v6_preferred","If clients should prefer IPv6 over IPv4"
 
+oxlorg.opnsense.dhcp_option
+===========================
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "description","string","true","\-","name, desc","Unique description for this DHCPv4 option definition"
+    "code","string","false for state changes, else true","","\-","DHCP option code"
+    "encoding","string","false","hex","\-","Encoding used for option data. One of: 'hex', 'ipv4-address', 'ipv6-address', 'uint8', 'uint16', 'uint32', 'int32', 'boolean', 'string', 'fqdn'"
+    "data","string","false for state changes, else true","","\-","Option data encoded according to the selected encoding"
+    "force","boolean","false","false","always_send","Always send this option to clients"
+    "match_code","string","false","","\-","Optional DHCP option code that must match before sending this option"
+    "match_encoding","string","false","","\-","Encoding used for match data. Same choices as 'encoding', plus the empty value"
+    "match_data","string","false","","\-","Optional option data that must match before sending this option"
+    "match_fields","list","false","['description']","\-","Fields that are used to match configured options with the running config. One or more of: 'code', 'description'"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
+
+
 ----
 
 Examples
 ********
 
 oxlorg.opnsense.dhcp_general
-================================
+============================
 
 .. code-block:: yaml
 
@@ -148,7 +169,7 @@ oxlorg.opnsense.dhcp_general
 ----
 
 oxlorg.opnsense.dhcp_ha_peer
-================================
+============================
 
 .. code-block:: yaml
 
@@ -201,7 +222,7 @@ oxlorg.opnsense.dhcp_ha_peer
 ----
 
 oxlorg.opnsense.dhcp_reservation
-====================================
+================================
 
 .. code-block:: yaml
 
@@ -251,7 +272,7 @@ oxlorg.opnsense.dhcp_reservation
 ----
 
 oxlorg.opnsense.dhcp_controlagent
-=====================================
+=================================
 
 .. code-block:: yaml
 
@@ -280,7 +301,7 @@ oxlorg.opnsense.dhcp_controlagent
 ----
 
 oxlorg.opnsense.dhcp_subnet
-===============================
+===========================
 
 .. code-block:: yaml
 
@@ -331,3 +352,60 @@ oxlorg.opnsense.dhcp_subnet
           oxlorg.opnsense.dhcp_subnet:
             subnet: '10.0.100.0/24'
             state: absent
+
+----
+
+oxlorg.opnsense.dhcp_option
+===========================
+
+.. code-block:: yaml
+
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
+      module_defaults:
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+        oxlorg.opnsense.list:
+          target: 'dhcp_option'
+
+      tasks:
+        - name: Example
+          oxlorg.opnsense.dhcp_option:
+            description: 'ansible-test-option'
+            code: '66'
+            encoding: 'string'
+            data: 'test'
+            # force: false
+            # match_code: ''
+            # match_encoding: ''
+            # match_data: ''
+            # match_fields: ['description']
+            # state: 'present'
+            # reload: true
+            # debug: false
+
+        - name: Add option, only sent to clients that ask for it
+          oxlorg.opnsense.dhcp_option:
+            description: 'pxe-vendor'
+            code: '43'
+            encoding: 'hex'
+            data: '0104c0a80001'
+            match_code: '60'
+            match_encoding: 'string'
+            match_data: 'PXEClient'
+
+        - name: Remove option
+          oxlorg.opnsense.dhcp_option:
+            description: 'ansible-test-option'
+            state: 'absent'
+
+        - name: Listing
+          oxlorg.opnsense.list:
+          register: existing_entries
+
+        - name: Show existing options
+          ansible.builtin.debug:
+            var: existing_entries.data

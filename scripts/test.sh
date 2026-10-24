@@ -208,6 +208,7 @@ run_test_soft 'dhcp_ha_peer' 1
 run_test_soft 'dhcp_controlagent' 1
 run_test_soft 'dhcp_subnet' 1
 run_test_soft 'dhcp_reservation' 1
+run_test_soft 'dhcp_option' 1
 run_test_soft 'acme_general' 1
 run_test_soft 'acme_account' 1
 run_test_soft 'acme_validation' 1

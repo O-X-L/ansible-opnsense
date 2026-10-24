@@ -155,6 +155,7 @@ action_groups:
     - oxlorg.opnsense.dhcp_general
     - oxlorg.opnsense.dhcp_subnet
     - oxlorg.opnsense.dhcp_ha_peer
+    - oxlorg.opnsense.dhcp_option
   acme:
     - oxlorg.opnsense.acme_general
     - oxlorg.opnsense.acme_account
