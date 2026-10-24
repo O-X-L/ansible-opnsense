@@ -13,7 +13,8 @@ DHCP
 `Subnet <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_subnet.yml>`_ |
 `General <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_general.yml>`_ |
 `HA-Peer <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_ha_peer.yml>`_ |
-`DHCPv4 Option <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_option.yml>`_
+`DHCPv4 Option <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_option.yml>`_ |
+`DDNS <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/dhcp_ddns.yml>`_
 
 **API Docs**: `Core - KEA <https://docs.opnsense.org/development/api/core/kea.html>`_
 

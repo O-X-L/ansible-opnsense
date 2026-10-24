@@ -830,6 +830,12 @@
       loop:
         - 'ansible-test-option'
 
+    - name: Cleanup Kea DDNS
+      oxlorg.opnsense.dhcp_ddns:
+        enabled: false
+        server_ip: '127.0.0.1'
+        server_port: 53001
+
     - name: Cleanup ACME Certificates
       oxlorg.opnsense.acme_certificate:
         description: '{{ item }}'
