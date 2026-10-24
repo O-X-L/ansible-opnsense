@@ -238,6 +238,7 @@
       loop:
         - ANSIBLE_TEST_2_1
         - ANSIBLE_TEST_2_2
+      when: not ansible_check_mode
 
     - name: Adding 1
       oxlorg.opnsense.user:
@@ -247,6 +248,7 @@
       failed_when: >
         opn15.failed or
         not opn15.changed
+      when: not ansible_check_mode
 
     - name: Changing 1
       oxlorg.opnsense.user:
@@ -258,6 +260,7 @@
       failed_when: >
         opn16.failed or
         not opn16.changed
+      when: not ansible_check_mode
 
     - name: Changing 1 - nothing changed
       oxlorg.opnsense.user:
