@@ -42,6 +42,7 @@ class BaseLogic:
     ATTR_FIELD_PK = 'FIELD_PK'
     ATTR_CMDS = 'CMDS'
     ATTR_EXIST = 'EXIST_ATTR'
+    ATTR_SKIP_AUTO_ENTRIES = 'SKIP_AUTO_ENTRIES'
     PARAM_MATCH_FIELDS = 'match_fields'
     QUERY_MAX_ENTRIES = 1000
     VALUE_NO_LOG = 'VALUE_SPECIFIED_IN_NO_LOG_PARAMETER'
@@ -188,9 +189,8 @@ class BaseLogic:
 
                 # todo: perform async calls for parallel data fetching
                 detail_entry = {}
-                if base_entry.get('is_automatic'):
-                    if self.raw is None:
-                        self.raw = base_entry
+                if getattr(self, self.ATTR_SKIP_AUTO_ENTRIES, False) and base_entry.get('is_automatic'):
+                    continue
 
                 elif force_details or not base_match_fields or \
                         all(base_entry[field] == self.p[field] for field in match_fields):
