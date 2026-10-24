@@ -76,7 +76,7 @@ class Alias(BaseModule):
                 self.m.fail_json('You need to provide an interface to create a dynipv6host alias!')
 
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['interface']
-            
+
         elif self.p['type'] == 'external':
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['expire']
 
