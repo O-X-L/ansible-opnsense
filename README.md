@@ -64,9 +64,11 @@ See also: [Contributing](https://github.com/O-X-L/ansible-opnsense/blob/latest/C
 
 ## Version Support
 
-We try that the `oxlorg.opnsense` modules always support the latest version of OPNsense.
+Currently, these modules have no multi-version support!
 
-If an API changed, the current module-implementation might fail for firewalls running an older firmware.
+That means [each release of the collection](https://github.com/O-X-L/ansible-opnsense/releases) is only compatible with the same OPNsense version!
+
+If you need to use these modules - ensure that there is a supported release BEFORE upgrading your OPNsense firewalls!
 
 I currently try to create a stable release once or twice a year - as this takes 10-20h of work each time for implementing API-fixes.
 
@@ -131,6 +133,7 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible-opn
 | **WireGuard**             | oxlorg.opnsense.wireguard_peer                                 | [Docs](https://ansible-opnsense.oxl.app/modules/wireguard.html)                                                 | stable   |
 | **WireGuard**             | oxlorg.opnsense.wireguard_show                                 | [Docs](https://ansible-opnsense.oxl.app/modules/wireguard.html)                                                 | stable   |
 | **WireGuard**             | oxlorg.opnsense.wireguard_general                              | [Docs](https://ansible-opnsense.oxl.app/modules/wireguard.html)                                                 | stable   |
+| **Interfaces**            | oxlorg.opnsense.interface_assignment                           | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                 | unstable   |
 | **Interfaces**            | oxlorg.opnsense.interface_vlan                                 | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                 | stable   |
 | **Interfaces**            | oxlorg.opnsense.interface_vxlan                                | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                 | stable   |
 | **Interfaces**            | oxlorg.opnsense.interface_vip                                  | [Docs](https://ansible-opnsense.oxl.app/modules/interface.html)                                                 | stable   |
@@ -206,6 +209,9 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible-opn
 | **DHCP Subnet**           | oxlorg.opnsense.dhcp_subnet                                    | [Docs](https://ansible-opnsense.oxl.app/modules/dhcp.html)                                                      | stable   |
 | **DHCP Reservation**      | oxlorg.opnsense.dhcp_reservation                               | [Docs](https://ansible-opnsense.oxl.app/modules/dhcp.html)                                                      | stable   |
 | **DHCP Controlagent**     | oxlorg.opnsense.dhcp_controlagent                              | [Docs](https://ansible-opnsense.oxl.app/modules/dhcp.html)                                                      | stable   |
+| **DHCP HA-Peer**          | oxlorg.opnsense.dhcp_ha_peer                                   | [Docs](https://ansible-opnsense.oxl.app/modules/dhcp.html)                                                      | unstable |
+| **DHCP Options**          | oxlorg.opnsense.dhcp_option                               | [Docs](https://ansible-opnsense.oxl.app/modules/dhcp.html)                                                      | unstable |
+| **DHCP DDNS**             | oxlorg.opnsense.dhcp_ddns                                       | [Docs](https://ansible-opnsense.oxl.app/modules/dhcp.html)                                                      | unstable |
 | **ACME (Certificates)**   | oxlorg.opnsense.acme_account                                   | [Docs](https://ansible-opnsense.oxl.app/modules/acmeclient.html)                                                | stable   |
 | **ACME (Certificates)**   | oxlorg.opnsense.acme_action                                    | [Docs](https://ansible-opnsense.oxl.app/modules/acmeclient.html)                                                | stable   |
 | **ACME (Certificates)**   | oxlorg.opnsense.acme_general                                   | [Docs](https://ansible-opnsense.oxl.app/modules/acmeclient.html)                                                | stable   |

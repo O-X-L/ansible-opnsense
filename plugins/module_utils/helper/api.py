@@ -169,6 +169,13 @@ def check_response(module: AnsibleModule, cnf: dict, response) -> dict:
     except JSONDecodeError:
         json = {}
 
+    if 'validations' in json and len(json['validations'].strip()) > 0:
+        # OPNsense sometimes reports a positive response-status even if the action failed :'(
+        module.fail_json(
+            f"API call failed | Error: {json['validations']} | "
+            f"Response: {response.__dict__}"
+        )
+
     if response.status_code not in cnf['allowed_http_stati'] or \
             ('result' in json and json['result'] == 'failed'):
         # sometimes an error 'hides' behind a 200-code
@@ -178,18 +185,8 @@ def check_response(module: AnsibleModule, cnf: dict, response) -> dict:
                 f"Response: {response.__dict__}"
             )
 
-        elif f"{response.__dict__}".find(' in use') != -1:
-            json['in_use'] = True
-
         else:
-            if 'validations' in json:
-                module.fail_json(
-                    f"API call failed | Error: {json['validations']} | "
-                    f"Response: {response.__dict__}"
-                )
-
-            else:
-                module.fail_json(f"API call failed | Response: {response.__dict__}")
+            module.fail_json(f"API call failed | Response: {response.__dict__}")
 
     return json
 

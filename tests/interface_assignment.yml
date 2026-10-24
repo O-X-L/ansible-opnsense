@@ -1,0 +1,139 @@
+---
+
+- name: Testing Interface Assignment
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+      # match_fields: ['description']
+
+    oxlorg.opnsense.list:
+      target: 'interface_assignment'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  vars:
+    TEST1_DEVICE: 'vtnet4'
+    TEST1_NIC_ID: 'opt3'
+
+    TEST2_DEVICE: 'vtnet3'
+    TEST2_NIC_NAME: 'TEST2'
+    TEST2_NIC_ID: 'opt2'  # as mentioned in "tests/README.md"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | length != 3
+
+    - name: Removing - does not exist
+      oxlorg.opnsense.interface_assignment:
+        identifier: "{{ TEST1_NIC_ID }}"
+        device: "{{ TEST1_DEVICE }}"
+        state: 'absent'
+      register: opn_pre2
+      failed_when: >
+        opn_pre2.failed or
+        opn_pre2.changed
+
+    - name: Adding 1 - failing because of invalid value (server-side)
+      oxlorg.opnsense.interface_assignment:
+        device: 'INVALID'
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+      when: not ansible_check_mode
+
+    - name: Adding 1
+      oxlorg.opnsense.interface_assignment:
+        description: 'ANSIBLE_TEST_1'
+        device: "{{ TEST1_DEVICE }}"
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing 1
+      oxlorg.opnsense.interface_assignment:
+        identifier: "{{ TEST1_NIC_ID }}"
+        description: 'ANSIBLE_TEST_1_CHANGED'
+        device: "{{ TEST1_DEVICE }}"
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        not opn9.changed
+      when: not ansible_check_mode
+
+
+    - name: Adding 2 - nothing changed
+      oxlorg.opnsense.interface_assignment:
+        identifier: "{{ TEST2_NIC_ID }}"
+        description: "{{ TEST2_NIC_NAME }}"
+        device: "{{ TEST2_DEVICE }}"
+        enabled: false
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: not ansible_check_mode
+
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn5
+      failed_when: >
+        'data' not in opn5 or
+        opn5.data | length != 4
+      when: not ansible_check_mode
+
+    - name: Removing 1 - failing because of lock
+      oxlorg.opnsense.interface_assignment:
+        identifier: "{{ TEST1_NIC_ID }}"
+        state: 'absent'
+      register: opn3
+      failed_when: >
+        not opn3.failed or
+        'unlock the interface' not in opn3.msg
+      when: not ansible_check_mode
+
+    - name: Removing 1 - disabling lock
+      oxlorg.opnsense.interface_assignment:
+        identifier: "{{ TEST1_NIC_ID }}"
+        description: 'ANSIBLE_TEST_1_UNLOCKED'
+        device: "{{ TEST1_DEVICE }}"
+        lock: false
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        not opn4.changed
+      when: not ansible_check_mode
+
+    - name: Removing 1
+      oxlorg.opnsense.interface_assignment:
+        identifier: "{{ TEST1_NIC_ID }}"
+        state: 'absent'
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+      when: not ansible_check_mode
+
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn8
+      failed_when: >
+        'data' not in opn8 or
+        opn8.data | length != 3
+      when: not ansible_check_mode
+
+    - name: Reset to config required by other tests
+      oxlorg.opnsense.interface_assignment:
+        identifier: "{{ TEST2_NIC_ID }}"
+        description: "{{ TEST2_NIC_NAME }}"
+        device: "{{ TEST2_DEVICE }}"
+        enabled: false
+      when: not ansible_check_mode

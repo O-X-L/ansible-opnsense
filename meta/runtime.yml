@@ -45,6 +45,7 @@ action_groups:
     - oxlorg.opnsense.wireguard_show
     - oxlorg.opnsense.wireguard_general
   interface:
+    - oxlorg.opnsense.interface_assignment
     - oxlorg.opnsense.interface_vlan
     - oxlorg.opnsense.interface_vxlan
     - oxlorg.opnsense.interface_vip
@@ -153,6 +154,9 @@ action_groups:
     - oxlorg.opnsense.dhcp_controlagent
     - oxlorg.opnsense.dhcp_general
     - oxlorg.opnsense.dhcp_subnet
+    - oxlorg.opnsense.dhcp_ha_peer
+    - oxlorg.opnsense.dhcp_option
+    - oxlorg.opnsense.dhcp_ddns
   acme:
     - oxlorg.opnsense.acme_general
     - oxlorg.opnsense.acme_account

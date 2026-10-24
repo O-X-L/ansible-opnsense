@@ -120,6 +120,7 @@ run_test_soft 'wireguard_peer' 1
 run_test_soft 'wireguard_server' 1
 run_test_soft 'wireguard_general' 1
 run_test_soft 'wireguard_show' 1
+run_test_soft 'interface_assignment' 1
 run_test_soft 'interface_vlan' 1
 run_test_soft 'interface_vxlan' 1
 run_test_soft 'interface_vip' 1
@@ -203,9 +204,12 @@ run_test_soft 'nginx_upstream_server' 1
 run_test_soft 'dhcrelay_destination' 1
 run_test_soft 'dhcrelay_relay' 1
 run_test_soft 'dhcp_general' 1
+run_test_soft 'dhcp_ha_peer' 1
 run_test_soft 'dhcp_controlagent' 1
 run_test_soft 'dhcp_subnet' 1
 run_test_soft 'dhcp_reservation' 1
+run_test_soft 'dhcp_option' 1
+run_test_soft 'dhcp_ddns' 1
 run_test_soft 'acme_general' 1
 run_test_soft 'acme_account' 1
 run_test_soft 'acme_validation' 1

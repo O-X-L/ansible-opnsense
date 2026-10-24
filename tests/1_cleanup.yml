@@ -286,6 +286,18 @@
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
 
+    - name: Cleanup Assigned Interfaces 1/2
+      oxlorg.opnsense.interface_assignment:
+        identifier: 'opt3'
+        state: 'absent'
+
+    - name: Cleanup Assigned Interfaces 2/2
+      oxlorg.opnsense.interface_assignment:
+        identifier: 'opt2'
+        description: 'TEST2'
+        device: 'vtnet3'
+        enabled: false
+
     - name: Cleanup source-nat
       oxlorg.opnsense.source_nat:
         description: "{{ item }}"
@@ -507,6 +519,14 @@
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
+
+    - name: Cleanup Router Advertisements
+      oxlorg.opnsense.radvd:
+        interface: "{{ item }}"
+        state: 'absent'
+        reload: false
+      loop:
+        - 'lan'
 
     - name: Cleanup BIND general settings
       oxlorg.opnsense.bind_general:
@@ -788,6 +808,16 @@
         http_host: '127.0.0.1'
         http_port: 8000
 
+    - name: Cleanup DHCP HA-Peers
+      oxlorg.opnsense.dhcp_ha_peer:
+        name: "{{ item }}"
+        role: 'primary'
+        url: 'http://192.168.1.1:8080'
+        state: 'absent'
+      loop:
+        - 'peer1'
+        - 'peer2'
+
     - name: Cleanup DHCP Settings
       oxlorg.opnsense.dhcp_general:
         enabled: false
@@ -801,13 +831,18 @@
         - '192.168.88.0/24'
         - '192.168.89.0/24'
 
-    - name: Cleanup Router Advertisements
-      oxlorg.opnsense.radvd:
-        interface: "{{ item }}"
+    - name: Cleanup Kea DHCPv4 Options
+      oxlorg.opnsense.dhcp_option:
+        description: "{{ item }}"
         state: 'absent'
-        reload: false
       loop:
-        - 'lan'
+        - 'ansible-test-option'
+
+    - name: Cleanup Kea DDNS
+      oxlorg.opnsense.dhcp_ddns:
+        enabled: false
+        server_ip: '127.0.0.1'
+        server_port: 53001
 
     - name: Cleanup ACME Certificates
       oxlorg.opnsense.acme_certificate:
