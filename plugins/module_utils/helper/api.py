@@ -87,20 +87,32 @@ def check_host(module: AnsibleModule) -> None:
             module.fail_json(f"Host '{module.params['firewall']}' is neither a valid IP nor Domain-Name!")
 
 
-def ssl_verification(module: AnsibleModule) -> (ssl.SSLContext, bool):
+def ssl_verification_lib_httpx(module: AnsibleModule) -> (ssl.SSLContext, bool):
     context = ssl.create_default_context()
 
     if not module.params['ssl_verify']:
-        context = False
+        return False
 
-    elif module.params['ssl_ca_file'] is not None:
-        if Path(module.params['ssl_ca_file']).is_file():
-            context.load_verify_locations(cafile=module.params['ssl_ca_file'])
+    if module.params['ssl_ca_file'] is not None:
+        if not Path(module.params['ssl_ca_file']).is_file():
+            module.fail_json(f"The provided 'ssl_ca_file' at path '{module.params['ssl_ca_file']}' does not exist!")
 
-        else:
-            module.fail_json(f"Provided 'ssl_ca_file' at path '{module.params['ssl_ca_file']}' does not exist!")
+        context.load_verify_locations(cafile=module.params['ssl_ca_file'])
 
     return context
+
+
+def ssl_verification_lib_requests(module: AnsibleModule) -> (bool, str):
+    if not module.params['ssl_verify']:
+        return False
+
+    if module.params['ssl_ca_file'] is not None:
+        if not Path(module.params['ssl_ca_file']).is_file():
+            module.fail_json(f"The provided 'ssl_ca_file' at path '{module.params['ssl_ca_file']}' does not exist!")
+
+        return module.params['ssl_ca_file']
+
+    return True
 
 
 def get_params_path(cnf: dict) -> str:
@@ -126,17 +138,17 @@ def _clean_response(response: dict) -> dict:
 
 
 def debug_api(
-        module: AnsibleModule, method: str = None, url: str = None,
+        module: AnsibleModule, http_client_lib: str, method: str = None, url: str = None,
         data: dict = None, headers: dict = None, response: dict = None,
 ) -> None:
     if 'debug' not in module.params or not module.params['debug']:
         return
 
     if response is not None:
-        msg = f"RESPONSE: '{_clean_response(response.__dict__)}'"
+        msg = f"CLI-LIB: {http_client_lib} | RESPONSE: '{_clean_response(response.__dict__)}'"
 
     else:
-        msg = f'REQUEST: {method} | URL: {url}'
+        msg = f"CLI-LIB: {http_client_lib} | REQUEST: {method} | URL: {url}"
 
         if headers is not None:
             msg += f" | HEADERS: '{headers}'"
@@ -157,8 +169,8 @@ def debug_api(
     module.warn(msg)
 
 
-def check_response(module: AnsibleModule, cnf: dict, response) -> dict:
-    debug_api(module=module, response=response)
+def check_response(module: AnsibleModule, cnf: dict, http_client_lib: str, response) -> dict:
+    debug_api(module=module, http_client_lib=http_client_lib, response=response)
 
     if 'allowed_http_stati' not in cnf:
         cnf['allowed_http_stati'] = [200]

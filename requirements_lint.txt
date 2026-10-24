@@ -4,3 +4,4 @@ pylint
 ansible-core
 ansible-lint==25.2.1
 httpx
+requests

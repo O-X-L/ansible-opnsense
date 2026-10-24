@@ -13,11 +13,15 @@
 
 ## Requirements
 
-The [httpx python module](https://www.python-httpx.org/) is used for API communications!
+The [httpx python-module](https://www.python-httpx.org/) or [requests python-module](https://requests.readthedocs.io/) is used for API communications!
 
 ```bash
 python3 -m pip install --upgrade httpx
+# or
+python3 -m pip install --upgrade requests
 ```
+
+*Note: If both are installed, "httpx" is preferred by default. You can set the preferred http-client-library using the environmental-variable `HTTP_CLIENT` to a value of "httpx" or "requests".*
 
 Then - install the collection itself:
 

@@ -82,6 +82,7 @@ set +e
 run_test_soft '1_version' 0
 run_test '1_cleanup' 0
 run_test_soft '1_reload' 0
+run_test '1_http_client' 0
 
 set +e
 
