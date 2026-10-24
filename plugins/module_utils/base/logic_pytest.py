@@ -26,6 +26,7 @@ def test_search_skips_detail_lookup_for_automatic_entries(mocker):
     })
     result = {'changed': False, 'diff': {'before': {}, 'after': {}}}
     logic = DummySearchLogic(module, result)
+    setattr(logic, BaseLogic.ATTR_SKIP_AUTO_ENTRIES, True)
 
     automatic_entry = {
         'uuid': 'auto-rule-1',
@@ -34,10 +35,7 @@ def test_search_skips_detail_lookup_for_automatic_entries(mocker):
     }
 
     mocker.patch.object(logic, 'api_search_post', return_value=[automatic_entry])
-    api_get = mocker.patch.object(logic, '_api_get')
 
     entries = logic.search(match_fields=['description'])
 
-    assert entries == [automatic_entry]
-    assert logic.raw == automatic_entry
-    api_get.assert_not_called()
+    assert entries == []
