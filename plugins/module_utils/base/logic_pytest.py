@@ -35,6 +35,7 @@ def test_search_skips_detail_lookup_for_automatic_entries(mocker):
     }
 
     mocker.patch.object(logic, 'api_search_post', return_value=[automatic_entry])
+    mocker.patch.object(logic, '_api_get')
 
     entries = logic.search(match_fields=['description'])
 
