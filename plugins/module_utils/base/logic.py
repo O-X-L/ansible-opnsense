@@ -189,7 +189,7 @@ class BaseLogic:
 
                 # todo: perform async calls for parallel data fetching
                 detail_entry = {}
-                if getattr(self, self.ATTR_SKIP_AUTO_ENTRIES, False) and base_entry.get('is_automatic'):
+                if getattr(self, self.ATTR_SKIP_AUTO_ENTRIES, False) and base_entry.get('is_automatic', False):
                     continue
 
                 if force_details or not base_match_fields or \
