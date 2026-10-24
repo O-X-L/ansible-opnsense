@@ -28,10 +28,10 @@ ALIAS_MOD_ARGS = dict(
                     'Expressions using the jq language are also supported.',
     ),
     expire=dict(
-    type='int',
-    required=False,
-    default=None,
-    description="Expiration time in seconds for alias-type 'external'",
+        type='int',
+        required=False,
+        default=None,
+        description="Expiration time in seconds for alias-type 'external'",
     ),
     statistics=dict(
         type='bool', default=False, required=False,
