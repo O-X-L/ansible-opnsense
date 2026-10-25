@@ -169,6 +169,17 @@ def debug_api(
     module.warn(msg)
 
 
+def _safe_response_repr(response) -> str:
+    # response.__dict__ embeds the PreparedRequest, whose .body is the POST payload (for
+    #   example the plaintext 'password' of openvpn_client). Ansible's no_log does not reach a
+    #   free-form fail_json() string, so only the response side is reported.
+    return (
+        f"status={response.status_code} "
+        f"reason={getattr(response, 'reason', '')} "
+        f"url={response.url} body={response.text}"
+    )
+
+
 def check_response(module: AnsibleModule, cnf: dict, http_client_lib: str, response) -> dict:
     debug_api(module=module, http_client_lib=http_client_lib, response=response)
 
@@ -185,7 +196,7 @@ def check_response(module: AnsibleModule, cnf: dict, http_client_lib: str, respo
         # OPNsense sometimes reports a positive response-status even if the action failed :'(
         module.fail_json(
             f"API call failed | Error: {json['validations']} | "
-            f"Response: {response.__dict__}"
+            f"Response: {_safe_response_repr(response)}"
         )
 
     if response.status_code not in cnf['allowed_http_stati'] or \
@@ -194,11 +205,11 @@ def check_response(module: AnsibleModule, cnf: dict, http_client_lib: str, respo
         if f"{response.__dict__}".find('Controller not found') != -1:
             module.fail_json(
                 f"API call failed | Needed plugin not installed! | "
-                f"Response: {response.__dict__}"
+                f"Response: {_safe_response_repr(response)}"
             )
 
         else:
-            module.fail_json(f"API call failed | Response: {response.__dict__}")
+            module.fail_json(f"API call failed | Response: {_safe_response_repr(response)}")
 
     return json
 
