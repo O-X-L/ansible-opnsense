@@ -60,6 +60,21 @@
         opn2.failed or
         not opn2.changed
 
+    - name: Changing 1 - nothing changed
+      oxlorg.opnsense.dnsmasq_range:
+        description: 'ANSIBLE_TEST_1_1'
+        interface: 'TEST'
+        start_addr: '192.168.1.100'
+        end_addr: '192.168.1.200'
+        subnet_mask: '255.255.255.0'
+        domain_type: 'interface'
+        domain: 'dnsmasq.opn'
+      register: opn2_1
+      failed_when: >
+        opn2_1.failed or
+        opn2_1.changed
+      when: not ansible_check_mode
+
     - name: Adding 2
       oxlorg.opnsense.dnsmasq_range:
         description: 'ANSIBLE_TEST_1_2'
@@ -105,12 +120,41 @@
         not opn5.changed
       when: not ansible_check_mode
 
+    - name: Adding 3 - static
+      oxlorg.opnsense.dnsmasq_range:
+        description: 'ANSIBLE_TEST_1_3'
+        interface: 'TEST'
+        start_addr: 'fd00:abcd::1'
+        mode: ['static']
+        domain_type: 'interface'
+        domain: 'dnsmasq.opn'
+        ra_mode: ['slaac']
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+
+    - name: Adding 3 - static - nothing changed
+      oxlorg.opnsense.dnsmasq_range:
+        description: 'ANSIBLE_TEST_1_3'
+        interface: 'TEST'
+        start_addr: 'fd00:abcd::1'
+        mode: ['static']
+        domain_type: 'interface'
+        domain: 'dnsmasq.opn'
+        ra_mode: ['slaac']
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        opn8.changed
+      when: not ansible_check_mode
+
     - name: Listing
       oxlorg.opnsense.list:
       register: opn6
       failed_when: >
         'data' not in opn6 or
-        opn6.data | length != 1
+        opn6.data | length != 2
       when: not ansible_check_mode
 
     - name: Cleanup
@@ -120,6 +164,7 @@
       loop:
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
       when: not ansible_check_mode
 
     - name: Listing

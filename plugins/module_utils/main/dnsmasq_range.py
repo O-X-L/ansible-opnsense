@@ -30,8 +30,8 @@ class Range(BaseModule):
         'sync': 'nosync',
     }
     FIELDS_TYPING = {
-        'select': ['interface', 'set_tag', 'constructor', 'mode', 'domain_type', 'ra_priority'],
-        'list': ['ra_mode'],
+        'select': ['interface', 'set_tag', 'constructor', 'domain_type', 'ra_priority'],
+        'list': ['ra_mode', 'mode'],
         'int': ['prefix_len', 'lease_time', 'ra_mtu', 'ra_interval', 'ra_router_lifetime'],
         'bool': ['sync'],
     }
