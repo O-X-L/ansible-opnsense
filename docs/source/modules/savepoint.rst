@@ -2,17 +2,11 @@
 
 .. include:: ../_include/head.rst
 
-.. |rollback_process| image:: ../_static/img/savepoint_rollback.png
-
 ==================
 Firewall Savepoint
 ==================
 
-**STATE**: stable
-
-**TESTS**: `Playbook <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/savepoint.yml>`_
-
-**API Docs**: `Core - Firewall <https://docs.opnsense.org/development/api/core/firewall.html>`_
+**STATE**: removed
 
 Contribution
 ************
@@ -24,74 +18,10 @@ Thanks to `@Rath <https://github.com/superstes>`_ for developing this module!
 Info
 ****
 
-You can use those savepoints to prevent lockout-situations when managing rulesets remotely.
+.. warning::
 
-Here is the basic process:
+    OPNsense 26.7 removed the firewall savepoint API (`opnsense/core#10411 <https://github.com/opnsense/core/pull/10411>`_).
 
-|rollback_process|
+    The :code:`savepoint`, :code:`revert` and :code:`cancelRollback` endpoints of the :code:`filter`, :code:`source_nat`, :code:`one_to_one` and :code:`d_nat` controllers no longer exist and :code:`apply` no longer accepts a rollback revision.
 
-It currently just works with the 'Firewall' plugin:
-
-- :ref:`oxlorg.opnsense.rule <modules_rule>`
-- :ref:`oxlorg.opnsense.nat_source <modules_nat_source>`
-- :ref:`oxlorg.opnsense.nat_one_to_one <modules_nat_one_to_one>`
-
-----
-
-Definition
-**********
-
-..  csv-table:: Definition
-    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
-    :widths: 15 10 10 10 10 45
-
-    "name","string","false","'create'","Action to execute. One of: 'create', 'revert', 'apply', 'cancel_rollback', 'cancel'"
-    "revision","string","false, true if action is one of 'apply', 'revert' or 'cancel_rollback'","\-","Savepoint revision to apply, revert or cancel_rollback"
-    "controller","string","false","'filter'","Controller to manage the savepoint of. One of: 'source_nat', 'filter', 'one_to_one'"
-    "api_module","string","false","'firewall'","Module to manage the savepoint of. Currently only supports 'firewall'"
-
-.. include:: ../_include/param_basic.rst
-
-----
-
-Examples
-********
-
-.. code-block:: yaml
-
-    - hosts: firewalls
-      connection: local
-      gather_facts: false
-      module_defaults:
-        group/oxlorg.opnsense.all:
-          firewall: 'opnsense.template.opnsense.oxl.app'
-          api_credential_file: '/home/guy/.secret/opn.key'
-
-      tasks:
-        - name: Create a savepoint for firewall filters
-          oxlorg.opnsense.savepoint:
-            action: 'create'
-            controller: 'filter'  # default
-          register: filter_savepoint
-
-        - name: Apply savepoint
-          oxlorg.opnsense.savepoint:
-            action: 'apply'
-            revision: "{{ filter_savepoint.revision }}"
-
-        - name: Revert savepoint
-          oxlorg.opnsense.savepoint:
-            action: 'revert'
-            revision: "{{ filter_savepoint.revision }}"
-
-        - name: Create a savepoint for firewall source-nat
-          oxlorg.opnsense.savepoint:
-            action: 'create'
-            controller: 'source_nat'
-          register: snat_savepoint
-
-        - name: Remove source-nat savepoint (else it will be reverted automatically)
-          oxlorg.opnsense.savepoint:
-            action: 'cancel_rollback'
-            controller: 'source_nat'
-            revision: "{{ snat_savepoint.revision }}"
+    There is no replacement. This module always fails and should be removed from your playbooks.

@@ -203,8 +203,7 @@
           - 172.16.1.0/24
         unity_dns_search: opn.local
         unity_dns_split: opn.local
-        unity_login_banner: |
-          Welcome to the Ansible Tests
+        unity_login_banner: 'Welcome-to-the-Ansible-Tests'
         unity_save_password: true
       register: opn11
       failed_when: >
@@ -227,8 +226,7 @@
           - 172.16.1.0/24
         unity_dns_search: opn.local
         unity_dns_split: opn.local
-        unity_login_banner: |
-          Welcome to the Ansible Tests
+        unity_login_banner: 'Welcome-to-the-Ansible-Tests'
         unity_save_password: true
       register: opn12
       failed_when: >

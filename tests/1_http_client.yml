@@ -1,0 +1,50 @@
+---
+
+- name: HTTP-Client Library Switch
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Testing API-Call with default-lib ("httpx")
+      oxlorg.opnsense.raw:
+        url: 'core/system/status'
+        debug: true
+      # environment:
+      #   HTTP_CLIENT: ''
+      register: opn_http_lib_default
+      failed_when: >
+        opn_http_lib_default.failed or
+        opn_http_lib_default.warnings | length == 0 or
+        'CLI-LIB: httpx' not in (opn_http_lib_default.warnings | last)
+
+    - name: Testing API-Call with explicit lib "httpx"
+      oxlorg.opnsense.raw:
+        url: 'core/system/status'
+        debug: true
+      environment:
+        HTTP_CLIENT: 'httpx'
+      register: opn_http_lib_explicit_httpx
+      failed_when: >
+        opn_http_lib_explicit_httpx.failed or
+        opn_http_lib_explicit_httpx.warnings | length == 0 or
+        'CLI-LIB: httpx' not in (opn_http_lib_explicit_httpx.warnings | last)
+
+    - name: Testing API-Call with explicit lib "requests"
+      oxlorg.opnsense.raw:
+        url: 'core/system/status'
+        debug: true
+      environment:
+        HTTP_CLIENT: 'requests'
+      register: opn_http_lib_explicit_requests
+      failed_when: >
+        opn_http_lib_explicit_requests.failed or
+        opn_http_lib_explicit_requests.warnings | length == 0 or
+        'CLI-LIB: requests' not in (opn_http_lib_explicit_requests.warnings | last)

@@ -6,6 +6,8 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate im
     is_unset
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.rule import \
     validate_values
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.translate import \
+    get_selected
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.module import BaseModule
 
 
@@ -14,10 +16,11 @@ class SNat(BaseModule):
         'add': 'add_rule',
         'del': 'del_rule',
         'set': 'set_rule',
-        'search': 'get',
+        'search': 'search_rule',
+        'detail': 'get_rule',
         'toggle': 'toggle_rule',
     }
-    API_KEY_PATH = 'filter.snatrules.rule'
+    API_KEY_PATH = 'rule'
     API_MOD = 'firewall'
     API_CONT = 'source_nat'
     FIELDS_CHANGE = [
@@ -45,6 +48,8 @@ class SNat(BaseModule):
     }
     EXIST_ATTR = 'rule'
     API_CMD_REL = 'apply'
+    SKIP_AUTO_ENTRIES = True
+    MANUAL_MODES = ['hybrid', 'advanced']
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
@@ -62,6 +67,16 @@ class SNat(BaseModule):
                     "You need to provide an 'target' to create a source-nat rule!"
                 )
 
+        if not is_unset(self.p['protocol']):
+            # OPNsense returns source-NAT protocols mostly uppercase, except 'any' which
+            # stays lowercase. Normalize to the API's canonical values for idempotency.
+            if self.p['protocol'].lower() == 'any':
+                self.p['protocol'] = 'any'
+
+            else:
+                self.p['protocol'] = self.p['protocol'].upper()
+
+        self._check_mode()
         self._build_log_name()
         self.find(match_fields=self.p['match_fields'])
 
@@ -69,6 +84,28 @@ class SNat(BaseModule):
             validate_values(module=self.m, cnf=self.p, error_func=self.m.fail_json, kind='nat')
 
         self._base_check()
+
+    def _check_mode(self) -> None:
+        # OPNsense only applies and lists manual rules in the 'hybrid' and 'advanced' outbound-NAT modes
+        #   in any other mode 'search_rule' returns none of them, so existing rules can't be matched
+        settings = self.s.get(cnf={**self.call_cnf, 'command': 'get'})['filter']
+        if 'general' in settings:
+            mode = get_selected(settings['general']['snat_mode'])
+
+        else:
+            mode = get_selected(settings['settings']['nat']['snat_mode'])
+
+        if mode in self.MANUAL_MODES:
+            return
+
+        msg = (
+            f"The outbound-NAT mode is '{mode}'. OPNsense only applies and lists manual source-nat "
+            f"rules in the modes {self.MANUAL_MODES} (Firewall - NAT - Source NAT - Mode)!"
+        )
+        if self.p['state'] == 'present':
+            self.m.fail_json(f"{msg} Change the mode before adding or changing rules.")
+
+        self.m.warn(f"{msg} Existing rules can't be found, so none were removed.")
 
     def _build_log_name(self) -> str:
         if self.p['description'] not in [None, '']:

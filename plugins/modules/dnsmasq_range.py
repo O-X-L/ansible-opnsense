@@ -56,7 +56,7 @@ def run_module():
             description='Interface to use to calculate a DHCPv6 or RA range.',
         ),
         mode=dict(
-            type='list', elements='str', required=False,
+            type='list', elements='str', required=False,  default=[],
             description='Mode flags to set for this range, "static" means no addresses will be automatically assigned.',
         ),
         prefix_len=dict(

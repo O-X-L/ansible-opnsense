@@ -133,7 +133,7 @@ class Server(BaseModule):
 
         if not is_unset(self.p['crl']):
             self.p['crl'] = get_key_by_value_from_selection(
-                selection=self.raw[self.FIELDS_TRANSLATE['crl']],
+                selection=self.raw['crl'],
                 value=self.p['crl'],
             )
 

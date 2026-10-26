@@ -296,9 +296,11 @@ class SimplifyTranslate:
                 translated[field_ansible] = existing[field_api]
 
         # passthrough for fields that do not have to be translated and should not be "ignored"
+        # an API field named like an already translated ansible field must not overwrite it
+        #   e.g. OPNsense 26.7 added 'allowed_ips' to wireguard servers, which the module maps from 'tunneladdress'
         translate_fields = self._fields_translate.values()
         for field in existing:
-            if field not in translate_fields and field not in self._fields_ignore:
+            if field not in translate_fields and field not in self._fields_ignore and field not in translated:
                 translated[field] = existing[field]
 
         return translated

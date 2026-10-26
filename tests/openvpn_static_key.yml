@@ -13,13 +13,28 @@
       target: 'openvpn_static_key'
 
   vars:
-    test_key: '#\n# 2048 bit OpenVPN static key\n#\n-----BEGIN OpenVPN Static key V1-----\n
-        c07e43dc02829f88184b4fb74243e4ac\nb1d24d1d1a74cd21df8ac64a527915ae\n9c736c0c219eb33774e40e61f6f660c8\n
-        daf44730850fae665f5f609a71e99f3c\n8a636b16dff7434ce3b7f9aca896287b\nd6c62d2f6d7db4e9cfcfe0f101cc6474\n
-        0c98246fbcd203891a0343777c7551c7\naa2ba1e6a6ab4fcf593a894d4da8f180\nd44645b5a658e17f5d48408a020430c3\n
-        5b768f413a2ec69ead015750cacb53d7\n64a19bce04b29f11d3ca7560a99958b6\n9203f493fd7e740b5a5a3d1afe1b4185\n
-        50043805c5bac513baf2306e42c1c1f8\n0fd16661536a3ee72ffbd1d2d1b1f6c0\n9683064c9bc044ee0357f4b94f5687ed\n
-        67cb013625cfb9b113ecff16674d63e6\n-----END OpenVPN Static key V1-----'
+    test_key: |-
+      #
+      # 2048 bit OpenVPN static key
+      #
+      -----BEGIN OpenVPN Static key V1-----
+      c07e43dc02829f88184b4fb74243e4ac
+      b1d24d1d1a74cd21df8ac64a527915ae
+      9c736c0c219eb33774e40e61f6f660c8
+      daf44730850fae665f5f609a71e99f3c
+      8a636b16dff7434ce3b7f9aca896287b
+      d6c62d2f6d7db4e9cfcfe0f101cc6474
+      0c98246fbcd203891a0343777c7551c7
+      aa2ba1e6a6ab4fcf593a894d4da8f180
+      d44645b5a658e17f5d48408a020430c3
+      5b768f413a2ec69ead015750cacb53d7
+      64a19bce04b29f11d3ca7560a99958b6
+      9203f493fd7e740b5a5a3d1afe1b4185
+      50043805c5bac513baf2306e42c1c1f8
+      0fd16661536a3ee72ffbd1d2d1b1f6c0
+      9683064c9bc044ee0357f4b94f5687ed
+      67cb013625cfb9b113ecff16674d63e6
+      -----END OpenVPN Static key V1-----
 
   environment:
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"

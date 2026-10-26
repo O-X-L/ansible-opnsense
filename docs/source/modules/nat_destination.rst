@@ -19,13 +19,6 @@ NAT Destination
 Info
 ****
 
-Savepoint
-=========
-
-You can prevent lockout-situations using the savepoint systems:
-
-- :ref:`oxlorg.opnsense.savepoint <modules_savepoint>`
-
 Web-UI
 ======
 

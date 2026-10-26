@@ -63,9 +63,15 @@ class Override(BaseModule):
         if not is_unset(self.p['servers']):
             servers = []
             for server in self.p['servers']:
-                servers.append(get_key_by_value_beg_from_selection(
+                server_id = get_key_by_value_beg_from_selection(
                     selection=self.raw['servers'],
                     value=server,
-                ))
+                )
+                if server_id is None:
+                    self.m.fail_json(
+                        f"Unable to find server '{server}' to assign "
+                        f"to client-overwrite '{self.p['name']}'"
+                    )
+                servers.append(server_id)
 
             self.p['servers'] = servers

@@ -19,6 +19,42 @@
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
+    # OPNsense only lists and applies manual source-nat rules in the 'hybrid' and 'advanced' modes
+    - name: Saving outbound-NAT mode
+      oxlorg.opnsense.raw:
+        module: 'firewall'
+        controller: 'source_nat'
+        command: 'get'
+      register: opn_mode
+      check_mode: false
+
+    - name: Setting outbound-NAT mode to automatic
+      oxlorg.opnsense.raw:
+        module: 'firewall'
+        controller: 'source_nat'
+        command: 'set'
+        action: 'post'
+        data: {'filter': {'general': {'snat_mode': 'automatic'}}}
+      check_mode: false
+
+    - name: Adding 1 - failing because of automatic outbound-NAT mode
+      oxlorg.opnsense.source_nat:
+        description: 'ANSIBLE_TEST_1_1'
+        interface: 'lan'
+        destination: '192.168.0.1'
+        target: '192.168.0.2'
+      register: opn_fail_mode
+      failed_when: not opn_fail_mode.failed
+
+    - name: Setting outbound-NAT mode to hybrid
+      oxlorg.opnsense.raw:
+        module: 'firewall'
+        controller: 'source_nat'
+        command: 'set'
+        action: 'post'
+        data: {'filter': {'general': {'snat_mode': 'hybrid'}}}
+      check_mode: false
+
     - name: Listing
       oxlorg.opnsense.list:
       register: opn_pre1
@@ -234,3 +270,15 @@
         'data' not in opn_clean1 or
         opn_clean1.data | length != 0
       when: not ansible_check_mode
+
+    - name: Restoring outbound-NAT mode
+      oxlorg.opnsense.raw:
+        module: 'firewall'
+        controller: 'source_nat'
+        command: 'set'
+        action: 'post'
+        data:
+          filter:
+            general:
+              snat_mode: "{{ (opn_mode.response.filter.general.snat_mode | dict2items | selectattr('value.selected', 'equalto', 1) | first).key }}"
+      check_mode: false

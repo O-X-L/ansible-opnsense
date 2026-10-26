@@ -25,11 +25,11 @@ class Alias(BaseModule):
     API_KEY_PATH = 'alias.aliases.alias'
     API_MOD = 'firewall'
     API_CONT = 'alias'
-    FIELDS_CHANGE = ['content', 'description', 'statistics']
+    FIELDS_CHANGE = ['content', 'description', 'statistics', 'categories']
     FIELDS_ALL = ['name', 'type', 'enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
     FIELDS_ALL.extend([
-        'updatefreq_days', 'interface', 'path_expression',
+        'updatefreq_days', 'interface', 'path_expression', 'expire',
         'url_auth_type', 'url_username', 'url_password',
     ])
     FIELDS_DIFF_NO_LOG = ['url_password']
@@ -43,6 +43,13 @@ class Alias(BaseModule):
     FIELDS_TYPING = {
         'bool': ['enabled', 'statistics'],
         'select': ['type', 'interface'],
+        'list_value': ['categories'],
+    }
+    INT_VALIDATIONS = {
+        'expire': {
+            'min': 60,
+            'max': 999999999,
+        },
     }
     EXIST_ATTR = 'alias'
     JOIN_CHAR = '\n'
@@ -55,6 +62,7 @@ class Alias(BaseModule):
     ):
         BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail, multi=multi)
         self.alias = {}
+        self.existing_categories = None
 
     def check(self) -> None:
         if self.p['type'] == 'urltable':
@@ -70,6 +78,9 @@ class Alias(BaseModule):
                 self.m.fail_json('You need to provide an interface to create a dynipv6host alias!')
 
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['interface']
+
+        elif self.p['type'] == 'external':
+            self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['expire']
 
         if len(self.p['name']) > self.MAX_ALIAS_LEN:
             self._error(
@@ -121,15 +132,6 @@ class Alias(BaseModule):
                 verification=False,
             )
 
-    def delete(self) -> None:
-        response = self._base_delete()
-
-        if 'in_use' in response:
-            self._error(
-                msg=f"Unable to delete alias '{self.p[self.FIELD_ID]}' as it is currently referenced!",
-                verification=False,
-            )
-
     def _error(self, msg: str, verification: bool = True) -> None:
         if (verification and self.fail_verify) or (not verification and self.fail_process):
             self.m.fail_json(msg)
@@ -137,6 +139,39 @@ class Alias(BaseModule):
         else:
             self.m.warn(msg)
             raise ModuleSoftError
+
+    def _get_category_selection(self) -> dict:
+        if isinstance(self.existing_categories, dict):
+            return self.existing_categories
+
+        if isinstance(self.existing_entries, dict):
+            if self.exists and self.field_pk in self.alias and self.alias[self.field_pk] in self.existing_entries:
+                return self.existing_entries[self.alias[self.field_pk]].get('categories', {})
+
+            for entry in self.existing_entries.values():
+                if isinstance(entry, dict) and 'categories' in entry:
+                    return entry['categories']
+
+        return {}
+
+    def get_category_selection(self) -> dict:
+        return self._get_category_selection()
+
+    def build_request(self) -> dict:
+        raw_request = self._base_build_request()
+
+        if not is_unset(self.p['categories']):
+            selection = self._get_category_selection()
+            categories = self.p['categories'].copy()
+            self.find_multiple_links(
+                field='categories',
+                existing=selection,
+                existing_field_id='value',
+            )
+            raw_request['alias']['categories'] = self.RESP_JOIN_CHAR.join(self.p['categories'])
+            self.p['categories'] = categories
+
+        return raw_request
 
     def get_existing(self) -> list:
         return filter_builtin_alias(

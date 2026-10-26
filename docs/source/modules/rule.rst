@@ -51,13 +51,6 @@ Tips
 * If you want to create a :code:`Floating` rule  - you need to use :code:`[]`.
 
 
-Savepoint
-=========
-
-You can prevent lockout-situations using the savepoint systems:
-
-- :ref:`oxlorg.opnsense.savepoint <modules_savepoint>`
-
 Mass-Manage
 ===========
 

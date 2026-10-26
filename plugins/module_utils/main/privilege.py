@@ -38,14 +38,25 @@ class Privilege(BaseModule):
         if not self.exists:
             self.m.fail_json(f"Privilege {self.p['id']} not found")
 
-        self.p['user'] = [
-            get_key_by_value_from_selection(self.raw['users'], u)
-            for u in self.p['user']
-        ]
-        self.p['group'] = [
-            get_key_by_value_from_selection(self.raw['groups'], g)
-            for g in self.p['group']
-        ]
+        users = []
+        for user_name in self.p['user']:
+            user_id = get_key_by_value_from_selection(self.raw['users'], user_name)
+            if user_id is None:
+                self.m.fail_json(
+                    f"Unable to find user '{user_name}' to assign privilege '{self.p['id']}'"
+                )
+            users.append(user_id)
+        self.p['user'] = users
+
+        groups = []
+        for group_name in self.p['group']:
+            group_id = get_key_by_value_from_selection(self.raw['groups'], group_name)
+            if group_id is None:
+                self.m.fail_json(
+                    f"Unable to find group '{group_name}' to assign privilege '{self.p['id']}'"
+                )
+            groups.append(group_id)
+        self.p['group'] = groups
 
         if self.p['state'] == 'present':
             self.p['user'] = list(set(self.p['user'] + self.privilege['user']))

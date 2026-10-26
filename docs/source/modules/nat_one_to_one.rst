@@ -21,17 +21,6 @@ Thanks to `@jiuka <https://github.com/jiuka>`_ for developing this module!
 
 ----
 
-Info
-****
-
-Savepoint
-=========
-
-You can prevent lockout-situations using the savepoint systems:
-
-- :ref:`oxlorg.opnsense.savepoint <modules_savepoint>`
-
-
 Definition
 **********
 

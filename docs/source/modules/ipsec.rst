@@ -102,6 +102,7 @@ oxlorg.opnsense.ipsec_child
     "request_id","integer","false","\-","req_id, reqid","This might be helpful in some scenarios, like route based tunnels (VTI), but works only if each CHILD_SA configuration is instantiated not more than once. The default uses dynamic reqids, allocated incrementally"
     "esp_proposals","list","false","['default']","esp_props, esp","Choose 'default' or at least one of the options shown in the Web-UI"
     "rekey_seconds","integer","false","3600","rekey_time, rekey","Time to schedule CHILD_SA rekeying. CHILD_SA rekeying refreshes key material, optionally using a Diffie-Hellman exchange if a group is specified in the proposal. To avoid rekey collisions initiated by both ends simultaneously, a value in the range of rand_time gets subtracted to form the effective soft lifetime. By default CHILD_SA rekeying is scheduled every hour, minus rand_time"
+    "match_fields","list of strings","false","['name']","\-","One or more of: 'name', 'connection', 'mode', 'request_id', 'esp_proposals', 'sha256_96', 'start_action', 'close_action', 'dpd_action', 'policies', 'local_net', 'remote_net', 'rekey_seconds', 'enabled'. Fields that are used to match configured entries with the running config - if any of those fields are changed, the module will think it's a new entry"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_vti
@@ -137,6 +138,7 @@ oxlorg.opnsense.ipsec_auth_local
     "eap_id","string","false","\-","\-","Must be defined if authentication is set to one of: ['eap-tls', 'eap-mschapv2', 'eap-radius']; Client EAP-Identity to use in EAP-Identity exchange and the EAP method"
     "certificates","list","false","\-","certs","Certificate or public-key must be defined if authentication is set to 'pubkey'; List of certificate candidates to use for authentication"
     "public_keys","list","false","\-","pubkeys","Certificate or public-key must be defined if authentication is set to 'pubkey'; List of raw public key candidates to use for authentication"
+    "match_fields","list of strings","false","['name']","\-","One or more of: 'name', 'connection', 'round', 'authentication', 'id', 'eap_id'. Fields that are used to match configured entries with the running config - if any of those fields are changed, the module will think it's a new entry"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_auth_remote
@@ -156,6 +158,7 @@ oxlorg.opnsense.ipsec_auth_remote
     "public_keys","list","false","\-","pubkeys","Certificate or public-key must be defined if authentication is set to 'pubkey'; List of raw public key candidates to use for authentication"
     "ca_certificates","list","false","\-","ca_certs","List of certificate authority candidates to use for authentication"
     "eap_radius_groups","list","false","\-","radius_groups, groups","List of group memberships to require. The client must prove membership to at least one of the specified groups"
+    "match_fields","list of strings","false","['name']","\-","One or more of: 'name', 'connection', 'round', 'authentication', 'id', 'eap_id'. Fields that are used to match configured entries with the running config - if any of those fields are changed, the module will think it's a new entry"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.ipsec_cert
@@ -255,7 +258,7 @@ oxlorg.opnsense.ipsec_general
     "unity_split_include","list of strings","False","[]","\-","Comma-separated list of subnets to tunnel. The unity plugin provides a connection specific approach to assign this attribute"
     "unity_dns_search","strings","False","\-","\-","Default search domain used when resolving host names via the assigned DNS servers"
     "unity_dns_split","strings","False","\-","\-","If split tunneling is used clients might not install the assigned DNS servers globally. This space-separated list of domain names allows clients, such as macOS, to selectively query the assigned DNS servers"
-    "unity_login_banner","strings","False","\-","\-","Message displayed on certain clients after login"
+    "unity_login_banner","strings","False","\-","\-","Message displayed on certain clients after login. OPNsense no longer accepts spaces, tabs or line breaks in it"
     "unity_save_password","boolean","False","False","\-","Allow client to save Xauth password in local storage"
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 

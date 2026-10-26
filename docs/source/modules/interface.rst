@@ -16,6 +16,7 @@ Interface
 `loopback <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_loopback.yml>`_ |
 `gre <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_gre.yml>`_ |
 `bridge <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_bridge.yml>`_ |
+`assignment <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_assignment.yml>`_ |
 `gif <https://github.com/O-X-L/ansible-opnsense/blob/latest/tests/interface_gif.yml>`_
 
 **API Docs**: `Core - Interfaces <https://docs.opnsense.org/development/api/core/interfaces.html>`_
@@ -32,43 +33,48 @@ Interface
 Info
 ****
 
+oxlorg.opnsense.interface_assignment
+====================================
+
+This module manages interface assigned that can be found in the WEB-UI menu: 'Interfaces - Assignments'
+
 oxlorg.opnsense.interface_vlan
-==================================
+==============================
 
 This module manages VLAN configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - VLAN'
 
 oxlorg.opnsense.interface_vxlan
-===================================
+===============================
 
 This module manages VXLAN configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - VXLAN'
 
 oxlorg.opnsense.interface_vip
-=================================
+=============================
 
 This module manages VIP configuration that can be found in the WEB-UI menu: 'Interfaces - Virtual IPs - Settings'
 
 oxlorg.opnsense.interface_lagg
-==================================
+==============================
 
 This module manages LAGG configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - LAGG'
 
 oxlorg.opnsense.interface_loopback
-======================================
+==================================
 
 This module manages Loopback configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - Loopback'
 
 oxlorg.opnsense.interface_gre
-=================================
+=============================
 
 This module manages GRE Tunnel configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - GRE'
 
 oxlorg.opnsense.interface_bridge
-====================================
+================================
 
 This module manages Bridge configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - Bridge'
 
 oxlorg.opnsense.interface_gif
-=================================
+=============================
 
 This module manages GIF Tunnel configuration that can be found in the WEB-UI menu: 'Interfaces - Devices - GIF'
 
@@ -87,8 +93,26 @@ Definition
 
 .. include:: ../_include/param_basic.rst
 
+oxlorg.opnsense.interface_assignment
+====================================
+
+.. warning::
+
+    This feature is only available in OPNsense version >= 26.7
+
+..  csv-table:: Definition
+    :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
+    :widths: 15 10 10 10 10 45
+
+    "identifier","string", "false for creation, else true","\-","id","Technical identifier of the interface, used by hasync for example. "
+    "device","string","false for removal, else true ","\-","if","Device name to connect this interface to."
+    "description","string","false","\-","desc","You may enter a description here for your reference (not parsed). Has to be unique!"
+    "lock","boolean","false","true","\-","Prevent interface removal."
+    "enabled","boolean","false","false","\-","Enable or disable this assigned-interface"
+    "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
+
 oxlorg.opnsense.interface_vlan
-==================================
+==============================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -102,7 +126,7 @@ oxlorg.opnsense.interface_vlan
 
 
 oxlorg.opnsense.interface_vxlan
-===================================
+===============================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -119,7 +143,7 @@ oxlorg.opnsense.interface_vxlan
 
 
 oxlorg.opnsense.interface_vip
-=================================
+=============================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -141,7 +165,7 @@ oxlorg.opnsense.interface_vip
 
 
 oxlorg.opnsense.interface_lagg
-==================================
+==============================
 
 .. warning::
 
@@ -165,7 +189,7 @@ oxlorg.opnsense.interface_lagg
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.interface_loopback
-======================================
+==================================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -175,7 +199,7 @@ oxlorg.opnsense.interface_loopback
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.interface_gre
-=================================
+=============================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -190,7 +214,7 @@ oxlorg.opnsense.interface_gre
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.interface_bridge
-====================================
+================================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -217,7 +241,7 @@ oxlorg.opnsense.interface_bridge
     "reload","boolean","false","true","\-", .. include:: ../_include/param_reload.rst
 
 oxlorg.opnsense.interface_gif
-=================================
+=============================
 
 ..  csv-table:: Definition
     :header: "Parameter", "Type", "Required", "Default", "Aliases", "Comment"
@@ -239,7 +263,7 @@ Examples
 ********
 
 oxlorg.opnsense.interface_vlan
-==================================
+==============================
 
 .. code-block:: yaml
 
@@ -250,43 +274,52 @@ oxlorg.opnsense.interface_vlan
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
-    
+
         oxlorg.opnsense.list:
           target: 'interface_vlan'
-    
+
+oxlorg.opnsense.interface_assignment
+====================================
+
+.. code-block:: yaml
+
+    - hosts: firewalls
+      connection: local
+      gather_facts: false
+      module_defaults:
+        group/oxlorg.opnsense.all:
+          firewall: 'opnsense.template.opnsense.oxl.app'
+          api_credential_file: '/home/guy/.secret/opn.key'
+
+        oxlorg.opnsense.list:
+          target: 'interface_assignment'
+
       tasks:
-        - name: Example
-          oxlorg.opnsense.interface_vlan:
+        - name: Assign a physical device
+          oxlorg.opnsense.interface_assignment:
             description: 'example'
-            interface: 'vtnet0'
-            vlan: 100
-            # priority: 0
-            # debug: false
-            # state: 'present'
-            # reload: true
-    
-        - name: Adding VLAN
-          oxlorg.opnsense.interface_vlan:
+            interface: 'vtnet2'
+
+        - name: Assign a VLAN
+          oxlorg.opnsense.interface_assignment:
             description: 'test1'
-            interface: 'vtnet0'
-            vlan: 100
-    
+            interface: '"vlan0.20"'
+
         - name: Listing
           oxlorg.opnsense.list:
-          #  target: 'interface_vlan'
           register: existing_entries
-    
-        - name: Printing VLANs
+
+        - name: Printing Assignments
           ansible.builtin.debug:
             var: existing_entries.data
-    
+
         - name: Removing VLAN
           oxlorg.opnsense.interface_vlan:
-            description: 'test1'
+            identifier: 'opt2'
             state: 'absent'
 
 oxlorg.opnsense.interface_vxlan
-===================================
+===============================
 
 .. code-block:: yaml
 
@@ -297,10 +330,10 @@ oxlorg.opnsense.interface_vxlan
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
-    
+
         oxlorg.opnsense.list:
           target: 'interface_vxlan'
-    
+
       tasks:
         - name: Example
           oxlorg.opnsense.interface_vxlan:
@@ -312,29 +345,29 @@ oxlorg.opnsense.interface_vxlan
             # debug: false
             # state: 'present'
             # reload: true
-    
+
         - name: Adding VxLAN
           oxlorg.opnsense.interface_vxlan:
             id: 100
             local: '192.168.0.1'
             interface: 'lan'
-    
+
         - name: Listing
           oxlorg.opnsense.list:
           #  target: 'interface_vxlan'
           register: existing_entries
-    
+
         - name: Printing VxLANs
           ansible.builtin.debug:
             var: existing_entries.data
-    
+
         - name: Removing VxLAN
           oxlorg.opnsense.interface_vxlan:
             id: 100
             state: 'absent'
 
 oxlorg.opnsense.interface_vip
-=================================
+=============================
 
 .. code-block:: yaml
 
@@ -345,10 +378,10 @@ oxlorg.opnsense.interface_vip
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
-    
+
         oxlorg.opnsense.list:
           target: 'interface_vip'
-    
+
       tasks:
         - name: Example
           oxlorg.opnsense.interface_vip:
@@ -367,7 +400,7 @@ oxlorg.opnsense.interface_vip
             # debug: false
             # state: 'present'
             # reload: true
-    
+
         - name: Adding VIP
           oxlorg.opnsense.interface_vip:
             interface: 'opt1'
@@ -375,16 +408,16 @@ oxlorg.opnsense.interface_vip
             mode: 'carp'
             vhid: 10
             password: 'secret'
-    
+
         - name: Listing
           oxlorg.opnsense.list:
           #  target: 'interface_vip'
           register: existing_entries
-    
+
         - name: Printing VIPs
           ansible.builtin.debug:
             var: existing_entries.data
-    
+
         - name: Removing VIP
           oxlorg.opnsense.interface_vip:
             interface: 'opt1'
@@ -392,7 +425,7 @@ oxlorg.opnsense.interface_vip
             state: 'absent'
 
 oxlorg.opnsense.interface_lagg
-==================================
+==============================
 
 .. code-block:: yaml
 
@@ -403,10 +436,10 @@ oxlorg.opnsense.interface_lagg
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
-    
+
         oxlorg.opnsense.list:
           target: 'interface_lagg'
-    
+
       tasks:
         - name: Example
           oxlorg.opnsense.interface_lagg:
@@ -423,22 +456,22 @@ oxlorg.opnsense.interface_lagg
             # lacp_strict: 'default'
             # mtu: 9000
             # match_fields: ['members']
-    
+
         - name: Adding LAGG
           oxlorg.opnsense.interface_lagg:
             members:
               - ax0
               - ax1
-    
+
         - name: Listing
           oxlorg.opnsense.list:
           #  target: 'interface_lagg'
           register: existing_entries
-    
+
         - name: Printing LAGGs
           ansible.builtin.debug:
             var: existing_entries.data
-    
+
         - name: Removing LAGG
           oxlorg.opnsense.interface_lagg:
             device: lagg0
@@ -446,7 +479,7 @@ oxlorg.opnsense.interface_lagg
             state: 'absent'
 
 oxlorg.opnsense.interface_loopback
-======================================
+==================================
 
 .. code-block:: yaml
 
@@ -457,10 +490,10 @@ oxlorg.opnsense.interface_loopback
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
-    
+
         oxlorg.opnsense.list:
           target: 'interface_loopback'
-    
+
       tasks:
         - name: Example
           oxlorg.opnsense.interface_loopback:
@@ -468,27 +501,27 @@ oxlorg.opnsense.interface_loopback
             # debug: false
             # state: 'present'
             # reload: true
-    
+
         - name: Adding Loopback
           oxlorg.opnsense.interface_loopback:
             description: 'MyLoopback'
-    
+
         - name: Listing
           oxlorg.opnsense.list:
           #  target: 'interface_loopback'
           register: existing_entries
-    
+
         - name: Printing Loopbacks
           ansible.builtin.debug:
             var: existing_entries.data
-    
+
         - name: Removing Loopback
           oxlorg.opnsense.interface_loopback:
             description: 'MyLoopback'
             state: 'absent'
 
 oxlorg.opnsense.interface_gre
-=================================
+=============================
 
 .. code-block:: yaml
 
@@ -499,10 +532,10 @@ oxlorg.opnsense.interface_gre
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
-    
+
         oxlorg.opnsense.list:
           target: 'interface_gre'
-    
+
       tasks:
         - name: Example
           oxlorg.opnsense.interface_gre:
@@ -515,7 +548,7 @@ oxlorg.opnsense.interface_gre
             # debug: false
             # state: 'present'
             # reload: true
-    
+
         - name: Adding GRE Tunnel
           oxlorg.opnsense.interface_gre:
             description: 'MyGRETunnel'
@@ -523,23 +556,23 @@ oxlorg.opnsense.interface_gre
             remote: '192.168.100.1'
             tunnel_local: '10.0.0.1'
             tunnel_remote: '10.0.0.2'
-    
+
         - name: Listing
           oxlorg.opnsense.list:
           #  target: 'interface_gre'
           register: existing_entries
-    
+
         - name: Printing GRE Tunnels
           ansible.builtin.debug:
             var: existing_entries.data
-    
-        - name: Removing GRE Tunnel 
+
+        - name: Removing GRE Tunnel
           oxlorg.opnsense.interface_gre:
             description: 'MyGRETunnel'
             state: 'absent'
 
 oxlorg.opnsense.interface_bridge
-====================================
+================================
 
 .. code-block:: yaml
 
@@ -550,10 +583,10 @@ oxlorg.opnsense.interface_bridge
         group/oxlorg.opnsense.all:
           firewall: 'opnsense.template.opnsense.oxl.app'
           api_credential_file: '/home/guy/.secret/opn.key'
-    
+
         oxlorg.opnsense.list:
           target: 'interface_bridge'
-    
+
       tasks:
         - name: Example
           oxlorg.opnsense.interface_bridge:
@@ -578,28 +611,28 @@ oxlorg.opnsense.interface_bridge
             # debug: false
             # state: 'present'
             # reload: true
-    
+
         - name: Adding Bridge
           oxlorg.opnsense.interface_bridge:
             description: 'MyBridge'
             members: 'lan'
-    
+
         - name: Listing
           oxlorg.opnsense.list:
           #  target: 'interface_bridge'
           register: existing_entries
-    
+
         - name: Printing Bridges
           ansible.builtin.debug:
             var: existing_entries.data
-    
+
         - name: Removing Bridge
           oxlorg.opnsense.interface_bridge:
             description: 'MyBridge'
             state: 'absent'
 
 oxlorg.opnsense.interface_gif
-=================================
+=============================
 
 .. code-block:: yaml
 

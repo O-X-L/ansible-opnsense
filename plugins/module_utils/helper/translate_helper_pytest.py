@@ -101,6 +101,13 @@ def test_simplify_translate(existing, translate, simple):
                 ["data"], ["ansible_nested_opt"],
                 {"data": {"present": "value"}},
                 {}
+        ),
+        # 6. Pass-through API field named like a translated field does not overwrite it
+        (
+                {"allowed_ips": "tunneladdress"},
+                [], [],
+                {"tunneladdress": "10.0.0.1/24", "allowed_ips": ""},
+                {"allowed_ips": "10.0.0.1/24"}
         )
     ]
 )

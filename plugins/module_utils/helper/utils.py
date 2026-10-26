@@ -7,8 +7,7 @@ from typing import Callable
 from inspect import stack as inspect_stack
 from inspect import getfile as inspect_getfile
 
-from httpx import ConnectError, ConnectTimeout
-
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import REQUEST_EXCEPTIONS
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
     DEBUG_CONFIG
 
@@ -25,14 +24,14 @@ def profiler(
     if module_name is None:
         module_name = inspect_getfile(inspect_stack()[1][0]).rsplit('/', 1)[1].rsplit('.', 1)[0]
 
-    httpx_error = None
+    http_client_error = None
     check_response = None
 
     try:
         check_response = check(**kwargs)
 
-    except (ConnectError, ConnectTimeout, ConnectionError) as error:
-        httpx_error = str(error)
+    except REQUEST_EXCEPTIONS as error:
+        http_client_error = str(error)
 
     _.disable()
     result = StringIO()
@@ -52,7 +51,7 @@ def profiler(
     else:
         print(cleaned_result)
 
-    if httpx_error is not None:
-        print(f"HTTP ERROR: {httpx_error}")
+    if http_client_error is not None:
+        print(f"HTTP ERROR: {http_client_error}")
 
     return check_response

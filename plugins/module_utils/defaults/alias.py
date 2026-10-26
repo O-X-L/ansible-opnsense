@@ -7,6 +7,10 @@ ALIAS_MOD_ARGS = dict(
     description=dict(
         type='str', required=False, default='', aliases=['desc'],
     ),
+    categories=dict(
+        type='list', required=False, default=[], elements='str',
+        description='List of firewall alias categories by display name'
+    ),
     content=dict(
         type='list', required=False, default=[], aliases=['c', 'cont'], elements='str',
     ),
@@ -26,6 +30,12 @@ ALIAS_MOD_ARGS = dict(
         type='str', default='', aliases=['pe', 'jq'], required=False,
         description='Simplified expression to select a field inside a container, a dot is used as field separator. '
                     'Expressions using the jq language are also supported.',
+    ),
+    expire=dict(
+        type='int',
+        required=False,
+        default=None,
+        description="Expiration time in seconds for alias-type 'external'",
     ),
     statistics=dict(
         type='bool', default=False, required=False,

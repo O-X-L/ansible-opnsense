@@ -18,14 +18,19 @@ class Auth(BaseAuth):
 
     FIELDS_AUTH_REMOTE = ['ca_certificates', 'eap_radius_groups']
 
-    FIELDS_CHANGE = BaseAuth.FIELDS_CHANGE
+    FIELDS_CHANGE = list(BaseAuth.FIELDS_CHANGE)
     FIELDS_CHANGE.extend(FIELDS_AUTH_REMOTE)
-    FIELDS_ALL = BaseAuth.FIELDS_ALL
+    FIELDS_ALL = list(BaseAuth.FIELDS_ALL)
     FIELDS_ALL.extend(FIELDS_AUTH_REMOTE)
-    FIELDS_TRANSLATE = BaseAuth.FIELDS_TRANSLATE
+    FIELDS_TRANSLATE = dict(BaseAuth.FIELDS_TRANSLATE)
     FIELDS_TRANSLATE['ca_certificates'] = 'cacerts'
     FIELDS_TRANSLATE['eap_radius_groups'] = 'groups'
-    FIELDS_TYPING = BaseAuth.FIELDS_TYPING
+    FIELDS_TYPING = {}
+    for _k, _v in BaseAuth.FIELDS_TYPING.items():
+        if isinstance(_v, list):
+            FIELDS_TYPING[_k] = list(_v)
+        else:
+            FIELDS_TYPING[_k] = _v
     FIELDS_TYPING['list'].extend(FIELDS_AUTH_REMOTE)
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):

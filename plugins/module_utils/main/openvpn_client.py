@@ -27,7 +27,7 @@ class Client(BaseModule):
         'remote', 'protocol', 'port', 'address', 'mode', 'log_level', 'keepalive_interval', 'keepalive_timeout',
         'carp_depend_on', 'certificate', 'ca', 'key', 'authentication', 'username', 'password', 'renegotiate_time',
         'network_local', 'network_remote', 'options', 'mtu', 'fragment_size', 'mss_fix', 'verify_remote_certificate',
-        'http_proxy',
+        'http_proxy', 'data_ciphers', 'data_cipher_fallback',
     ]
     FIELDS_ALL = ['role', 'enabled', 'vpnid', FIELD_ID]
     FIELDS_ALL.extend(FIELDS_CHANGE)
@@ -49,13 +49,15 @@ class Client(BaseModule):
         'key': 'tls_key',
         'verify_remote_certificate': 'remote_cert_tls',
         'http_proxy': 'http-proxy',
+        'data_ciphers': 'data-ciphers',
+        'data_cipher_fallback': 'data-ciphers-fallback',
     }
     FIELDS_TYPING = {
         'bool': ['enabled', 'mss_fix', 'verify_remote_certificate'],
-        'list': ['network_local', 'network_remote', 'options', 'remote'],
+        'list': ['network_local', 'network_remote', 'options', 'remote', 'data_ciphers'],
         'select': [
             'certificate', 'ca', 'key', 'authentication', 'carp_depend_on', 'log_level',
-            'mode', 'protocol', 'role',
+            'mode', 'protocol', 'role', 'data_cipher_fallback',
         ],
         'select_opt_list_idx': ['log_level'],
         'int': ['fragment_size', 'mtu'],

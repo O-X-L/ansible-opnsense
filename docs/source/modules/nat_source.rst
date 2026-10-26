@@ -33,6 +33,11 @@ This plugin has some limitations you need to know of:
   * protocol (*or 'any'*)
   * ip-protocol (*IPv4/IPv6*)
 
+* since OPNsense 26.7 rules can only be managed when the outbound-NAT mode is 'hybrid' or 'advanced' (*Firewall - NAT - Source NAT*)
+
+  * in the 'automatic' and 'disabled' modes OPNsense neither applies nor lists manual rules, so the module fails on ``state: present`` and only warns on ``state: absent``
+  * the automatic rules OPNsense generates are not managed and not listed by the module
+
 * the ruleset managed by this plugin is SEPARATE from the default WEB-UI rules (*Firewall - NAT - Outbound*) - combined usage might bring complications
 * interfaces must be provided as used in the network config (*p.e. 'opt1' instead of 'DMZ'*)
 
@@ -43,13 +48,6 @@ This plugin has some limitations you need to know of:
 
 Info
 ****
-
-Savepoint
-=========
-
-You can prevent lockout-situations using the savepoint systems:
-
-- :ref:`oxlorg.opnsense.savepoint <modules_savepoint>`
 
 Web-UI
 ======

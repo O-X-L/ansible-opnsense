@@ -58,10 +58,16 @@ class User(BaseModule):
 
         if not is_unset(self.p['membership']) or self.p['membership'] == []:
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['membership']
-            self.p['membership'] = [
-                get_key_by_value_from_selection(self.raw['group_memberships'], g)
-                for g in self.p['membership']
-            ]
+            memberships = []
+            for group_name in self.p['membership']:
+                group_id = get_key_by_value_from_selection(self.raw['group_memberships'], group_name)
+                if group_id is None:
+                    self.m.fail_json(
+                        f"Unable to find group '{group_name}' to assign "
+                        f"as membership of user '{self.p['name']}'"
+                    )
+                memberships.append(group_id)
+            self.p['membership'] = memberships
         if not is_unset(self.p['privilege']) or self.p['privilege'] == []:
             self.FIELDS_CHANGE = self.FIELDS_CHANGE + ['privilege']
 
