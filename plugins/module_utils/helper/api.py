@@ -125,16 +125,64 @@ def get_params_path(cnf: dict) -> str:
     return params_path
 
 
-def _clean_response(response: dict) -> dict:
-    response_data = response.copy()
+def _sanitize_response_for_logging_lib_httpx(response_raw: dict) -> dict:
+    sanitized = response_raw.copy()
+    sanitized['http_client'] = 'httpx'
+
     for field in [
         'headers', 'next_request', '_decoder', 'stream', 'extensions', 'history', 'is_closed',
         'is_stream_consumed', 'default_encoding',
     ]:
-        if field in response_data:
-            response_data.pop(field)
+        if field in sanitized:
+            sanitized.pop(field)
 
-    return response_data
+    if '_request' in sanitized:
+        raw_request = sanitized.pop('_request')
+        sanitized['url'] = str(raw_request.url)  # httpx.URL
+        sanitized['method'] = raw_request.method
+
+    if '_num_bytes_downloaded' in sanitized:
+        sanitized['bytes_downloaded'] = sanitized.pop('_num_bytes_downloaded')
+
+    if '_elapsed' in sanitized:
+        sanitized['elapsed_ms'] = sanitized.pop('_elapsed').microseconds
+
+    if '_content' in sanitized:
+        sanitized['body'] = sanitized.pop('_content')
+
+    return sanitized
+
+
+def _sanitize_response_for_logging_lib_requests(response_raw: dict) -> dict:
+    sanitized = response_raw.copy()
+    sanitized['http_client'] = 'requests'
+
+    for field in [
+        '_content_consumed', '_next', 'headers', 'raw', 'encoding', 'history', 'cookies', 'connection',
+    ]:
+        if field in sanitized:
+            sanitized.pop(field)
+
+    if 'request' in sanitized:
+        raw_request = sanitized.pop('request')
+        sanitized['method'] = raw_request.method
+
+    if '_content' in sanitized:
+        sanitized['body'] = sanitized.pop('_content')
+
+    if 'elapsed' in sanitized:
+        sanitized['elapsed_ms'] = sanitized.pop('elapsed').microseconds
+
+    return sanitized
+
+
+def _sanitize_response_for_logging(http_client_lib: str, response_raw: dict) -> dict:
+    # the full response contains the full request including plaintext secrets
+
+    if http_client_lib == 'httpx':
+        return _sanitize_response_for_logging_lib_httpx(response_raw)
+
+    return _sanitize_response_for_logging_lib_requests(response_raw)
 
 
 def debug_api(
@@ -145,7 +193,8 @@ def debug_api(
         return
 
     if response is not None:
-        msg = f"CLI-LIB: {http_client_lib} | RESPONSE: '{_clean_response(response.__dict__)}'"
+        # NOTE: we do not sanitize the response here because the user chose to enable debug-output
+        msg = f"CLI-LIB: {http_client_lib} | RESPONSE: '{response.__dict__}'"
 
     else:
         msg = f"CLI-LIB: {http_client_lib} | REQUEST: {method} | URL: {url}"
@@ -181,24 +230,32 @@ def check_response(module: AnsibleModule, cnf: dict, http_client_lib: str, respo
     except JSONDecodeError:
         json = {}
 
-    if 'validations' in json and len(json['validations'].strip()) > 0:
+    sanitized_response = _sanitize_response_for_logging(
+        http_client_lib=http_client_lib,
+        response_raw=response.__dict__,
+    )
+    debug_info = " (set 'debug: true' for more info)"
+    if 'debug' in module.params and module.params['debug']:
+        debug_info = ''
+
+    if 'validations' in json and json['validations'] is not None and len(json['validations']) > 0:
         # OPNsense sometimes reports a positive response-status even if the action failed :'(
         module.fail_json(
             f"API call failed | Error: {json['validations']} | "
-            f"Response: {response.__dict__}"
+            f"Info: {sanitized_response}{debug_info}"
         )
 
     if response.status_code not in cnf['allowed_http_stati'] or \
             ('result' in json and json['result'] == 'failed'):
         # sometimes an error 'hides' behind a 200-code
-        if f"{response.__dict__}".find('Controller not found') != -1:
+        if f"{sanitized_response}".find('Controller not found') != -1:
             module.fail_json(
                 f"API call failed | Needed plugin not installed! | "
-                f"Response: {response.__dict__}"
+                f"Info: {sanitized_response}{debug_info}"
             )
 
         else:
-            module.fail_json(f"API call failed | Response: {response.__dict__}")
+            module.fail_json(f"API call failed | Info: {sanitized_response}{debug_info}")
 
     return json
 
