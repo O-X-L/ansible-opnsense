@@ -264,7 +264,7 @@ def is_ip(host: str, ignore_empty: bool = False, strip_enclosure: bool = True) -
     if ignore_empty and is_unset(host):
         return True
 
-    if strip_enclosure and host.startswith('['):
+    if strip_enclosure and isinstance(host, str) and host.startswith('['):
         host = host[1:-1]
 
     try:
@@ -291,7 +291,7 @@ def is_ip6(host: str, ignore_empty: bool = False, strip_enclosure: bool = True) 
     if ignore_empty and is_unset(host):
         return True
 
-    if strip_enclosure and host.startswith('['):
+    if strip_enclosure and isinstance(host, str) and host.startswith('['):
         host = host[1:-1]
 
     try:
