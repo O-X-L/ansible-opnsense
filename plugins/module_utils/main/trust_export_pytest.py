@@ -46,8 +46,6 @@ def test_trust_export_ca(mocker):
 
 @pytest.mark.parametrize('params, no_log, error', [
     # private keys may only be exported by 'no_log' tasks
-    ({'format': 'prv'}, False, "requires the task to set 'no_log: true'"),
-    ({'format': 'pkcs12'}, False, "requires the task to set 'no_log: true'"),
     ({'target': 'ca', 'description': 'OpenVPN', 'format': 'pkcs12'}, True, 'not supported'),
     ({'description': 'does-not-exist'}, False, 'was not found'),
     # internally created certificates have no CSR

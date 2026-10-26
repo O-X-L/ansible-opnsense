@@ -87,7 +87,7 @@ oxlorg.opnsense.trust_export
 
     "description","string","true","\-","desc","Description of the CA or certificate to export"
     "target","string","false","cert","\-","If a CA or certificate should be exported. One of: 'ca', 'cert'"
-    "format","string","false","crt","\-","What to export. One of: 'crt' (certificate), 'prv' (private key), 'csr' (certificate signing request - certificates only), 'pkcs12' (base64-encoded PKCS#12 bundle with certificate, key and CA - certificates only). Exporting private keys ('prv', 'pkcs12') requires the task to set 'no_log: true'"
+    "format","string","false","crt","\-","What to export. One of: 'crt' (certificate), 'prv' (private key), 'csr' (certificate signing request - certificates only), 'pkcs12' (base64-encoded PKCS#12 bundle with certificate, key and CA - certificates only). You should set 'no_log: true' when exporting private keys ('prv', 'pkcs12')"
     "password","string","false","\-","\-","Optional password to protect the 'pkcs12' bundle"
 
 .. include:: ../_include/param_basic.rst

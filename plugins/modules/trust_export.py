@@ -39,7 +39,7 @@ def run_module():
             description="What to export: 'crt' = certificate, 'prv' = private key, "
                         "'csr' = certificate signing request, 'pkcs12' = base64-encoded PKCS#12 bundle "
                         "(certificate, key and CA). 'csr' and 'pkcs12' are only available for certificates. "
-                        "Exporting private keys ('prv', 'pkcs12') requires the task to set 'no_log: true'.",
+                        "You should set 'no_log: true' when exporting private keys ('prv', 'pkcs12').",
         ),
         password=dict(
             type='str', required=False, default='', no_log=True,
