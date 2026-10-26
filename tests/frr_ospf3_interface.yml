@@ -1,5 +1,8 @@
 ---
 
+# since OPNsense 26.7 (os-frr 2.0) interfaces link to area entries
+#   the area '0.0.0.0' needs to exist
+
 - name: Testing FRR-OSPFv3 interfaces
   hosts: localhost
   gather_facts: no
@@ -34,6 +37,13 @@
       failed_when: >
         opn_pre2.failed or
         opn_pre2.changed
+
+    - name: Adding 1 - failing because of non-existent area
+      oxlorg.opnsense.frr_ospf3_interface:
+        interface: 'lan'
+        area: '0.0.0.99'
+      register: opn_fail3
+      failed_when: not opn_fail3.failed
 
     - name: Adding 1 - failing because of invalid cost
       oxlorg.opnsense.frr_ospf3_interface:

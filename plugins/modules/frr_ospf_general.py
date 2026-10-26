@@ -45,11 +45,6 @@ def run_module():
             description='Here you can adjust the reference cost in Mbps for path calculation. '
                         'Mostly needed when you bundle interfaces to higher bandwidth'
         ),
-        passive_ints=dict(
-            type='list', elements='str', required=False, default=[],
-            aliases=['passive_interfaces'],
-            description='Select the interfaces, where no OSPF packets should be sent to'
-        ),
         originate=dict(
             type='bool', required=False, default=False, aliases=['orig', 'advertise_default_gw'],
             description='This will send the information that we have a default gateway'
