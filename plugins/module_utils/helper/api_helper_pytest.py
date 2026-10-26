@@ -76,7 +76,10 @@ class MockResponseLibRequests:
             'status_code': 200,
             'url': MockRequestLibHttpx.url,
             'method': 'POST',
+            'http_client': 'httpx',
+            'body': b'{"result":"failed","validations":{"rule.interface":"A value is required."}}',
             'elapsed_ms': 41331,
+            'bytes_downloaded': 75,
         }
     ),
 ])
@@ -85,6 +88,7 @@ def test_sanitize_response_for_logging_lib_httpx(response: dict, expected: dict)
         _sanitize_response_for_logging_lib_httpx
 
     result = _sanitize_response_for_logging_lib_httpx(response)
+    assert len(result) == len(expected)
     for key, value in expected.items():
         assert result[key] == value
 
@@ -104,6 +108,9 @@ def test_sanitize_response_for_logging_lib_httpx(response: dict, expected: dict)
             'url': MockRequestLibHttpx.url,
             'method': 'POST',
             'elapsed_ms': 41041,
+            'http_client': 'requests',
+            'reason': 'OK',
+            'body': b'{"result":"failed","validations":{"rule.interface":"A value is required."}}',
         }
     ),
 ])
@@ -112,6 +119,7 @@ def test_sanitize_response_for_logging_lib_requests(response: dict, expected: di
         _sanitize_response_for_logging_lib_requests
 
     result = _sanitize_response_for_logging_lib_requests(response)
+    assert len(result) == len(expected)
     for key, value in expected.items():
         assert result[key] == value
 
