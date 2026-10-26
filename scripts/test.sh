@@ -266,6 +266,9 @@ run_test_soft 'haproxy_server' 1
 run_test_soft 'radvd' 1
 run_test_soft 'nut' 1
 run_test_soft 'nut_diagnostics' 1
+run_test_soft 'trust_ca' 1
+run_test_soft 'trust_cert' 0  # check mode => dependency on CA
+run_test_soft 'trust_export' 0  # check mode => dependency on CA/certificate
 
 run_test_soft '1_cleanup' 0
 run_test_soft '1_reload' 0

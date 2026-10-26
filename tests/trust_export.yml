@@ -1,0 +1,90 @@
+---
+
+- name: Testing Trust Export
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Exporting - does not exist
+      oxlorg.opnsense.trust_export:
+        description: 'ANSIBLE_TEST_2_1'
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Adding dependency - CA
+      oxlorg.opnsense.trust_ca:
+        description: 'ANSIBLE_TEST_3'
+        common_name: 'Ansible Test CA'
+        country: 'AT'
+
+    - name: Adding dependency - certificate
+      oxlorg.opnsense.trust_cert:
+        description: 'ANSIBLE_TEST_2_1'
+        common_name: 'test1.ansible.oxl.app'
+        country: 'AT'
+        ca: 'ANSIBLE_TEST_3'
+        san_dns: ['test1.ansible.oxl.app']
+
+    - name: Exporting certificate
+      oxlorg.opnsense.trust_export:
+        description: 'ANSIBLE_TEST_2_1'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        opn1.changed or
+        not opn1.payload.startswith('-----BEGIN CERTIFICATE-----')
+
+    - name: Exporting CA certificate
+      oxlorg.opnsense.trust_export:
+        description: 'ANSIBLE_TEST_3'
+        target: 'ca'
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        not opn2.payload.startswith('-----BEGIN CERTIFICATE-----')
+
+    - name: Exporting private key
+      oxlorg.opnsense.trust_export:
+        description: 'ANSIBLE_TEST_2_1'
+        format: 'prv'
+      register: opn3
+      no_log: true
+      failed_when: >
+        opn3.failed or
+        'PRIVATE KEY-----' not in opn3.payload
+
+    - name: Exporting PKCS#12 bundle
+      oxlorg.opnsense.trust_export:
+        description: 'ANSIBLE_TEST_2_1'
+        format: 'pkcs12'
+        password: 'ansible-test'
+      register: opn4
+      no_log: true
+      failed_when: >
+        opn4.failed or
+        (opn4.payload | b64decode(encoding='latin-1') | length) == 0
+
+    - name: Exporting CSR - failing because the certificate was not created by a CSR
+      oxlorg.opnsense.trust_export:
+        description: 'ANSIBLE_TEST_2_1'
+        format: 'csr'
+      register: opn_fail3
+      failed_when: not opn_fail3.failed
+
+    - name: Cleanup certificate
+      oxlorg.opnsense.trust_cert:
+        description: 'ANSIBLE_TEST_2_1'
+        state: 'absent'
+
+    - name: Cleanup CA
+      oxlorg.opnsense.trust_ca:
+        description: 'ANSIBLE_TEST_3'
+        state: 'absent'

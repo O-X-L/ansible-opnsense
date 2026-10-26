@@ -1,0 +1,193 @@
+---
+
+- name: Testing Trust Certificates
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+    oxlorg.opnsense.list:
+      target: 'trust_cert'
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_pre1
+      failed_when: >
+        'data' not in opn_pre1 or
+        opn_pre1.data | selectattr('descr', 'match', '^ANSIBLE_TEST_') | list | length != 0
+
+    - name: Removing - does not exist
+      oxlorg.opnsense.trust_cert:
+        description: 'ANSIBLE_TEST_1_1'
+        state: 'absent'
+      register: opn_pre2
+      failed_when: >
+        opn_pre2.failed or
+        opn_pre2.changed
+
+    - name: Adding dependency - CA
+      oxlorg.opnsense.trust_ca:
+        description: 'ANSIBLE_TEST_2'
+        common_name: 'Ansible Test CA'
+        country: 'AT'
+
+    - name: Adding 1 - failing because of invalid SAN
+      oxlorg.opnsense.trust_cert:
+        description: 'ANSIBLE_TEST_1_1'
+        country: 'AT'
+        ca: 'ANSIBLE_TEST_2'
+        san_ip: ['INVALID-IP']
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Adding 1
+      oxlorg.opnsense.trust_cert:
+        description: 'ANSIBLE_TEST_1_1'
+        common_name: 'test1.ansible.oxl.app'
+        country: 'AT'
+        ca: 'ANSIBLE_TEST_2'
+        cert_type: 'server'
+        key_type: 'secp384r1'
+        lifetime: 30
+        san_dns: ['test1.ansible.oxl.app', 'test2.ansible.oxl.app']
+        san_ip: ['192.168.1.1', '2001:db8::1']
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Adding 1 - nothing changed
+      oxlorg.opnsense.trust_cert:
+        description: 'ANSIBLE_TEST_1_1'
+        common_name: 'test1.ansible.oxl.app'
+        country: 'AT'
+        ca: 'ANSIBLE_TEST_2'
+        cert_type: 'server'
+        key_type: 'secp384r1'
+        lifetime: 30
+        san_dns: ['test2.ansible.oxl.app', 'test1.ansible.oxl.app']
+        san_ip: ['192.168.1.1', '2001:db8::1']
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        opn2.changed
+
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_list1
+
+    - name: Changing 1 - failing because the certificate would need to be re-issued
+      oxlorg.opnsense.trust_cert:
+        description: 'ANSIBLE_TEST_1_1'
+        common_name: 'test1.ansible.oxl.app'
+        country: 'AT'
+        ca: 'ANSIBLE_TEST_2'
+        cert_type: 'server'
+        key_type: 'secp384r1'
+        lifetime: 30
+        san_dns: ['test1.ansible.oxl.app']
+        san_ip: ['192.168.1.1', '2001:db8::1']
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Changing 1 - renaming
+      oxlorg.opnsense.trust_cert:
+        description: 'ANSIBLE_TEST_1_2'
+        common_name: 'test1.ansible.oxl.app'
+        country: 'AT'
+        ca: 'ANSIBLE_TEST_2'
+        cert_type: 'server'
+        key_type: 'secp384r1'
+        lifetime: 30
+        san_dns: ['test1.ansible.oxl.app', 'test2.ansible.oxl.app']
+        san_ip: ['192.168.1.1', '2001:db8::1']
+        match_fields: ['common_name']
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+
+    - name: Listing - certificate was not re-issued
+      oxlorg.opnsense.list:
+      register: opn_list2
+      failed_when: >
+        'data' not in opn_list2 or
+        opn_list2.data | selectattr('descr', 'equalto', 'ANSIBLE_TEST_1_2') | list | length != 1 or
+        (opn_list2.data | selectattr('descr', 'equalto', 'ANSIBLE_TEST_1_2') | first).refid !=
+        (opn_list1.data | selectattr('descr', 'equalto', 'ANSIBLE_TEST_1_1') | first).refid or
+        (opn_list2.data | selectattr('descr', 'equalto', 'ANSIBLE_TEST_1_2') | first).valid_from !=
+        (opn_list1.data | selectattr('descr', 'equalto', 'ANSIBLE_TEST_1_1') | first).valid_from or
+        (opn_list2.data | selectattr('descr', 'equalto', 'ANSIBLE_TEST_1_2') | first).prv_payload is defined
+
+    - name: Adding 2 - self-signed client certificate
+      oxlorg.opnsense.trust_cert:
+        description: 'ANSIBLE_TEST_1_3'
+        common_name: 'ansible-test-client'
+        country: 'AT'
+        cert_type: 'client'
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        not opn4.changed
+
+    - name: Adding 2 - nothing changed
+      oxlorg.opnsense.trust_cert:
+        description: 'ANSIBLE_TEST_1_3'
+        common_name: 'ansible-test-client'
+        country: 'AT'
+        cert_type: 'client'
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        opn5.changed
+
+    - name: Removing CA - failing because it is still in use
+      oxlorg.opnsense.trust_ca:
+        description: 'ANSIBLE_TEST_2'
+        state: 'absent'
+      register: opn_fail3
+      failed_when: not opn_fail3.failed
+
+    - name: Removing 2
+      oxlorg.opnsense.trust_cert:
+        description: 'ANSIBLE_TEST_1_3'
+        state: 'absent'
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        not opn6.changed
+
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_list3
+      failed_when: >
+        'data' not in opn_list3 or
+        opn_list3.data | selectattr('descr', 'match', '^ANSIBLE_TEST_') | list | length != 1
+
+    - name: Cleanup
+      oxlorg.opnsense.trust_cert:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+
+    - name: Cleanup dependency - CA
+      oxlorg.opnsense.trust_ca:
+        description: 'ANSIBLE_TEST_2'
+        state: 'absent'
+
+    - name: Listing
+      oxlorg.opnsense.list:
+      register: opn_clean1
+      failed_when: >
+        'data' not in opn_clean1 or
+        opn_clean1.data | selectattr('descr', 'match', '^ANSIBLE_TEST_') | list | length != 0

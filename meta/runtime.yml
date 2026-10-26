@@ -213,6 +213,10 @@ action_groups:
     - oxlorg.opnsense.nut_diagnostics
   radvd:
     - oxlorg.opnsense.radvd
+  trust:
+    - oxlorg.opnsense.trust_ca
+    - oxlorg.opnsense.trust_cert
+    - oxlorg.opnsense.trust_export
   all:
     - metadata:
         extend_group:
@@ -247,6 +251,7 @@ action_groups:
           - oxlorg.opnsense.nut
           - oxlorg.opnsense.nut_diagnostics
           - oxlorg.opnsense.radvd
+          - oxlorg.opnsense.trust
 
 plugin_routing:
   modules:

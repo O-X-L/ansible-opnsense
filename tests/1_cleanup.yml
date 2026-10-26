@@ -528,6 +528,27 @@
       loop:
         - 'lan'
 
+    - name: Cleanup Trust Certificates
+      oxlorg.opnsense.trust_cert:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_2_1'
+
+    - name: Cleanup Trust CAs
+      oxlorg.opnsense.trust_ca:
+        description: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_1'
+        - 'ANSIBLE_TEST_2'
+        - 'ANSIBLE_TEST_3'
+
     - name: Cleanup BIND general settings
       oxlorg.opnsense.bind_general:
         enabled: false

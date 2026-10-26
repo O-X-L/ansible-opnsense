@@ -37,7 +37,11 @@ class MockHttpClient:
         if 'uuid' in route_kwargs and len(parts) < 4:
             return MockHttpResponse(MockOPNsenseController.RES_ERROR)
 
-        if 'uuid' in route_kwargs and 'data' in route_kwargs:
+        if 'params' in route_kwargs:
+            # commands with multiple path-parameters
+            res = cmd(params=parts[3:], data=data)
+
+        elif 'uuid' in route_kwargs and 'data' in route_kwargs:
             res = cmd(uuid=parts[3], data=data)
 
         elif 'uuid' in route_kwargs:
