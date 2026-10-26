@@ -151,6 +151,8 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_3_1'
+        - 'ANSIBLE_TEST_4_1'
+        - 'ANSIBLE_TEST_4_2'
 
     - name: Cleanup shaper pipes
       oxlorg.opnsense.shaper_pipe:
@@ -161,6 +163,8 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_3_1'
+        - 'ANSIBLE_TEST_4_1'
+        - 'ANSIBLE_TEST_4_2'
 
     - name: Cleanup shaper queues
       oxlorg.opnsense.shaper_queue:
@@ -226,6 +230,8 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_3_1'
+        - 'ANSIBLE_TEST_4_1'
+        - 'ANSIBLE_TEST_4_2'
 
     - name: Cleanup wireguard general
       oxlorg.opnsense.wireguard_general:
@@ -472,15 +478,35 @@
         - {'ip': '10.0.2.0', 'mask': 24}
         - {'ip': '10.0.3.0', 'mask': 24}
 
-    - name: Cleanup OSPFv3 networks
-      oxlorg.opnsense.frr_ospf3_network:
-        ip: "{{ item.ip }}"
-        mask: "{{ item.mask }}"
+    - name: Cleanup OSPF interfaces
+      oxlorg.opnsense.frr_ospf_interface:
+        interface: "{{ item }}"
         state: 'absent'
-        match_fields: ['ip', 'mask']
+        match_fields: ['interface']
       loop:
-        - {'ip': '2001:db8:1::', 'mask': 64}
-        - {'ip': '2001:db8::', 'mask': 64}
+        - 'opt1'
+        - 'lan'
+
+    # areas can only be removed once no network or interface links to them
+    - name: Cleanup OSPF areas
+      oxlorg.opnsense.frr_ospf_area:
+        area: "{{ item }}"
+        state: 'absent'
+      loop:
+        - '0.0.0.0'
+        - '0.0.0.1'
+        - '0.0.10.1'
+        - '0.0.1.1'
+        - '0.0.1.2'
+
+    - name: Cleanup OSPFv3 areas
+      oxlorg.opnsense.frr_ospf3_area:
+        area: "{{ item }}"
+        state: 'absent'
+      loop:
+        - '0.0.0.0'
+        - '0.0.1.1'
+        - '0.0.1.2'
 
     - name: Cleanup OSPF prefix-lists
       oxlorg.opnsense.frr_ospf_prefix_list:
@@ -491,6 +517,8 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_3_1'
+        - 'ANSIBLE_TEST_4_1'
+        - 'ANSIBLE_TEST_4_2'
 
     - name: Cleanup OSPFv3 prefix-lists
       oxlorg.opnsense.frr_ospf3_prefix_list:
@@ -501,6 +529,8 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_3_1'
+        - 'ANSIBLE_TEST_4_1'
+        - 'ANSIBLE_TEST_4_2'
 
     - name: Cleanup FRR OSPF redistributions
       oxlorg.opnsense.frr_ospf_redistribution:
@@ -658,6 +688,8 @@
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_3_1'
         - 'ANSIBLE_TEST_4_1'
+        - 'ANSIBLE_TEST_4_2'
+        - 'ANSIBLE_TEST_4_1'
         - 'ANSIBLE_TEST_5_1'
 
     - name: Cleanup IPSec pools
@@ -749,6 +781,8 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_3_1'
+        - 'ANSIBLE_TEST_4_1'
+        - 'ANSIBLE_TEST_4_2'
 
     - name: Cleanup OpenVPN Static-Keys
       oxlorg.opnsense.openvpn_static_key:
@@ -759,6 +793,8 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_3_1'
+        - 'ANSIBLE_TEST_4_1'
+        - 'ANSIBLE_TEST_4_2'
 
     - name: Cleanup Nginx General
       oxlorg.opnsense.nginx_general:

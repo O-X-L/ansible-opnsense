@@ -12,17 +12,15 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
     module_dependency_error, MODULE_EXCEPTIONS
 
 try:
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
-    from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.frr_ospf3_network import Network
 
 except MODULE_EXCEPTIONS:
     module_dependency_error()
 
 
-# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/frr_bgp.html'
-# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/frr_bgp.html'
+# DOCUMENTATION = 'https://ansible-opnsense.oxl.app/modules/frr_ospf.html'
+# EXAMPLES = 'https://ansible-opnsense.oxl.app/modules/frr_ospf.html'
 
 
 def run_module():
@@ -31,7 +29,7 @@ def run_module():
         mask=dict(type='int', required=True, aliases=['nw_mask', 'network_mask']),
         area=dict(
             type='str', required=False,
-            description='Area in wildcard mask style like 0.0.0.0 and no decimal 0. '
+            description='Area in dotted-quad format (A.B.C.D) like 0.0.0.0, not in decimal format (0). '
                         'Only use Area in Interface tab or in Network tab once'
         ),
         area_range=dict(
@@ -56,21 +54,15 @@ def run_module():
         **OPN_MOD_ARGS,
     )
 
-    result = dict(
-        changed=False,
-        diff={
-            'before': {},
-            'after': {},
-        }
-    )
-
-    module = AnsibleModule(
+    AnsibleModule(
         argument_spec=module_args,
         supports_check_mode=True,
+    ).fail_json(
+        'This module was removed as OPNsense 26.7 (os-frr 2.0) dropped OSPFv3 networks, '
+        'FRR does not support assigning IPv6 prefixes to OSPFv3 areas with a router-level network command. '
+        "Assign the area to the interface instead (module 'frr_ospf3_interface'). "
+        'See: https://github.com/opnsense/plugins/pull/5751'
     )
-
-    module_wrapper(Network(module=module, result=result))
-    module.exit_json(**result)
 
 
 def main():

@@ -1,5 +1,8 @@
 ---
 
+# since OPNsense 26.7 (os-frr 2.0) networks link to area entries
+#   the test creates the areas it uses and removes them at the end
+
 - name: Testing FRR OSPF Networks
   hosts: localhost
   gather_facts: no
@@ -19,6 +22,15 @@
     HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
 
   tasks:
+    - name: Preparing areas
+      oxlorg.opnsense.frr_ospf_area:
+        area: "{{ item }}"
+      loop:
+        - '0.0.0.0'
+        - '0.0.0.1'
+        - '0.0.10.1'
+      check_mode: false
+
     - name: Listing
       oxlorg.opnsense.list:
       register: opn_pre1
@@ -52,12 +64,11 @@
       register: opn_fail2
       failed_when: not opn_fail2.failed
 
-    - name: Adding 1 - failing because of non-existent prefix-list
+    - name: Adding 1 - failing because of non-existent area
       oxlorg.opnsense.frr_ospf_network:
         ip: '10.0.1.0'
         mask: 30
-        area: '0.0.0.0'
-        prefix_list_in: 'DOES-NOT-EXIST'
+        area: '0.0.0.99'
       register: opn_fail3
       failed_when: not opn_fail3.failed
 
@@ -121,7 +132,6 @@
         ip: '10.0.2.0'
         mask: 24
         area: '0.0.10.1'
-        area_range: '192.168.0.0/18'
       register: opn5
       failed_when: >
         opn5.failed or
@@ -132,7 +142,6 @@
         ip: '10.0.2.0'
         mask: 24
         area: '0.0.10.1'
-        area_range: '192.168.0.0/18'
       register: opn6
       failed_when: >
         opn6.failed or
@@ -176,70 +185,12 @@
         opn_clean1.data | length != 0
       when: not ansible_check_mode
 
-- name: Testing FRR OSPF Networks - linking
-  hosts: localhost
-  gather_facts: no
-  module_defaults:
-    group/oxlorg.opnsense.all:
-      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
-      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
-      ssl_verify: false
-
-    oxlorg.opnsense.frr_ospf_network:
-      match_fields: ['ip', 'mask']
-
-    oxlorg.opnsense.list:
-      target: 'frr_ospf_network'
-
-  environment:
-    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
-
-  tasks:
-    - name: Listing
-      oxlorg.opnsense.list:
-      register: opn_pre3
-      failed_when: >
-        'data' not in opn_pre3 or
-        opn_pre3.data | length != 0
-      when: not ansible_check_mode
-
-    - name: Adding dummy prefix-list
-      oxlorg.opnsense.frr_ospf_prefix_list:
-        name: 'ANSIBLE_TEST_3_1'
-        seq: 25
-        action: 'permit'
-        network: '10.0.1.0/24'
-      when: not ansible_check_mode
-
-    - name: Adding network linked to prefix-list
-      oxlorg.opnsense.frr_ospf_network:
-        ip: '10.0.3.0'
-        mask: 30
-        area: '0.0.0.0'
-        prefix_list_in: 'ANSIBLE_TEST_3_1'
-      register: opn11
-      failed_when: >
-        opn11.failed or
-        not opn11.changed
-      when: not ansible_check_mode
-
-    - name: Cleanup networks
-      oxlorg.opnsense.frr_ospf_network:
-        ip: '10.0.3.0'
-        mask: 30
+    - name: Removing areas
+      oxlorg.opnsense.frr_ospf_area:
+        area: "{{ item }}"
         state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Cleanup prefix-list
-      oxlorg.opnsense.frr_ospf_prefix_list:
-        name: 'ANSIBLE_TEST_3_1'
-        state: 'absent'
-      when: not ansible_check_mode
-
-    - name: Listing
-      oxlorg.opnsense.list:
-      register: opn_clean2
-      failed_when: >
-        'data' not in opn_clean2 or
-        opn_clean2.data | length != 0
-      when: not ansible_check_mode
+      loop:
+        - '0.0.0.0'
+        - '0.0.0.1'
+        - '0.0.10.1'
+      check_mode: false
