@@ -81,6 +81,35 @@
       failed_when: not opn_fail2.failed
       when: not ansible_check_mode
 
+    - name: Adding 1 - failing because of missing interface
+      oxlorg.opnsense.source_nat:
+        description: 'ANSIBLE_TEST_1_1'
+        destination: '192.168.0.1'
+        target: '192.168.0.2'
+      register: opn_fail3
+      failed_when: not opn_fail3.failed
+
+    - name: Adding 4 - without target (use the interface address)
+      oxlorg.opnsense.source_nat:
+        description: 'ANSIBLE_TEST_1_4'
+        interface: 'lan'
+        destination: '192.168.0.1'
+      register: opn_nt1
+      failed_when: >
+        opn_nt1.failed or
+        not opn_nt1.changed
+
+    - name: Adding 4 - nothing changed
+      oxlorg.opnsense.source_nat:
+        description: 'ANSIBLE_TEST_1_4'
+        interface: 'lan'
+        destination: '192.168.0.1'
+      register: opn_nt2
+      failed_when: >
+        opn_nt2.failed or
+        opn_nt2.changed
+      when: not ansible_check_mode
+
     - name: Adding 1
       oxlorg.opnsense.source_nat:
         description: 'ANSIBLE_TEST_1_1'
@@ -250,7 +279,7 @@
       register: opn8
       failed_when: >
         'data' not in opn8 or
-        opn8.data | length != 2
+        opn8.data | length != 3
       when: not ansible_check_mode
 
     - name: Cleanup
@@ -261,6 +290,7 @@
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
       when: not ansible_check_mode
 
     - name: Listing
