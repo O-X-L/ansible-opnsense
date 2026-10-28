@@ -13,7 +13,7 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.handler impor
 try:
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.wrapper import module_wrapper
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.rule import \
-        RULE_MOD_ARGS
+        RULE_MOD_ARGS, RULE_MOD_ARG_ALIASES, RULE_DEFAULTS
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.main import \
         OPN_MOD_ARGS, STATE_MOD_ARG, RELOAD_MOD_ARG
     from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.nat_destination import DNat
@@ -30,7 +30,12 @@ def run_module():
     shared_rule_args = {
         'sequence': RULE_MOD_ARGS['sequence'],
         'interface': RULE_MOD_ARGS['interface'],
-        'ip_protocol': RULE_MOD_ARGS['ip_protocol'],
+        # unlike filter-rules, the DNat-model has no required ip-protocol: an empty value means 'any' ('*' in the WebUI)
+        'ip_protocol': dict(
+            type='str', required=False, choices=['', 'inet', 'inet6', 'inet46'],
+            default=RULE_DEFAULTS['ip_protocol'], aliases=RULE_MOD_ARG_ALIASES['ip_protocol'],
+            description="IPv4 = 'inet', IPv6 = 'inet6', IPv4+6 = 'inet46', any = '' (the default of the WebUI)",
+        ),
         'protocol': RULE_MOD_ARGS['protocol'],
         'source_invert': RULE_MOD_ARGS['source_invert'],
         'source_net': RULE_MOD_ARGS['source_net'],
