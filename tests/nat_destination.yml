@@ -119,10 +119,11 @@
         not opn4.changed
       when: not ansible_check_mode
 
-    - name: Adding 2 - with source-restriction, no_port_forward and associated_rule
+    - name: Adding 2 - with source-restriction, no_port_forward, associated_rule and ip_protocol 'any'
       oxlorg.opnsense.destination_nat:
         description: 'ANSIBLE_TEST_1_2'
         interface: ['wan']
+        ip_protocol: ''
         protocol: 'TCP'
         source_invert: true
         source_net: 'bogons'
@@ -142,6 +143,7 @@
       oxlorg.opnsense.destination_nat:
         description: 'ANSIBLE_TEST_1_2'
         interface: ['wan']
+        ip_protocol: ''
         protocol: 'TCP'
         source_invert: true
         source_net: 'bogons'
