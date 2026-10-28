@@ -30,6 +30,8 @@ For more detailed information on what alias types are supported - see `the docum
 
 To use GeoIP alias types - you need to configure a source for it first. See: `documentation <https://docs.opnsense.org/manual/how-tos/maxmind_geo_ip.html>`_
 
+The source can be managed using the :ref:`oxlorg.opnsense.alias_geoip <modules_alias_geoip>` module.
+
 Mass-Manage
 ===========
 

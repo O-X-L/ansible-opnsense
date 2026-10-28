@@ -95,6 +95,7 @@ run_test_soft 'alias' 1
 run_test_soft '1_multi' 1
 run_test_soft 'alias_multi' 1
 run_test_soft 'alias_purge' 0
+run_test_soft 'alias_geoip' 1
 run_test_soft 'rule' 1
 run_test_soft 'rule_multi' 1
 run_test_soft 'rule_purge' 0
