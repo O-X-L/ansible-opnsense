@@ -348,7 +348,7 @@
 
     - name: Cleanup FRR BGP general settings
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         enabled: false
 
     - name: Cleanup FRR BGP neighbors
@@ -361,6 +361,9 @@
         - 'ANSIBLE_TEST_1_2'
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_2_2'
+        - 'ANSIBLE_TEST_1_3'
+        - 'ANSIBLE_TEST_1_4'
+        - 'ANSIBLE_TEST_2_3'
 
     - name: Cleanup FRR BGP route-maps
       oxlorg.opnsense.frr_bgp_route_map:
