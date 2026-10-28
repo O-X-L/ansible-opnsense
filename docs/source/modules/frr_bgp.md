@@ -38,6 +38,16 @@ You can also install it using the [package module](https://ansible-opnsense.oxl.
 
 ----
 
+## Info
+
+Since OPNsense 26.7 (os-frr 2.0) the 'Multi-Protocol' toggle of a neighbor is replaced by its address families ('family' of `oxlorg.opnsense.frr_bgp_neighbor`).
+
+Route-maps match as-path and community-lists by their number and prefix-lists by their name. All entries sharing that number or name form one list, so a route-map links the whole list, whichever of its entries you name. Since OPNsense 26.7 the API also shows only one entry per list, and the route-map module compares the linked lists instead of the single entries.
+
+Since OPNsense 26.7 the router ID must be an IPv4 address and the advertised networks must be valid networks in CIDR notation with all host bits set to zero (e.g. '10.0.0.0/24', not '10.0.0.1/24').
+
+----
+
 ## Definition
 
 For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basic.html)
@@ -50,9 +60,13 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | distance             | integer | false    | -             | -             | Adjust BGP administrative distance, typically set to 20. Useful if you want to prefer OSPF-learned routes.                                                                                                                                                                                                                                                              |
 | id                   | string  | false    | -             | router_id     | In some cases it might be clearer to set a fixed router-id. (_4-byte field/IPv4 Address_)                                                                                                                                                                                                                                                                               |                                                                                                                                                  |
 | graceful             | boolean | false    | -             | -             | BGP graceful restart functionality as defined in RFC-4724 defines the mechanisms that allows BGP speaker to continue to forward data packets along known routes while the routing protocol information is being restored.                                                                                                                                               |                                                                                                                                                  |
-| networks             | list    | false    | -             | nets          | Select the network to advertise, you have to set a Null route via System -> Routes                                                                                                                                                                                                                                                                                      |                                                                                                                                                  |
+| networks             | list    | false    | -             | nets          | Select the network to advertise, you have to set a Null route via System -> Routes. Networks in CIDR notation with all host bits set to zero, like '10.0.0.0/24'                                                                                                                                                                                                       |                                                                                                                                                  |
 | network_import_check | boolean | false    | true          | network_check | When enabled (default), BGP only announces networks set at 'Network' if they are present in the routers routing table (alternatively, you can also set a null-route via System -> Routes). If disabled, all configured networks will be announced.                                                                                                                      |
 | log_neighbor_changes | boolean | false    | false         | log_neigh     | Enable extended logging of BGP neighbor changes.                                                                                                                                                                                                                                                                                                                        |
+| enforce_first_as     | boolean | false    | true          | -             | Deny an update received from an external BGP (eBGP) peer that does not list its autonomous system number at the beginning of the AS_PATH in the incoming update.                                                                                                                                                                                                      |
+| bestpath             | list    | false    | -             | -             | Route selection modifiers that influence the best path. Any of: 'as-path confed', 'as-path multipath-relax', 'compare-routerid', 'peer-type multipath-relax', 'aigp', 'med missing-as-worst'                                                                                                                                                                           |
+| maximum_paths        | integer | false    | -             | max_paths     | Maximum number of equal-cost paths for eBGP multipath (ECMP). Integer between 1 and 128. Leave empty to use the FRR default (1)                                                                                                                                                                                                                                        |
+| maximum_paths_ibgp   | integer | false    | -             | max_paths_ibgp | Maximum number of equal-cost paths for iBGP multipath (ECMP). Integer between 1 and 128. Leave empty to use the FRR default (1)                                                                                                                                                                                                                                       |
 | reload               | boolean | false    | true          | -             | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html).                                                                                                                                   |
 | enabled              | boolean | false    | true          | -             | En- or disable the service                                                                                                                                                                                                                                                                                                                                              |
 
@@ -62,6 +76,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 |:--------------------|:--------|:-----------------------------------|:--------------|:---------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | match_fields     | string | false    | ['ip', 'description']              | -                                      | Fields that are used to match configured neighbor with the running config - if any of those fields are changed, the module will think it's a new entry. At least one of: 'ip', 'as_number', 'weight', 'local_ip', 'source_int', 'ipv6_link_local_int', 'disable_connected_check', 'description', 'prefix_list_in', 'prefix_list_out', 'route_map_in', 'route_map_out' |
 | as_number           | string  | false for state changes, else true | -             | as, as_nr, remote_as                   | BGP AS-Number of the neighbor                                                                                                                                                                                                                                                                                                                                         |
+| local_as            | integer | false                              | -             | local_as_number                        | Optional local AS to present to this specific neighbor                                                                                                                                                                                                                                                                                                                 |
 | ip                  | string  | false for state changes, else true | -             | peer, peer_ip, address, neighbor       | IP-address of the neighbor                                                                                                                                                                                                                                                                                                                                            |
 | password            | string  | false                              | -             | pwd                                    | Set a (MD5-hashed) password for BGP authentication                                                                                                                                                                                                                                                                                                                    |
 | weight              | integer | false                              | -             | -                                      | Specify a default weight value for the neighbor’s routes. Integer between 0 and 65535                                                                                                                                                                                                                                                                                 |
@@ -71,12 +86,19 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | next_hop_self                    | boolean | false                              | false         | nhs                                    |                                                                                                                                                                                                                                                                                                                                                                       |
 | next_hop_self_all                    | boolean | false                              | false         | nhsa                                   | Add the parameter "all" after next-hop-self command                                                                                                                                                                                                                                                                                                                   |
 | multi_hop                    | boolean | false                              | false         | -                                      | Specifying ebgp-multihop allows sessions with eBGP neighbors to establish when they are multiple hops away. When the neighbor is not directly connected and this knob is not enabled, the session will not establish.                                                                                                                                                 |
-| multi_protocol                    | boolean | false                              | false         | -                                      | Is this neighbour multiprotocol capable per RFC 2283                                                                                                                                                                                                                                                                                                                  |
+| family                    | list    | false                              | the family of 'ip'         | address_family                                      | Address families to activate for this neighbor. One or both of: 'ipv4', 'ipv6'. Replaces 'multi_protocol' since OPNsense 26.7 |
+| multi_protocol                    | boolean | false                              | -         | -                                      | Deprecated, use 'family'. 'true' is the same as setting 'family' to both 'ipv4' and 'ipv6'. Cannot be combined with 'family' |
 | rrclient                    | boolean | false                              | false         | route_reflector_client                 |                                                                                                                                                                                                                                                                                                                                                                       |
+| soft_reconfiguration_inbound | boolean | false                             | false         | soft_reconfig_in                       | Allows policy changes without resetting the session by storing inbound updates                                                                                                                                                                                                                                                                                        |
 | bfd                    | boolean | false                              | false         | -                                      | Enable BFD support for this neighbor                                                                                                                                                                                                                                                                                                                                  |
+| bfd_strict             | boolean | false                              | false         | -                                      | Strict mode requires the BFD session to be established before allowing BGP to connect. If BFD goes down, BGP immediately closes the session. Requires 'bfd'                                                                                                                                                                                                           |
 | send_default_route                    | boolean | false                              | false         | default_originate                      |                                                                                                                                                                                                                                                                                                                                                                       |
 | as_override                    | boolean | false                              | false         | asoverride                             | Override AS number of the originating router with the local AS number. This command is only allowed for eBGP peers                                                                                                                                                                                                                                                    |
-| disable_connected_check                    | boolean | false                              | false         | asoverride                             | Allow peerings between directly connected eBGP peers using loopback addresses                                                                                                                                                                                                                                                                                         |
+| remove_private_as      | string  | false                              | -             | -                                      | How private AS numbers are propagated in outbound updates. One of: 'remove_private' (remove-private-AS), 'remove_all' (remove-private-AS all), 'replace_private' (remove-private-AS replace-AS), 'replace_all' (remove-private-AS all replace-AS)                                                                                                                     |
+| allow_as_in            | string  | false                              | -             | allowas_in                             | Accept incoming routes with an AS path containing the own AS number - up to the given number of times ('1' to '10'), or only if it is the originating AS ('origin')                                                                                                                                                                                                   |
+| disable_connected_check                    | boolean | false                              | false         | -                                      | Allow peerings between directly connected eBGP peers using loopback addresses                                                                                                                                                                                                                                                                                         |
+| attribute_unchanged    | string  | false                              | -             | -                                      | Keep the given attribute unchanged in updates to the neighbor. One of: 'as-path', 'next-hop', 'med'                                                                                                                                                                                                                                                                   |
+| capabilities           | list    | false                              | -             | -                                      | Additional capabilities this neighbor may negotiate with its peer. Any of: 'extended-nexthop', 'dynamic', 'fqdn', 'link-local'                                                                                                                                                                                                                                        |
 | keepalive                    | integer | false                              | 60            | keep_alive                             | Keepalive timer to check if the neighbor is still up. Integer between 1 and 1000                                                                                                                                                                                                                                                                                      |
 | hold_down                    | integer | false                              | 180           | holddown                               | The time in seconds when a neighbor is considered dead. This is usually 3 times the keepalive timer. Integer between 3 and 3000                                                                                                                                                                                                                                       |
 | connect_timer                    | integer | false                              | -             | connecttimer                           | The time in seconds how fast a neighbor tries to reconnect. Integer between 1 and 65000                                                                                                                                                                                                                                                                               |
@@ -85,6 +107,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | prefix_list_out                    | string  | false                              | -             | prefix_out, pre_out                    | Prefix-List for outbound direction                                                                                                                                                                                                                                                                                                                                    |
 | route_map_in                    | string  | false                              | -             | map_in, rm_in                          | Route-Map for inbound direction                                                                                                                                                                                                                                                                                                                                       |
 | route_map_out                    | string  | false                              | -             | map_out, rm_out                        | Route-Map for outbound direction                                                                                                                                                                                                                                                                                                                                      |
+| peer_group             | string  | false                              | -             | peergroup, group                       | Name of the peer group this neighbor belongs to                                                                                                                                                                                                                                                                                                                       |
 | reload       | boolean | false    | true                 | -       | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html). |
 
 ### oxlorg.opnsense.frr_bgp_prefix_list
@@ -107,9 +130,9 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 | id  | integer | false for state changes, else true    | -             | -           | Route-map ID between 10 and 99. Be aware that the sorting will be done under the hood, so when you add an entry between it get's to the right position                                                                                                                                                                                       |                                                                                                                                                  |
 | action  | string  | false for state changes, else true    | -             | -           | Set permit for match or deny to negate the rule. One of: 'permit', 'deny'                                                                                                                                                                                                                                                                    |                                                                                                                                                  |
 | description  | string  | false    | -             | -           | Optional description                                                                                                                                                                                                                                                                                                                         |                                                                                                                                                  |
-| as_path_list  | list    | false    | -             | as_path     | List of as-path entries to link                                                                                                                                                                                                                                                                                                              |                                                                                                                                                  |
+| as_path_list  | list    | false    | -             | as_path     | List of as-path entries to link, by their description. The route-map matches the whole as-path list with the entry's number                                                                                                                                                                                                                                                                                                          |                                                                                                                                                  |
 | prefix_list  | dict    | false    | -             | pre, prefix | Dictionary of prefixes to link. Per example: "{prefix_name: [seq1, seq2]}" or "{'pre1': [5, 6]}" will link prefixes with the name 'pre1' and sequence 5-6                                                                                                                                                                                                                                  |                                                                                                                                                  |
-| community_list  | list    | false    | -             | community   | List of community-list entries to link                                                                                                                                                                                                                                                                                                       |                                                                                                                                                  |
+| community_list  | list    | false    | -             | community   | List of community-list entries to link, by their description. The route-map matches the whole community-list with the entry's number                                                                                                                                                                                                                                                                                                   |                                                                                                                                                  |
 | set  | string  | false    | -             | -           | Free text field for your set, please be careful! You can set e.g. "local-preference 300" or "community 1:1" (http://www.nongnu.org/quagga/docs/docs-multi/Route-Map-Set-Command.html#Route-Map-Set-Command)                                                                                                                                  |                                                                                                                                                  |
 | reload       | boolean | false    | true          | -           | If the running config should be reloaded on change - this will take some time. You might want to reload it 'manually' after all changes are done => using the [reload module](https://ansible-opnsense.oxl.app/general/reload.html).                                                                             |
 
@@ -147,7 +170,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
 
 | Parameter          | Type    | Required                           | Default value | Aliases                            | Comment                                                                                                                                                                                                          |
 |:-------------------|:--------|:-----------------------------------|:--------------|:-----------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| name               | string  | false                              | -             | -                                  | Name of the peer group                                                                                                                                                                                           |
+| name               | string  | false                              | -             | -                                  | Name of the peer group. Only alphanumeric characters, dashes, underscores and dots, maximum length = 64                                                                                                                                                                                     |
 | as_mode            | string  | false for state changes, else true | -             | remote_as_mode                     | If not specified will use the number specified in the 'as_number'' field, while 'external' or 'internal' will ignore it in favor of the alternative 'remote-as internal' and 'remote-as external' settings       |
 | as_number          | string  | false for state changes, else true | -             | as, as_nr, remote_as               | BGP AS-Number of the peer group                                                                                                                                                                                  |
 | source_int         | string  | false                              | -             | src_int, update_src, update_source | Physical name of the IPv4 interface facing the peer. You must provide the network port as shown in 'Interface - Assignments - Interface ID (in brackets)'                                                        |
@@ -180,23 +203,34 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   tasks:
     - name: Example
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         # id: '10.0.0.1'
         # graceful: false
         # networks: []
+        # enforce_first_as: true
+        # bestpath: []
+        # maximum_paths: 1
+        # maximum_paths_ibgp: 1
         # enabled: true
         # reload: true
 
     - name: Configuring general settings
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         id: '10.0.0.1'
         graceful: true
         networks: ['10.0.10.0/24']
 
+    - name: Configuring ECMP over two eBGP uplinks
+      oxlorg.opnsense.frr_bgp_general:
+        as_number: 64496
+        id: '10.0.0.1'
+        bestpath: ['as-path multipath-relax']
+        maximum_paths: 2
+
     - name: Disabling BGP
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         id: '10.0.0.1'
         graceful: true
         networks: ['10.0.10.0/24']
@@ -232,7 +266,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
   tasks:
     - name: Example
       oxlorg.opnsense.frr_bgp_neighbor:
-        as_number: 1337
+        as_number: 64496
         ip: '10.0.0.1'
         # password: "{{ 'random' | hash('md5') }}"
         # weight: 200
@@ -242,12 +276,19 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # next_hop_self: false
         # next_hop_self_all: false
         # multi_hop: false
-        # multi_protocol: false
+        # family: ['ipv4']
+        # local_as: 64500
         # rrclient: false
+        # soft_reconfiguration_inbound: false
         # bfd: false
+        # bfd_strict: false
         # send_default_route: false
         # as_override: false
+        # remove_private_as: ''
+        # allow_as_in: ''
         # disable_connected_check: false
+        # attribute_unchanged: ''
+        # capabilities: []
         # keepalive: 60
         # hold_down: 180
         # connect_timer: 30
@@ -256,6 +297,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
         # prefix_list_out: 'prefix2'
         # route_map_in: 'map1'
         # route_map_out: 'map2'
+        # peer_group: 'group1'
         # enabled: true
         # reload: true
         # match_fields: ['ip', 'description']
@@ -263,25 +305,35 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
     - name: Creating neighbor
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'test2'
-        as_number: 1337
+        as_number: 64496
         ip: '10.0.0.1'
         password: "{{ 'random' | hash('md5') }}"
         weight: 200
         source_int: 'opt1'
-        multi_protocol: true
+        family: ['ipv4', 'ipv6']
         keepalive: 45
         hold_down: 135
         # match_fields: ['ip']
 
+    - name: Creating neighbor in a peer group, keeping inbound updates for policy changes
+      oxlorg.opnsense.frr_bgp_neighbor:
+        description: 'test3'
+        as_number: 64497
+        ip: '10.0.1.1'
+        peer_group: 'group1'
+        soft_reconfiguration_inbound: true
+        remove_private_as: 'remove_all'
+        capabilities: ['extended-nexthop']
+
     - name: Disabling neighbor
       oxlorg.opnsense.frr_bgp_neighbor:
         description: 'test2'
-        as_number: 1337
+        as_number: 64496
         ip: '10.0.0.1'
         password: "{{ 'random' | hash('md5') }}"
         weight: 200
         source_int: 'opt1'
-        multi_protocol: true
+        family: ['ipv4', 'ipv6']
         keepalive: 45
         hold_down: 135
         enabled: false
@@ -593,7 +645,7 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'test1'
         # as_mode:
-        as_number: 1337
+        as_number: 64496
         # source_int: 'opt1'
         # next_hop_self: false
         # send_default_route: false
@@ -607,13 +659,13 @@ For basic parameters see: [Basics](https://ansible-opnsense.oxl.app/usage/2_basi
     - name: Creating peer group
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'test2'
-        as_number: 1337
+        as_number: 64496
         source_int: 'opt1'
 
     - name: Disabling peer group
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'test2'
-        as_number: 1337
+        as_number: 64496
         source_int: 'opt1'
         enabled: false
 
