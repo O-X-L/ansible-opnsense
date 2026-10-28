@@ -1,0 +1,113 @@
+---
+
+- name: Testing Alias GeoIP settings
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  vars:
+    test_secret_1: 'ANSIBLE-TEST-GEOIP-KEY-1'
+    test_secret_2: 'ANSIBLE-TEST-GEOIP-KEY-2'
+    test_url_1: "https://123456:{{ test_secret_1 }}@download.maxmind.com/geoip/databases/GeoLite2-Country-CSV/download?suffix=zip"
+    test_url_2: "https://123456:{{ test_secret_2 }}@download.maxmind.com/geoip/databases/GeoLite2-Country-CSV/download?suffix=zip"
+
+  tasks:
+    - name: Removing source
+      oxlorg.opnsense.alias_geoip:
+        url: ''
+      when: not ansible_check_mode
+
+    - name: Setting source - failing because of credentials over cleartext http
+      oxlorg.opnsense.alias_geoip:
+        url: "{{ test_url_1 | replace('https://', 'http://') }}"
+      register: opn_fail1
+      failed_when: >
+        not opn_fail1.failed or
+        test_secret_1 in (opn_fail1 | string)
+
+    - name: Setting source - failing because of a whitespace
+      oxlorg.opnsense.alias_geoip:
+        url: "{{ test_url_1 }} "
+      register: opn_fail2
+      failed_when: >
+        not opn_fail2.failed or
+        test_secret_1 in (opn_fail2 | string)
+
+    - name: Setting source - credential-free http mirror
+      oxlorg.opnsense.alias_geoip:
+        url: 'http://mirror.example.internal/geoip/GeoLite2-Country-CSV.zip'
+        reload: false
+      register: opn_http
+      failed_when: >
+        opn_http.failed or
+        not opn_http.changed
+
+    - name: Setting source - failing because of missing hostname
+      oxlorg.opnsense.alias_geoip:
+        url: 'https:///geoip'
+      register: opn_fail3
+      failed_when: not opn_fail3.failed
+
+    - name: Setting source
+      oxlorg.opnsense.alias_geoip:
+        url: "{{ test_url_1 }}"
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed or
+        test_secret_1 in (opn1 | string)
+
+    - name: Setting source - nothing changed
+      oxlorg.opnsense.alias_geoip:
+        url: "{{ test_url_1 }}"
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        opn2.changed
+      when: not ansible_check_mode
+
+    - name: Changing source
+      oxlorg.opnsense.alias_geoip:
+        url: "{{ test_url_2 }}"
+        reload: false
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed or
+        test_secret_1 in (opn3 | string) or
+        test_secret_2 in (opn3 | string)
+      when: not ansible_check_mode
+
+    - name: Changing source - nothing changed
+      oxlorg.opnsense.alias_geoip:
+        url: "{{ test_url_2 }}"
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        opn4.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup
+      oxlorg.opnsense.alias_geoip:
+        url: ''
+      register: opn_clean1
+      failed_when: >
+        opn_clean1.failed or
+        not opn_clean1.changed
+      when: not ansible_check_mode
+
+    - name: Cleanup - nothing changed
+      oxlorg.opnsense.alias_geoip:
+        url: ''
+      register: opn_clean2
+      failed_when: >
+        opn_clean2.failed or
+        opn_clean2.changed
+      when: not ansible_check_mode
