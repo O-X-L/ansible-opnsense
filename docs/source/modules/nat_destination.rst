@@ -56,6 +56,8 @@ Module alias: oxlorg.opnsense.dnat
     "description","string","false","\-","name, desc","Description for the rule"
     "tag","string","false","\-","\-","Set a tag on matching packets - can be used with 'tagged' on other rules to build rule-chains"
     "tagged","string","false","\-","\-","Match packets that were tagged with the given value"
+    "categories","list","false","\-","\-","List of firewall rule categories by display name"
+    "sync","boolean","false","true","\-","Synchronize this rule to the HA peer (XMLRPC sync). Set to false to keep it local to this firewall (*'No XMLRPC Sync'*)"
     "state","string","false","'present'","st","State of the rule. One of: 'present', 'absent'"
     "enabled","boolean","false","true","en","If the rule should be en- or disabled"
     "uuid","string","false","\-","\-","Optionally you can supply the uuid of an existing rule"
@@ -80,6 +82,8 @@ You could also use the UUID of existing rules as ID - but you would have to pull
 
 Note that this module only manages the port-forward (destination-NAT) rule itself. If you don't set 'associated_rule' to
 automatically pass the traffic - you will also need a matching :ref:`oxlorg.opnsense.rule <modules_rule>` to allow it through the filter.
+
+Like the other rule-modules, the full state of a rule is enforced: an omitted 'categories' removes all categories from an existing rule and an omitted 'sync' (*default true*) re-enables its HA sync.
 
 ----
 
@@ -122,6 +126,8 @@ Examples
             # nat_reflection: ''
             # associated_rule: 'pass'
             # no_port_forward: false
+            # categories: []
+            # sync: true
             # log: true
             # enabled: true
             # debug: false
