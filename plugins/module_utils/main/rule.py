@@ -172,9 +172,11 @@ class Rule(BaseModule):
             raw_request['rule']['categories'] = self.RESP_JOIN_CHAR.join(self.p['categories'])
             self.p['categories'] = categories
 
-        raw_request['rule'][self.FIELDS_TRANSLATE['icmpv6_type']] = self.RESP_JOIN_CHAR.join(
-            RULE_ICMPV6_TYPES[icmp_type] for icmp_type in self.p['icmpv6_type'] or []
-        )
+        icmpv6_field = self.FIELDS_TRANSLATE['icmpv6_type']
+        if icmpv6_field in raw_request['rule']:
+            raw_request['rule'][icmpv6_field] = self.RESP_JOIN_CHAR.join(
+                RULE_ICMPV6_TYPES[icmp_type] for icmp_type in self.p['icmpv6_type'] or []
+            )
 
         return raw_request
 
