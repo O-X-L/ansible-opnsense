@@ -473,14 +473,14 @@ class MultiModule:
     def _matches_purge_filter_partial(self, entry_cnf: dict) -> bool:
         matches = []
         for k, v in self.mc['purge_filter'].items():
-            matches.append(str(entry_cnf[k]).find(str(v)) != -1)
+            matches.append(k in entry_cnf and str(entry_cnf[k]).find(str(v)) != -1)
 
         return all(matches)
 
     def _matches_purge_filter_full(self, entry_cnf: dict) -> bool:
         matches = []
         for k, v in self.mc['purge_filter'].items():
-            matches.append(str(entry_cnf[k]) == str(v))
+            matches.append(k in entry_cnf and str(entry_cnf[k]) == str(v))
 
         return all(matches)
 
