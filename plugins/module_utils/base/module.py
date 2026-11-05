@@ -50,6 +50,7 @@ class GeneralModule(BaseLogic):
     def _base_check(self):
         self._check_validators()
         self.settings = self.search_call()
+        self.exists = True
         self._build_diff()
 
     def check(self) -> None:
