@@ -43,6 +43,10 @@ class Assignment(BaseModule):
             'dhcpv6_vlan_prio', 'dhcpv6_ia_pd_len', 'track6_interface', 'gateway', 'gateway_v6',
         ],
     }
+    FIELDS_OPTIONAL = [
+        'disable_vlan_hw_filter', 'dhcp_reject_from', 'dhcp_vlan_prio', 'dhcpv6_vlan_prio', 'dhcpv6_ia_pd_len',
+        'track6_interface', 'gateway_v6', 'media', 'type4', 'type6', 'gateway', 'gateway_v6'
+    ]
     EXIST_ATTR = 'assignment'
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
