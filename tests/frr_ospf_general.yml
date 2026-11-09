@@ -39,7 +39,6 @@
       oxlorg.opnsense.frr_ospf_general:
         id: '10.0.0.1'
         cost: 250
-        passive_ints: ['lan']
         originate: true
         enabled: true
       register: opn1
@@ -51,7 +50,6 @@
       oxlorg.opnsense.frr_ospf_general:
         id: '10.0.1.1'
         cost: 300
-        passive_ints: ['lan']
         originate: true
         originate_metric: 1000
         enabled: true
@@ -64,7 +62,6 @@
       oxlorg.opnsense.frr_ospf_general:
         id: '10.0.1.1'
         cost: 300
-        passive_ints: ['lan']
         originate: true
         originate_metric: 1000
         enabled: false
@@ -78,7 +75,6 @@
       oxlorg.opnsense.frr_ospf_general:
         id: '10.0.1.1'
         cost: 300
-        passive_ints: ['lan']
         originate: true
         originate_metric: 1000
         enabled: false
@@ -92,7 +88,6 @@
       oxlorg.opnsense.frr_ospf_general:
         id: '10.0.1.1'
         cost: 300
-        passive_ints: ['lan']
         originate: true
         originate_metric: 1000
       register: opn4

@@ -4,6 +4,8 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_ip_or_network, is_unset
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.frr import \
+    find_ospf_area, ospf_area_diff, ospf_area_uuid_to_id
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.module import BaseModule
 
 
@@ -19,32 +21,30 @@ class Network(BaseModule):
     API_MOD = 'quagga'
     API_CONT = 'ospfsettings'
     API_CONT_REL = 'service'
-    FIELDS_CHANGE = ['ip', 'mask', 'area', 'area_range', 'prefix_list_in', 'prefix_list_out']
+    FIELDS_CHANGE = ['ip', 'mask', 'area']
     FIELDS_ALL = ['enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
     FIELDS_TRANSLATE = {
         'ip': 'ipaddr',
         'mask': 'netmask',
-        'area_range': 'arearange',
-        'prefix_list_in': 'linkedPrefixlistIn',
-        'prefix_list_out': 'linkedPrefixlistOut',
     }
     FIELDS_TYPING = {
         'bool': ['enabled'],
-        'select': ['prefix_list_in', 'prefix_list_out'],
+        'select': ['area'],
     }
     INT_VALIDATIONS = {
         'mask': {'min': 0, 'max': 32},
     }
     EXIST_ATTR = 'net'
     SEARCH_ADDITIONAL = {
-        'existing_prefixes': 'ospf.prefixlists.prefixlist',
+        'existing_areas': 'ospf.areas.area',
     }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.net = {}
-        self.existing_prefixes = None
+        self.existing_areas = None
+        self.existing_entries = None
 
     def check(self) -> None:
         if self.p['state'] == 'present':
@@ -59,30 +59,18 @@ class Network(BaseModule):
                     f"'{self.p['ip']}/{self.p['mask']}'!"
                 )
 
-        self._base_check()
+        if self.existing_entries is None:
+            self.existing_entries = self._call_search()
 
-        if self.p['state'] == 'present':
-            self.find_single_link(
-                field='prefix_list_in',
-                existing=self.existing_prefixes,
-            )
-            self.find_single_link(
-                field='prefix_list_out',
-                existing=self.existing_prefixes,
-            )
+        find_ospf_area(self)
+        self._base_check()
+        ospf_area_diff(self)
 
     def get_existing(self) -> list:
         existing = []
 
         for entry in self._base_get_existing():
-            if entry['prefix_list_in'] not in [None, ''] and \
-                    entry['prefix_list_in'] in self.existing_prefixes:
-                entry['prefix_list_in'] = self.existing_prefixes[entry['prefix_list_in']]['name']
-
-            if entry['prefix_list_out'] not in [None, ''] and \
-                    entry['prefix_list_out'] in self.existing_prefixes:
-                entry['prefix_list_out'] = self.existing_prefixes[entry['prefix_list_out']]['name']
-
+            entry['area'] = ospf_area_uuid_to_id(self, entry['area'])
             existing.append(entry)
 
         return existing
