@@ -10,6 +10,7 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.main import
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.rule import \
     validate_values
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.module import BaseModule
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.defaults.rule import RULE_ICMPV6_TYPES
 
 
 class Rule(BaseModule):
@@ -32,7 +33,7 @@ class Rule(BaseModule):
         'allow_opts', 'state_type', 'state_policy', 'state_timeout',
         'max_states', 'max_src_nodes', 'max_src_states', 'max_src_conn', 'max_src_conn_rate',
         'max_src_conn_rates', 'overload', 'adaptive_start', 'adaptive_end', 'prio', 'set_prio', 'set_prio_low',
-        'tcp_flags', 'tcp_flags_clear', 'schedule', 'tos', 'icmp_type', 'categories',
+        'tcp_flags', 'tcp_flags_clear', 'schedule', 'tos', 'icmp_type', 'icmpv6_type', 'categories',
         'divert_to', 'shaper1', 'shaper2',
     ]
     FIELDS_ALL = ['enabled']
@@ -171,4 +172,19 @@ class Rule(BaseModule):
             raw_request['rule']['categories'] = self.RESP_JOIN_CHAR.join(self.p['categories'])
             self.p['categories'] = categories
 
+        icmpv6_field = self.FIELDS_TRANSLATE['icmpv6_type']
+        if icmpv6_field in raw_request['rule']:
+            raw_request['rule'][icmpv6_field] = self.RESP_JOIN_CHAR.join(
+                RULE_ICMPV6_TYPES[icmp_type] for icmp_type in self.p['icmpv6_type'] or []
+            )
+
         return raw_request
+
+    def simplify_existing(self, existing: dict) -> dict:
+        simple = self._base_simplify_existing(existing)
+
+        if 'icmpv6_type' in simple:
+            names = {number: name for name, number in RULE_ICMPV6_TYPES.items()}
+            simple['icmpv6_type'] = [names.get(str(number), str(number)) for number in simple['icmpv6_type']]
+
+        return simple

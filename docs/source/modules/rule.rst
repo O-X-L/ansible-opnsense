@@ -115,7 +115,8 @@ Definition
     "state","string","false","'present'","st","State of the rule. One of: 'present', 'absent'"
     "enabled","boolean","false","true","en","If the rule should be en- or disabled"
     "uuid","string","false","\-","\-","Optionally you can supply the uuid of an existing rule"
-    "icmp_type","list","false","\-","\-","If protocol is ICMP/IPV6-ICMP you can specify the types. One or more of: 'echoreq', 'echorep', 'unreach', 'squench', 'redir', 'althost', 'routeradv', 'routersol', 'timex', 'paramprob', 'timereq', 'timerep', 'inforeq', 'inforep', 'maskreq', 'maskrep'"
+    "icmp_type","list","false","\-","\-","If protocol is ICMP you can specify the types. One or more of: 'echoreq', 'echorep', 'unreach', 'squench', 'redir', 'althost', 'routeradv', 'routersol', 'timex', 'paramprob', 'timereq', 'timerep', 'inforeq', 'inforep', 'maskreq', 'maskrep'"
+    "icmpv6_type","list","false","\-","icmpv6_types, ip6_icmp_types","If protocol is IPV6-ICMP you can specify the types. One or more of: 'unreach', 'toobig', 'timex', 'paramprob', 'echoreq', 'echorep', 'listqry', 'listenrep', 'listendone', 'routersol', 'routeradv', 'neighbrsol', 'neighbradv', 'redir', 'routrrenum', 'niqry', 'nirep', 'mtraceresp', 'mtrace'"
     "reload","boolean","false","true","apply", .. include:: ../_include/param_reload.rst
 
 .. include:: ../_include/param_basic.rst
