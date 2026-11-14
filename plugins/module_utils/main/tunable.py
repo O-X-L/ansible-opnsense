@@ -29,6 +29,7 @@ class Tunable(BaseModule):
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.entry = {}
+        self.exists = False
 
     def check(self) -> None:
         if self.p['state'] == 'present' and self.p['value'] is None:
