@@ -49,6 +49,14 @@
         - 'ANSIBLE_TEST_1'
         - 'ANSIBLE_TEST_2'
 
+    - name: Cleanup tunables
+      oxlorg.opnsense.tunable:
+        tunable: "{{ item }}"
+        state: 'absent'
+      loop:
+        - 'net.inet.icmp.log_redirect'
+        - 'net.inet6.icmp6.rediraccept'
+
     - name: Cleanup routes
       oxlorg.opnsense.route:
         description: "{{ item }}"

@@ -60,6 +60,7 @@ def run_module():
                 'nut',
                 'interface_assignment',
                 'radvd',
+                'tunable',
             ],
             description='What part of the running config should be reloaded'
         ),
@@ -211,6 +212,10 @@ def run_module():
         elif target == 'radvd':
             from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.radvd import \
                 Radvd as Target_Obj
+
+        elif target == 'tunable':
+            from ansible_collections.oxlorg.opnsense.plugins.module_utils.main.tunable import \
+                Tunable as Target_Obj
 
     except MODULE_EXCEPTIONS:
         module_dependency_error()

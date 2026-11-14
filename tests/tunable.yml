@@ -1,0 +1,138 @@
+---
+
+# net.inet.icmp.log_redirect is one of the tunables OPNsense lists by default (not in the config until set);
+# net.inet6.icmp6.rediraccept is a sysctl that OPNsense does not list by default.
+# Only the last task reloads, after the cleanup, so it applies the default values.
+
+- name: Testing Tunables
+  hosts: localhost
+  gather_facts: no
+  module_defaults:
+    group/oxlorg.opnsense.all:
+      firewall: "{{ lookup('ansible.builtin.env', 'TEST_FIREWALL') }}"
+      api_credential_file: "{{ lookup('ansible.builtin.env', 'TEST_API_KEY') }}"
+      ssl_verify: false
+
+  environment:
+    HTTPS_PROXY: "{{ lookup('ansible.builtin.env', 'TEST_PROXY') | default('') }}"
+
+  tasks:
+    - name: Adding 1 - failing because of missing value
+      oxlorg.opnsense.tunable:
+        tunable: 'net.inet.icmp.log_redirect'
+      register: opn_fail1
+      failed_when: not opn_fail1.failed
+
+    - name: Removing 1 - listed by default, so nothing to remove
+      oxlorg.opnsense.tunable:
+        tunable: 'net.inet.icmp.log_redirect'
+        state: 'absent'
+      register: opn_pre1
+      failed_when: >
+        opn_pre1.failed or
+        opn_pre1.changed
+
+    - name: Removing 2 - does not exist
+      oxlorg.opnsense.tunable:
+        tunable: 'net.inet6.icmp6.rediraccept'
+        state: 'absent'
+      register: opn_pre2
+      failed_when: >
+        opn_pre2.failed or
+        opn_pre2.changed
+
+    - name: Changing 1 - default entry
+      oxlorg.opnsense.tunable:
+        tunable: 'net.inet.icmp.log_redirect'
+        value: '1'
+      register: opn1
+      failed_when: >
+        opn1.failed or
+        not opn1.changed
+
+    - name: Changing 1 - nothing changed
+      oxlorg.opnsense.tunable:
+        tunable: 'net.inet.icmp.log_redirect'
+        value: '1'
+      register: opn2
+      failed_when: >
+        opn2.failed or
+        opn2.changed
+      when: not ansible_check_mode
+
+    - name: Changing 1 - description
+      oxlorg.opnsense.tunable:
+        tunable: 'net.inet.icmp.log_redirect'
+        value: '1'
+        description: 'ANSIBLE_TEST_1'
+      register: opn3
+      failed_when: >
+        opn3.failed or
+        not opn3.changed
+      when: not ansible_check_mode
+
+    - name: Changing 1 - unset description keeps the existing one
+      oxlorg.opnsense.tunable:
+        tunable: 'net.inet.icmp.log_redirect'
+        value: '1'
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        opn4.changed
+      when: not ansible_check_mode
+
+    - name: Adding 2
+      oxlorg.opnsense.tunable:
+        tunable: 'net.inet6.icmp6.rediraccept'
+        value: '0'
+        description: 'ANSIBLE_TEST_2'
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+
+    - name: Adding 2 - nothing changed
+      oxlorg.opnsense.tunable:
+        tunable: 'net.inet6.icmp6.rediraccept'
+        value: '0'
+        description: 'ANSIBLE_TEST_2'
+      register: opn6
+      failed_when: >
+        opn6.failed or
+        opn6.changed
+      when: not ansible_check_mode
+
+    - name: Removing 2
+      oxlorg.opnsense.tunable:
+        tunable: 'net.inet6.icmp6.rediraccept'
+        state: 'absent'
+      register: opn7
+      failed_when: >
+        opn7.failed or
+        not opn7.changed
+      when: not ansible_check_mode
+
+    - name: Removing 1 - configured now
+      oxlorg.opnsense.tunable:
+        tunable: 'net.inet.icmp.log_redirect'
+        state: 'absent'
+      register: opn8
+      failed_when: >
+        opn8.failed or
+        not opn8.changed
+      when: not ansible_check_mode
+
+    - name: Removing 1 - listed by default again
+      oxlorg.opnsense.tunable:
+        tunable: 'net.inet.icmp.log_redirect'
+        state: 'absent'
+      register: opn9
+      failed_when: >
+        opn9.failed or
+        opn9.changed
+      when: not ansible_check_mode
+
+    - name: Reloading
+      oxlorg.opnsense.reload:
+        target: 'tunable'
+      when: not ansible_check_mode
