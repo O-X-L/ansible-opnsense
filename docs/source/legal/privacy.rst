@@ -18,7 +18,12 @@ Cookies 🍪
 
 * **sec_\***
 
-  The cookie with the prefix "sec_" is used to detect abuse by bots
+  The cookie with the prefix "sec\_" is used to detect abuse by bots
+
+* **srv**
+
+  A cookie to persist your session on one web-server (*load balancing*)
+
 
 ----
 
