@@ -74,7 +74,7 @@ That means [each release of the collection](https://github.com/O-X-L/ansible-opn
 
 If you need to use these modules - ensure that there is a supported release BEFORE upgrading your OPNsense firewalls!
 
-I currently try to create a stable release once or twice a year - as this takes 10-20h of work each time for implementing API-fixes.
+I currently try to create a stable release once or twice a year - as this takes days of work each time for implementing API-fixes.
 
 As [this project is unfunded](https://github.com/O-X-L/ansible-opnsense/discussions/199) we do not actively check for API-changes - if you find missing functionalities you need/want to have please [report it](https://github.com/O-X-L/ansible-opnsense/issues)! Not all features will be implemented!
 
