@@ -85,6 +85,24 @@
         opn3.changed
       when: not ansible_check_mode
 
+    - name: Enabling without any other change
+      oxlorg.opnsense.acme_general:
+        enabled: true
+      register: opn4
+      failed_when: >
+        opn4.failed or
+        not opn4.changed
+      when: not ansible_check_mode
+
+    - name: Disabling without any other change
+      oxlorg.opnsense.acme_general:
+        enabled: false
+      register: opn5
+      failed_when: >
+        opn5.failed or
+        not opn5.changed
+      when: not ansible_check_mode
+
     - name: Cleanup
       oxlorg.opnsense.acme_general:
         enabled: false
