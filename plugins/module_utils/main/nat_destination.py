@@ -23,11 +23,11 @@ class DNat(BaseModule):
         'source_invert', 'source_net', 'source_port',
         'destination_invert', 'destination_net', 'destination_port',
         'target', 'local_port', 'pool_opts', 'log', 'description', 'tag', 'tagged',
-        'nat_reflection', 'associated_rule',
+        'nat_reflection', 'associated_rule', 'categories', 'sync',
     ]
     FIELDS_ALL = ['enabled']
     FIELDS_ALL.extend(FIELDS_CHANGE)
-    FIELDS_BOOL_INVERT = ['enabled']
+    FIELDS_BOOL_INVERT = ['enabled', 'sync']
     FIELDS_TRANSLATE = {
         'enabled': 'disabled',
         'no_port_forward': 'nordr',
@@ -43,10 +43,15 @@ class DNat(BaseModule):
         'description': 'descr',
         'nat_reflection': 'natreflection',
         'associated_rule': 'pass',
+        # the DNat-model differs from the filter-models: 'category' is the field (options keyed by NAME),
+        # 'categories' is a volatile mapper holding the uuids for the WebUI - we read & write 'category'
+        'categories': 'category',
+        'sync': 'nosync',
     }
     FIELDS_TYPING = {
-        'bool': ['enabled', 'log', 'no_port_forward', 'source_invert', 'destination_invert'],
+        'bool': ['enabled', 'log', 'no_port_forward', 'source_invert', 'destination_invert', 'sync'],
         'list': ['interface'],
+        'list_value': ['categories'],
         'select': ['ip_protocol', 'protocol', 'pool_opts', 'nat_reflection', 'associated_rule'],
         'int': ['sequence'],
     }
@@ -75,4 +80,40 @@ class DNat(BaseModule):
 
         self.find(match_fields=self.p['match_fields'])
 
+        if self.p['state'] == 'present':
+            self._check_categories()
+
         self._base_check()
+
+    def _get_category_selection(self) -> (dict, None):
+        # every existing rule carries the full option-list of categories (keyed by name) -
+        # an empty list if no category is defined on the firewall; None if no rule exists to read it from
+        if not isinstance(self.existing_entries, dict):
+            return None
+
+        for entry in self.existing_entries.values():
+            if not isinstance(entry, dict) or 'category' not in entry:
+                continue
+
+            if isinstance(entry['category'], dict):
+                return entry['category']
+
+            return {}
+
+        return None
+
+    def _check_categories(self) -> None:
+        if is_unset(self.p['categories']):
+            return
+
+        selection = self._get_category_selection()
+        if selection is None:
+            # nothing to validate against - the API will reject unknown ones
+            return
+
+        unknown = [c for c in self.p['categories'] if c not in selection]
+        if len(unknown) > 0:
+            self.m.fail_json(
+                f"Unknown rule categories: {unknown} | "
+                f"Available: {sorted(selection.keys())}"
+            )

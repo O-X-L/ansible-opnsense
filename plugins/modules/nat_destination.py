@@ -43,9 +43,15 @@ def run_module():
         'description': RULE_MOD_ARGS['description'],
         'tag': RULE_MOD_ARGS['tag'],
         'tagged': RULE_MOD_ARGS['tagged'],
+        'categories': RULE_MOD_ARGS['categories'],
     }
 
     module_args = dict(
+        sync=dict(
+            type='bool', required=False, default=True,
+            description='Synchronize this rule to the HA peer (XMLRPC sync). Set to false to keep it local '
+                        "to this firewall ('No XMLRPC Sync').",
+        ),
         no_port_forward=dict(
             type='bool', required=False, default=False, aliases=['nordr'],
             description='Packets matching this rule will be passed without a port-forward '

@@ -324,6 +324,29 @@
       loop:
         - 'ANSIBLE_TEST_1_1'
         - 'ANSIBLE_TEST_1_2'
+        - 'ANSIBLE_TEST_1_3'
+
+    - name: Cleanup Categories - search
+      oxlorg.opnsense.raw:
+        module: 'firewall'
+        controller: 'category'
+        command: 'search_item'
+        action: 'post'
+        data: {'searchPhrase': 'ANSIBLE_TEST'}
+      register: opn_cats
+      check_mode: false
+
+    - name: Cleanup Categories
+      oxlorg.opnsense.raw:
+        module: 'firewall'
+        controller: 'category'
+        command: 'del_item'
+        parameters: ["{{ item.uuid }}"]
+        action: 'post'
+      loop: "{{ opn_cats.response.rows | default([]) | selectattr('name', 'match', '^ANSIBLE_TEST') | list }}"
+      loop_control:
+        label: "{{ item.name }}"
+      check_mode: false
 
     - name: Cleanup FRR general settings
       oxlorg.opnsense.frr_general:
