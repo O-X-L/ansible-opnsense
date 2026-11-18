@@ -1315,3 +1315,7 @@
         - 'ANSIBLE_TEST_1_4'
         - 'ANSIBLE_TEST_1_5'
         - 'ANSIBLE_TEST_BACKEND_1'
+
+    - name: Cleanup Alias GeoIP source
+      oxlorg.opnsense.alias_geoip:
+        url: ''
