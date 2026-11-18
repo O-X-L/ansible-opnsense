@@ -197,6 +197,71 @@ def test_multi_module_is_multi_crud(mocker, params, result):
         {'name': 'test', 'destination_net': '1.1.1.1', 'ip_protocol': 'inet', 'action': 'pass'},  # entry
         False, False, False,
     ),
+    (
+        {'name': 'match'},
+        {},
+        False, False, False,
+    ),
+    (
+        {'name': 'match'},
+        {},
+        False, True, True,
+    ),
+    (
+        {'name': 'match'},
+        {},
+        True, False, False,
+    ),
+    (
+        {'name': 'match'},
+        {},
+        True, True, True,
+    ),
+    (
+        {'name': None},
+        {'action': 'pass'},
+        False, False, False,
+    ),
+    (
+        {'name': None},
+        {'action': 'pass'},
+        False, True, True,
+    ),
+    (
+        {'name': None},
+        {'action': 'pass'},
+        True, False, False,
+    ),
+    (
+        {'name': None},
+        {'action': 'pass'},
+        True, True, True,
+    ),
+    (
+        {'name': None},
+        {'name': None},
+        False, False, True,
+    ),
+    (
+        {'name': None},
+        {'name': None},
+        True, False, True,
+    ),
+    (
+        {'name': 'None'},
+        {'name': None},
+        False, False, True,
+    ),
+    (
+        {'name': 'None'},
+        {'name': None},
+        True, False, True,
+    ),
+    (
+        {'action': 'block', 'name': 'match'},
+        {'action': 'block'},
+        False, False, False,
+    ),
 ])
 def test_multi_module_purge_filter(mocker, purge_filter, entry, partial, invert, result):
     pytest_mock_http_responses(
