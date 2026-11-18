@@ -62,10 +62,7 @@ class SNat(BaseModule):
                     "You need to provide an 'interface' to create a source-nat rule!"
                 )
 
-            if is_unset(self.p['target']):
-                self.m.fail_json(
-                    "You need to provide an 'target' to create a source-nat rule!"
-                )
+            # an empty 'target' is valid: OPNsense then uses the interface's own address
 
         if not is_unset(self.p['protocol']):
             # OPNsense returns source-NAT protocols mostly uppercase, except 'any' which
