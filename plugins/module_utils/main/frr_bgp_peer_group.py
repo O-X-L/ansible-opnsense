@@ -51,6 +51,9 @@ class PeerGroup(BaseModule):
     INT_VALIDATIONS = {
         'as_number': {'min': 1, 'max': 4294967295},
     }
+    STR_VALIDATIONS = {
+        'name': r'^[a-zA-Z0-9._-]{1,64}$'
+    }
     EXIST_ATTR = 'peergroup'
     SEARCH_ADDITIONAL = {
         'existing_prefixes': 'bgp.prefixlists.prefixlist',

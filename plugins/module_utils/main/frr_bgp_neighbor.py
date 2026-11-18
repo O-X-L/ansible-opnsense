@@ -3,7 +3,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
-    is_ip, is_unset
+    is_ip, is_ip6, is_unset
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.module import BaseModule
 
 
@@ -20,9 +20,9 @@ class Neighbor(BaseModule):
     API_CONT = 'bgp'
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
-        'ip', 'as_number', 'password', 'weight', 'local_ip', 'source_int',
+        'ip', 'as_number', 'family', 'password', 'weight', 'local_ip', 'source_int',
         'ipv6_link_local_int', 'next_hop_self', 'next_hop_self_all',
-        'multi_hop', 'multi_protocol', 'rrclient', 'bfd', 'send_default_route',
+        'multi_hop', 'rrclient', 'bfd', 'send_default_route',
         'as_override', 'disable_connected_check', 'keepalive', 'hold_down',
         'connect_timer', 'description', 'prefix_list_in', 'prefix_list_out',
         'route_map_in', 'route_map_out', 'remote_as_mode',
@@ -39,7 +39,6 @@ class Neighbor(BaseModule):
         'next_hop_self': 'nexthopself',
         'next_hop_self_all': 'nexthopselfall',
         'multi_hop': 'multihop',
-        'multi_protocol': 'multiprotocol',
         'hold_down': 'holddown',
         'connect_timer': 'connecttimer',
         'send_default_route': 'defaultoriginate',
@@ -51,13 +50,14 @@ class Neighbor(BaseModule):
     }
     FIELDS_TYPING = {
         'bool': [
-            'next_hop_self', 'next_hop_self_all', 'multi_hop', 'multi_protocol', 'enabled',
+            'next_hop_self', 'next_hop_self_all', 'multi_hop', 'enabled',
             'rrclient', 'bfd', 'send_default_route', 'as_override', 'disable_connected_check',
         ],
         'select': [
             'source_int', 'ipv6_link_local_int', 'prefix_list_in', 'prefix_list_out',
             'route_map_in', 'route_map_out', 'remote_as_mode',
         ],
+        'list': ['family'],
     }
     INT_VALIDATIONS = {
         'as_number': {'min': 1, 'max': 4294967295},
@@ -89,8 +89,23 @@ class Neighbor(BaseModule):
             if not is_unset(self.p['local_ip']) and not is_ip(self.p['local_ip']):
                 self.m.fail_json(f"Provided source IP '{self.p['local_ip']}' is not a valid IP-Address!")
 
+            self._set_family()
+
         self._base_check()
         self._find_links()
+
+    def _set_family(self) -> None:
+        # os-frr 2.0 replaced the 'multiprotocol' toggle with the 'family' multi-select
+        if self.p['multi_protocol'] is not None:
+            if not is_unset(self.p['family']):
+                self.m.fail_json("The options 'family' and 'multi_protocol' are mutually exclusive!")
+
+            if self.p['multi_protocol']:
+                self.p['family'] = ['ipv4', 'ipv6']
+
+        if is_unset(self.p['family']):
+            # same default as the os-frr migration of existing neighbors
+            self.p['family'] = ['ipv6'] if is_ip6(self.p['ip']) else ['ipv4']
 
     def _find_links(self) -> None:
         links = {
