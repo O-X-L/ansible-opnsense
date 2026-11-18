@@ -31,7 +31,7 @@
 
     - name: Configuring
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         id: '10.0.0.1'
         graceful: true
         networks: ['10.0.10.0/24']
@@ -43,7 +43,7 @@
 
     - name: Changing
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         id: '10.0.0.1'
         graceful: false
         networks: ['10.0.10.0/25']
@@ -54,9 +54,51 @@
         opn9.failed or
         not opn9.changed
 
+    - name: Changing - failing because of invalid maximum paths
+      oxlorg.opnsense.frr_bgp_general:
+        as_number: 64496
+        maximum_paths: 200
+      register: opn_fail2
+      failed_when: not opn_fail2.failed
+
+    - name: Changing - with the os-frr 2.0 options
+      oxlorg.opnsense.frr_bgp_general:
+        as_number: 64496
+        id: '10.0.0.1'
+        graceful: false
+        networks: ['10.0.10.0/25']
+        distance: 21
+        enforce_first_as: false
+        bestpath: ['as-path multipath-relax', 'compare-routerid']
+        maximum_paths: 2
+        maximum_paths_ibgp: 4
+        enabled: true
+      register: opn10
+      failed_when: >
+        opn10.failed or
+        not opn10.changed
+
+    - name: Changing - with the os-frr 2.0 options - nothing changed
+      oxlorg.opnsense.frr_bgp_general:
+        as_number: 64496
+        id: '10.0.0.1'
+        graceful: false
+        networks: ['10.0.10.0/25']
+        distance: 21
+        enforce_first_as: false
+        bestpath: ['compare-routerid', 'as-path multipath-relax']
+        maximum_paths: 2
+        maximum_paths_ibgp: 4
+        enabled: true
+      register: opn11
+      failed_when: >
+        opn11.failed or
+        opn11.changed
+      when: not ansible_check_mode
+
     - name: Disabling 1
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         id: '10.0.0.1'
         graceful: false
         networks: ['10.0.10.0/25']
@@ -70,7 +112,7 @@
 
     - name: Disabling 1 - nothing changed
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         id: '10.0.0.1'
         graceful: false
         networks: ['10.0.10.0/25']
@@ -84,7 +126,7 @@
 
     - name: Enabling 1
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         id: '10.0.0.1'
         graceful: false
         networks: ['10.0.10.0/25']
@@ -97,6 +139,6 @@
 
     - name: Cleanup
       oxlorg.opnsense.frr_bgp_general:
-        as_number: 1337
+        as_number: 64496
         enabled: false
       when: not ansible_check_mode

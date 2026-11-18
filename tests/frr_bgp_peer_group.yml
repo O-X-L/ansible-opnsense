@@ -42,7 +42,7 @@
     - name: Adding 1 - failing because of non-existent prefix-list
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
         prefix_list_in: 'DOES-NOT-EXIST'
       register: opn_fail2
       failed_when: not opn_fail2.failed
@@ -50,7 +50,7 @@
     - name: Adding 1 - failing because of non-existent route-map
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
         route_map_out: 'DOES-NOT-EXIST'
       register: opn_fail3
       failed_when: not opn_fail3.failed
@@ -58,7 +58,7 @@
     - name: Adding 1
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'ANSIBLE_TEST_1_1'
-        as_number: 1337
+        as_number: 64496
       register: opn1
       failed_when: >
         opn1.failed or
@@ -67,7 +67,7 @@
     - name: Changing 1
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'ANSIBLE_TEST_1_1'
-        as_number: 1338
+        as_number: 64497
         source_int: 'opt1'
         next_hop_self: true
         send_default_route: true
@@ -79,7 +79,7 @@
     - name: Disabling 1
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'ANSIBLE_TEST_1_1'
-        as_number: 1338
+        as_number: 64497
         source_int: 'opt1'
         next_hop_self: true
         send_default_route: true
@@ -93,7 +93,7 @@
     - name: Disabling 1 - nothing changed
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'ANSIBLE_TEST_1_1'
-        as_number: 1338
+        as_number: 64497
         source_int: 'opt1'
         next_hop_self: true
         send_default_route: true
@@ -107,7 +107,7 @@
     - name: Enabling 1
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'ANSIBLE_TEST_1_1'
-        as_number: 1338
+        as_number: 64497
         source_int: 'opt1'
         next_hop_self: true
         send_default_route: true
@@ -217,7 +217,7 @@
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'ANSIBLE_TEST_2_1'
         prefix_list_in: 'ANSIBLE_TEST_2_1'
-        as_number: 1337
+        as_number: 64496
       register: opn10
       failed_when: >
         opn10.failed or
@@ -235,7 +235,7 @@
       oxlorg.opnsense.frr_bgp_peer_group:
         name: 'ANSIBLE_TEST_2_2'
         route_map_out: 'ANSIBLE_TEST_3_1'
-        as_number: 1338
+        as_number: 64497
       register: opn11
       failed_when: >
         opn11.failed or

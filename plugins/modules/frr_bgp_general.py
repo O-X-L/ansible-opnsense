@@ -54,6 +54,29 @@ def run_module():
             type='bool', required=False, default=False, aliases=['log_neigh'],
             description='Enable extended logging of BGP neighbor changes'
         ),
+        enforce_first_as=dict(
+            type='bool', required=False, default=True,
+            description='Deny an update received from an external BGP (eBGP) peer that does not list '
+                        'its autonomous system number at the beginning of the AS_PATH in the incoming update.'
+        ),
+        bestpath=dict(
+            type='list', elements='str', required=False, default=[],
+            choices=[
+                'as-path confed', 'as-path multipath-relax', 'compare-routerid',
+                'peer-type multipath-relax', 'aigp', 'med missing-as-worst',
+            ],
+            description='Route selection modifiers that influence the best path.'
+        ),
+        maximum_paths=dict(
+            type='int', required=False, aliases=['max_paths'],
+            description='Maximum number of equal-cost paths for eBGP multipath (ECMP). '
+                        'Leave empty to use the FRR default (1).'
+        ),
+        maximum_paths_ibgp=dict(
+            type='int', required=False, aliases=['max_paths_ibgp'],
+            description='Maximum number of equal-cost paths for iBGP multipath (ECMP). '
+                        'Leave empty to use the FRR default (1).'
+        ),
         **RELOAD_MOD_ARG,
         **EN_ONLY_MOD_ARG,
         **OPN_MOD_ARGS,

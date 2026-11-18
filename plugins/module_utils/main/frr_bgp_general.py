@@ -16,7 +16,7 @@ class General(GeneralModule):
     API_CONT_REL = 'service'
     FIELDS_CHANGE = [
         'as_number', 'id', 'graceful', 'enabled', 'networks', 'distance', 'log_neighbor_changes',
-        'network_import_check',
+        'network_import_check', 'enforce_first_as', 'bestpath', 'maximum_paths', 'maximum_paths_ibgp',
     ]
     FIELDS_ALL = FIELDS_CHANGE
     FIELDS_TRANSLATE = {
@@ -24,15 +24,19 @@ class General(GeneralModule):
         'id': 'routerid',
         'log_neighbor_changes': 'logneighborchanges',
         'network_import_check': 'networkimportcheck',
+        'maximum_paths': 'maximumpaths',
+        'maximum_paths_ibgp': 'maximumpathsibgp',
     }
     FIELDS_TYPING = {
-        'bool': ['enabled', 'graceful', 'network_import_check', 'log_neighbor_changes'],
-        'list': ['networks'],
-        'int': ['distance', 'as_number'],
+        'bool': ['enabled', 'graceful', 'network_import_check', 'log_neighbor_changes', 'enforce_first_as'],
+        'list': ['networks', 'bestpath'],
+        'int': ['distance', 'as_number', 'maximum_paths', 'maximum_paths_ibgp'],
     }
     INT_VALIDATIONS = {
         'as_number': {'min': 1, 'max': 4294967295},
         'distance': {'min': 1, 'max': 255},
+        'maximum_paths': {'min': 1, 'max': 128},
+        'maximum_paths_ibgp': {'min': 1, 'max': 128},
     }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None):

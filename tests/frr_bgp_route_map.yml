@@ -269,7 +269,8 @@
         action: 'permit'
       when: not ansible_check_mode
 
-    - name: Adding route-map linked to prefix-lists 1+2
+    # the route-map matches the prefix-list by name, so this links the same list
+    - name: Linking route-map to prefix-lists 1+2 - nothing changed
       oxlorg.opnsense.frr_bgp_route_map:
         name: 'ANSIBLE_TEST_2_1'
         prefix_list: {'ANSIBLE_TEST_3_1': [50, 51]}
@@ -278,7 +279,31 @@
       register: opn17
       failed_when: >
         opn17.failed or
-        not opn17.changed
+        opn17.changed
+      when: not ansible_check_mode
+
+    - name: Adding route-map linked to prefix-lists 1+2
+      oxlorg.opnsense.frr_bgp_route_map:
+        name: 'ANSIBLE_TEST_2_4'
+        prefix_list: {'ANSIBLE_TEST_3_1': [50, 51]}
+        id: 68
+        action: 'permit'
+      register: opn18
+      failed_when: >
+        opn18.failed or
+        not opn18.changed
+      when: not ansible_check_mode
+
+    - name: Adding route-map linked to prefix-lists 1+2 - nothing changed
+      oxlorg.opnsense.frr_bgp_route_map:
+        name: 'ANSIBLE_TEST_2_4'
+        prefix_list: {'ANSIBLE_TEST_3_1': [50, 51]}
+        id: 68
+        action: 'permit'
+      register: opn19
+      failed_when: >
+        opn19.failed or
+        opn19.changed
       when: not ansible_check_mode
 
     - name: Adding dummy community-list
@@ -302,6 +327,39 @@
         not opn13.changed
       when: not ansible_check_mode
 
+    - name: Adding dummy community-list 2 (same number)
+      oxlorg.opnsense.frr_bgp_community_list:
+        description: 'ANSIBLE_TEST_2_2'
+        number: 20
+        seq: 21
+        action: 'permit'
+        community: 'test2'
+      when: not ansible_check_mode
+
+    - name: Adding route-map linked to community-list 2
+      oxlorg.opnsense.frr_bgp_route_map:
+        name: 'ANSIBLE_TEST_2_5'
+        community_list: ['ANSIBLE_TEST_2_2']
+        id: 69
+        action: 'permit'
+      register: opn20
+      failed_when: >
+        opn20.failed or
+        not opn20.changed
+      when: not ansible_check_mode
+
+    - name: Adding route-map linked to community-list 2 - nothing changed
+      oxlorg.opnsense.frr_bgp_route_map:
+        name: 'ANSIBLE_TEST_2_5'
+        community_list: ['ANSIBLE_TEST_2_2']
+        id: 69
+        action: 'permit'
+      register: opn21
+      failed_when: >
+        opn21.failed or
+        opn21.changed
+      when: not ansible_check_mode
+
     - name: Adding dummy as-path
       oxlorg.opnsense.frr_bgp_as_path:
         description: 'ANSIBLE_TEST_2_1'
@@ -322,6 +380,38 @@
         not opn15.changed
       when: not ansible_check_mode
 
+    - name: Adding dummy as-path 2 (same number)
+      oxlorg.opnsense.frr_bgp_as_path:
+        description: 'ANSIBLE_TEST_2_2'
+        number: 20
+        action: 'permit'
+        as_pattern: 'as-pattern2'
+      when: not ansible_check_mode
+
+    - name: Adding route-map linked to as-paths 1+2
+      oxlorg.opnsense.frr_bgp_route_map:
+        name: 'ANSIBLE_TEST_2_6'
+        as_path_list: ['ANSIBLE_TEST_2_1', 'ANSIBLE_TEST_2_2']
+        id: 70
+        action: 'permit'
+      register: opn22
+      failed_when: >
+        opn22.failed or
+        not opn22.changed
+      when: not ansible_check_mode
+
+    - name: Adding route-map linked to as-paths 1+2 - nothing changed
+      oxlorg.opnsense.frr_bgp_route_map:
+        name: 'ANSIBLE_TEST_2_6'
+        as_path_list: ['ANSIBLE_TEST_2_1', 'ANSIBLE_TEST_2_2']
+        id: 70
+        action: 'permit'
+      register: opn23
+      failed_when: >
+        opn23.failed or
+        opn23.changed
+      when: not ansible_check_mode
+
     - name: Cleanup route-maps
       oxlorg.opnsense.frr_bgp_route_map:
         name: "{{ item }}"
@@ -331,6 +421,9 @@
         - 'ANSIBLE_TEST_2_1'
         - 'ANSIBLE_TEST_2_2'
         - 'ANSIBLE_TEST_2_3'
+        - 'ANSIBLE_TEST_2_4'
+        - 'ANSIBLE_TEST_2_5'
+        - 'ANSIBLE_TEST_2_6'
       when: not ansible_check_mode
 
     - name: Cleanup prefix-list
@@ -345,14 +438,20 @@
 
     - name: Cleanup community-list
       oxlorg.opnsense.frr_bgp_community_list:
-        description: 'ANSIBLE_TEST_2_1'
+        description: "{{ item }}"
         state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_2_2'
       when: not ansible_check_mode
 
     - name: Cleanup as-path
       oxlorg.opnsense.frr_bgp_as_path:
-        description: 'ANSIBLE_TEST_2_1'
+        description: "{{ item }}"
         state: 'absent'
+      loop:
+        - 'ANSIBLE_TEST_2_1'
+        - 'ANSIBLE_TEST_2_2'
       when: not ansible_check_mode
 
     - name: Listing
