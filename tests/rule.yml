@@ -209,10 +209,8 @@
 
     - name: Test ICMP-type
       oxlorg.opnsense.rule:
-        ip_protocol: 'inet46'
         protocol: 'ICMP'
         icmp_type: ['echoreq', 'echorep']
-        icmpv6_type: ['echoreq', 'echorep']
         description: 'ANSIBLE_TEST_1_15'
       register: opn23
       failed_when: >
@@ -221,10 +219,8 @@
 
     - name: Test ICMP-type - change
       oxlorg.opnsense.rule:
-        ip_protocol: 'inet46'
         protocol: 'ICMP'
         icmp_type: ['echoreq', 'echorep', 'paramprob']
-        icmpv6_type: ['echoreq', 'echorep', 'paramprob']
         description: 'ANSIBLE_TEST_1_15'
       register: opn23
       failed_when: >
@@ -233,15 +229,47 @@
 
     - name: Test ICMP-type - Nothing changed
       oxlorg.opnsense.rule:
-        ip_protocol: 'inet46'
         protocol: 'ICMP'
         icmp_type: ['echoreq', 'echorep', 'paramprob']
-        icmpv6_type: ['echoreq', 'echorep', 'paramprob']
         description: 'ANSIBLE_TEST_1_15'
       register: opn24
       failed_when: >
         opn24.failed or
         opn24.changed
+      when: not ansible_check_mode
+
+    - name: Test ICMPv6-type
+      oxlorg.opnsense.rule:
+        ip_protocol: 'inet6'
+        protocol: 'IPV6-ICMP'
+        icmpv6_type: ['echoreq', 'echorep']
+        description: 'ANSIBLE_TEST_1_17'
+      register: opn72
+      failed_when: >
+        opn72.failed or
+        not opn72.changed
+
+    - name: Test ICMPv6-type - change
+      oxlorg.opnsense.rule:
+        ip_protocol: 'inet6'
+        protocol: 'IPV6-ICMP'
+        icmpv6_type: ['echoreq', 'echorep', 'paramprob']
+        description: 'ANSIBLE_TEST_1_17'
+      register: opn73
+      failed_when: >
+        opn73.failed or
+        not opn73.changed
+
+    - name: Test ICMPv6-type - Nothing changed
+      oxlorg.opnsense.rule:
+        ip_protocol: 'inet6'
+        protocol: 'IPV6-ICMP'
+        icmpv6_type: ['paramprob', 'echorep', 'echoreq']
+        description: 'ANSIBLE_TEST_1_17'
+      register: opn74
+      failed_when: >
+        opn74.failed or
+        opn74.changed
       when: not ansible_check_mode
 
     - name: Test direction any
@@ -286,6 +314,7 @@
         - 'ANSIBLE_TEST_1_14'
         - 'ANSIBLE_TEST_1_15'
         - 'ANSIBLE_TEST_1_16'
+        - 'ANSIBLE_TEST_1_17'
 
 - name: Testing Rules - aliases
   hosts: localhost

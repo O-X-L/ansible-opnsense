@@ -52,6 +52,29 @@ RULE_DEFAULTS = {
     'shaper2': '',
 }
 
+# OPNsense stores ICMPv6 types by number, see the 'icmp6type' OptionValues in the Filter model
+RULE_ICMPV6_TYPES = {
+    'unreach': '1',
+    'toobig': '2',
+    'timex': '3',
+    'paramprob': '4',
+    'echoreq': '128',
+    'echorep': '129',
+    'listqry': '130',
+    'listenrep': '131',
+    'listendone': '132',
+    'routersol': '133',
+    'routeradv': '134',
+    'neighbrsol': '135',
+    'neighbradv': '136',
+    'redir': '137',
+    'routrrenum': '138',
+    'niqry': '139',
+    'nirep': '140',
+    'mtraceresp': '200',
+    'mtrace': '201',
+}
+
 RULE_MOD_ARG_ALIASES = {
     'sequence': ['seq'],
     'action': ['a'],
@@ -263,12 +286,8 @@ RULE_MOD_ARGS = dict(
     ),
     icmpv6_type=dict(
         type='list', elements='str', required=False, default=RULE_DEFAULTS['icmpv6_type'],
-        aliases=RULE_MOD_ARG_ALIASES['icmpv6_type'], choices=[
-            'unreach', 'toobig', 'timex', 'paramprob', 'echoreq', 'echorep', 'listqry', 'listenrep',
-            'listendone', 'routersol', 'reouteradv', 'neighbrsol', 'neighbradv', 'redir', 'routrrenum',
-            'niqry', 'nirep', 'mtraceresp', 'mtrace',
-        ],
-        description='If protocol is ICMPv6 you can specify the types'
+        aliases=RULE_MOD_ARG_ALIASES['icmpv6_type'], choices=list(RULE_ICMPV6_TYPES.keys()),
+        description='If protocol is IPV6-ICMP you can specify the types'
     ),
     divert_to=dict(type='str', required=False, description='Target to divert the traffic to'),
     shaper1=dict(type='str', required=False, description='Traffic Shaper to apply'),
