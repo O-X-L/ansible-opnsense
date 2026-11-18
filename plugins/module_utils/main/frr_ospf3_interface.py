@@ -4,6 +4,8 @@ from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api import \
     Session
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.validate import \
     is_unset
+from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.frr import \
+    find_ospf_area, ospf_area_diff, ospf_area_uuid_to_id
 from ansible_collections.oxlorg.opnsense.plugins.module_utils.base.module import BaseModule
 
 
@@ -45,13 +47,18 @@ class Interface(BaseModule):
     }
     FIELDS_TYPING = {
         'bool': ['enabled', 'passive'],
-        'select': ['interface', 'carp_depend_on', 'network_type'],
+        'select': ['interface', 'area', 'carp_depend_on', 'network_type'],
     }
     EXIST_ATTR = 'int'
+    SEARCH_ADDITIONAL = {
+        'existing_areas': 'ospf6.areas.area',
+    }
 
     def __init__(self, module: AnsibleModule, result: dict, session: Session = None, fail: dict = None):
         BaseModule.__init__(self=self, m=module, r=result, s=session, f=fail)
         self.int = {}
+        self.existing_areas = None
+        self.existing_entries = None
 
     def check(self) -> None:
         if self.p['state'] == 'present':
@@ -60,4 +67,18 @@ class Interface(BaseModule):
                     'To create a OSPFv3 interface you need to provide its area!'
                 )
 
+        if self.existing_entries is None:
+            self.existing_entries = self._call_search()
+
+        find_ospf_area(self)
         self._base_check()
+        ospf_area_diff(self)
+
+    def get_existing(self) -> list:
+        existing = []
+
+        for entry in self._base_get_existing():
+            entry['area'] = ospf_area_uuid_to_id(self, entry['area'])
+            existing.append(entry)
+
+        return existing
