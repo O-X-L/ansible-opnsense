@@ -38,7 +38,7 @@ Module alias: oxlorg.opnsense.dnat
     "match_fields","list","true","\-","\-","Fields that are used to match configured rules with the running config - if any of those fields are changed, the module will think it's a new rule. At least one of: 'sequence', 'interface', 'ip_protocol', 'protocol', 'source_invert', 'source_net', 'source_port', 'destination_invert', 'destination_net', 'destination_port', 'target', 'local_port', 'description', 'uuid', 'no_port_forward'"
     "sequence","int","false","1","seq","Sequence for rule processing, Integer between 1 and 999999"
     "interface","list","false for deletion, else true","['lan']","int, i","One or multiple interfaces to match this rule on"
-    "ip_protocol","string","false","'inet'","ip, ip_proto","IP protocol to match. One of: 'inet', 'inet6', 'inet46' (*IPv4 = 'inet', IPv6 = 'inet6', Both = 'inet46'*)"
+    "ip_protocol","string","false","'inet'","ip, ip_proto","IP protocol to match. One of: '', 'inet', 'inet6', 'inet46' (*IPv4 = 'inet', IPv6 = 'inet6', Both = 'inet46', any = '' - shown as '*' in the WebUI and its default there*)"
     "protocol","string","false","'any'","proto, p","Protocol like 'TCP', 'UDP', 'ICMP', 'TCP/UDP' and so on. For options see the WEB-UI."
     "source_invert","boolean","false","false","src_inv, si, src_not","Inverted matching of the source"
     "source_net","string","false","'any'","source, src, s","Host, network, alias or 'any'"
