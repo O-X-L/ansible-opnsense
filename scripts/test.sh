@@ -110,6 +110,7 @@ run_test_soft 'unbound_host' 1
 run_test_soft 'unbound_host_alias' 1
 run_test_soft 'unbound_dnsbl' 1
 run_test_soft 'syslog' 1
+run_test_soft 'tunable' 1
 run_test_soft 'shaper_pipe' 1
 run_test_soft 'shaper_queue' 1
 run_test_soft 'shaper_rule' 1

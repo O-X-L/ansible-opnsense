@@ -121,6 +121,7 @@ action_groups:
     - oxlorg.opnsense.cron
     - oxlorg.opnsense.syslog
     - oxlorg.opnsense.snapshot
+    - oxlorg.opnsense.tunable
   ids:
     - oxlorg.opnsense.ids_action
     - oxlorg.opnsense.ids_general
