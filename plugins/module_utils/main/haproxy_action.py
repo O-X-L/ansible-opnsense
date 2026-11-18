@@ -102,9 +102,6 @@ class HaproxyAction(BaseModule):
             "mapfile", "compression_algo_res", "compression_algo_req", "compression_direction",
         ],
     }
-    FIELDS_TRANSLATE = {
-        'kind': 'type',
-    }
     FIELDS_OPTIONAL = ['linked_acls', 'test_type', 'custom_rule']
 
     EXIST_ATTR = 'haproxy_action'
