@@ -59,6 +59,50 @@ def test_build_updatefreq():
     assert build_updatefreq('1.9') == 1.9
     assert build_updatefreq('') == ''
     assert build_updatefreq(None) is None
+    assert build_updatefreq('', default=True) == 7
+    assert build_updatefreq(None, default=True) == 7
+    assert build_updatefreq('0') == 0
+    assert build_updatefreq('0.0') == 0
+
+
+@pytest.mark.parametrize('value, expected', [
+    ('0.00347', 0.00347),  # ~5 min
+    ('0.000694', 0.000694),  # ~1 min
+    ('0.04', 0.04),  # ~1 hour
+    ('0.25', 0.25),  # 6 hours
+    (0.25, 0.25),
+    ('0.5', 0.5),
+])
+def test_build_updatefreq_keeps_precision(value, expected):
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.alias import build_updatefreq
+
+    assert build_updatefreq(value) == expected
+    assert build_updatefreq(value, default=True) == expected
+
+
+@pytest.mark.parametrize('declared, existing', [
+    ('0.00347', '0.00347'),
+    ('0.04', '0.04'),
+    ('0.25', '0.25'),
+    ('7', '7'),
+    ('7', '7.0'),
+    ('0.5', '0.5'),
+    (5 / 1440, '0.003472'),  # computed value vs value stored with fewer digits
+    ('0.003472222222222222', '0.00347222222222'),
+    ('0.9999999', '1'),
+])
+def test_build_updatefreq_compare_stable(declared, existing):
+    # desired value (alias: check / alias_multi: build + check) and existing value
+    # (simplify_existing) are compared as str() - they must match
+    from ansible_collections.oxlorg.opnsense.plugins.module_utils.helper.alias import build_updatefreq
+
+    desired_single = build_updatefreq(declared, default=True)
+    desired_multi = build_updatefreq(build_updatefreq(declared), default=True)
+    current = build_updatefreq(existing, default=False)
+
+    assert str(desired_single) == str(current)
+    assert str(desired_multi) == str(current)
+    assert build_updatefreq(current) == current
 
 
 def test_placeholder():

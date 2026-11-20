@@ -95,6 +95,7 @@ def filter_builtin_alias(aliases: list) -> list:
 
 
 DEFAULT_UPDATEFREQ_DAYS_URLTABLE = 7  # see: https://github.com/O-X-L/ansible-opnsense/pull/270
+UPDATEFREQ_DECIMALS = 6
 
 
 def build_updatefreq(updatefreq: (int, float, str), default: bool = False) -> (int, float):
@@ -104,9 +105,10 @@ def build_updatefreq(updatefreq: (int, float, str), default: bool = False) -> (i
 
         return updatefreq
 
-    updatefreq = float(updatefreq)
-    dec = 1
-    if str(updatefreq).endswith('.0'):
-        dec = None
+    # desired & existing values get the same rounding so they compare equal (idempotent);
+    # 6 decimals leaves hand-typed values unchanged - OPNsense cron (1 min) is far coarser
+    updatefreq = round(float(updatefreq), UPDATEFREQ_DECIMALS)
+    if updatefreq.is_integer():
+        return int(updatefreq)
 
-    return round(updatefreq, dec)
+    return updatefreq
