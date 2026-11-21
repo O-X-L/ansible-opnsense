@@ -74,7 +74,7 @@ That means [each release of the collection](https://github.com/O-X-L/ansible-opn
 
 If you need to use these modules - ensure that there is a supported release BEFORE upgrading your OPNsense firewalls!
 
-I currently try to create a stable release once or twice a year - as this takes 10-20h of work each time for implementing API-fixes.
+I currently try to create a stable release once or twice a year - as this takes days of work each time for implementing API-fixes.
 
 As [this project is unfunded](https://github.com/O-X-L/ansible-opnsense/discussions/199) we do not actively check for API-changes - if you find missing functionalities you need/want to have please [report it](https://github.com/O-X-L/ansible-opnsense/issues)! Not all features will be implemented!
 
@@ -211,6 +211,9 @@ not implemented => development => [testing](https://github.com/O-X-L/ansible-opn
 | **DHCP Relay**            | oxlorg.opnsense.dhcrelay_relay                                 | [Docs](https://ansible-opnsense.oxl.app/modules/dhcrelay_relay.html)                                            | stable   |
 | **DHCP Relay**            | oxlorg.opnsense.dhcrelay_destination                           | [Docs](https://ansible-opnsense.oxl.app/modules/dhcrelay_destination.html)                                      | stable   |
 | **Router Advertisements** | oxlorg.opnsense.radvd                                          | [Docs](https://ansible-opnsense.oxl.app/modules/radvd.html)                                                     | unstable |
+| **Trust CA**              | oxlorg.opnsense.trust_ca                                       | [Docs](https://ansible-opnsense.oxl.app/modules/trust.html)                                                     | unstable |
+| **Trust Certificate**     | oxlorg.opnsense.trust_cert                                     | [Docs](https://ansible-opnsense.oxl.app/modules/trust.html)                                                     | unstable |
+| **Trust Export**          | oxlorg.opnsense.trust_export                                   | [Docs](https://ansible-opnsense.oxl.app/modules/trust.html)                                                     | unstable |
 | **DHCP**                  | oxlorg.opnsense.dhcp_general                                   | [Docs](https://ansible-opnsense.oxl.app/modules/dhcp.html)                                                      | stable   |
 | **DHCP Subnet**           | oxlorg.opnsense.dhcp_subnet                                    | [Docs](https://ansible-opnsense.oxl.app/modules/dhcp.html)                                                      | stable   |
 | **DHCP Reservation**      | oxlorg.opnsense.dhcp_reservation                               | [Docs](https://ansible-opnsense.oxl.app/modules/dhcp.html)                                                      | stable   |

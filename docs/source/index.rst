@@ -31,3 +31,14 @@ Index
    :maxdepth: 1
 
    modules/*
+
+----
+
+Legal
+#####
+
+.. toctree::
+    :glob:
+    :maxdepth: 1
+
+    legal/*

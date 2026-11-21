@@ -126,7 +126,7 @@ def test_check_testdata(mocker):
         assert res == res_empty
 
 
-@pytest.mark.parametrize('env_val, httpx_avail, requests_avail, expected', [
+@pytest.mark.parametrize('http_client, httpx_avail, requests_avail, expected', [
     ('', True, True, 'httpx'),
     ('', False, True, 'requests'),
     ('httpx', True, True, 'httpx'),
@@ -136,11 +136,11 @@ def test_check_testdata(mocker):
     ('httpx', False, True, 'requests'),
     ('requests', True, False, 'httpx'),
 ])
-def test_session_client_selection(mocker, env_val, httpx_avail, requests_avail, expected):
+def test_session_client_selection(mocker, http_client, httpx_avail, requests_avail, expected):
     """Tests the client priority fallback logic based on env vars and availability."""
     mocker.patch.dict(
         "ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api.environ",
-        {**environ, "HTTP_CLIENT": env_val}
+        {**environ, "HTTP_CLIENT": http_client}
     )
 
     # Patch the availability flags in the api module
@@ -163,12 +163,12 @@ def test_session_client_selection(mocker, env_val, httpx_avail, requests_avail, 
     assert session._http_client_lib == expected
 
 
-@pytest.mark.parametrize('backend', ['httpx', 'requests'])
-def test_session_request_routing(mocker, backend):
+@pytest.mark.parametrize('http_client', ['httpx', 'requests'])
+def test_session_request_routing(mocker, http_client):
     """Tests that the correct underlying library methods are called with the proper URL formats."""
     mocker.patch.dict(
         "ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api.environ",
-        {**environ, "HTTP_CLIENT": backend}
+        {**environ, "HTTP_CLIENT": http_client}
     )
 
     mocker.patch('ansible_collections.oxlorg.opnsense.plugins.module_utils.base.api.check_host')
@@ -191,8 +191,8 @@ def test_session_request_routing(mocker, backend):
 
     call_url = "test_mod/test_cont/test_cmd"
 
-    assert session._http_client_lib == backend
-    if backend == 'httpx':
+    assert session._http_client_lib == http_client
+    if http_client == 'httpx':
         mock_get.assert_called_once_with(url=call_url)
 
     else:
