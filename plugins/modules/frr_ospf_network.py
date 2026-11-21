@@ -31,24 +31,15 @@ def run_module():
         mask=dict(type='int', required=True, aliases=['nw_mask', 'network_mask']),
         area=dict(
             type='str', required=False,
-            description='Area in wildcard mask style like 0.0.0.0 and no decimal 0. '
+            description='ID of an existing area in dotted-quad format (A.B.C.D) like 0.0.0.0, '
+                        'not in decimal format (0). '
                         'Only use Area in Interface tab or in Network tab once'
-        ),
-        area_range=dict(
-            type='str', required=False,
-            description='Here you can summarize a network for this area like 192.168.0.0/23'
-        ),
-        prefix_list_in=dict(
-            type='str', required=False, aliases=['prefix_in', 'pre_in']
-        ),
-        prefix_list_out=dict(
-            type='str', required=False, aliases=['prefix_out', 'pre_out']
         ),
         match_fields=dict(
             type='list', required=False, elements='str',
             description='Fields that are used to match configured network with the running config - '
                         "if any of those fields are changed, the module will think it's a new entry",
-            choices=['ip', 'mask', 'area', 'area_range'],
+            choices=['ip', 'mask', 'area'],
             default=['ip', 'mask'],
         ),
         **STATE_MOD_ARG,
