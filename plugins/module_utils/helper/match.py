@@ -50,6 +50,12 @@ def get_matching(
                 exit_bug(f"Failed because 'match_fields' are not a list: {type(match_fields)} '{match_fields}'")
 
             for field in match_fields:
+                if field not in existing:
+                    # the OPNsense API omits some fields for some entries, e.g. 'gateway' for a
+                    # dynamic gateway without a current address: such an entry cannot match
+                    _matching.append(False)
+                    continue
+
                 _matching.append(str(existing[field]) == str(compare_item[field]))
 
                 if module.params['debug']:
